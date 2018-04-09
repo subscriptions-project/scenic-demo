@@ -40,10 +40,11 @@ const GSI_CLIENT_ID = '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4' +
  * The authorization endpoint must accept user traffic.
  * Typical request looks like this:
  * ?client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&state=STATE&scope=SCOPES&response_type=code
+ * TODO(dvoytenko): remove "/examples/" path
  */
-app.get('/auth', (req, res) => {
+app.get(['/oauth/auth', '/examples/sample-pub/oauth/auth'], (req, res) => {
   const params = verifyOauthParams(req);
-  res.render('../views/signin-oauth', {
+  res.render('../app/views/signin-oauth', {
     'client_id': params.clientId,
     'redirect_uri': params.redirectUri,
     'state': params.state,
@@ -56,8 +57,9 @@ app.get('/auth', (req, res) => {
 /**
  * OAuth authorization endpoint.
  * The authorization endpoint must accept user traffic.
+ * TODO(dvoytenko): remove "/examples/" path
  */
-app.post('/auth-submit', (req, res) => {
+app.post(['/oauth/auth-submit', '/examples/sample-pub/oauth/auth-submit'], (req, res) => {
   const params = verifyOauthParams(req);
   const email = req.body['email'];
   const password = req.body['password'];
@@ -103,8 +105,9 @@ app.post('/auth-submit', (req, res) => {
  * The token exchange endpoint is responsible for two kinds of token exchanges:
  * - Exchanging authorization codes for access tokens and refresh tokens;
  * - Exchanging refresh tokens for access tokens.
+ * TODO(dvoytenko): remove "/examples/" path
  */
-app.post('/token', (req, res) => {
+app.post(['/oauth/token', '/examples/sample-pub/oauth/token'], (req, res) => {
   let grantType;
   let response;
   try {
@@ -211,8 +214,9 @@ app.post('/token', (req, res) => {
  * Query parameters:
  * - publication_id={publication_id}
  * - access_token={access_token}
+ * TODO(dvoytenko): remove "/examples/" path
  */
-app.all('/entitlements', (req, res) => {
+app.all(['/oauth/entitlements', '/examples/sample-pub/oauth/entitlements'], (req, res) => {
   const publicationId = PUBLICATION_ID;
   const accessToken = getParam(req, 'access_token');
   const decryptedAccessToken = decrypt(fromBase64(accessToken));
@@ -233,8 +237,9 @@ app.all('/entitlements', (req, res) => {
 
 /**
  * Handle authorized request.
+ * TODO(dvoytenko): remove "/examples/" path
  */
-app.all('/authorized', (req, res) => {
+app.all(['/oauth/authorized', '/examples/sample-pub/oauth/authorized'], (req, res) => {
   // Authorization: Bearer ACCESS_TOKEN
   const authorizationHeader = req.headers.authorization;
   if (!authorizationHeader) {

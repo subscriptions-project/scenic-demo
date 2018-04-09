@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// To resolve 'exports', 'Buffers' is not defined no-undef error.
-/*eslint-env node*/
-'use strict';
 
 const jsonwebtoken = require('jsonwebtoken');
 const {
@@ -27,7 +24,7 @@ const {
 
 const app = module.exports = require('express').Router();
 app.use(require('cookie-parser')())
-app.use('/oauth', require('./oauth-app'));
+app.use('/', require('./oauth-app'));
 
 const PUBLICATION_ID = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
 const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
@@ -75,8 +72,9 @@ app.get('/', (req, res) => {
 
 /**
  * An Article.
+ * TODO(dvoytenko): remove "/examples/" path
  */
-app.get('/((\\d+))', (req, res) => {
+app.get(['/((\\d+))', '/examples/sample-pub/((\\d+))'], (req, res) => {
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
   const prevId = (id - 1) >= 0 ? String(id - 1) : false;
@@ -96,8 +94,9 @@ app.get('/((\\d+))', (req, res) => {
 
 /**
  * An AMP Article.
+ * TODO(dvoytenko): remove "/examples/" path
  */
-app.get('/((\\d+))\.amp', (req, res) => {
+app.get(['/((\\d+))\.amp', '/examples/sample-pub/((\\d+))\.amp'], (req, res) => {
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
   const prevId = (id - 1) >= 0 ? String(id - 1) + '.amp' : false;
