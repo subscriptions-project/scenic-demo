@@ -15,7 +15,7 @@
     "url": "https://github.com/subscriptions-project/scenic-demo.git"
   },
   "scripts": {
-    "start": "node app/server-gae.js",
+    "start": "node build-system/server/server-gae.js",
     "start-local": "gulp",
     "deploy": "gcloud app deploy --stop-previous-version",
     "test": "gulp test && ava",

@@ -127,6 +127,23 @@ app.get(['/((\\d+))\.amp', '/examples/sample-pub/((\\d+))\.amp'], (req, res) => 
 
 
 /**
+ * RSS Feed.
+ */
+app.get('/feed.xml', (req, res) => {
+  res.set('Content-Type', 'text/xml');
+  res.render('../app/views/feed-xml', {
+    updateTimeIso: new Date().toISOString(),
+    articles: ARTICLES.map(article => {
+      return Object.assign({}, article, {
+        dateIso: new Date(article.date).toISOString(),
+        updateTimeIso: new Date().toISOString(),
+      });
+    }),
+  });
+});
+
+
+/**
  * Subscribe page. Format:
  * /signin?return=RETURN_URL
  */
