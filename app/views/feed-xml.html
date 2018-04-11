@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en">
+  <title>The Scenic -  Google Newsstand | The Scenic</title>
+  <icon>https://scenic-2017.appspot.com/icons/icon-2x.png</icon>
+  <updated><% updateTimeIso %></updated>
+  <id>https://scenic-2017.appspot.com/rss</id>
+  <link type="text/html" href="https://scenic-2017.appspot.com/" rel="alternate"/>
+
+  <%#articles%>
+    <entry>
+      <id>https://scenic-2017.appspot.com/<% id %></id>
+      <published><% dateIso %></published>
+      <updated><% updateTimeIso %></updated>
+      <title><% title %></title>
+      <summary><% kicker %></summary>
+      <link rel="alternate" type="text/html" href="https://scenic-2017.appspot.com/<% id %>"/>
+      <author>
+        <name><% author %></name>
+      </author>
+      <content type="html">
+        &lt;img alt="" src="https://scenic-2017.appspot.com<% hero %>" /&gt;
+
+        &lt;h2&gt;<% category %>&lt;/h2&gt;
+        &lt;h1&gt;<% title %>&lt;/h1&gt;
+        &lt;p&gt;<% kicker %>&lt;/p&gt;
+        &lt;p&gt;By <% author %> on <% date %>&lt;/p&gt;
+        &lt;p&gt;
+          Jelly jujubes marshmallow donut. Wafer cheesecake lollipop fruitcake danish powder. Pudding croissant biscuit icing. Gummi bears fruitcake cake wafer cake cookie caramels marshmallow bonbon.
+        &lt;/p&gt;
+      </content>
+    </entry>
+  <%/articles%>
+</feed>
