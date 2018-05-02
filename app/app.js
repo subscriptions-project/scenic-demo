@@ -39,6 +39,7 @@ const SWG_JS_URLS = {
   prod: 'https://news.google.com/swg/js/v1/swg.js',
   autopush: 'https://news.google.com/swg/js/v1/swg-autopush.js',
   tt: 'https://news.google.com/swg/js/v1/swg-tt.js',
+  qual: 'https://news.google.com/swg/js/v1/swg-qual.js',
 };
 
 const AUTH_COOKIE = 'SCENIC_AUTH';
