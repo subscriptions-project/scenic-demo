@@ -24,8 +24,11 @@ export class DemoPaywallController {
 
   /**
    * @param {!Subscriptions} subscriptions
+   * @param {!{
+   *   unknownSubscription: (boolean|undefined),
+   * }=} opt_options
    */
-  constructor(subscriptions) {
+  constructor(subscriptions, opt_options) {
     /** @const {!Subscriptions} */
     this.subscriptions = subscriptions;
 
@@ -38,6 +41,10 @@ export class DemoPaywallController {
 
     /** @const {?Entitlements} */
     this.entitlements = null;
+
+    /** @private {boolean} */
+    this.unknownSubscription_ =
+        opt_options && opt_options.unknownSubscription || false;
   }
 
   start() {
@@ -50,9 +57,13 @@ export class DemoPaywallController {
     entitlementsPromise.then(entitlements => {
       log('got entitlements: ', entitlements, entitlements.enablesThis());
       if (entitlements && entitlements.enablesThis()) {
-        // Entitlements available: open access.
-        this.openPaywall_();
-        entitlements.ack();
+        if (this.completeDeferredAccountCreation_(entitlements)) {
+          // Do nothing.
+        } else {
+          // Entitlements available: open access.
+          this.openPaywall_();
+          entitlements.ack();
+        }
       } else {
         // In a simplest case, just launch offers flow.
         this.subscriptions.showOffers();
@@ -120,5 +131,44 @@ export class DemoPaywallController {
     log('linking complete');
     this.subscriptions.reset();
     this.start();
+  }
+
+  /**
+   * @param {!Entitlements} entitlements
+   * @return {!Promise|undefined}
+   * @private
+   */
+  completeDeferredAccountCreation_(entitlements) {
+    if (!this.unknownSubscription_) {
+      // Subscription has already been recognized.
+      // Nothing needs to be completed.
+      return;
+    }
+    if (!entitlements.getEntitlementForSource('google')) {
+      // No Google entitlement.
+      return;
+    }
+    log('start deferred account creation');
+    return this.subscriptions.completeDeferredAccountCreation({
+      entitlements,
+    }).then(response => {
+      // TODO: Start deferred account creation flow.
+      log('got deferred account response', response);
+      this.unknownSubscription_ = false;
+      const toast = document.getElementById('creating_account_toast');
+      const userEl = document.getElementById('creating_account_toast_user');
+      userEl.textContent = 'deferred/' + response.userData.email;
+      toast.style.display = 'block';
+      // TODO: wait for account creation to be complete.
+      setTimeout(() => {
+        response.complete().then(() => {
+          log('subscription has been confirmed');
+          // Open the content.
+          this.subscriptions.reset();
+          this.start();
+        });
+        toast.style.display = 'none';
+      }, 3000);
+    });
   }
 }
