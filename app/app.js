@@ -48,6 +48,11 @@ const MAX_METER = 3;
 
 const ARTICLES = require('./content').ARTICLES;
 
+// Info.
+if (console.log) {
+  console.log('Scenic started. Publication: ' + PUBLICATION_ID);
+}
+
 
 /**
  * List all Articles.

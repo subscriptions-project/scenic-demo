@@ -1,11 +1,11 @@
 (function(){(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
 exports.__esModule = true;
-var CSS = "@media (min-width:480px){.swg-dialog,.swg-toast{width:480px!important;left:-240px!important;margin-left:50vw!important}}@media (max-width:480px){.swg-dialog,.swg-toast{width:100%!important;left:0!important;margin-left:0!important}}@-webkit-keyframes swg-notify{0%{-webkit-transform:translateY(100%);transform:translateY(100%);opacity:0}to{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes swg-notify-hide{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}to{-webkit-transform:translateY(100%);transform:translateY(100%);opacity:0}}\n/*# sourceURL=/./src/components/dialog.css*/";
+var CSS = ".swg-dialog,.swg-toast{box-sizing:border-box;background-color:#fff!important}@media (max-height:640px), (max-width:640px){.swg-dialog,.swg-toast{width:480px!important;left:-240px!important;margin-left:50vw!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}@media (min-width:640px) and (min-height:640px){.swg-dialog{width:630px!important;left:-315px!important;margin-left:50vw!important;background-color:transparent!important;border:none!important}}@media (max-width:480px){.swg-dialog,.swg-toast{width:100%!important;left:0!important;right:0!important;margin-left:0!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}@-webkit-keyframes swg-notify{0%{-webkit-transform:translateY(100%);transform:translateY(100%);opacity:0}to{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes swg-notify-hide{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}to{-webkit-transform:translateY(100%);transform:translateY(100%);opacity:0}}\n/*# sourceURL=/./src/components/dialog.css*/";
 exports.CSS = CSS;
 
 },{}],2:[function(require,module,exports){
 exports.__esModule = true;
-var CSS = "body{padding:0;margin:0}swg-container,swg-loading,swg-loading-animate,swg-loading-image{display:block}swg-loading{position:fixed!important;top:40%!important;left:45%!important;-webkit-transform:translate(-40%,-40%)!important;transform:translate(-40%,-40%)!important;z-index:2147483647!important;width:36px;height:36px;overflow:hidden;-webkit-animation:mspin-rotate 1568.63ms infinite linear;animation:mspin-rotate 1568.63ms infinite linear}swg-loading-animate{-webkit-animation:mspin-revrot 5332ms infinite steps(4);animation:mspin-revrot 5332ms infinite steps(4)}swg-loading-image{background-image:url('data:image/svg+xml;charset=utf-8;base64,DQo8c3ZnIHZlcnNpb249IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxMTY2NCIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDExNjY0IDM2Ij48ZGVmcz48cGF0aCBpZD0iYSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWRhc2hhcnJheT0iNTguOSIgZD0iTTE4IDUuNUExMi41IDEyLjUgMCAxIDEgNS41IDE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiLz48ZyBpZD0iYiI+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE3Ni42NiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzYuNTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzYuMzIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzUuODUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTc1LjE0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE3NC4xMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzIuNzgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTcxLjAxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE2OC43OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNjYuMDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyNCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTYyLjczIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNjApIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE1OS4wMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzk2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNTUuMDQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQzMikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTUxLjA1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE0Ny4yMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTA0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNDMuNzEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU0MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTQwLjU0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEzNy43MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjEyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMzUuMjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTMyLjk4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2ODQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEzMS4wMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzIwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjkuMjYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDc1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTI3LjcxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3OTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyNi4zMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODI4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjUuMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODY0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjQuMDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDkwMCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTIzLjA0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5MzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyMi4xOSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjEuNDMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMDgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyMC43NyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA0NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTIwLjE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTkuNjkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDExMTYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExOS4yNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTE1MikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE4Ljg5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTguNTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMjQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExOC4zMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI2MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE4LjEzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjk2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuOTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEzMzIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExNy44OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTM2OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE3LjgyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDA0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQ0MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE3LjcyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDc2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuNDYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1MTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTU0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE2LjI5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTg0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTUuMjkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2MjApIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExMy45NCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTY1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTEyLjE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNjkyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMDkuOTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE3MjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEwNy4yMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTc2NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTAzLjk2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODAwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMDAuMjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijk2LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI5Mi4zNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTkwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iODguNTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5NDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijg1LjA3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOTgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI4MS45MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNzkuMTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwNTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijc2LjYxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI3NC40IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMTI0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI3Mi40NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE2MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNzAuNzEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIxOTYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY5LjE2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMjMyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2Ny43OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjI2OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjYuNTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY1LjQ5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMzQwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NC41MyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM3NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjMuNjgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0MTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYyLjkzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDQ4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2Mi4yNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjQ4NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUyMCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjAuNzciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1OTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2MjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2NjQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5Ljg1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNzAwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS42NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjczNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjc3MikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjgwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuMzQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4NDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODgwKSIvPjwvZz48ZyBpZD0iYyI+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjcwLjcxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMTk2KSIgb3BhY2l0eT0iLjA1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY5LjE2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMjMyKSIgb3BhY2l0eT0iLjEiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjcuNzkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIyNjgpIiBvcGFjaXR5PSIuMTUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjYuNTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMDQpIiBvcGFjaXR5PSIuMiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NS40OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM0MCkiIG9wYWNpdHk9Ii4yNSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NC41MyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM3NikiIG9wYWNpdHk9Ii4zIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYzLjY4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDEyKSIgb3BhY2l0eT0iLjM1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYyLjkzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDQ4KSIgb3BhY2l0eT0iLjQiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjIuMjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0ODQpIiBvcGFjaXR5PSIuNDUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUyMCkiIG9wYWNpdHk9Ii41Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYxLjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1NTYpIiBvcGFjaXR5PSIuNTUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjAuNzciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1OTIpIiBvcGFjaXR5PSIuNiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2MC40IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNjI4KSIgb3BhY2l0eT0iLjY1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2NjQpIiBvcGFjaXR5PSIuNyIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS44NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjcwMCkiIG9wYWNpdHk9Ii43NSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS42NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjczNikiIG9wYWNpdHk9Ii44Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI3NzIpIiBvcGFjaXR5PSIuODUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjgwOCkiIG9wYWNpdHk9Ii45Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjM0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODQ0KSIgb3BhY2l0eT0iLjk1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODgwKSIvPjwvZz48L2RlZnM+PHVzZSB4bGluazpocmVmPSIjYiIgc3Ryb2tlPSIjNDI4NWY0Ii8+PHVzZSB4bGluazpocmVmPSIjYyIgc3Ryb2tlPSIjZGI0NDM3Ii8+PHVzZSB4bGluazpocmVmPSIjYiIgc3Ryb2tlPSIjZGI0NDM3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOTE2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2MiIHN0cm9rZT0iI2Y0YjQwMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNiIiBzdHJva2U9IiNmNGI0MDAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU4MzIpIi8+PHVzZSB4bGluazpocmVmPSIjYyIgc3Ryb2tlPSIjMGY5ZDU4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1ODMyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2IiIHN0cm9rZT0iIzBmOWQ1OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODc0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNjIiBzdHJva2U9IiM0Mjg1ZjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDg3NDgpIi8+PC9zdmc+');background-size:100%;width:11664px;height:36px;-webkit-animation:swg-loading-film 5332ms infinite steps(324);animation:swg-loading-film 5332ms infinite steps(324)}@-webkit-keyframes swg-loading-film{0%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-11664px);transform:translateX(-11664px)}}@keyframes swg-loading-film{0%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-11664px);transform:translateX(-11664px)}}@-webkit-keyframes mspin-rotate{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes mspin-rotate{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes mspin-revrot{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(-360deg);transform:rotate(-360deg)}}@keyframes mspin-revrot{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(-360deg);transform:rotate(-360deg)}}\n/*# sourceURL=/./src/ui/ui.css*/";
+var CSS = "body{padding:0;margin:0}swg-container,swg-loading,swg-loading-animate,swg-loading-image{display:block}swg-loading-container{width:100%!important;display:-webkit-box!important;display:-ms-flexbox!important;display:flex!important;-webkit-box-align:center!important;-ms-flex-align:center!important;align-items:center!important;-webkit-box-pack:center!important;-ms-flex-pack:center!important;justify-content:center!important;min-height:148px!important;height:100%!important;bottom:0!important;margin-top:5px!important;z-index:2147483647!important}@media (min-height:630px), (min-width:630px){swg-loading-container{width:560px!important;margin-left:35px!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;background-color:#fff!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}swg-loading{z-index:2147483647!important;width:36px;height:36px;overflow:hidden;-webkit-animation:mspin-rotate 1568.63ms infinite linear;animation:mspin-rotate 1568.63ms infinite linear}swg-loading-animate{-webkit-animation:mspin-revrot 5332ms infinite steps(4);animation:mspin-revrot 5332ms infinite steps(4)}swg-loading-image{background-image:url('data:image/svg+xml;charset=utf-8;base64,DQo8c3ZnIHZlcnNpb249IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxMTY2NCIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDExNjY0IDM2Ij48ZGVmcz48cGF0aCBpZD0iYSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWRhc2hhcnJheT0iNTguOSIgZD0iTTE4IDUuNUExMi41IDEyLjUgMCAxIDEgNS41IDE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiLz48ZyBpZD0iYiI+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE3Ni42NiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzYuNTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzYuMzIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzUuODUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTc1LjE0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE3NC4xMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzIuNzgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTcxLjAxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE2OC43OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNjYuMDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyNCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTYyLjczIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNjApIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE1OS4wMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzk2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNTUuMDQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQzMikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTUxLjA1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE0Ny4yMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTA0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNDMuNzEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU0MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTQwLjU0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEzNy43MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjEyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMzUuMjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTMyLjk4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2ODQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEzMS4wMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzIwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjkuMjYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDc1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTI3LjcxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3OTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyNi4zMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODI4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjUuMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODY0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjQuMDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDkwMCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTIzLjA0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5MzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyMi4xOSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjEuNDMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMDgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyMC43NyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA0NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTIwLjE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTkuNjkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDExMTYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExOS4yNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTE1MikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE4Ljg5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTguNTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMjQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExOC4zMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI2MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE4LjEzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjk2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuOTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEzMzIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExNy44OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTM2OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE3LjgyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDA0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQ0MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE3LjcyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDc2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuNDYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1MTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTU0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE2LjI5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTg0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTUuMjkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2MjApIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExMy45NCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTY1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTEyLjE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNjkyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMDkuOTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE3MjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEwNy4yMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTc2NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTAzLjk2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODAwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMDAuMjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijk2LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI5Mi4zNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTkwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iODguNTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5NDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijg1LjA3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOTgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI4MS45MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNzkuMTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwNTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijc2LjYxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI3NC40IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMTI0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI3Mi40NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE2MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNzAuNzEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIxOTYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY5LjE2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMjMyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2Ny43OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjI2OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjYuNTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY1LjQ5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMzQwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NC41MyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM3NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjMuNjgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0MTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYyLjkzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDQ4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2Mi4yNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjQ4NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUyMCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjAuNzciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1OTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2MjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2NjQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5Ljg1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNzAwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS42NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjczNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjc3MikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjgwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuMzQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4NDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODgwKSIvPjwvZz48ZyBpZD0iYyI+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjcwLjcxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMTk2KSIgb3BhY2l0eT0iLjA1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY5LjE2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMjMyKSIgb3BhY2l0eT0iLjEiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjcuNzkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIyNjgpIiBvcGFjaXR5PSIuMTUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjYuNTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMDQpIiBvcGFjaXR5PSIuMiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NS40OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM0MCkiIG9wYWNpdHk9Ii4yNSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NC41MyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM3NikiIG9wYWNpdHk9Ii4zIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYzLjY4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDEyKSIgb3BhY2l0eT0iLjM1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYyLjkzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDQ4KSIgb3BhY2l0eT0iLjQiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjIuMjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0ODQpIiBvcGFjaXR5PSIuNDUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUyMCkiIG9wYWNpdHk9Ii41Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYxLjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1NTYpIiBvcGFjaXR5PSIuNTUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjAuNzciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1OTIpIiBvcGFjaXR5PSIuNiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2MC40IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNjI4KSIgb3BhY2l0eT0iLjY1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2NjQpIiBvcGFjaXR5PSIuNyIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS44NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjcwMCkiIG9wYWNpdHk9Ii43NSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS42NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjczNikiIG9wYWNpdHk9Ii44Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI3NzIpIiBvcGFjaXR5PSIuODUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjgwOCkiIG9wYWNpdHk9Ii45Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjM0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODQ0KSIgb3BhY2l0eT0iLjk1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODgwKSIvPjwvZz48L2RlZnM+PHVzZSB4bGluazpocmVmPSIjYiIgc3Ryb2tlPSIjNDI4NWY0Ii8+PHVzZSB4bGluazpocmVmPSIjYyIgc3Ryb2tlPSIjZGI0NDM3Ii8+PHVzZSB4bGluazpocmVmPSIjYiIgc3Ryb2tlPSIjZGI0NDM3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOTE2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2MiIHN0cm9rZT0iI2Y0YjQwMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNiIiBzdHJva2U9IiNmNGI0MDAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU4MzIpIi8+PHVzZSB4bGluazpocmVmPSIjYyIgc3Ryb2tlPSIjMGY5ZDU4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1ODMyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2IiIHN0cm9rZT0iIzBmOWQ1OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODc0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNjIiBzdHJva2U9IiM0Mjg1ZjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDg3NDgpIi8+PC9zdmc+');background-size:100%;width:11664px;height:36px;-webkit-animation:swg-loading-film 5332ms infinite steps(324);animation:swg-loading-film 5332ms infinite steps(324)}@-webkit-keyframes swg-loading-film{0%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-11664px);transform:translateX(-11664px)}}@keyframes swg-loading-film{0%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-11664px);transform:translateX(-11664px)}}@-webkit-keyframes mspin-rotate{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes mspin-rotate{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes mspin-revrot{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(-360deg);transform:rotate(-360deg)}}@keyframes mspin-revrot{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(-360deg);transform:rotate(-360deg)}}\n/*# sourceURL=/./src/ui/ui.css*/";
 exports.CSS = CSS;
 
 },{}],3:[function(require,module,exports){
@@ -542,7 +542,7 @@ module.exports = Promise;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- /** Version: 1.8 */
+ /** Version: 1.9 */
 'use strict';
 
 /*eslint no-unused-vars: 0*/
@@ -706,7 +706,7 @@ class Messenger {
     this.target_ = null;
 
     /** @private {boolean} */
-    this.acceptsPort_ = false;
+    this.acceptsChannel_ = false;
 
     /** @private {?MessagePort} */
     this.port_ = null;
@@ -747,9 +747,8 @@ class Messenger {
       if (this.port_) {
         closePort(this.port_);
         this.port_ = null;
-      } else {
-        this.win_.removeEventListener('message', this.boundHandleEvent_);
       }
+      this.win_.removeEventListener('message', this.boundHandleEvent_);
       if (this.channels_) {
         for (const k in this.channels_) {
           const channelObj = this.channels_[k];
@@ -819,7 +818,7 @@ class Messenger {
    * "start" command. See `sendStartCommand` method.
    */
   sendConnectCommand() {
-    this.sendCommand('connect', {'acceptsPort': true});
+    this.sendCommand('connect', {'acceptsChannel': true});
   }
 
   /**
@@ -830,14 +829,14 @@ class Messenger {
    */
   sendStartCommand(args) {
     let channel = null;
-    if (this.acceptsPort_ && typeof this.win_.MessageChannel == 'function') {
+    if (this.acceptsChannel_ && typeof this.win_.MessageChannel == 'function') {
       channel = new this.win_.MessageChannel();
     }
     if (channel) {
       this.sendCommand('start', args, [channel.port2]);
       // It's critical to switch to port messaging only after "start" has been
       // sent. Otherwise, it won't be delivered.
-      this.switchToPort_(channel.port1);
+      this.switchToChannel_(channel.port1);
     } else {
       this.sendCommand('start', args);
     }
@@ -958,7 +957,10 @@ class Messenger {
    * @param {!MessagePort} port
    * @private
    */
-  switchToPort_(port) {
+  switchToChannel_(port) {
+    if (this.port_) {
+      closePort(this.port_);
+    }
     this.port_ = port;
     this.port_.onmessage = event => {
       const data = event.data;
@@ -968,8 +970,9 @@ class Messenger {
         this.handleCommand_(cmd, payload, event);
       }
     };
-    // No longer needed with port available.
-    this.win_.removeEventListener('message', this.boundHandleEvent_);
+    // Even though all messaging will switch to ports, the window-based message
+    // listener will be preserved just in case the host is refreshed and needs
+    // another connection.
   }
 
   /**
@@ -977,16 +980,18 @@ class Messenger {
    * @private
    */
   handleEvent_(event) {
-    if (this.port_) {
-      // Messaging channel has already taken over.
-      return;
-    }
     const data = event.data;
     if (!data || data['sentinel'] != SENTINEL) {
       return;
     }
-    const origin = /** @type {string} */ (event.origin);
     const cmd = data['cmd'];
+    if (this.port_ && cmd != 'connect' && cmd != 'start') {
+      // Messaging channel has already taken over. However, the "connect" and
+      // "start" commands are allowed to proceed in case re-connection is
+      // requested.
+      return;
+    }
+    const origin = /** @type {string} */ (event.origin);
     const payload = data['payload'] || null;
     if (this.targetOrigin_ == null && cmd == 'start') {
       this.targetOrigin_ = origin;
@@ -1012,12 +1017,18 @@ class Messenger {
    */
   handleCommand_(cmd, payload, event) {
     if (cmd == 'connect') {
-      this.acceptsPort_ = payload && payload['acceptsPort'] || false;
+      if (this.port_) {
+        // In case the port has already been open - close it to reopen it
+        // again later.
+        closePort(this.port_);
+        this.port_ = null;
+      }
+      this.acceptsChannel_ = payload && payload['acceptsChannel'] || false;
       this.onCommand_(cmd, payload);
     } else if (cmd == 'start') {
       const port = event.ports && event.ports[0];
       if (port) {
-        this.switchToPort_(port);
+        this.switchToChannel_(port);
       }
       this.onCommand_(cmd, payload);
     } else if (cmd == 'msg') {
@@ -1903,7 +1914,7 @@ class ActivityPorts {
    */
   constructor(win) {
     /** @const {string} */
-    this.version = '1.8';
+    this.version = '1.9';
 
     /** @private @const {!Window} */
     this.win_ = win;
@@ -2094,6 +2105,112 @@ exports.__esModule = true;
  * limitations under the License.
  */
 
+var _entitlements = require('./entitlements');
+
+var _subscribeResponse = require('./subscribe-response');
+
+var _userData = require('./user-data');
+
+/**
+ * Properties:
+ * - entitlements - the current entitlements.
+ * - consent - whether to ask the user for account creation consent.
+ *   Default is `true`.
+ *
+ * @typedef {{
+ *   entitlements: (?Entitlements|undefined),
+ *   consent: (boolean|undefined),
+ * }}
+ */
+var DeferredAccountCreationRequest = undefined;
+
+exports.DeferredAccountCreationRequest = DeferredAccountCreationRequest;
+/**
+ */
+
+var DeferredAccountCreationResponse = (function () {
+
+  /**
+   * @param {!Entitlements} entitlements
+   * @param {!UserData} userData
+   * @param {!PurchaseData} purchaseData
+   * @param {function():!Promise} completeHandler
+   */
+
+  function DeferredAccountCreationResponse(entitlements, userData, purchaseData, completeHandler) {
+    babelHelpers.classCallCheck(this, DeferredAccountCreationResponse);
+
+    /** @const {!Entitlements} */
+    this.entitlements = entitlements;
+    /** @const {!UserData} */
+    this.userData = userData;
+    /** @const {!PurchaseData} */
+    this.purchaseData = purchaseData;
+    /** @private @const {function():!Promise} */
+    this.completeHandler_ = completeHandler;
+  }
+
+  /**
+   * @return {!DeferredAccountCreationResponse}
+   */
+
+  DeferredAccountCreationResponse.prototype.clone = function clone() {
+    return new DeferredAccountCreationResponse(this.entitlements, this.userData, this.purchaseData, this.completeHandler_);
+  };
+
+  /**
+   * @return {!Object}
+   */
+
+  DeferredAccountCreationResponse.prototype.json = function json() {
+    return {
+      'entitlements': this.entitlements.json(),
+      'userData': this.userData.json(),
+      'purchaseData': this.purchaseData.json()
+    };
+  };
+
+  /**
+   * Allows the receiving site to complete/acknowledge that it registered
+   * the subscription info. The typical action would be to create an
+   * account (or match an existing one) and associated the subscription with
+   * that account.
+   *
+   * SwG will display progress indicator until this method is called and
+   * upon receiving this call will show the confirmation to the user.
+   * The promise returned by this method will yield once the user closes
+   * the confirmation.
+   *
+   * @return {!Promise}
+   */
+
+  DeferredAccountCreationResponse.prototype.complete = function complete() {
+    return this.completeHandler_();
+  };
+
+  return DeferredAccountCreationResponse;
+})();
+
+exports.DeferredAccountCreationResponse = DeferredAccountCreationResponse;
+
+},{"./entitlements":6,"./subscribe-response":8,"./user-data":10}],6:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /**
  * The holder of the entitlements for a service.
  */
@@ -2152,20 +2269,22 @@ var Entitlements = (function () {
   };
 
   /**
+   * @param {string=} opt_source
    * @return {boolean}
    */
 
-  Entitlements.prototype.enablesThis = function enablesThis() {
-    return this.enables(this.product_);
+  Entitlements.prototype.enablesThis = function enablesThis(opt_source) {
+    return this.enables(this.product_, opt_source);
   };
 
   /**
+   * @param {string=} opt_source
    * @return {boolean}
    */
 
-  Entitlements.prototype.enablesAny = function enablesAny() {
+  Entitlements.prototype.enablesAny = function enablesAny(opt_source) {
     for (var i = 0; i < this.entitlements.length; i++) {
-      if (this.entitlements[i].products.length > 0) {
+      if (this.entitlements[i].products.length > 0 && (!opt_source || opt_source == this.entitlements[i].source)) {
         return true;
       }
     }
@@ -2173,34 +2292,61 @@ var Entitlements = (function () {
   };
 
   /**
+   * Whether these entitlements enable the specified product, optionally also
+   * restricting the source.
    * @param {?string} product
+   * @param {string=} opt_source
    * @return {boolean}
    */
 
-  Entitlements.prototype.enables = function enables(product) {
+  Entitlements.prototype.enables = function enables(product, opt_source) {
     if (!product) {
       return false;
     }
-    return !!this.getEntitlementFor(product);
+    return !!this.getEntitlementFor(product, opt_source);
   };
 
   /**
+   * Returns the first matching entitlement for the current product,
+   * optionally also matching the specified source.
+   * @param {string=} opt_source
    * @return {?Entitlement}
    */
 
-  Entitlements.prototype.getEntitlementForThis = function getEntitlementForThis() {
-    return this.getEntitlementFor(this.product_);
+  Entitlements.prototype.getEntitlementForThis = function getEntitlementForThis(opt_source) {
+    return this.getEntitlementFor(this.product_, opt_source);
   };
 
   /**
+   * Returns the first matching entitlement for the specified product,
+   * optionally also matching the specified source.
    * @param {?string} product
+   * @param {string=} opt_source
    * @return {?Entitlement}
    */
 
-  Entitlements.prototype.getEntitlementFor = function getEntitlementFor(product) {
+  Entitlements.prototype.getEntitlementFor = function getEntitlementFor(product, opt_source) {
     if (product && this.entitlements.length > 0) {
       for (var i = 0; i < this.entitlements.length; i++) {
-        if (this.entitlements[i].enables(product)) {
+        if (this.entitlements[i].enables(product) && (!opt_source || opt_source == this.entitlements[i].source)) {
+          return this.entitlements[i];
+        }
+      }
+    }
+    return null;
+  };
+
+  /**
+   * Returns the first matching entitlement for the specified source w/o
+   * matching any specific products.
+   * @param {string} source
+   * @return {?Entitlement}
+   */
+
+  Entitlements.prototype.getEntitlementForSource = function getEntitlementForSource(source) {
+    if (this.entitlements.length > 0) {
+      for (var i = 0; i < this.entitlements.length; i++) {
+        if (this.entitlements[i].subscriptionToken && source == this.entitlements[i].source) {
           return this.entitlements[i];
         }
       }
@@ -2309,7 +2455,7 @@ var Entitlement = (function () {
 
 exports.Entitlement = Entitlement;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2353,7 +2499,7 @@ function Offer(skuId, title, description, price) {
 
 exports.Offer = Offer;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2472,7 +2618,10 @@ var PurchaseData = (function () {
    */
 
   PurchaseData.prototype.json = function json() {
-    return {};
+    return {
+      'data': this.raw,
+      'signature': this.signature
+    };
   };
 
   return PurchaseData;
@@ -2480,7 +2629,7 @@ var PurchaseData = (function () {
 
 exports.PurchaseData = PurchaseData;
 
-},{"./user-data":9}],8:[function(require,module,exports){
+},{"./user-data":10}],9:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2501,6 +2650,8 @@ exports.__esModule = true;
 var _entitlements = require('./entitlements');
 
 var _offer = require('./offer');
+
+var _deferredAccountCreation = require('./deferred-account-creation');
 
 var _subscribeResponse = require('./subscribe-response');
 
@@ -2561,21 +2712,21 @@ var Subscriptions = (function () {
 
   /**
    * Starts the Offers flow.
-   * @param {!OptionsRequest=} opt_options
+   * @param {!OffersRequest=} opt_options
    */
 
   Subscriptions.prototype.showOffers = function showOffers(opt_options) {};
 
   /**
    * Show subscription option.
-   * @param {!OptionsRequest=} opt_options
+   * @param {!OffersRequest=} opt_options
    */
 
   Subscriptions.prototype.showSubscribeOption = function showSubscribeOption(opt_options) {};
 
   /**
    * Show abbreviated offers.
-   * @param {!OptionsRequest=} opt_options
+   * @param {!OffersRequest=} opt_options
    */
 
   Subscriptions.prototype.showAbbrvOffer = function showAbbrvOffer(opt_options) {};
@@ -2601,6 +2752,16 @@ var Subscriptions = (function () {
    */
 
   Subscriptions.prototype.subscribe = function subscribe(sku) {};
+
+  /**
+   * (Not launched)
+   * Starts the deferred account creation flow.
+   * See `DeferredAccountCreationRequest` for more details.
+   * @param {?DeferredAccountCreationRequest=} opt_options
+   * @return {!Promise<!DeferredAccountCreationResponse>}
+   */
+
+  Subscriptions.prototype.completeDeferredAccountCreation = function completeDeferredAccountCreation(opt_options) {};
 
   /**
    * @param {function(!LoginRequest)} callback
@@ -2629,7 +2790,7 @@ var Subscriptions = (function () {
    *
    * Also see `setOnFlowCanceled` method.
    *
-   * @param {function({flow: string})} callback
+   * @param {function({flow: string, data: !Object})} callback
    */
 
   Subscriptions.prototype.setOnFlowStarted = function setOnFlowStarted(callback) {};
@@ -2645,10 +2806,40 @@ var Subscriptions = (function () {
    *
    * Also see `setOnFlowStarted` method.
    *
-   * @param {function({flow: string})} callback
+   * @param {function({flow: string, data: !Object})} callback
    */
 
   Subscriptions.prototype.setOnFlowCanceled = function setOnFlowCanceled(callback) {};
+
+  /**
+   * Starts the save subscriptions flow.
+   * @param {!SaveSubscriptionRequest} request
+   * @return {!Promise<boolean>} status or promise of status of request
+   */
+
+  Subscriptions.prototype.saveSubscription = function saveSubscription(request) {};
+
+  /**
+   * Creates an element with the SwG button style and the provided callback.
+   * The default theme is "light".
+   *
+   * @param {!ButtonOptions|function()} optionsOrCallback
+   * @param {function()=} opt_callback
+   * @return {!Element}
+   */
+
+  Subscriptions.prototype.createButton = function createButton(optionsOrCallback, opt_callback) {};
+
+  /**
+   * Attaches the SwG button style and the provided callback to an existing
+   * DOM element. The default theme is "light".
+   *
+   * @param {!Element} button
+   * @param {!ButtonOptions|function()} optionsOrCallback
+   * @param {function()=} opt_callback
+   */
+
+  Subscriptions.prototype.attachButton = function attachButton(button, optionsOrCallback, opt_callback) {};
 
   return Subscriptions;
 })();
@@ -2659,6 +2850,7 @@ var SubscriptionFlows = {
   SHOW_SUBSCRIBE_OPTION: 'showSubscribeOption',
   SHOW_ABBRV_OFFER: 'showAbbrvOffer',
   SUBSCRIBE: 'subscribe',
+  COMPLETE_DEFERRED_ACCOUNT_CREATION: 'completeDeferredAccountCreation',
   LINK_ACCOUNT: 'linkAccount'
 };
 
@@ -2669,24 +2861,45 @@ exports.SubscriptionFlows = SubscriptionFlows;
  *   order is preserved.
  * - list - a predefined list of SKUs. Use of this property is uncommon.
  *   Possible values are "default" and "amp". Default is "default".
+ * - isClosable - a boolean value to determine whether the view is closable.
  *
  * @typedef {{
  *   skus: (!Array<string>|undefined),
  *   list: (string|undefined),
+ *   isClosable: (boolean|undefined),
  * }}
  */
-var OptionsRequest = undefined;
+var OffersRequest = undefined;
 
-exports.OptionsRequest = OptionsRequest;
+exports.OffersRequest = OffersRequest;
 /**
  * @typedef {{
  *   linkRequested: boolean,
  * }}
  */
 var LoginRequest = undefined;
-exports.LoginRequest = LoginRequest;
 
-},{"./entitlements":5,"./offer":6,"./subscribe-response":7}],9:[function(require,module,exports){
+exports.LoginRequest = LoginRequest;
+/**
+ * @typedef {{
+ *   token: string,
+ * }}
+ */
+var SaveSubscriptionRequest = undefined;
+
+exports.SaveSubscriptionRequest = SaveSubscriptionRequest;
+/**
+ * Properties:
+ * - theme: "light" or "dark". Default is "light".
+ *
+ * @typedef {{
+ *   theme: string,
+ * }}
+ */
+var ButtonOptions = undefined;
+exports.ButtonOptions = ButtonOptions;
+
+},{"./deferred-account-creation":5,"./entitlements":6,"./offer":7,"./subscribe-response":8}],10:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2767,7 +2980,7 @@ var UserData = (function () {
 
 exports.UserData = UserData;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2930,7 +3143,7 @@ var DialogManager = (function () {
 
 exports.DialogManager = DialogManager;
 
-},{"../utils/errors":46,"./dialog":11,"./graypane":13}],11:[function(require,module,exports){
+},{"../utils/errors":49,"./dialog":12,"./graypane":14}],12:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2972,13 +3185,10 @@ var Z_INDEX = 2147483647;
  */
 var rootElementImportantStyles = {
   'min-height': '50px',
-  'opacity': 1,
   'border': 'none',
   'display': 'block',
-  'background-color': 'rgb(255, 255, 255)',
   'position': 'fixed',
   'z-index': Z_INDEX,
-  'box-shadow': 'rgba(60, 64, 67, .3) 0 1px 1px, rgba(60, 64, 67, .15) 0 1px 4px 1px',
   'box-sizing': 'border-box'
 };
 
@@ -3411,7 +3621,7 @@ var Dialog = (function () {
 
 exports.Dialog = Dialog;
 
-},{"../../build/css/ui/ui.css":2,"../ui/loading-view":39,"../utils/animation":42,"../utils/dom":45,"../utils/style":53,"./friendly-iframe":12,"./graypane":13}],12:[function(require,module,exports){
+},{"../../build/css/ui/ui.css":2,"../ui/loading-view":42,"../utils/animation":45,"../utils/dom":48,"../utils/style":56,"./friendly-iframe":13,"./graypane":14}],13:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -3465,12 +3675,6 @@ var FriendlyIframe = (function () {
 
     // Ensure that the new iframe does not inherit any CSS styles.
     _utilsStyle.resetAllStyles(this.iframe_);
-
-    // Overrides the the top-left and top-right border radius to '8px'.
-    _utilsStyle.setStyles(this.iframe_, {
-      'border-top-left-radius': '8px',
-      'border-top-right-radius': '8px'
-    });
 
     /** @private @const {!Promise} */
     this.ready_ = new Promise(function (resolve) {
@@ -3537,7 +3741,7 @@ var FriendlyIframe = (function () {
 
 exports.FriendlyIframe = FriendlyIframe;
 
-},{"../utils/dom":45,"../utils/style":53}],13:[function(require,module,exports){
+},{"../utils/dom":48,"../utils/style":56}],14:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -3664,7 +3868,7 @@ var Graypane = (function () {
 
 exports.Graypane = Graypane;
 
-},{"../utils/animation":42,"../utils/style":53}],14:[function(require,module,exports){
+},{"../utils/animation":45,"../utils/style":56}],15:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -3741,7 +3945,7 @@ var View = (function () {
 
 exports.View = View;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -3765,7 +3969,7 @@ require('../third_party/babel/custom-babel-helpers');
 
 require('./main');
 
-},{"../third_party/babel/custom-babel-helpers":57,"./main":16}],16:[function(require,module,exports){
+},{"../third_party/babel/custom-babel-helpers":60,"./main":17}],17:[function(require,module,exports){
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -3793,9 +3997,9 @@ var _runtimeRuntime = require('./runtime/runtime');
 
 _runtimeRuntime.installRuntime(self);
 
-console.info('Subscriptions Runtime: 0.1.22-1523207997232');
+console.info('Subscriptions Runtime: 0.1.22-1525394011963');
 
-},{"./polyfills":20,"./runtime/runtime":35}],17:[function(require,module,exports){
+},{"./polyfills":21,"./runtime/runtime":38}],18:[function(require,module,exports){
 exports.__esModule = true;
 exports.resolveDoc = resolveDoc;
 /**
@@ -3969,7 +4173,7 @@ function resolveDoc(input) {
   );
 }
 
-},{"../utils/document-ready":44}],18:[function(require,module,exports){
+},{"../utils/document-ready":47}],19:[function(require,module,exports){
 exports.__esModule = true;
 exports.getControlFlag = getControlFlag;
 exports.getDocClassForTesting = getDocClassForTesting;
@@ -4481,7 +4685,7 @@ function getDocClassForTesting() {
   return _doc.Doc;
 }
 
-},{"../utils/dom":45,"../utils/json":47,"../utils/types":54,"./doc":17,"./page-config":19}],19:[function(require,module,exports){
+},{"../utils/dom":48,"../utils/json":50,"../utils/types":57,"./doc":18,"./page-config":20}],20:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -4575,7 +4779,7 @@ var PageConfig = (function () {
 
 exports.PageConfig = PageConfig;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -4616,7 +4820,7 @@ _polyfillsPromise.install(self);
 _polyfillsDocumentContains.install(self);
 _polyfillsArrayIncludes.install(self);
 
-},{"./polyfills/array-includes":21,"./polyfills/document-contains":22,"./polyfills/domtokenlist-toggle":23,"./polyfills/math-sign":24,"./polyfills/object-assign":25,"./polyfills/promise":26}],21:[function(require,module,exports){
+},{"./polyfills/array-includes":22,"./polyfills/document-contains":23,"./polyfills/domtokenlist-toggle":24,"./polyfills/math-sign":25,"./polyfills/object-assign":26,"./polyfills/promise":27}],22:[function(require,module,exports){
 exports.__esModule = true;
 exports.install = install;
 /**
@@ -4674,7 +4878,7 @@ function install(win) {
   }
 }
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 exports.__esModule = true;
 exports.install = install;
 /**
@@ -4724,7 +4928,7 @@ function install(win) {
   }
 }
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 exports.__esModule = true;
 exports.install = install;
 /**
@@ -4789,7 +4993,7 @@ function isIe(win) {
   );
 }
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 exports.__esModule = true;
 exports.sign = sign;
 exports.install = install;
@@ -4847,7 +5051,7 @@ function install(win) {
   }
 }
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 exports.__esModule = true;
 exports.assign = assign;
 exports.install = install;
@@ -4913,7 +5117,7 @@ function install(win) {
   }
 }
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 exports.__esModule = true;
 exports.install = install;
 /**
@@ -4958,7 +5162,107 @@ function install(win) {
   }
 }
 
-},{"promise-pjs/promise":3}],27:[function(require,module,exports){
+},{"promise-pjs/promise":3}],28:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _utilsDom = require('../utils/dom');
+
+/**
+ * The button stylesheet can be found in the `/assets/swg-button.css`.
+ * It's produced by the `assets:swg-button` gulp task and deployed to
+ * `https://news.google.com/swg/js/v1/swg-button.css`.
+ */
+
+var ButtonApi = (function () {
+
+  /**
+   * @param {!../model/doc.Doc} doc
+   */
+
+  function ButtonApi(doc) {
+    babelHelpers.classCallCheck(this, ButtonApi);
+
+    /** @private @const {!../model/doc.Doc} */
+    this.doc_ = doc;
+  }
+
+  /**
+   */
+
+  ButtonApi.prototype.init = function init() {
+    var head = this.doc_.getHead();
+    if (!head) {
+      return;
+    }
+
+    var url = 'https://news.google.com/swg/js/v1/swg-button.css';
+    var existing = head.querySelector('link[href="' + url + '"]');
+    if (existing) {
+      return;
+    }
+
+    // <link rel="stylesheet" href="..." type="text/css">
+    head.appendChild(_utilsDom.createElement(this.doc_.getWin().document, 'link', {
+      'rel': 'stylesheet',
+      'type': 'text/css',
+      'href': url
+    }));
+  };
+
+  /**
+   * @param {!Object|function()} optionsOrCallback
+   * @param {function()=} opt_callback
+   * @return {!Element}
+   */
+
+  ButtonApi.prototype.create = function create(optionsOrCallback, opt_callback) {
+    var button = _utilsDom.createElement(this.doc_.getWin().document, 'button', {});
+    return this.attach(button, optionsOrCallback, opt_callback);
+  };
+
+  /**
+   * @param {!Element} button
+   * @param {!Object|function()} optionsOrCallback
+   * @param {function()=} opt_callback
+   * @return {!Element}
+   */
+
+  ButtonApi.prototype.attach = function attach(button, optionsOrCallback, opt_callback) {
+    var options = typeof optionsOrCallback != 'function' ? optionsOrCallback : null;
+    var callback = /** @type {function()} */(typeof optionsOrCallback == 'function' ? optionsOrCallback : null) || opt_callback;
+    var theme = options && options['theme'];
+    if (theme !== 'light' && theme !== 'dark') {
+      theme = 'light';
+    }
+    button.classList.add('swg-button-' + theme);
+    button.setAttribute('role', 'button');
+    // TODO(dvoytenko): i18n.
+    button.setAttribute('title', 'Subscribe with Google');
+    button.addEventListener('click', callback);
+    return button;
+  };
+
+  return ButtonApi;
+})();
+
+exports.ButtonApi = ButtonApi;
+
+},{"../utils/dom":48}],29:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5147,7 +5451,7 @@ var Callbacks = (function () {
   };
 
   /**
-   * @param {function({flow: string})} callback
+   * @param {function({flow: string, data: !Object})} callback
    */
 
   Callbacks.prototype.setOnFlowStarted = function setOnFlowStarted(callback) {
@@ -5156,15 +5460,19 @@ var Callbacks = (function () {
 
   /**
    * @param {string} flow
+   * @param {!Object=} opt_data
    * @return {boolean} Whether the callback has been found.
    */
 
-  Callbacks.prototype.triggerFlowStarted = function triggerFlowStarted(flow) {
-    return this.trigger_(CallbackId.FLOW_STARTED, { flow: flow });
+  Callbacks.prototype.triggerFlowStarted = function triggerFlowStarted(flow, opt_data) {
+    return this.trigger_(CallbackId.FLOW_STARTED, {
+      flow: flow,
+      data: opt_data || {}
+    });
   };
 
   /**
-   * @param {function({flow: string})} callback
+   * @param {function({flow: string, data: !Object})} callback
    */
 
   Callbacks.prototype.setOnFlowCanceled = function setOnFlowCanceled(callback) {
@@ -5173,11 +5481,15 @@ var Callbacks = (function () {
 
   /**
    * @param {string} flow
+   * @param {!Object=} opt_data
    * @return {boolean} Whether the callback has been found.
    */
 
-  Callbacks.prototype.triggerFlowCanceled = function triggerFlowCanceled(flow) {
-    return this.trigger_(CallbackId.FLOW_CANCELED, { flow: flow });
+  Callbacks.prototype.triggerFlowCanceled = function triggerFlowCanceled(flow, opt_data) {
+    return this.trigger_(CallbackId.FLOW_CANCELED, {
+      flow: flow,
+      data: opt_data || {}
+    });
   };
 
   /**
@@ -5243,7 +5555,165 @@ var Callbacks = (function () {
 
 exports.Callbacks = Callbacks;
 
-},{}],28:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _uiActivityIframeView = require('../ui/activity-iframe-view');
+
+var _apiDeferredAccountCreation = require('../api/deferred-account-creation');
+
+var _utilsJwt = require('../utils/jwt');
+
+var _payFlow = require('./pay-flow');
+
+var _apiSubscribeResponse = require('../api/subscribe-response');
+
+var _apiSubscriptions = require('../api/subscriptions');
+
+var _apiUserData = require('../api/user-data');
+
+var _services = require('./services');
+
+var _utilsErrors = require('../utils/errors');
+
+/**
+ * The flow to initiate deferred account process.
+ * See `Subscriptions.completeDeferredAccountCreation` API.
+ */
+
+var DeferredAccountFlow = (function () {
+
+  /**
+   * @param {!./deps.DepsDef} deps
+   * @param {?../api/deferred-account-creation.DeferredAccountCreationRequest} options
+   */
+
+  function DeferredAccountFlow(deps, options) {
+    babelHelpers.classCallCheck(this, DeferredAccountFlow);
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+
+    /** @private @const {!Window} */
+    this.win_ = deps.win();
+
+    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    this.activityPorts_ = deps.activities();
+
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+    this.dialogManager_ = deps.dialogManager();
+
+    /** @private {?ActivityIframeView} */
+    this.activityIframeView_ = null;
+
+    /** @private {?Promise} */
+    this.openPromise_ = null;
+
+    /** @type {!../api/deferred-account-creation.DeferredAccountCreationRequest} */
+    var defaultOptions = {
+      entitlements: null,
+      consent: true
+    };
+    /** @private @const {!../api/deferred-account-creation.DeferredAccountCreationRequest} */
+    this.options_ = Object.assign(defaultOptions, options || {});
+  }
+
+  /**
+   * Starts the deferred account flow.
+   * @return {!Promise<!DeferredAccountCreationResponse>}
+   */
+
+  DeferredAccountFlow.prototype.start = function start() {
+    var _this = this;
+
+    var entitlements = this.options_.entitlements;
+
+    // For now, entitlements are required to be present and have the Google
+    // token. This is strictly not required for the implementation. But it's
+    // preferrable API-wise at this time.
+    if (!entitlements || !entitlements.getEntitlementForSource('google')) {
+      throw new Error('No entitlements with "google" source');
+    }
+
+    // Start/cancel events.
+    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.COMPLETE_DEFERRED_ACCOUNT_CREATION);
+
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/recoveriframe'), _services.feArgs({
+      'publicationId': this.deps_.pageConfig().getPublicationId(),
+      'productId': this.deps_.pageConfig().getProductId(),
+      'entitlements': entitlements && entitlements.raw || null,
+      'consent': this.options_.consent
+    }),
+    /* shouldFadeBody */true);
+
+    this.openPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+    return this.activityIframeView_.acceptResult().then(function (result) {
+      // The consent part is complete.
+      return _this.handleConsentResponse_( /** @type {!Object} */result.data);
+    }, function (reason) {
+      if (_utilsErrors.isCancelError(reason)) {
+        _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.COMPLETE_DEFERRED_ACCOUNT_CREATION);
+      } else {
+        _this.dialogManager_.completeView(_this.activityIframeView_);
+      }
+      throw reason;
+    });
+  };
+
+  /**
+   * @param {!Object} data
+   * @return {!DeferredAccountCreationResponse}
+   * @private
+   */
+
+  DeferredAccountFlow.prototype.handleConsentResponse_ = function handleConsentResponse_(data) {
+    this.deps_.entitlementsManager().blockNextNotification();
+
+    // Parse the response.
+    var entitlementsJwt = data['entitlements'];
+    var idToken = data['idToken'];
+    var entitlements = this.deps_.entitlementsManager().parseEntitlements({ 'signedEntitlements': entitlementsJwt });
+    var userData = new _apiUserData.UserData(idToken,
+    /** @type {!Object} */new _utilsJwt.JwtHelper().decode(idToken));
+    var purchaseData = new _apiSubscribeResponse.PurchaseData(data['purchaseData'], data['purchaseDataSignature']);
+
+    // For now, we'll use the `PayCompleteFlow` as a "creating account" flow.
+    // But this can be eventually implemented by the same iframe.
+    var creatingFlow = new _payFlow.PayCompleteFlow(this.deps_);
+    var completeHandler = creatingFlow.complete.bind(creatingFlow);
+
+    var response = new _apiDeferredAccountCreation.DeferredAccountCreationResponse(entitlements, userData, purchaseData, completeHandler);
+
+    // Start the "sync" flow.
+    creatingFlow.start(new _apiSubscribeResponse.SubscribeResponse('', // raw field doesn't matter in this case
+    purchaseData, userData, function () {
+      return Promise.resolve();
+    } // completeHandler doesn't matter in this case
+    ));
+    return response;
+  };
+
+  return DeferredAccountFlow;
+})();
+
+exports.DeferredAccountFlow = DeferredAccountFlow;
+
+},{"../api/deferred-account-creation":5,"../api/subscribe-response":8,"../api/subscriptions":9,"../api/user-data":10,"../ui/activity-iframe-view":41,"../utils/errors":49,"../utils/jwt":51,"./pay-flow":37,"./services":39}],31:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5321,7 +5791,7 @@ var DepsDef = (function () {
 
 exports.DepsDef = DepsDef;
 
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5467,6 +5937,32 @@ var EntitlementsManager = (function () {
   };
 
   /**
+   * The JSON must either contain a "signedEntitlements" with JWT, or
+   * "entitlements" field with plain JSON object.
+   * @param {!Object} json
+   * @return {!Entitlements}
+   */
+
+  EntitlementsManager.prototype.parseEntitlements = function parseEntitlements(json) {
+    var ackHandler = this.ack_.bind(this);
+    var signedData = json['signedEntitlements'];
+    if (signedData) {
+      var jwt = this.jwtHelper_.decode(signedData);
+      var entitlementsClaim = jwt['entitlements'];
+      if (entitlementsClaim) {
+        return new _apiEntitlements.Entitlements(SERVICE_ID, signedData, _apiEntitlements.Entitlement.parseListFromJson(entitlementsClaim), this.config_.getProductId(), ackHandler);
+      }
+    } else {
+      var plainEntitlements = json['entitlements'];
+      if (plainEntitlements) {
+        return new _apiEntitlements.Entitlements(SERVICE_ID, '', _apiEntitlements.Entitlement.parseListFromJson(plainEntitlements), this.config_.getProductId(), ackHandler);
+      }
+    }
+    // Empty response.
+    return new _apiEntitlements.Entitlements(SERVICE_ID, '', [], this.config_.getProductId(), ackHandler);
+  };
+
+  /**
    * @return {!Promise<!Entitlements>}
    */
 
@@ -5560,22 +6056,7 @@ var EntitlementsManager = (function () {
 
     var url = _services.serviceUrl('/publication/' + encodeURIComponent(this.publicationId_) + '/entitlements');
     return this.fetcher_.fetchCredentialedJson(url).then(function (json) {
-      var ackHandler = _this4.ack_.bind(_this4);
-      var signedData = json['signedEntitlements'];
-      if (signedData) {
-        var jwt = _this4.jwtHelper_.decode(signedData);
-        var entitlementsClaim = jwt['entitlements'];
-        if (entitlementsClaim) {
-          return new _apiEntitlements.Entitlements(SERVICE_ID, signedData, _apiEntitlements.Entitlement.parseListFromJson(entitlementsClaim), _this4.config_.getProductId(), ackHandler);
-        }
-      } else {
-        var plainEntitlements = json['entitlements'];
-        if (plainEntitlements) {
-          return new _apiEntitlements.Entitlements(SERVICE_ID, '', _apiEntitlements.Entitlement.parseListFromJson(plainEntitlements), _this4.config_.getProductId(), ackHandler);
-        }
-      }
-      // Empty response.
-      return new _apiEntitlements.Entitlements(SERVICE_ID, '', [], _this4.config_.getProductId(), ackHandler);
+      return _this4.parseEntitlements(json);
     });
   };
 
@@ -5584,7 +6065,7 @@ var EntitlementsManager = (function () {
 
 exports.EntitlementsManager = EntitlementsManager;
 
-},{"../api/entitlements":5,"../runtime/services":36,"../ui/toast":40,"../utils/jwt":48,"./services":36}],30:[function(require,module,exports){
+},{"../api/entitlements":6,"../runtime/services":39,"../ui/toast":43,"../utils/jwt":51,"./services":39}],33:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5660,7 +6141,7 @@ var XhrFetcher = (function () {
 
 exports.XhrFetcher = XhrFetcher;
 
-},{"../utils/xhr":56}],31:[function(require,module,exports){
+},{"../utils/xhr":59}],34:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5750,7 +6231,7 @@ var LinkCompleteFlow = (function () {
       deps.entitlementsManager().blockNextNotification();
       deps.callbacks().triggerLinkProgress();
       deps.dialogManager().popupClosed();
-      var promise = _utilsActivityUtils.acceptPortResult(port, _services.feOrigin(),
+      var promise = _utilsActivityUtils.acceptPortResultData(port, _services.feOrigin(),
       /* requireOriginVerified */false,
       /* requireSecureChannel */false);
       return promise.then(function (response) {
@@ -5808,6 +6289,10 @@ var LinkCompleteFlow = (function () {
   }
 
   /**
+   * The flow to save subscription information.
+   */
+
+  /**
    * Starts the Link account flow.
    * @return {!Promise}
    */
@@ -5816,7 +6301,7 @@ var LinkCompleteFlow = (function () {
     var _this2 = this;
 
     var promise = this.activityIframeView_.port().then(function (port) {
-      return _utilsActivityUtils.acceptPortResult(port, _services.feOrigin(),
+      return _utilsActivityUtils.acceptPortResultData(port, _services.feOrigin(),
       /* requireOriginVerified */true,
       /* requireSecureChannel */true);
     });
@@ -5859,7 +6344,77 @@ var LinkCompleteFlow = (function () {
 
 exports.LinkCompleteFlow = LinkCompleteFlow;
 
-},{"../api/subscriptions":8,"../ui/activity-iframe-view":38,"../utils/activity-utils":41,"../utils/errors":46,"./services":36}],32:[function(require,module,exports){
+var LinkSaveFlow = (function () {
+
+  /**
+   * @param {!./deps.DepsDef} deps
+   * @param {!../api/subscriptions.SaveSubscriptionRequest} saveSubscriptionRequest
+   */
+
+  function LinkSaveFlow(deps, saveSubscriptionRequest) {
+    babelHelpers.classCallCheck(this, LinkSaveFlow);
+
+    /** @private @const {!Window} */
+    this.win_ = deps.win();
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+
+    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    this.activityPorts_ = deps.activities();
+
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+    this.dialogManager_ = deps.dialogManager();
+
+    /** TODO(sohanirao): Default request only for test */
+    /** @type {!../api/subscriptions.SaveSubscriptionRequest} */
+    var defaultRequest = { token: 'test' };
+
+    /** @private {!../api/subscriptions.SaveSubscriptionRequest} */
+    this.saveSubscriptionRequest_ = saveSubscriptionRequest || defaultRequest;
+
+    /** @private {?ActivityIframeView} */
+    this.activityIframeView_ = null;
+  }
+
+  /**
+   * Starts the save subscription
+   * @return {!Promise}
+   */
+
+  LinkSaveFlow.prototype.start = function start() {
+    var _this3 = this;
+
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/linksaveiframe'), _services.feArgs({
+      'publicationId': this.deps_.pageConfig().getPublicationId(),
+      'token': this.saveSubscriptionRequest_['token'],
+      'isClosable': true
+    }),
+    /* shouldFadeBody */false);
+    /** {!Promise<boolean>} */
+    return this.dialogManager_.openView(this.activityIframeView_).then(function () {
+      return _this3.activityIframeView_.port().then(function (port) {
+        return _utilsActivityUtils.acceptPortResultData(port, _services.feOrigin(),
+        /* requireOriginVerified */true,
+        /* requireSecureChannel */true);
+      }).then(function (result) {
+        return result['linked'];
+      })['catch'](function () {
+        return false;
+      }).then(function (result) {
+        // The flow is complete.
+        _this3.dialogManager_.completeView(_this3.activityIframeView_);
+        return result;
+      });
+    });
+  };
+
+  return LinkSaveFlow;
+})();
+
+exports.LinkSaveFlow = LinkSaveFlow;
+
+},{"../api/subscriptions":9,"../ui/activity-iframe-view":41,"../utils/activity-utils":44,"../utils/errors":49,"./services":39}],35:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5928,7 +6483,7 @@ var OffersApi = (function () {
 
 exports.OffersApi = OffersApi;
 
-},{"./services":36}],33:[function(require,module,exports){
+},{"./services":39}],36:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5955,6 +6510,12 @@ var _apiSubscriptions = require('../api/subscriptions');
 var _services = require('./services');
 
 /**
+ * Offers view is closable when request was originated from 'AbbrvOfferFlow'
+ * or from 'SubscribeOptionFlow'.
+ */
+var OFFERS_VIEW_CLOSABLE = true;
+
+/**
  * The class for Offers flow.
  */
 
@@ -5962,7 +6523,7 @@ var OffersFlow = (function () {
 
   /**
    * @param {!./deps.DepsDef} deps
-   * @param {!../api/subscriptions.OptionsRequest|undefined} options
+   * @param {!../api/subscriptions.OffersRequest|undefined} options
    */
 
   function OffersFlow(deps, options) {
@@ -5980,13 +6541,19 @@ var OffersFlow = (function () {
     /** @private @const {!../components/dialog-manager.DialogManager} */
     this.dialogManager_ = deps.dialogManager();
 
+    var isClosable = options && options.isClosable;
+    if (isClosable == undefined) {
+      isClosable = false; // Default is to hide Close button.
+    }
+
     /** @private @const {!ActivityIframeView} */
     this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/offersiframe'), _services.feArgs({
       'productId': deps.pageConfig().getProductId(),
       'publicationId': deps.pageConfig().getPublicationId(),
       'showNative': deps.callbacks().hasSubscribeRequestCallback(),
       'list': options && options.list || 'default',
-      'skus': options && options.skus || null
+      'skus': options && options.skus || null,
+      'isClosable': isClosable
     }),
     /* shouldFadeBody */true);
   }
@@ -6040,7 +6607,7 @@ var SubscribeOptionFlow = (function () {
 
   /**
    * @param {!./deps.DepsDef} deps
-   * @param {!../api/subscriptions.OptionsRequest|undefined} options
+   * @param {!../api/subscriptions.OffersRequest|undefined} options
    */
 
   function SubscribeOptionFlow(deps, options) {
@@ -6049,7 +6616,7 @@ var SubscribeOptionFlow = (function () {
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
 
-    /** @private @const {!../api/subscriptions.OptionsRequest|undefined} */
+    /** @private @const {!../api/subscriptions.OffersRequest|undefined} */
     this.options_ = options;
 
     /** @private @const {!web-activities/activity-ports.ActivityPorts} */
@@ -6063,7 +6630,8 @@ var SubscribeOptionFlow = (function () {
       'publicationId': deps.pageConfig().getPublicationId(),
       'productId': deps.pageConfig().getProductId(),
       'list': options && options.list || 'default',
-      'skus': options && options.skus || null
+      'skus': options && options.skus || null,
+      'isClosable': true
     }),
     /* shouldFadeBody */false);
   }
@@ -6106,7 +6674,11 @@ var SubscribeOptionFlow = (function () {
 
   SubscribeOptionFlow.prototype.maybeOpenOffersFlow_ = function maybeOpenOffersFlow_(data) {
     if (data && data['subscribe']) {
-      new OffersFlow(this.deps_, this.options_).start();
+      var options = this.options_ || {};
+      if (options.isClosable == undefined) {
+        options.isClosable = OFFERS_VIEW_CLOSABLE;
+      }
+      new OffersFlow(this.deps_, options).start();
     }
   };
 
@@ -6119,16 +6691,17 @@ var AbbrvOfferFlow = (function () {
 
   /**
    * @param {!./deps.DepsDef} deps
-   * @param {!../api/subscriptions.OptionsRequest|undefined} options
+   * @param {!../api/subscriptions.OffersRequest=} options
    */
 
-  function AbbrvOfferFlow(deps, options) {
+  function AbbrvOfferFlow(deps) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
     babelHelpers.classCallCheck(this, AbbrvOfferFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
 
-    /** @private @const {!../api/subscriptions.OptionsRequest|undefined} */
+    /** @private @const {!../api/subscriptions.OffersRequest|undefined} */
     this.options_ = options;
 
     /** @private @const {!Window} */
@@ -6146,7 +6719,8 @@ var AbbrvOfferFlow = (function () {
       'productId': deps.pageConfig().getProductId(),
       'showNative': deps.callbacks().hasSubscribeRequestCallback(),
       'list': options && options.list || 'default',
-      'skus': options && options.skus || null
+      'skus': options && options.skus || null,
+      'isClosable': true
     }),
     /* shouldFadeBody */false);
   }
@@ -6177,7 +6751,11 @@ var AbbrvOfferFlow = (function () {
     // If result is due to requesting offers, redirect to offers flow
     this.activityIframeView_.acceptResult().then(function (result) {
       if (result.data['viewOffers']) {
-        new OffersFlow(_this3.deps_, _this3.options_).start();
+        var options = _this3.options_ || {};
+        if (options.isClosable == undefined) {
+          options.isClosable = OFFERS_VIEW_CLOSABLE;
+        }
+        new OffersFlow(_this3.deps_, options).start();
         return;
       }
       if (result.data['native']) {
@@ -6196,7 +6774,7 @@ var AbbrvOfferFlow = (function () {
 
 exports.AbbrvOfferFlow = AbbrvOfferFlow;
 
-},{"../api/subscriptions":8,"../ui/activity-iframe-view":38,"./pay-flow":34,"./services":36}],34:[function(require,module,exports){
+},{"../api/subscriptions":9,"../ui/activity-iframe-view":41,"./pay-flow":37,"./services":39}],37:[function(require,module,exports){
 exports.__esModule = true;
 exports.validatePayResponse = validatePayResponse;
 exports.parseSubscriptionResponse = parseSubscriptionResponse;
@@ -6228,8 +6806,6 @@ var _apiSubscriptions = require('../api/subscriptions');
 var _apiUserData = require('../api/user-data');
 
 var _utilsXhr = require('../utils/xhr');
-
-var _utilsActivityUtils = require('../utils/activity-utils');
 
 var _services = require('./services');
 
@@ -6316,7 +6892,9 @@ var PayStartFlow = (function () {
 
   PayStartFlow.prototype.start = function start() {
     // Start/cancel events.
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SUBSCRIBE);
+    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SUBSCRIBE, {
+      'sku': this.sku_
+    });
 
     // TODO(dvoytenko): switch to gpay async client.
     var opener = this.activityPorts_.open(PAY_REQUEST_ID, payUrl(), '_blank', _services.feArgs({
@@ -6450,11 +7028,14 @@ var PayCompleteFlow = (function () {
 exports.PayCompleteFlow = PayCompleteFlow;
 
 function validatePayResponse(win, port, completeHandler) {
-  return _utilsActivityUtils.acceptPortResult(port, payOrigin(),
-  // TODO(dvoytenko): support payload decryption.
-  /* requireOriginVerified */false,
-  /* requireSecureChannel */false).then(function (data) {
+  // Do not require security immediately: it will be checked below.
+  return port.acceptResult().then(function (result) {
+    if (result.origin != payOrigin()) {
+      throw new Error('channel mismatch');
+    }
+    var data = /** @type {!Object} */result.data;
     if (data['redirectEncryptedCallbackData']) {
+      // Data is supplied as an encrypted blob.
       var xhr = new _utilsXhr.Xhr(win);
       var url = payDecryptUrl();
       var init = /** @type {!../utils/xhr.FetchInitDef} */{
@@ -6468,8 +7049,11 @@ function validatePayResponse(win, port, completeHandler) {
         return response.json();
       });
     }
-    // TODO(dvoytenko): prohibit this branch in case of redirect.
-    return data;
+    // Data is supplied directly: must be a verified and secure channel.
+    if (result.originVerified && result.secureChannel) {
+      return data;
+    }
+    throw new Error('channel mismatch');
   }).then(function (data) {
     return parseSubscriptionResponse(data, completeHandler);
   });
@@ -6537,7 +7121,7 @@ function parseUserData(swgData) {
   return new _apiUserData.UserData(idToken, jwt);
 }
 
-},{"../api/subscribe-response":7,"../api/subscriptions":8,"../api/user-data":9,"../ui/activity-iframe-view":38,"../utils/activity-utils":41,"../utils/errors":46,"../utils/json":47,"../utils/jwt":48,"../utils/xhr":56,"./services":36}],35:[function(require,module,exports){
+},{"../api/subscribe-response":8,"../api/subscriptions":9,"../api/user-data":10,"../ui/activity-iframe-view":41,"../utils/errors":49,"../utils/json":50,"../utils/jwt":51,"../utils/xhr":59,"./services":39}],38:[function(require,module,exports){
 exports.__esModule = true;
 exports.getRuntime = getRuntime;
 exports.installRuntime = installRuntime;
@@ -6562,9 +7146,13 @@ exports.getDocClassForTesting = getDocClassForTesting;
 
 var _webActivitiesActivityPorts = require('web-activities/activity-ports');
 
+var _buttonApi = require('./button-api');
+
 var _buildCssComponentsDialogCss = require('../../build/css/components/dialog.css');
 
 var _callbacks = require('./callbacks');
+
+var _deferredAccountFlow = require('./deferred-account-flow');
 
 var _deps = require('./deps');
 
@@ -6701,6 +7289,10 @@ var Runtime = (function () {
 
     /** @private {?PageConfigResolver} */
     this.pageConfigResolver_ = null;
+
+    /** @private @const {!ButtonApi} */
+    this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_);
+    this.buttonApi_.init(); // Injects swg-button stylesheet.
   }
 
   /**
@@ -6868,6 +7460,14 @@ var Runtime = (function () {
 
   /** @override */
 
+  Runtime.prototype.completeDeferredAccountCreation = function completeDeferredAccountCreation(opt_options) {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.completeDeferredAccountCreation(opt_options);
+    });
+  };
+
+  /** @override */
+
   Runtime.prototype.setOnLoginRequest = function setOnLoginRequest(callback) {
     return this.configured_(false).then(function (runtime) {
       return runtime.setOnLoginRequest(callback);
@@ -6904,6 +7504,26 @@ var Runtime = (function () {
     return this.configured_(false).then(function (runtime) {
       return runtime.setOnFlowCanceled(callback);
     });
+  };
+
+  /** @override */
+
+  Runtime.prototype.saveSubscription = function saveSubscription(saveSubscriptionRequest) {
+    return this.configured_(true).then(function (runtime) {
+      runtime.saveSubscription(saveSubscriptionRequest);
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.createButton = function createButton(optionsOrCallback, opt_callback) {
+    return this.buttonApi_.create(optionsOrCallback, opt_callback);
+  };
+
+  /** @override */
+
+  Runtime.prototype.attachButton = function attachButton(button, optionsOrCallback, opt_callback) {
+    return this.buttonApi_.attach(button, optionsOrCallback, opt_callback);
   };
 
   return Runtime;
@@ -6957,6 +7577,9 @@ var ConfiguredRuntime = (function () {
     /** @private @const {!OffersApi} */
     this.offersApi_ = new _offersApi.OffersApi(this.config_, this.fetcher_);
 
+    /** @private @const {!ButtonApi} */
+    this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_);
+
     var preconnect = new _utilsPreconnect.Preconnect(this.win_.document);
 
     _linkAccountsFlow.LinkCompleteFlow.configurePending(this);
@@ -6964,6 +7587,7 @@ var ConfiguredRuntime = (function () {
     _payFlow.PayStartFlow.preconnect(preconnect);
 
     _utilsDom.injectStyleSheet(this.win_.document, _buildCssComponentsDialogCss.CSS);
+    this.buttonApi_.init(); // Injects swg-button stylesheet.
   }
 
   /**
@@ -7119,6 +7743,16 @@ var ConfiguredRuntime = (function () {
 
   /** @override */
 
+  ConfiguredRuntime.prototype.saveSubscription = function saveSubscription(saveSubscriptionRequest) {
+    var _this7 = this;
+
+    return this.documentParsed_.then(function () {
+      return new _linkAccountsFlow.LinkSaveFlow(_this7, saveSubscriptionRequest).start();
+    });
+  };
+
+  /** @override */
+
   ConfiguredRuntime.prototype.setOnNativeSubscribeRequest = function setOnNativeSubscribeRequest(callback) {
     this.callbacks_.setOnSubscribeRequest(callback);
   };
@@ -7132,10 +7766,20 @@ var ConfiguredRuntime = (function () {
   /** @override */
 
   ConfiguredRuntime.prototype.subscribe = function subscribe(sku) {
-    var _this7 = this;
+    var _this8 = this;
 
     return this.documentParsed_.then(function () {
-      return new _payFlow.PayStartFlow(_this7, sku).start();
+      return new _payFlow.PayStartFlow(_this8, sku).start();
+    });
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.completeDeferredAccountCreation = function completeDeferredAccountCreation(opt_options) {
+    var _this9 = this;
+
+    return this.documentParsed_.then(function () {
+      return new _deferredAccountFlow.DeferredAccountFlow(_this9, opt_options || null).start();
     });
   };
 
@@ -7149,6 +7793,20 @@ var ConfiguredRuntime = (function () {
 
   ConfiguredRuntime.prototype.setOnFlowCanceled = function setOnFlowCanceled(callback) {
     this.callbacks_.setOnFlowCanceled(callback);
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.createButton = function createButton(optionsOrCallback, opt_callback) {
+    // This is a minor duplication to allow this code to be sync.
+    return this.buttonApi_.create(optionsOrCallback, opt_callback);
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.attachButton = function attachButton(button, optionsOrCallback, opt_callback) {
+    // This is a minor duplication to allow this code to be sync.
+    this.buttonApi_.attach(button, optionsOrCallback, opt_callback);
   };
 
   return ConfiguredRuntime;
@@ -7167,13 +7825,17 @@ function createPublicRuntime(runtime) {
       showAbbrvOffer: runtime.showAbbrvOffer.bind(runtime),
       showSubscribeOption: runtime.showSubscribeOption.bind(runtime),
       subscribe: runtime.subscribe.bind(runtime),
+      completeDeferredAccountCreation: runtime.completeDeferredAccountCreation.bind(runtime),
       setOnEntitlementsResponse: runtime.setOnEntitlementsResponse.bind(runtime),
       setOnLoginRequest: runtime.setOnLoginRequest.bind(runtime),
       setOnLinkComplete: runtime.setOnLinkComplete.bind(runtime),
       setOnNativeSubscribeRequest: runtime.setOnNativeSubscribeRequest.bind(runtime),
       setOnSubscribeResponse: runtime.setOnSubscribeResponse.bind(runtime),
       setOnFlowStarted: runtime.setOnFlowStarted.bind(runtime),
-      setOnFlowCanceled: runtime.setOnFlowCanceled.bind(runtime)
+      setOnFlowCanceled: runtime.setOnFlowCanceled.bind(runtime),
+      saveSubscription: runtime.saveSubscription.bind(runtime),
+      createButton: runtime.createButton.bind(runtime),
+      attachButton: runtime.attachButton.bind(runtime)
     }
   );
 }
@@ -7202,7 +7864,7 @@ function getDocClassForTesting() {
   return _modelDoc.Doc;
 }
 
-},{"../../build/css/components/dialog.css":1,"../api/subscriptions":8,"../components/dialog-manager":10,"../model/doc":17,"../model/page-config":19,"../model/page-config-resolver":18,"../utils/dom":45,"../utils/preconnect":51,"../utils/types":54,"./callbacks":27,"./deps":28,"./entitlements-manager":29,"./fetcher":30,"./link-accounts-flow":31,"./offers-api":32,"./offers-flow":33,"./pay-flow":34,"./storage":37,"web-activities/activity-ports":4}],36:[function(require,module,exports){
+},{"../../build/css/components/dialog.css":1,"../api/subscriptions":9,"../components/dialog-manager":11,"../model/doc":18,"../model/page-config":20,"../model/page-config-resolver":19,"../utils/dom":48,"../utils/preconnect":54,"../utils/types":57,"./button-api":28,"./callbacks":29,"./deferred-account-flow":30,"./deps":31,"./entitlements-manager":32,"./fetcher":33,"./link-accounts-flow":34,"./offers-api":35,"./offers-flow":36,"./pay-flow":37,"./storage":40,"web-activities/activity-ports":4}],39:[function(require,module,exports){
 exports.__esModule = true;
 exports.feOrigin = feOrigin;
 exports.serviceUrl = serviceUrl;
@@ -7287,7 +7949,7 @@ function feCached(url) {
 
 function feArgs(args) {
   return Object.assign(args, {
-    '_client': 'SwG 0.1.22-1523207997232'
+    '_client': 'SwG 0.1.22-1525394011963'
   });
 }
 
@@ -7309,7 +7971,7 @@ function cacheParam(cacheKey) {
   return String(period <= 1 ? now : Math.floor(now / period));
 }
 
-},{"../utils/url":55}],37:[function(require,module,exports){
+},{"../utils/url":58}],40:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -7405,7 +8067,7 @@ function storageKey(key) {
   return PREFIX + ':' + key;
 }
 
-},{}],38:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -7617,7 +8279,7 @@ var ActivityIframeView = (function (_View) {
 
 exports.ActivityIframeView = ActivityIframeView;
 
-},{"../components/view":14,"../utils/dom":45,"../utils/errors":46}],39:[function(require,module,exports){
+},{"../components/view":15,"../utils/dom":48,"../utils/errors":49}],42:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -7655,8 +8317,11 @@ var LoadingView = (function () {
     /** @private @const {!Document} */
     this.doc_ = doc;
 
+    this.loadingContainer_ = _utilsDom.createElement(this.doc_, 'swg-loading-container', {});
+
     /** @private @const {!Element} */
-    this.loadingContainer_ = _utilsDom.createElement(this.doc_, 'swg-loading', {});
+    this.loading_ = _utilsDom.createElement(this.doc_, 'swg-loading', {});
+    this.loadingContainer_.appendChild(this.loading_);
 
     this.loadingContainer_.style.setProperty('display', 'none', 'important');
 
@@ -7696,7 +8361,7 @@ var LoadingView = (function () {
    */
 
   LoadingView.prototype.buildLoadingIndicator_ = function buildLoadingIndicator_() {
-    var loadingContainer = this.loadingContainer_;
+    var loadingContainer = this.loading_;
 
     var loadingIndicatorTopContainer = _utilsDom.createElement(this.doc_, 'swg-loading-animate', {});
     loadingContainer.appendChild(loadingIndicatorTopContainer);
@@ -7710,7 +8375,7 @@ var LoadingView = (function () {
 
 exports.LoadingView = LoadingView;
 
-},{"../utils/dom":45}],40:[function(require,module,exports){
+},{"../utils/dom":48}],43:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -7852,9 +8517,9 @@ var Toast = (function () {
 
 exports.Toast = Toast;
 
-},{"../utils/dom":45,"../utils/style":53}],41:[function(require,module,exports){
+},{"../utils/dom":48,"../utils/style":56}],44:[function(require,module,exports){
 exports.__esModule = true;
-exports.acceptPortResult = acceptPortResult;
+exports.acceptPortResultData = acceptPortResultData;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -7879,7 +8544,7 @@ exports.acceptPortResult = acceptPortResult;
  * @return {!Promise<!Object>}
  */
 
-function acceptPortResult(port, requireOrigin, requireOriginVerified, requireSecureChannel) {
+function acceptPortResultData(port, requireOrigin, requireOriginVerified, requireSecureChannel) {
   return port.acceptResult().then(function (result) {
     if (result.origin != requireOrigin || requireOriginVerified && !result.originVerified || requireSecureChannel && !result.secureChannel) {
       throw new Error('channel mismatch');
@@ -7888,7 +8553,7 @@ function acceptPortResult(port, requireOrigin, requireOriginVerified, requireSec
   });
 }
 
-},{}],42:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 exports.__esModule = true;
 exports.transition = transition;
 /**
@@ -7936,7 +8601,7 @@ function transition(el, props, durationMillis, curve) {
   });
 }
 
-},{"./style":53}],43:[function(require,module,exports){
+},{"./style":56}],46:[function(require,module,exports){
 exports.__esModule = true;
 exports.stringToBytes = stringToBytes;
 exports.bytesToString = bytesToString;
@@ -8063,7 +8728,7 @@ function base64UrlEncodeFromBytes(bytes) {
   });
 }
 
-},{"./log":49}],44:[function(require,module,exports){
+},{"./log":52}],47:[function(require,module,exports){
 exports.__esModule = true;
 exports.isDocumentReady = isDocumentReady;
 exports.onDocumentReady = onDocumentReady;
@@ -8174,7 +8839,7 @@ function whenDocumentComplete(doc) {
   });
 }
 
-},{}],45:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 exports.__esModule = true;
 exports.addAttributesToElement = addAttributesToElement;
 exports.createElement = createElement;
@@ -8321,7 +8986,7 @@ function hasNextNodeInDocumentOrder(element, opt_stopNode) {
   return false;
 }
 
-},{"./log":49,"./style":53}],46:[function(require,module,exports){
+},{"./log":52,"./style":56}],49:[function(require,module,exports){
 exports.__esModule = true;
 exports.isCancelError = isCancelError;
 /**
@@ -8352,7 +9017,7 @@ function isCancelError(error) {
   return error['name'] === 'AbortError';
 }
 
-},{}],47:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 exports.__esModule = true;
 exports.recreateNonProtoObject = recreateNonProtoObject;
 exports.getValueForExpr = getValueForExpr;
@@ -8481,7 +9146,7 @@ function hasOwnProperty(obj, key) {
   /** @type {!Object} */obj, key);
 }
 
-},{"./types":54}],48:[function(require,module,exports){
+},{"./types":57}],51:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -8566,7 +9231,7 @@ var JwtHelper = (function () {
 
 exports.JwtHelper = JwtHelper;
 
-},{"./bytes":43,"./json":47}],49:[function(require,module,exports){
+},{"./bytes":46,"./json":50}],52:[function(require,module,exports){
 exports.__esModule = true;
 exports.log = log;
 exports.assert = assert;
@@ -8661,7 +9326,7 @@ function toString(val) {
   );
 }
 
-},{}],50:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 exports.__esModule = true;
 exports.map = map;
 exports.findInArray = findInArray;
@@ -8723,7 +9388,7 @@ function findInArray(array, predicate) {
   return null;
 }
 
-},{}],51:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -8813,7 +9478,7 @@ var Preconnect = (function () {
 
 exports.Preconnect = Preconnect;
 
-},{"./dom":45}],52:[function(require,module,exports){
+},{"./dom":48}],55:[function(require,module,exports){
 exports.__esModule = true;
 exports.dashToCamelCase = dashToCamelCase;
 exports.dashToUnderline = dashToUnderline;
@@ -8948,7 +9613,7 @@ function stringHash32(str) {
 
 ;
 
-},{}],53:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 exports.__esModule = true;
 exports.camelCaseToTitleCase = camelCaseToTitleCase;
 exports.getVendorJsPropertyName = getVendorJsPropertyName;
@@ -9008,15 +9673,12 @@ var defaultStyles = {
   'alignment-baseline': 'auto',
   'backface-visibility': 'hidden',
   'background-clip': 'border-box',
-  'background-color': 'rgb(0, 0, 0, 0)',
   'background-image': 'none',
   'baseline-shift': '0',
   'block-size': 'auto',
   'border': 'none',
-  'border-radius': '0',
   'border-collapse': 'separate',
   'bottom': '0',
-  'box-shadow': '0 0 0 0 #000',
   'box-sizing': 'border-box',
   'break-after': 'auto',
   'break-before': 'auto',
@@ -9373,7 +10035,7 @@ function resetAllStyles(element) {
   setImportantStyles(element, defaultStyles);
 }
 
-},{"./object.js":50,"./string":52}],54:[function(require,module,exports){
+},{"./object.js":53,"./string":55}],57:[function(require,module,exports){
 exports.__esModule = true;
 exports.isArray = isArray;
 exports.toArray = toArray;
@@ -9487,7 +10149,7 @@ function isEnumValue(enumObj, s) {
   return false;
 }
 
-},{}],55:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 exports.__esModule = true;
 exports.serializeQueryString = serializeQueryString;
 exports.parseUrl = parseUrl;
@@ -9704,7 +10366,7 @@ function getHostUrl(url) {
   return locationHref.origin + locationHref.pathname + locationHref.search;
 }
 
-},{"./types":54}],56:[function(require,module,exports){
+},{"./types":57}],59:[function(require,module,exports){
 exports.__esModule = true;
 exports.fetchPolyfill = fetchPolyfill;
 exports.assertSuccess = assertSuccess;
@@ -10118,7 +10780,7 @@ var FetchResponseHeaders = (function () {
 
 exports.FetchResponseHeaders = FetchResponseHeaders;
 
-},{"./bytes":43,"./json":47,"./log":49,"./url":55}],57:[function(require,module,exports){
+},{"./bytes":46,"./json":50,"./log":52,"./url":58}],60:[function(require,module,exports){
 (function (global){
 (function (global) {
   var babelHelpers = global.babelHelpers = {};
@@ -10234,7 +10896,7 @@ exports.FetchResponseHeaders = FetchResponseHeaders;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}]},{},[15])
+},{}]},{},[16])
 
 })();
 //# sourceMappingURL=subscriptions.max.js.map

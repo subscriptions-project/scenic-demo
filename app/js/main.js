@@ -50,6 +50,8 @@ whenReady(function(subscriptions) {
   subscriptions.setOnLinkComplete(eventCallback('link-complete'));
   subscriptions.setOnLoginRequest(eventCallback('login-request'));
   subscriptions.setOnSubscribeResponse(eventCallback('subscribe'));
+  subscriptions.setOnFlowStarted(eventCallback('flow-started'));
+  subscriptions.setOnFlowCanceled(eventCallback('flow-canceled'));
 });
 
 
@@ -93,6 +95,15 @@ function startFlowAuto() {
   if (flow == 'demo') {
     whenReady(function(subscriptions) {
       const controller = new DemoPaywallController(subscriptions);
+      controller.start();
+    });
+    return;
+  }
+  if (flow == 'demoUnknownSubscription') {
+    whenReady(function(subscriptions) {
+      const controller = new DemoPaywallController(subscriptions, {
+        unknownSubscription: true,
+      });
       controller.start();
     });
     return;
