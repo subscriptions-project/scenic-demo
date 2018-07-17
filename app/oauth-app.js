@@ -34,6 +34,8 @@ const CLIENT_ID = 'scenic-2017.appspot.com';
 const GSI_CLIENT_ID = '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4' +
     '.apps.googleusercontent.com';
 
+const FIVE_MIN_IN_MILLIS = 1000 * 60 * 5;
+
 
 /**
  * OAuth authorization endpoint.
@@ -221,12 +223,23 @@ app.all(['/oauth/entitlements', '/examples/sample-pub/oauth/entitlements'], (req
   const accessToken = getParam(req, 'access_token');
   const decryptedAccessToken = decrypt(fromBase64(accessToken));
   const email = decryptedAccessToken.data['email'];
-  const response = JSON.stringify({
-    'products': [publicationId + ':premium', publicationId + ':news'],
-    'subscriptionToken': 'subtok-' + publicationId + '-' + email + '-' +
-        new Date().toISOString(),
-    'detail': 'For ' + email,
-  });
+  const started =
+      decryptedAccessToken.mainStarted ||
+      decryptedAccessToken.thisStarted ||
+      Date.now();
+  let response;
+  if (email == 'no-entitlements@example.org' ||
+      (email == 'expires@example.org' &&
+       started + FIVE_MIN_IN_MILLIS < Date.now())) {
+    response = '{}';
+  } else {
+    response = JSON.stringify({
+      'products': [publicationId + ':premium', publicationId + ':news'],
+      'subscriptionToken': 'subtok-' + publicationId + '-' + email + '-' +
+          new Date().toISOString(),
+      'detail': 'For ' + email,
+    });
+  }
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -332,6 +345,7 @@ function generateRefreshToken(scope, data) {
   return {
     what: 'refreshToken',
     clientId: CLIENT_ID,
+    started: Date.now(),
     scope,
     data,
   };
@@ -346,6 +360,8 @@ function generateAccessToken(refreshToken) {
   return {
     what: 'accessToken',
     clientId: CLIENT_ID,
+    mainStarted: refreshToken.started,
+    thisStarted: Date.now(),
     scope: refreshToken.scope,
     data: refreshToken.data,
   };
