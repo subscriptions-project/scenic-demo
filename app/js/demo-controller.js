@@ -16,6 +16,28 @@
 
 import {log} from './log';
 
+class Account {
+  constructor(name, email, consent) {
+    this.name = name;
+    this.email = email;
+  }
+}
+/**
+ * @param {!Subscriptions} subscriptions
+ * @param {boolean} consentRequired
+ * @private
+ */
+handleLoginNotification_ = function(subscriptions, consentRequired) {
+  var loginPromise;
+  if (!consentRequired) {
+    loginPromise = Promise.resolve();
+  } else {
+    loginPromise = subscriptions.showLoginPrompt();
+  }
+  return loginPromise.then(() => {
+    return subscriptions.showLoginNotification();
+  });
+}
 
 /**
  * Demo paywall controller to demonstrate some key features.
@@ -45,6 +67,10 @@ export class DemoPaywallController {
     /** @private {boolean} */
     this.unknownSubscription_ =
         opt_options && opt_options.unknownSubscription || false;
+
+    /** @private {boolean} */
+    this.consentRequired = opt_data && 
+        opt_data['consentRequired'] == 'true' ? true : false;
   }
 
   start() {
@@ -60,9 +86,28 @@ export class DemoPaywallController {
         if (this.completeDeferredAccountCreation_(entitlements)) {
           // Do nothing.
         } else {
-          // Entitlements available: open access.
-          this.openPaywall_();
-          entitlements.ack();
+          const account = new Account('John Doe', 'johndoe@email.com');
+          const accountPromise = new Promise(resolve => {
+            setTimeout(() => {
+              resolve(account);
+            }, 5000);
+          });
+          this.subscriptions.waitForSubscriptionLookup(accountPromise)
+              .then(account => {
+                if (account) {
+                  handleLoginNotification_(this.subscriptions, this.consentRequired)
+                      .then(result => {
+                        if (result) {
+                          this.openPaywall_();
+                          entitlements.ack();
+                        }
+                      }, reason => {
+                        throw reason;
+                      });
+                }
+              }, reason => {
+                log('subscription look up failed: ', reason);
+              });
         }
       } else {
         // In a simplest case, just launch offers flow.
