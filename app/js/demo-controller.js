@@ -85,8 +85,6 @@ export class DemoPaywallController {
                           this.openPaywall_();
                           entitlements.ack();
                         }
-                      }, reason => {
-                        throw reason;
                       });
                 }
               }, reason => {
