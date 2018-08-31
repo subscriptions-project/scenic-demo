@@ -16,6 +16,12 @@
 
 import {log} from './log';
 
+class Account {
+  constructor(name, email) {
+    this.name = name;
+    this.email = email;
+  }
+}
 
 /**
  * Demo paywall controller to demonstrate some key features.
@@ -45,6 +51,10 @@ export class DemoPaywallController {
     /** @private {boolean} */
     this.unknownSubscription_ =
         opt_options && opt_options.unknownSubscription || false;
+
+    /** @private @const {boolean} */
+    this.consentRequired_ = (opt_options &&
+        opt_options['consentRequired'] == 'true') ? true : false;
   }
 
   start() {
@@ -60,9 +70,26 @@ export class DemoPaywallController {
         if (this.completeDeferredAccountCreation_(entitlements)) {
           // Do nothing.
         } else {
-          // Entitlements available: open access.
-          this.openPaywall_();
-          entitlements.ack();
+          const account = new Account('John Doe', 'johndoe@email.com');
+          const accountPromise = new Promise(resolve => {
+            setTimeout(() => {
+              resolve(account);
+            }, 5000);
+          });
+          this.subscriptions.waitForSubscriptionLookup(accountPromise)
+              .then(account => {
+                if (account) {
+                  this.showLoginPromptOrNotification_(this.subscriptions,
+                      this.consentRequired_).then(result => {
+                        if (result) {
+                          this.openPaywall_();
+                          entitlements.ack();
+                        }
+                      });
+                }
+              }, reason => {
+                log('subscription look up failed: ', reason);
+              });
         }
       } else {
         // In a simplest case, just launch offers flow.
@@ -71,6 +98,29 @@ export class DemoPaywallController {
     }, reason => {
       log('entitlements failed: ', reason);
       throw reason;
+    });
+  }
+
+  /**
+   * Based on if consent is required or not, show the login prompt or
+   * login notification to the user.
+   *
+   * If consent is required, show login prompt first and if consent is
+   * obtained show login notification. Otherwise, directly show login
+   * notification.
+   * @param {!Subscriptions} subscriptions
+   * @param {boolean} consentRequired
+   * @private
+   */
+  showLoginPromptOrNotification_(subscriptions, consentRequired) {
+    let loginPromise;
+    if (!consentRequired) {
+      loginPromise = Promise.resolve();
+    } else {
+      loginPromise = subscriptions.showLoginPrompt();
+    }
+    return loginPromise.then(() => {
+      return subscriptions.showLoginNotification();
     });
   }
 
