@@ -217,6 +217,7 @@ app.get('/amp-entitlements', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.setHeader('Access-Control-Expose-Headers',
       'AMP-Access-Control-Allow-Source-Origin');
+  res.setHeader('Content-Type', 'application/json');
   if (req.query.__amp_source_origin) {
     res.setHeader('AMP-Access-Control-Allow-Source-Origin',
         req.query.__amp_source_origin);
@@ -255,6 +256,7 @@ app.post('/amp-pingback', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.setHeader('Access-Control-Expose-Headers',
       'AMP-Access-Control-Allow-Source-Origin');
+  res.setHeader('Content-Type', 'application/json');
   if (req.query.__amp_source_origin) {
     res.setHeader('AMP-Access-Control-Allow-Source-Origin',
         req.query.__amp_source_origin);
