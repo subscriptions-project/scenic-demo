@@ -99,6 +99,15 @@ function startFlowAuto() {
     });
     return;
   }
+  if (flow == 'demoConsentRequired') {
+    whenReady(function(subscriptions) {
+      const controller = new DemoPaywallController(subscriptions, {
+        consentRequired: 'true',
+      });
+      controller.start();
+    });
+    return;
+  }
   if (flow == 'demoUnknownSubscription') {
     whenReady(function(subscriptions) {
       const controller = new DemoPaywallController(subscriptions, {
