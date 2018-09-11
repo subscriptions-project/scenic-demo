@@ -117,6 +117,20 @@ function startFlowAuto() {
     });
     return;
   }
+  if (flow.indexOf('demoLanding') >= 0) {
+    flowArgs = flow.split('&')[1].split('=');
+    flowData = {};
+    for (i = 0; i < flowArgs.length; i++) {
+      flowData[flowArgs[i]] = flowArgs[i+1];
+    }
+    whenReady(function(subscriptions) {
+      const result = subscriptions['subscribe'].apply(subscriptions, [flowData['sku']]);
+      Promise.resolve(result).then(function() {
+        log('subscription flow complete', flow);
+      });      
+    });
+    return;    
+  }  
   startFlow(flow);
 }
 
