@@ -75,6 +75,15 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/landing.html', (req, res) => {
+  const setup = getSetup(req);
+  const article = ARTICLES[0];  
+  res.render('../app/views/landing.html', {
+    publicationId: PUBLICATION_ID,
+    swgJsUrl: SWG_JS_URLS[setup.script],
+    article,
+  });
+});
 
 /**
  * An Article.

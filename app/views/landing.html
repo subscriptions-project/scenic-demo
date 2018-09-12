@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<title><% article.title %> - The Scenic</title>
+<meta name=publication content="<% publicationId %>" id="publication">
+<style>
+  .paywalled-section {
+    display: none;
+  }
+  .open-paywall .paywalled-section {
+    display: block;
+  }
+  .flip {
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+    border: solid 1px #a6d8a8;
+    margin: auto;
+  }
+</style>
+<script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
+<script>
+function whenReady(callback) {
+  (self.SWG = self.SWG || []).push(function(subscriptions) {
+    subscriptions.init(publication.content);
+    callback(subscriptions);
+  });
+}
+
+function startFlow() {
+  console.log('startFlow');
+  const flow = (window.location.search || '').split('?')[1] || 'demo';
+  flowArgs = flow.split('&')[1].split('=');
+  flowData = {};
+  for (i = 0; i < flowArgs.length; i+=2) {
+    flowData[flowArgs[i]] = flowArgs[i+1];
+  }
+  whenReady(function(subscriptions) {
+    const result = subscriptions.subscribe(flowData['sku']);
+    Promise.resolve(result).then(function() {
+      console.log('Pay flow started');
+    });
+    subscriptions.setOnSubscribeResponse(() => {
+      const promise = Promise.resolve('payment complete');
+      return promise.then(function(response) {
+        console.log('Payment complete ', response);
+        document.documentElement.classList.add('open-paywall');
+      }, reason => {
+        console.log('failed', reason);
+      });
+    });
+  });
+}
+</script>
+</head>
+<body>
+<button class="flip" onClick="startFlow()">Click to claim offer</button>
+<section class="paywalled-section">
+    <button class="flip" onclick="location.href='http://scenic-2017.appspot.com';">Now go to homepage</button>
+</section>
+</body>
+</html>
