@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<title><% article.title %> - The Scenic</title>
-<meta name=publication content="<% publicationId %>" id="publication">
+<title>Subscribe to the Scenic today!</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+<link rel="stylesheet" href="/styles.css" type="text/css">
+<link rel="icon" type="image/png" href="/icons/icon-2x.png">
+<meta name="theme-color" content="#37dc8c">
+<link rel="apple-touch-icon" href="/icons/icon-2x.png">
+<meta name="msapplication-TileImage" content="/icons/icon-2x.png">
+<meta name="msapplication-TileColor" content="#37dc8c">
 <style>
-  .paywalled-section {
-    display: none;
-  }
-  .open-paywall .paywalled-section {
-    display: block;
-  }
-  .flip {
+  .button-container {
     font-size: 16px;
     padding: 10px;
     text-align: center;
@@ -22,45 +24,67 @@
     margin: auto;
   }
 </style>
-<script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
-<script>
-function whenReady(callback) {
-  (self.SWG = self.SWG || []).push(function(subscriptions) {
-    subscriptions.init(publication.content);
-    callback(subscriptions);
-  });
-}
-
-function startFlow() {
-  console.log('startFlow');
-  const flow = (window.location.search || '').split('?')[1] || 'demo';
-  flowArgs = flow.split('&')[1].split('=');
-  flowData = {};
-  for (i = 0; i < flowArgs.length; i+=2) {
-    flowData[flowArgs[i]] = flowArgs[i+1];
-  }
-  whenReady(function(subscriptions) {
-    const result = subscriptions.subscribe(flowData['sku']);
-    Promise.resolve(result).then(function() {
-      console.log('Pay flow started');
-    });
-    subscriptions.setOnSubscribeResponse(() => {
-      const promise = Promise.resolve('payment complete');
-      return promise.then(function(response) {
-        console.log('Payment complete ', response);
-        document.documentElement.classList.add('open-paywall');
-      }, reason => {
-        console.log('failed', reason);
-      });
-    });
-  });
-}
-</script>
 </head>
 <body>
-<button class="flip" onClick="startFlow()">Click to claim offer</button>
-<section class="paywalled-section">
-    <button class="flip" onclick="location.href='http://scenic-2017.appspot.com';">Now go to homepage</button>
-</section>
+  <div class="main-body">
+    <header>
+      <a class="brand-header">
+        <div class="brand-logo"></div>
+        <div class="brand-name">The Scenic</div>
+      </a>
+    </header>
+    <main role="main">
+      <div class="container">
+        <h1 class="heading">Scenic Subscription offer</h1>
+        <div class="hr"></div>
+        <p class="text">
+          Enjoy 50 years of free Scenic content.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nunc felis, iaculis eget arcu sed, venenatis tincidunt dui. Mauris semper neque vitae quam auctor convallis. Suspendisse condimentum sapien eget porta.</p>
+        </p>        
+        <button class="button-container" id="subscribeButton" disabled>Click to claim offer</button>
+    </div>
+  </div>
+<script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
+<script>
+function createPublisherAccountIfRequired() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve('true');
+      }, 2000);
+    });
+}
+(self.SWG = self.SWG || []).push(function(subscriptions) {
+    subscriptions.init('<% publicationId %>');
+    subscriptions.setOnEntitlementsResponse(function(entitlementsPromise) {
+      console.log('Fetching entitlements');
+      entitlementsPromise.then(entitlements => {
+        console.log('got entitlements: ', entitlements);
+        if (entitlements && entitlements.enablesAny()) {
+            createPublisherAccountIfRequired().then(function(){
+              //Redirect to home page
+              location.assign('/');
+          });
+        } else {
+          // Give them the option to subscribe with the offer
+          subscribeButton.removeAttribute('disabled');
+        }
+      });    
+    });
+    subscriptions.setOnSubscribeResponse(function() {
+        const promise = Promise.resolve('payment complete');
+        return promise.then(function(response) {
+        createPublisherAccountIfRequired().then(function(){
+          //Redirect to home page
+          location.assign('/');
+        });
+      }, function(reason) {
+          console.log('failed', reason);
+      });
+    });
+    subscribeButton.addEventListener('click', function() {
+        subscriptions.subscribe('basic');
+    });
+    subscriptions.getEntitlements();
+});
+</script>
 </body>
 </html>
