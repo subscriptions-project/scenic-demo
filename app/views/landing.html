@@ -24,6 +24,7 @@
     margin: auto;
   }
 </style>
+<script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
 </head>
 <body>
   <div class="main-body">
@@ -39,18 +40,19 @@
         <div class="hr"></div>
         <p class="text">
           Enjoy 50 years of free Scenic content.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nunc felis, iaculis eget arcu sed, venenatis tincidunt dui. Mauris semper neque vitae quam auctor convallis. Suspendisse condimentum sapien eget porta.</p>
-        </p>        
+        </p>
+        <!--"Start disabled and enable once API is loaded and entitlements confirmed."-->      
         <button class="button-container" id="subscribeButton" disabled>Click to claim offer</button>
     </div>
   </div>
-<script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
 <script>
 function createPublisherAccount() {
-    return new Promise(function(resolve) {
-      setTimeout(() => {
-        resolve('true');
-      }, 2000);
-    });
+  // Create an account on the publisher's side and drop credential cookies.
+  return new Promise(function(resolve) {
+    setTimeout(() => {
+      resolve('true');
+    }, 2000);
+  });
 }
 function start() {
   (self.SWG = self.SWG || []).push(function(subscriptions) {
@@ -60,8 +62,8 @@ function start() {
       entitlementsPromise.then(entitlements => {
         console.log('got entitlements: ', entitlements);
         if (entitlements && entitlements.enablesAny()) {
-            //Redirect to home page or account page
-            location.assign('/');
+          // Redirect to home page or account page
+          location.assign('/');
         } else {
           // Give them the option to subscribe with the offer
           subscribeButton.removeAttribute('disabled');
@@ -69,18 +71,20 @@ function start() {
       });    
     });
     subscriptions.setOnSubscribeResponse(function() {
-        const promise = Promise.resolve('payment complete');
-        return promise.then(function(response) {
-        createPublisherAccount().then(function(){
-          //Redirect to home page
+      const promise = Promise.resolve('payment complete');
+      return promise.then(function(response) {
+        console.log(response);
+        createPublisherAccount().then(function() {
+          // Redirect to home page
           location.assign('/');
         });
       }, function(reason) {
-          console.log('failed', reason);
+        console.log('failed', reason);
       });
     });
     subscribeButton.addEventListener('click', function() {
-        subscriptions.subscribe('basic');
+      // Start subscription flow with the target SKU"
+      subscriptions.subscribe('basic');
     });
     subscriptions.getEntitlements();
   });
