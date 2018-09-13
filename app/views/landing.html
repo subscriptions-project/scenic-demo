@@ -62,10 +62,10 @@ function start() {
       entitlementsPromise.then(entitlements => {
         console.log('got entitlements: ', entitlements);
         if (entitlements && entitlements.enablesAny()) {
-          // Redirect to home page or account page
+          // Redirect to home page or account page.
           location.assign('/');
         } else {
-          // Give them the option to subscribe with the offer
+          // Give them the option to subscribe with the offer.
           subscribeButton.removeAttribute('disabled');
         }
       });    
@@ -75,7 +75,7 @@ function start() {
       return promise.then(function(response) {
         console.log(response);
         createPublisherAccount().then(function() {
-          // Redirect to home page
+          // Redirect to home page.
           location.assign('/');
         });
       }, function(reason) {
@@ -83,12 +83,12 @@ function start() {
       });
     });
     subscribeButton.addEventListener('click', function() {
-      // Start subscription flow with the target SKU"
+      // Start subscription flow with the target SKU.
       subscriptions.subscribe('basic');
     });
     subscriptions.getEntitlements();
   });
-}
+};
 start()
 </script>
 </body>
