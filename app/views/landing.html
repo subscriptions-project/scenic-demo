@@ -52,7 +52,8 @@ function createPublisherAccountIfRequired() {
       }, 2000);
     });
 }
-(self.SWG = self.SWG || []).push(function(subscriptions) {
+function start() {
+  (self.SWG = self.SWG || []).push(function(subscriptions) {
     subscriptions.init('<% publicationId %>');
     subscriptions.setOnEntitlementsResponse(function(entitlementsPromise) {
       console.log('Fetching entitlements');
@@ -84,7 +85,9 @@ function createPublisherAccountIfRequired() {
         subscriptions.subscribe('basic');
     });
     subscriptions.getEntitlements();
-});
+  });
+}
+start()
 </script>
 </body>
 </html>
