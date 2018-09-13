@@ -49,7 +49,7 @@
 function createPublisherAccount() {
   // Create an account on the publisher's side and drop credential cookies.
   return new Promise(function(resolve) {
-    setTimeout(() => {
+    setTimeout(function() {
       resolve('true');
     }, 2000);
   });
@@ -59,7 +59,7 @@ function start() {
     subscriptions.init('<% publicationId %>');
     subscriptions.setOnEntitlementsResponse(function(entitlementsPromise) {
       console.log('Fetching entitlements');
-      entitlementsPromise.then(entitlements => {
+      entitlementsPromise.then(function(entitlements) {
         console.log('got entitlements: ', entitlements);
         if (entitlements && entitlements.enablesAny()) {
           // Redirect to home page or account page.
