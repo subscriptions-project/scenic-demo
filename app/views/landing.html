@@ -45,8 +45,8 @@
   </div>
 <script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
 <script>
-function createPublisherAccountIfRequired() {
-    return new Promise(resolve => {
+function createPublisherAccount() {
+    return new Promise(function(resolve) {
       setTimeout(() => {
         resolve('true');
       }, 2000);
@@ -60,10 +60,8 @@ function start() {
       entitlementsPromise.then(entitlements => {
         console.log('got entitlements: ', entitlements);
         if (entitlements && entitlements.enablesAny()) {
-            createPublisherAccountIfRequired().then(function(){
-              //Redirect to home page
-              location.assign('/');
-          });
+            //Redirect to home page or account page
+            location.assign('/');
         } else {
           // Give them the option to subscribe with the offer
           subscribeButton.removeAttribute('disabled');
@@ -73,7 +71,7 @@ function start() {
     subscriptions.setOnSubscribeResponse(function() {
         const promise = Promise.resolve('payment complete');
         return promise.then(function(response) {
-        createPublisherAccountIfRequired().then(function(){
+        createPublisherAccount().then(function(){
           //Redirect to home page
           location.assign('/');
         });
