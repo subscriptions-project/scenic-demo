@@ -42,7 +42,7 @@
           Enjoy 50 years of free Scenic content.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nunc felis, iaculis eget arcu sed, venenatis tincidunt dui. Mauris semper neque vitae quam auctor convallis. Suspendisse condimentum sapien eget porta.</p>
         </p>
         <!--"Start disabled and enable once API is loaded and entitlements confirmed."-->      
-        <button class="button-container" id="subscribeButton" disabled>Click to claim offer</button>
+        <button id="subscribeButton" disabled></button>
     </div>
   </div>
 <script>
@@ -72,16 +72,15 @@ function start() {
     });
     subscriptions.setOnSubscribeResponse(function(promise) {
       promise.then(response => {
-        console.log(response);
         createPublisherAccount().then(function() {
           // Redirect to home page.
           location.assign('/');
         });
       }, function(reason) {
-        console.log('failed', reason);
+        console.log('failed or canceled', reason);
       });
     });
-    subscribeButton.addEventListener('click', function() {
+    subscriptions.attachButton(subscribeButton, function() {
       // Start subscription flow with the target SKU.
       subscriptions.subscribe('basic');
     });
@@ -91,11 +90,15 @@ function start() {
 // This method triggers the following sequence of events:
 // - Get a callback when Subscriptions script is loaded and APIs are available,
 // - Attach event callbacks to getting entitlements and subscription response,
-// - Attach an event listener to the subscribe button, which will launch the buy flow,
+// - Attach an event listener to the subscribe button, which launches the buy flow for a target SKU,
 // - Fetch entitlements and see if the user has any entitlements,
-// - If user has entitlements, redirect to home page. Flow is complete
-// - If the user has no entitlements, enable the subscribe button for the user to click
-// - Upon receiving subscription response, redirect to home page if succeeds
+// - If user has entitlements, redirect to home page. Flow is complete,
+// - If the user has no entitlements, enable the subscribe button for the user to click,
+// - Upon receiving subscription response, redirect to home page if succeeds and
+// - If the user pressed the back button or cancel the pay flow, stay on the same page.
+// Note that each landing page will have this script which enables user to buy subscription
+// for a target SKU. If multiple offers are available for marketing, multiple landing pages
+// must be created.
 start()
 </script>
 </body>
