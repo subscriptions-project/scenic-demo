@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<title>Subscribe to the Scenic today!</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+<link rel="stylesheet" href="/styles.css" type="text/css">
+<link rel="icon" type="image/png" href="/icons/icon-2x.png">
+<meta name="theme-color" content="#37dc8c">
+<link rel="apple-touch-icon" href="/icons/icon-2x.png">
+<meta name="msapplication-TileImage" content="/icons/icon-2x.png">
+<meta name="msapplication-TileColor" content="#37dc8c">
+<style>
+  .button-container {
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+    border: solid 1px #a6d8a8;
+    margin: auto;
+  }
+</style>
+<script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
+</head>
+<body>
+  <div class="main-body">
+    <header>
+      <a class="brand-header">
+        <div class="brand-logo"></div>
+        <div class="brand-name">The Scenic</div>
+      </a>
+    </header>
+    <main role="main">
+      <div class="container">
+        <h1 class="heading">Scenic Subscription offer</h1>
+        <div class="hr"></div>
+        <p class="text">
+          Enjoy 50 years of free Scenic content.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nunc felis, iaculis eget arcu sed, venenatis tincidunt dui. Mauris semper neque vitae quam auctor convallis. Suspendisse condimentum sapien eget porta.</p>
+        </p>
+        <!--"Start disabled and enable once API is loaded and entitlements confirmed."-->      
+        <button id="subscribeButton" disabled></button>
+    </div>
+  </div>
+<script>
+function createPublisherAccount() {
+  // Create an account on the publisher's side and drop credential cookies.
+  return new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve('true');
+    }, 2000);
+  });
+}
+function start() {
+  (self.SWG = self.SWG || []).push(function(subscriptions) {
+    subscriptions.init('<% publicationId %>');
+    subscriptions.setOnEntitlementsResponse(function(entitlementsPromise) {
+      console.log('Fetching entitlements');
+      entitlementsPromise.then(function(entitlements) {
+        console.log('got entitlements: ', entitlements);
+        if (entitlements && entitlements.enablesAny()) {
+          // Redirect to home page or account page.
+          location.assign('/');
+        } else {
+          // Give them the option to subscribe with the offer.
+          subscribeButton.removeAttribute('disabled');
+        }
+      });    
+    });
+    subscriptions.setOnSubscribeResponse(function(promise) {
+      promise.then(response => {
+        createPublisherAccount().then(function() {
+          // Redirect to home page.
+          location.assign('/');
+        });
+      }, function(reason) {
+        console.log('failed or canceled', reason);
+      });
+    });
+    subscriptions.attachButton(subscribeButton, function() {
+      // Start subscription flow with the target SKU.
+      subscriptions.subscribe('basic');
+    });
+    subscriptions.getEntitlements();
+  });
+};
+// This method triggers the following sequence of events:
+// - Get a callback when Subscriptions script is loaded and APIs are available,
+// - Attach event callbacks to getting entitlements and subscription response,
+// - Attach an event listener to the subscribe button, which launches the buy flow for a target SKU,
+// - Fetch entitlements and see if the user has any entitlements,
+// - If user has entitlements, redirect to home page. Flow is complete,
+// - If the user has no entitlements, enable the subscribe button for the user to click,
+// - Upon receiving subscription response, redirect to home page if succeeds and
+// - If the user pressed the back button or cancel the pay flow, stay on the same page.
+start()
+</script>
+</body>
+</html>

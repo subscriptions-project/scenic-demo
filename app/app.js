@@ -75,6 +75,14 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/landing.html', (req, res) => {
+  script = req.cookies && req.cookies['script'] || 'prod';
+  publication_id = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
+  res.render('../app/views/landing.html', {
+    publicationId: publication_id,
+    swgJsUrl: SWG_JS_URLS[script],
+  });
+});
 
 /**
  * An Article.
