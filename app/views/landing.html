@@ -88,6 +88,14 @@ function start() {
     subscriptions.getEntitlements();
   });
 };
+// This method triggers the following sequence of events:
+// - Get a callback when Subscriptions script is loaded and APIs are available,
+// - Attach event callbacks to getting entitlements and subscription response,
+// - Attach an event listener to the subscribe button, which will launch the buy flow,
+// - Fetch entitlements and see if the user has any entitlements,
+// - If user has entitlements, redirect to home page. Flow is complete
+// - If the user has no entitlements, enable the subscribe button for the user to click
+// - Upon receiving subscription response, redirect to home page if succeeds
 start()
 </script>
 </body>
