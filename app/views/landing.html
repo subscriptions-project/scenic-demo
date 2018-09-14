@@ -71,7 +71,7 @@ function start() {
     });
     subscriptions.attachButton(subscribeButton, function() {
       // Start subscription flow with the target SKU.
-      subscriptions.subscribe('basic');
+      subscriptions.subscribe('subscription_daily');
     });
     subscriptions.getEntitlements();
   });
