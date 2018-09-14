@@ -70,9 +70,8 @@ function start() {
         }
       });    
     });
-    subscriptions.setOnSubscribeResponse(function() {
-      const promise = Promise.resolve('payment complete');
-      return promise.then(function(response) {
+    subscriptions.setOnSubscribeResponse(function(promise) {
+      promise.then(response => {
         console.log(response);
         createPublisherAccount().then(function() {
           // Redirect to home page.
