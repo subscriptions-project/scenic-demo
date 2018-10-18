@@ -81,7 +81,6 @@ app.get('/landing.html', (req, res) => {
   res.render('../app/views/landing.html', {
     publicationId: publication_id,
     swgJsUrl: SWG_JS_URLS[script],
-    logImpressions: true,
   });
 });
 
