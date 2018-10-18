@@ -73,6 +73,10 @@ function start() {
       // Start subscription flow with the target SKU.
       subscriptions.subscribe('subscription_daily');
     });
+    if ('<% logImpressions %>') {
+      // Configure Analytics using user impressions
+      subscriptions.configure({analyticsMode: AnalyticsMode.IMPRESSIONS});
+    }
     subscriptions.getEntitlements();
   });
 };
