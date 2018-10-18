@@ -45,6 +45,8 @@ function createPublisherAccount() {
 }
 function start() {
   (self.SWG = self.SWG || []).push(function(subscriptions) {
+    // Configure Analytics using user impressions
+    subscriptions.configure({analyticsMode: 1});
     subscriptions.init('<% publicationId %>');
     subscriptions.setOnEntitlementsResponse(function(entitlementsPromise) {
       console.log('Fetching entitlements');
