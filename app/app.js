@@ -15,6 +15,7 @@
  */
 
 const jsonwebtoken = require('jsonwebtoken');
+const {getCountryConfig} = require('./config');
 const {
   decrypt,
   encrypt,
@@ -31,7 +32,7 @@ const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
 
 const BASE_URL = process.env.NODE_ENV == 'production' ?
     'https://scenic-2017.appspot.com' :
-    '//localhost:8000'
+    '//localhost:8000';
 
 const SWG_JS_URLS = {
   local: '/swgjs/swg.max.js',
@@ -57,7 +58,11 @@ if (console.log) {
 /**
  * List all Articles.
  */
-app.get('/', (req, res) => {
+app.get(['/','/countrycode/:countrycode'], (req, res) => {
+
+  const code = req.params.countrycode
+  console.log('countrycode', code);
+  // const config = getConfigName(req.params.countrycode);
   let originalUrl = req.originalUrl;
   let originalQuery = '';
   const queryIndex = originalUrl.indexOf('?');
@@ -77,18 +82,16 @@ app.get('/', (req, res) => {
 
 app.get('/landing.html', (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
-  publication_id = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
   res.render('../app/views/landing.html', {
-    publicationId: publication_id,
+    publicationId: PUBLICATION_ID,
     swgJsUrl: SWG_JS_URLS[script],
   });
 });
 
 app.get('/landing-gpay.html', (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
-  publication_id = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
   res.render('../app/views/landing-gpay.html', {
-    publicationId: publication_id,
+    publicationId: PUBLICATION_ID,
     swgJsUrl: SWG_JS_URLS[script],
   });
 });
@@ -97,7 +100,9 @@ app.get('/landing-gpay.html', (req, res) => {
  * An Article.
  * TODO(dvoytenko): remove "/examples/" path
  */
-app.get(['/((\\d+))', '/examples/sample-pub/((\\d+))'], (req, res) => {
+app.get(['/countrycode/:countrycode/((\\d+))', '/((\\d+))',
+    '/examples/sample-pub/((\\d+))'], (req, res) => {
+  setTestCountry(req.params.countrycode);
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
   const prevId = (id - 1) >= 0 ? String(id - 1) : false;
@@ -164,7 +169,6 @@ app.get('/feed.xml', (req, res) => {
     }),
   });
 });
-
 
 /**
  * Subscribe page. Format:
@@ -421,4 +425,14 @@ function ampJsUrl(name, rtv) {
   return AMP_LOCAL ?
       'http://localhost:8001/dist/v0/' + name + '-0.1.max.js' :
       cdnBase + '/v0/' + name + '-0.1.js';
+}
+
+/**
+ * @param {string} countrycode 
+ */
+function setTestCountry(countrycode) {
+  const config = getCountryConfig(countrycode);
+  process.env.SERVE_PUBID = conf.publicationId;
+  console.log('Testing Scenic for this country: ' + config.name);
+  console.log('Testing Scenic with this Publication: ' + PUBLICATION_ID);
 }
