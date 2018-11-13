@@ -17,6 +17,7 @@
 
 const argv = require('minimist')(process.argv.slice(2));
 const gulp = require('gulp-help')(require('gulp'));
+const path = require('path');
 const util = require('gulp-util');
 const nodemon = require('nodemon');
 
@@ -37,6 +38,7 @@ function serve() {
     script: require.resolve('../server/server.js'),
     watch: [
       require.resolve('../server/server.js'),
+      path.resolve(__dirname, '../../app/*'),
     ],
     env: {
       'NODE_ENV': 'development',
