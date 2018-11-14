@@ -58,7 +58,7 @@ if (console.log) {
 /**
  * List all Articles.
  */
-app.get(['/','/config/:configId/'], (req, res) => {
+app.get(['/','/config/:configId'], (req, res) => {
   setConfig(req.params.configId);
   let originalUrl = req.originalUrl;
   let originalQuery = '';
