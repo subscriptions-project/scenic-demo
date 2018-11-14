@@ -25,39 +25,38 @@
  * 
  *  @typedef {{
  *    name: string,
- *    code: string,
+ *    countryCode: string,
  *    publicationId: string,
  * }}
  */
-let CountryConfig;
+let Config;
 
 /**
- * @param {string} countryCode 
- * @return {CountryConfig}
+ * @param {string} id 
+ * @return {Config}
  */
-exports.getCountryConfig = function(countryCode) {
-    const config = CONFIG[countryCode];
+exports.getConfig = function(id) {
+    const config = CONFIG[id];
     if (config) {
         return config;
     }
     return DEFAULT_CONFIG;
 }
 
-/** @const {CountryConfig} */
+/** @const {Config} */
 const DEFAULT_CONFIG = {
     name: 'USA',
-    code: 'us',
-    // publicationId: 'com.appspot.scenic-2017-test',
+    countryCode: 'us',
     publicationId: process.env.SERVE_PUBID || 'scenic-2017.appspot.com',
 }
 
-/** @const {Object<CountryConfig>} */
+/** @const {Object<Config>} */
 const CONFIG = {
     'us': DEFAULT_CONFIG,
     'be': {
         name: 'Belgium',
-        code: 'be',
-        // publicationId: 'com.appspot.scenic-2017-test',
+        countryCode: 'be',
+        // TODO(chenshay): Change this to a belgian pubId.
         publicationId: 'scenic-2017.appspot.com',
     },
 }

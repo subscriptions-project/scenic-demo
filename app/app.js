@@ -15,7 +15,7 @@
  */
 
 const jsonwebtoken = require('jsonwebtoken');
-const {getCountryConfig} = require('./config');
+const {getConfig} = require('./config');
 const {
   decrypt,
   encrypt,
@@ -58,11 +58,8 @@ if (console.log) {
 /**
  * List all Articles.
  */
-app.get(['/','/countrycode/:countrycode'], (req, res) => {
-
-  const code = req.params.countrycode
-  console.log('countrycode', code);
-  // const config = getConfigName(req.params.countrycode);
+app.get(['/','/config/:configId/'], (req, res) => {
+  setConfig(req.params.configId);
   let originalUrl = req.originalUrl;
   let originalQuery = '';
   const queryIndex = originalUrl.indexOf('?');
@@ -100,9 +97,9 @@ app.get('/landing-gpay.html', (req, res) => {
  * An Article.
  * TODO(dvoytenko): remove "/examples/" path
  */
-app.get(['/countrycode/:countrycode/((\\d+))', '/((\\d+))',
+app.get(['/config/:configId/((\\d+))', '/((\\d+))',
     '/examples/sample-pub/((\\d+))'], (req, res) => {
-  setTestCountry(req.params.countrycode);
+  setConfig(req.params.configId);
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
   const prevId = (id - 1) >= 0 ? String(id - 1) : false;
@@ -428,11 +425,11 @@ function ampJsUrl(name, rtv) {
 }
 
 /**
- * @param {string} countrycode 
+ * @param {string} id 
  */
-function setTestCountry(countrycode) {
-  const config = getCountryConfig(countrycode);
-  process.env.SERVE_PUBID = conf.publicationId;
+function setConfig(id) {
+  const config = getConfig(id);
+  process.env.SERVE_PUBID = config.publicationId;
   console.log('Testing Scenic for this country: ' + config.name);
   console.log('Testing Scenic with this Publication: ' + PUBLICATION_ID);
 }
