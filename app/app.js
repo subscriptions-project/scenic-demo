@@ -27,7 +27,6 @@ const app = module.exports = require('express').Router();
 app.use(require('cookie-parser')())
 app.use('/', require('./oauth-app'));
 
-const PUBLICATION_ID = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
 const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
 
 const BASE_URL = process.env.NODE_ENV == 'production' ?
@@ -51,7 +50,7 @@ const ARTICLES = require('./content').ARTICLES;
 
 // Info.
 if (console.log) {
-  console.log('Scenic started. Publication: ' + PUBLICATION_ID);
+  console.log('Scenic started. Publication: ' + getPublicationId());
 }
 
 
@@ -80,7 +79,7 @@ app.get(['/','/config/:configId'], (req, res) => {
 app.get('/landing.html', (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
   res.render('../app/views/landing.html', {
-    publicationId: PUBLICATION_ID,
+    publicationId: getPublicationId(),
     swgJsUrl: SWG_JS_URLS[script],
   });
 });
@@ -88,7 +87,7 @@ app.get('/landing.html', (req, res) => {
 app.get('/landing-gpay.html', (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
   res.render('../app/views/landing-gpay.html', {
-    publicationId: PUBLICATION_ID,
+    publicationId: getPublicationId(),
     swgJsUrl: SWG_JS_URLS[script],
   });
 });
@@ -108,7 +107,7 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))',
   res.render('../app/views/article', {
     swgJsUrl: SWG_JS_URLS[setup.script],
     setup: setup,
-    publicationId: PUBLICATION_ID,
+    publicationId: getPublicationId(),
     id,
     article,
     prev: prevId,
@@ -140,7 +139,7 @@ app.get(['/((\\d+))\.amp', '/examples/sample-pub/((\\d+))\.amp'], (req, res) => 
     amp,
     setup,
     serviceBase: BASE_URL,
-    publicationId: PUBLICATION_ID,
+    publicationId: getPublicationId(),
     // TODO(dvoytenko): remove completely.
     // authConnect: ac,
     id,
@@ -431,5 +430,13 @@ function setConfig(id) {
   const config = getConfig(id);
   process.env.SERVE_PUBID = config.publicationId;
   console.log('Testing Scenic for this country: ' + config.name);
-  console.log('Testing Scenic with this Publication: ' + PUBLICATION_ID);
+  console.log('Testing Scenic with this Publication: ' + getPublicationId());
+}
+
+/**
+ * @return {string}
+ */
+
+function getPublicationId() {
+  return process.env.SERVE_PUBID || 'com.appspot.scenic-2017-test';
 }

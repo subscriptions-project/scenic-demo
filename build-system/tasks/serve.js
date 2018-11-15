@@ -25,7 +25,6 @@ const host = argv.host || 'localhost';
 const port = argv.port || process.env.PORT || 8000;
 const useHttps = argv.https != undefined;
 const quiet = argv.quiet != undefined;
-// TODO(chenshay): This will be overridden in some cases;
 const publicationId = argv.publicationId || 'com.appspot.scenic-2017-test';
 const ampLocal = argv.ampLocal != undefined;
 
