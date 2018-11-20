@@ -46,7 +46,6 @@ const CONFIG = {
     'be': {
         name: 'The Scenic - Belgium',
         countryCode: 'be',
-        // TODO(chenshay): Change this to a Belgian pubId.
-        publicationId: 'scenic-2017.appspot.com',
+        publicationId: 'be.scenic-2017.appspot.com',
     },
 }
