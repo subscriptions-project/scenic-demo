@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <link rel="canonical" href="<% id %>">
     <link rel="amphtml" href="<% id %>.amp">
-    <title><% article.title %> - The Scenic</title>
+    <title><% article.title %> - <% config.name %></title>
 
     <script async src="/dist/main.max.js"></script>
 
@@ -60,7 +60,7 @@
         "name": "John Doe"
       },
       "publisher": {
-         "name": "The Scenic",
+         "name": "<% config.name %>",
          "@type": "Organization",
          "@id": "scenic-2017.appspot.com",
          "logo": {
@@ -85,7 +85,7 @@
       <header>
         <a class="brand-header" href="/">
           <div class="brand-logo"></div>
-          <div class="brand-name">The Scenic</div>
+          <div class="brand-name"><% config.name %></div>
         </a>
         <div class="nav-header">
           <%#prev%>

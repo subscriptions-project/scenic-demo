@@ -37,7 +37,7 @@ exports.getConfig = function(id) {
 
 /** @const {Config} */
 const DEFAULT_CONFIG = {
-    name: 'USA',
+    name: 'The Scenic - USA',
     countryCode: 'us',
     publicationId: process.env.SERVE_PUBID || 'scenic-2017.appspot.com',
 }
@@ -46,7 +46,7 @@ const DEFAULT_CONFIG = {
 const CONFIG = {
     'us': DEFAULT_CONFIG,
     'be': {
-        name: 'Belgium',
+        name: 'The Scenic - Belgium',
         countryCode: 'be',
         // TODO(chenshay): Change this to a Belgian pubId.
         publicationId: 'scenic-2017.appspot.com',
