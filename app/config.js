@@ -36,12 +36,11 @@ let Config;
  * @return {Config}
  */
 exports.getConfig = function(id) {
-    const config = CONFIG[id];
-    if (config) {
-        return config;
-    }
-    return DEFAULT_CONFIG;
-}
+    const config = CONFIG[id] || DEFAULT_CONFIG;
+    console.log('Testing Scenic for this country: ' + config.name);
+    console.log('Testing Scenic with this Publication: ' + config.publicationId);
+    return config;
+};
 
 /** @const {Config} */
 const DEFAULT_CONFIG = {

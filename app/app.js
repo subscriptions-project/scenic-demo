@@ -50,7 +50,7 @@ const ARTICLES = require('./content').ARTICLES;
 
 // Info.
 if (console.log) {
-  console.log('Scenic started. Publication: ' + getPublicationId());
+  console.log('Scenic started. Publication: ' + getConfig().publicationId);
 }
 
 
@@ -58,7 +58,6 @@ if (console.log) {
  * List all Articles.
  */
 app.get(['/','/:configId'], (req, res) => {
-  setConfig(req.params.configId);
   let originalUrl = req.originalUrl;
   let originalQuery = '';
   const queryIndex = originalUrl.indexOf('?');
@@ -79,7 +78,7 @@ app.get(['/','/:configId'], (req, res) => {
 app.get('/landing.html', (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
   res.render('../app/views/landing.html', {
-    publicationId: getPublicationId(),
+    config: getConfig(req.params.configId),
     swgJsUrl: SWG_JS_URLS[script],
   });
 });
@@ -87,7 +86,7 @@ app.get('/landing.html', (req, res) => {
 app.get('/landing-gpay.html', (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
   res.render('../app/views/landing-gpay.html', {
-    publicationId: getPublicationId(),
+    config: getConfig(),
     swgJsUrl: SWG_JS_URLS[script],
   });
 });
@@ -96,7 +95,6 @@ app.get('/landing-gpay.html', (req, res) => {
  * An Article.
  */
 app.get(['/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
-  setConfig(req.params.configId);
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
   const prevId = (id - 1) >= 0 ? String(id - 1) : false;
@@ -105,7 +103,7 @@ app.get(['/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   res.render('../app/views/article', {
     swgJsUrl: SWG_JS_URLS[setup.script],
     setup: setup,
-    publicationId: getPublicationId(),
+    config: getConfig(req.params.configId),
     id,
     article,
     prev: prevId,
@@ -137,7 +135,7 @@ app.get(['/((\\d+))\.amp', '/examples/sample-pub/((\\d+))\.amp'], (req, res) => 
     amp,
     setup,
     serviceBase: BASE_URL,
-    publicationId: getPublicationId(),
+    config: getConfig(),
     // TODO(dvoytenko): remove completely.
     // authConnect: ac,
     id,
@@ -419,22 +417,4 @@ function ampJsUrl(name, rtv) {
   return AMP_LOCAL ?
       'http://localhost:8001/dist/v0/' + name + '-0.1.max.js' :
       cdnBase + '/v0/' + name + '-0.1.js';
-}
-
-/**
- * @param {string} id 
- */
-function setConfig(id) {
-  const config = getConfig(id);
-  process.env.SERVE_PUBID = config.publicationId;
-  console.log('Testing Scenic for this country: ' + config.name);
-  console.log('Testing Scenic with this Publication: ' + getPublicationId());
-}
-
-/**
- * @return {string}
- */
-
-function getPublicationId() {
-  return process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
 }
