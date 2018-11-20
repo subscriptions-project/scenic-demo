@@ -25,13 +25,11 @@
 let Config;
 
 /**
- * @param {?string|undefined} id 
+ * @param {?string|undefined} id
  * @return {Config}
  */
 exports.getConfig = function(id) {
     const config = CONFIG[id] || DEFAULT_CONFIG;
-    console.log('Testing Scenic for this country: ' + config.name);
-    console.log('Testing Scenic with this Publication: ' + config.publicationId);
     return config;
 };
 
