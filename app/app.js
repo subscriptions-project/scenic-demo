@@ -71,6 +71,7 @@ app.get(['/','/config/:configId'], (req, res) => {
   }
   res.render('../app/views/list', {
     title: 'Select an article to get started',
+    config: getConfig(req.params.configId),
     articles: ARTICLES,
   });
 });
@@ -116,7 +117,7 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
  * An AMP Article.
  * TODO(dvoytenko): remove "/examples/" path
  */
-app.get(['/((\\d+))\.amp', '/examples/sample-pub/((\\d+))\.amp'], (req, res) => {
+app.get(['/config/:configId/((\\d+))\.amp', '/((\\d+))\.amp'], (req, res) => {
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
   const prevId = (id - 1) >= 0 ? String(id - 1) + '.amp' : false;
@@ -135,7 +136,7 @@ app.get(['/((\\d+))\.amp', '/examples/sample-pub/((\\d+))\.amp'], (req, res) => 
     amp,
     setup,
     serviceBase: BASE_URL,
-    config: getConfig(),
+    config: getConfig(req.params.configId),
     // TODO(dvoytenko): remove completely.
     // authConnect: ac,
     id,
