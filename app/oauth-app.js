@@ -25,8 +25,6 @@ const app = module.exports = require('express').Router();
 const jsonwebtoken = require('jsonwebtoken');
 const {encrypt, decrypt, fromBase64, toBase64} = require('./crypto');
 
-const PUBLICATION_ID = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
-
 /** @const {string} */
 const CLIENT_ID = 'scenic-2017.appspot.com';
 
@@ -219,7 +217,7 @@ app.post(['/oauth/token', '/examples/sample-pub/oauth/token'], (req, res) => {
  * TODO(dvoytenko): remove "/examples/" path
  */
 app.all(['/oauth/entitlements', '/examples/sample-pub/oauth/entitlements'], (req, res) => {
-  const publicationId = PUBLICATION_ID;
+  const publicationId = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';;
   const accessToken = getParam(req, 'access_token');
   const decryptedAccessToken = decrypt(fromBase64(accessToken));
   const email = decryptedAccessToken.data['email'];

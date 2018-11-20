@@ -15,6 +15,7 @@
  */
 
 const jsonwebtoken = require('jsonwebtoken');
+const {getConfig} = require('./config');
 const {
   decrypt,
   encrypt,
@@ -26,12 +27,11 @@ const app = module.exports = require('express').Router();
 app.use(require('cookie-parser')())
 app.use('/', require('./oauth-app'));
 
-const PUBLICATION_ID = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
 const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
 
 const BASE_URL = process.env.NODE_ENV == 'production' ?
     'https://scenic-2017.appspot.com' :
-    '//localhost:8000'
+    '//localhost:8000';
 
 const SWG_JS_URLS = {
   local: '/swgjs/swg.max.js',
@@ -50,14 +50,14 @@ const ARTICLES = require('./content').ARTICLES;
 
 // Info.
 if (console.log) {
-  console.log('Scenic started. Publication: ' + PUBLICATION_ID);
+  console.log('Scenic started. Publication: ' + getConfig().publicationId);
 }
 
 
 /**
  * List all Articles.
  */
-app.get('/', (req, res) => {
+app.get(['/','/:configId'], (req, res) => {
   let originalUrl = req.originalUrl;
   let originalQuery = '';
   const queryIndex = originalUrl.indexOf('?');
@@ -77,27 +77,24 @@ app.get('/', (req, res) => {
 
 app.get('/landing.html', (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
-  publication_id = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
   res.render('../app/views/landing.html', {
-    publicationId: publication_id,
+    config: getConfig(req.params.configId),
     swgJsUrl: SWG_JS_URLS[script],
   });
 });
 
 app.get('/landing-gpay.html', (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
-  publication_id = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
   res.render('../app/views/landing-gpay.html', {
-    publicationId: publication_id,
+    config: getConfig(),
     swgJsUrl: SWG_JS_URLS[script],
   });
 });
 
 /**
  * An Article.
- * TODO(dvoytenko): remove "/examples/" path
  */
-app.get(['/((\\d+))', '/examples/sample-pub/((\\d+))'], (req, res) => {
+app.get(['/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
   const prevId = (id - 1) >= 0 ? String(id - 1) : false;
@@ -106,7 +103,7 @@ app.get(['/((\\d+))', '/examples/sample-pub/((\\d+))'], (req, res) => {
   res.render('../app/views/article', {
     swgJsUrl: SWG_JS_URLS[setup.script],
     setup: setup,
-    publicationId: PUBLICATION_ID,
+    config: getConfig(req.params.configId),
     id,
     article,
     prev: prevId,
@@ -138,7 +135,7 @@ app.get(['/((\\d+))\.amp', '/examples/sample-pub/((\\d+))\.amp'], (req, res) => 
     amp,
     setup,
     serviceBase: BASE_URL,
-    publicationId: PUBLICATION_ID,
+    config: getConfig(),
     // TODO(dvoytenko): remove completely.
     // authConnect: ac,
     id,
@@ -164,7 +161,6 @@ app.get('/feed.xml', (req, res) => {
     }),
   });
 });
-
 
 /**
  * Subscribe page. Format:
