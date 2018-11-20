@@ -57,7 +57,7 @@ if (console.log) {
 /**
  * List all Articles.
  */
-app.get(['/','/:configId'], (req, res) => {
+app.get(['/','/config/:configId'], (req, res) => {
   let originalUrl = req.originalUrl;
   let originalQuery = '';
   const queryIndex = originalUrl.indexOf('?');
@@ -94,7 +94,7 @@ app.get('/landing-gpay.html', (req, res) => {
 /**
  * An Article.
  */
-app.get(['/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
+app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
   const prevId = (id - 1) >= 0 ? String(id - 1) : false;
