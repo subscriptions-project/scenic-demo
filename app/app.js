@@ -57,7 +57,7 @@ if (console.log) {
 /**
  * List all Articles.
  */
-app.get(['/','/config/:configId'], (req, res) => {
+app.get(['/','/:configId'], (req, res) => {
   setConfig(req.params.configId);
   let originalUrl = req.originalUrl;
   let originalQuery = '';
@@ -94,10 +94,8 @@ app.get('/landing-gpay.html', (req, res) => {
 
 /**
  * An Article.
- * TODO(dvoytenko): remove "/examples/" path
  */
-app.get(['/config/:configId/((\\d+))', '/((\\d+))',
-    '/examples/sample-pub/((\\d+))'], (req, res) => {
+app.get(['/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   setConfig(req.params.configId);
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
@@ -438,5 +436,5 @@ function setConfig(id) {
  */
 
 function getPublicationId() {
-  return process.env.SERVE_PUBID || 'com.appspot.scenic-2017-test';
+  return process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
 }
