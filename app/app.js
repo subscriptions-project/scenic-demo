@@ -76,18 +76,10 @@ app.get(['/','/config/:configId'], (req, res) => {
   });
 });
 
-app.get('/landing.html', (req, res) => {
+app.get(['/config/:configId/landing.html', '/landing.html'], (req, res) => {
   script = req.cookies && req.cookies['script'] || 'prod';
   res.render('../app/views/landing.html', {
     config: getConfig(req.params.configId),
-    swgJsUrl: SWG_JS_URLS[script],
-  });
-});
-
-app.get('/landing-gpay.html', (req, res) => {
-  script = req.cookies && req.cookies['script'] || 'prod';
-  res.render('../app/views/landing-gpay.html', {
-    config: getConfig(),
     swgJsUrl: SWG_JS_URLS[script],
   });
 });

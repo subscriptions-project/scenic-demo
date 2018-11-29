@@ -30,7 +30,7 @@
         <p class="text">
           Enjoy 50 years of free Scenic content.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nunc felis, iaculis eget arcu sed, venenatis tincidunt dui. Mauris semper neque vitae quam auctor convallis. Suspendisse condimentum sapien eget porta.</p>
         </p>
-        <!--"Start disabled and enable once API is loaded and entitlements confirmed."-->      
+        <!--"Start disabled and enable once API is loaded and entitlements confirmed."-->
         <button id="subscribeButton" disabled></button>
     </div>
   </div>
@@ -47,7 +47,7 @@ function start() {
   (self.SWG = self.SWG || []).push(function(subscriptions) {
     // Configure Analytics using user impressions
     subscriptions.configure({analyticsMode: 1});
-    subscriptions.init('<% publicationId %>');
+    subscriptions.init('<% config.publicationId %>');
     subscriptions.setOnEntitlementsResponse(function(entitlementsPromise) {
       console.log('Fetching entitlements');
       entitlementsPromise.then(function(entitlements) {
@@ -59,7 +59,7 @@ function start() {
           // Give them the option to subscribe with the offer.
           subscribeButton.removeAttribute('disabled');
         }
-      });    
+      });
     });
     subscriptions.setOnSubscribeResponse(function(promise) {
       promise.then(response => {
