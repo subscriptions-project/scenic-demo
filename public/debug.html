@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <title>Debug - The Scenic</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+  <link rel="stylesheet" href="/styles.css" type="text/css">
+  <link rel="icon" type="image/png" href="/icons/icon-2x.png">
+  <meta name="theme-color" content="#37dc8c">
+  <link rel="apple-touch-icon" href="/icons/icon-2x.png">
+  <meta name="msapplication-TileImage" content="/icons/icon-2x.png">
+  <meta name="msapplication-TileColor" content="#37dc8c">
+
+  <style>
+  </style>
+
+<!-- polyfills -->
+<script>
+if (typeof Object.values != 'function') {
+  Object.values = function(obj) {
+    var vals = [];
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        vals.push(obj[key]);
+      }
+    }
+    return vals;
+  };
+}
+</script>
+
+  <script async subscriptions-control="manual" src="https://news.google.com/swg/js/v1/swg.js"></script>
+
+</head>
+<body>
+
+    The info will be here:
+    <pre id="info_el"></pre>
+
+<script>
+(self.SWG = self.SWG || []).push(function(swg) {
+  swg.init('scenic-2017.appspot.com');
+  swg.getEntitlements().then(function(entitlements) {
+    document.getElementById('info_el').textContent = entitlements.raw || '<EMPTY>';
+  });
+});
+</script>
+</body>
+</html>
