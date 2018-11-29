@@ -48,4 +48,89 @@ const CONFIG = {
         countryCode: 'be',
         publicationId: 'be.scenic-2017.appspot.com',
     },
+    'cr': {
+        name: 'The Scenic - Costa Rica',
+        countryCode: 'cr',
+        publicationId: 'cr.scenic-2017.appspot.com',
+    },
+    'pt': {
+        name: 'The Scenic - Portugal',
+        countryCode: 'pt',
+        publicationId: 'pt.scenic-2017.appspot.com',
+    },
+    'es': {
+        name: 'The Scenic - Spain',
+        countryCode: 'es',
+        publicationId: 'es.scenic-2017.appspot.com',
+    },
+    'in': {
+        name: 'The Scenic - India',
+        countryCode: 'in',
+        publicationId: 'in.scenic-2017.appspot.com',
+    },
+    'ar': {
+        name: 'The Scenic - Argentina',
+        countryCode: 'ar',
+        publicationId: 'ar.scenic-2017.appspot.com',
+    },
+    'au': {
+        name: 'The Scenic - Australia',
+        countryCode: 'au',
+        publicationId: 'au.scenic-2017.appspot.com',
+    },
+    'br': {
+        name: 'The Scenic - Brazil',
+        countryCode: 'br',
+        publicationId: 'br.scenic-2017.appspot.com',
+    },
+    'ca': {
+        name: 'The Scenic - Canada',
+        countryCode: 'ca',
+        publicationId: 'ca.scenic-2017.appspot.com',
+    },
+    'fr': {
+        name: 'The Scenic - France',
+        countryCode: 'fr',
+        publicationId: 'fr.scenic-2017.appspot.com',
+    },
+    'de': {
+        name: 'The Scenic - Germany',
+        countryCode: 'de',
+        publicationId: 'de.scenic-2017.appspot.com',
+    },
+    'it': {
+        name: 'The Scenic - Italy',
+        countryCode: 'it',
+        publicationId: 'it.scenic-2017.appspot.com',
+    },
+    'jp': {
+        name: 'The Scenic - Japan',
+        countryCode: 'jp',
+        publicationId: 'jp.scenic-2017.appspot.com',
+    },
+    'mx': {
+        name: 'The Scenic - Mexico',
+        countryCode: 'mx',
+        publicationId: 'mx.scenic-2017.appspot.com',
+    },
+    'nl': {
+        name: 'The Scenic - Netherlands',
+        countryCode: 'nl',
+        publicationId: 'nl.scenic-2017.appspot.com',
+    },
+    'ru': {
+        name: 'The Scenic - Russia',
+        countryCode: 'ru',
+        publicationId: 'ru.scenic-2017.appspot.com',
+    },
+    'pl': {
+        name: 'The Scenic - Poland',
+        countryCode: 'pl',
+        publicationId: 'pl.scenic-2017.appspot.com',
+    },
+    'sa': {
+        name: 'The Scenic - Saudi Arabia',
+        countryCode: 'sa',
+        publicationId: 'sa.scenic-2017.appspot.com',
+    },
 }
