@@ -50,7 +50,7 @@ function start() {
       analyticsMode: 1,
       experiments: ['gpay-api']
     });
-    subscriptions.init('<% publicationId %>');
+    subscriptions.init('<% config.publicationId %>');
     subscriptions.setOnEntitlementsResponse(function(entitlementsPromise) {
       console.log('Fetching entitlements');
       entitlementsPromise.then(function(entitlements) {

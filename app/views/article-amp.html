@@ -46,8 +46,8 @@
       {
         "services": [
           {
-            "authorizationUrl": "<% serviceBase %>/amp-entitlements?pubid=<% publicationId %>&meter=1",
-            "pingbackUrl": "<% serviceBase %>/amp-pingback?pubid=<% publicationId %>",
+            "authorizationUrl": "<% serviceBase %>/amp-entitlements?pubid=<% config.publicationId %>&meter=1",
+            "pingbackUrl": "<% serviceBase %>/amp-pingback?pubid=<% config.publicationId %>",
             "actions": {
               "login": "<% serviceBase %>/signin",
               "subscribe": "<% serviceBase %>/subscribe"
@@ -308,8 +308,8 @@ ul.related p {
   var cap = viewer.getParam('cap') || '';
   if (cap.indexOf('auth') != -1) {
     viewer.sendMessageAwaitResponse('auth', {
-      'publicationId': '<% publicationId %>',
-      'product': '<% publicationId %>:news'
+      'publicationId': '<% config.publicationId %>',
+      'product': '<% config.publicationId %>:news'
     }).then(function(response) {
       showMessage(true, response['authorization']);
     }, function(reason) {
