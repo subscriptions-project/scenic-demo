@@ -63,6 +63,11 @@ const CONFIG = {
         countryCode: 'es',
         publicationId: 'es.scenic-2017.appspot.com',
     },
+    'ie': {
+        name: 'The Scenic - Ireland',
+        countryCode: 'ie',
+        publicationId: 'ie.scenic-2017.appspot.com',
+    },
     'in': {
         name: 'The Scenic - India',
         countryCode: 'in',
