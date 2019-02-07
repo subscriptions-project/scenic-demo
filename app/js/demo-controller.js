@@ -67,8 +67,8 @@ export class DemoPaywallController {
     entitlementsPromise.then(entitlements => {
       log('got entitlements: ', entitlements, entitlements.enablesThis());
       if (entitlements && entitlements.enablesThis()) {
-        if (this.completeDeferredAccountCreation_(entitlements)) {
-          // Do nothing.
+        if (!this.completeDeferredAccountCreation_(entitlements)) {
+          return; // Do nothing.
         } else {
           const account = new Account('John Doe', 'johndoe@email.com');
           const accountPromise = new Promise(resolve => {
