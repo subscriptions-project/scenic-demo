@@ -59,13 +59,38 @@ export class DemoPaywallController {
 
   start() {
     log('DemoPaywallController started');
+    this.subscriptions.configure({'experiments': ['propensity']});
     this.subscriptions.start();
+  }
+
+  /** @private */
+  getProductList_(entitlements) {
+    const products = [];
+    const entitlementsJson = entitlements.json();
+    const productsJson = entitlementsJson['entitlements'];
+    for(i = 0; i < productsJson.length; i++) {
+      const productList = productsJson[i].json()['products'];
+      productList.foreach(product => {
+        products.push(product);
+      })
+    }
+    return products;
   }
 
   /** @private */
   onEntitlements_(entitlementsPromise) {
     entitlementsPromise.then(entitlements => {
       log('got entitlements: ', entitlements, entitlements.enablesThis());
+      if (entitlements) {
+        const products = this.getProductList_(entitlements);
+        this.subscriptions.getPropensityModule().then(module => {
+          if (products.length > 0) {
+            module.sendSubscriptionState('yes', {'product': products});
+          } else {
+            module.sendSubscriptionState('no');
+          }
+        });
+      }
       if (entitlements && entitlements.enablesThis()) {
         if (!this.completeDeferredAccountCreation_(entitlements)) {
           return; // Do nothing.
@@ -94,6 +119,9 @@ export class DemoPaywallController {
       } else {
         // In a simplest case, just launch offers flow.
         this.subscriptions.showOffers();
+        this.subscriptions.getPropensityModule().then(module => {
+          module.sendEvent('offers_shown');
+        });
       }
     }, reason => {
       log('entitlements failed: ', reason);
@@ -152,6 +180,10 @@ export class DemoPaywallController {
       setTimeout(() => {
         response.complete().then(() => {
           log('subscription has been confirmed');
+          this.subscriptions.getPropensityModule().then(module => {
+            const products = this.getProductList_(response.json()['entitlements']);
+            module.sendEvent('payment_complete', {'product': products});
+          });
           // Open the content.
           this.subscriptions.reset();
           this.start();
