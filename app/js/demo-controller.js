@@ -63,16 +63,22 @@ export class DemoPaywallController {
     this.subscriptions.start();
   }
 
-  /** @private */
-  getProductList_(entitlements) {
+  /**
+   * Returns a list of products
+   * @param {!JsonObject} ents
+   * @return {!Array<string>}
+   * @private
+   */
+  getProductList(ents) {
     const products = [];
-    const entitlementsJson = entitlements.json();
-    const productsJson = entitlementsJson['entitlements'];
-    for(i = 0; i < productsJson.length; i++) {
-      const productList = productsJson[i].json()['products'];
-      productList.foreach(product => {
+    const entitlements = ents && ents['entitlements'];
+    for (i = 0; i < entitlements.length; i++) {
+      const entitlement = entitlements[i];
+      const entitlements_products = entitlements[entitlement.products];
+      for(j = 0; j < entitlements_products.length; j++) {
+        const product = entitlements_products[j];
         products.push(product);
-      })
+      }
     }
     return products;
   }
@@ -82,7 +88,7 @@ export class DemoPaywallController {
     entitlementsPromise.then(entitlements => {
       log('got entitlements: ', entitlements, entitlements.enablesThis());
       if (entitlements) {
-        const products = this.getProductList_(entitlements);
+        const products = this.getProductList_(entitlements.json());
         this.subscriptions.getPropensityModule().then(module => {
           if (products.length > 0) {
             module.sendSubscriptionState('yes', {'product': products});
@@ -120,7 +126,7 @@ export class DemoPaywallController {
         // In a simplest case, just launch offers flow.
         this.subscriptions.showOffers();
         this.subscriptions.getPropensityModule().then(module => {
-          module.sendEvent('offers_shown');
+          module.sendEvent('offers_shown', {'offers': []});
         });
       }
     }, reason => {
@@ -181,7 +187,9 @@ export class DemoPaywallController {
         response.complete().then(() => {
           log('subscription has been confirmed');
           this.subscriptions.getPropensityModule().then(module => {
-            const products = this.getProductList_(response.json()['entitlements']);
+            const jsonResponse = response && response.json();
+            const entitlementsJson = jsonResponse && jsonResponse['entitlements'];
+            const products = this.getProductList_(entitlementsJson);
             module.sendEvent('payment_complete', {'product': products});
           });
           // Open the content.

@@ -27,6 +27,7 @@ const useHttps = argv.https != undefined;
 const quiet = argv.quiet != undefined;
 const publicationId = argv.publicationId || 'scenic-2017.appspot.com';
 const ampLocal = argv.ampLocal != undefined;
+const adsServer = argv.adsServer || 'https://pubads.g.doubleclick.net';
 
 /**
  * Starts a simple http server at the repository root
@@ -49,6 +50,7 @@ function serve() {
       'SERVE_QUIET': quiet,
       'SERVE_PUBID': publicationId,
       'SERVE_AMP_LOCAL': ampLocal,
+      'SERVER_ADS': adsServer,
     },
   })
   .once('quit', function() {
@@ -76,6 +78,7 @@ gulp.task(
         'quiet': '  Do not log HTTP requests (default: false)',
         'publicationId': '  Sample publicationId',
         'ampLocal': '  Run against local AMP installation',
+        'adsServer': ' The server endpoint for propensity APIs',
       },
     });
 
