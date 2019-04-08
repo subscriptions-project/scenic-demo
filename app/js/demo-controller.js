@@ -37,7 +37,6 @@ export class DemoPaywallController {
   constructor(subscriptions, opt_options) {
     /** @const {!Subscriptions} */
     this.subscriptions = subscriptions;
-
     this.subscriptions.setOnEntitlementsResponse(
         this.onEntitlements_.bind(this));
     this.subscriptions.setOnLoginRequest(this.loginRequest_.bind(this));
@@ -59,7 +58,6 @@ export class DemoPaywallController {
 
   start() {
     log('DemoPaywallController started');
-    this.subscriptions.configure({'experiments': ['propensity']});
     this.subscriptions.start();
   }
 
@@ -69,7 +67,7 @@ export class DemoPaywallController {
    * @return {!Array<string>}
    * @private
    */
-  getProductList(ents) {
+  getProductList_(ents) {
     const products = [];
     const entitlements = ents && ents['entitlements'];
     for (i = 0; i < entitlements.length; i++) {
@@ -125,8 +123,9 @@ export class DemoPaywallController {
       } else {
         // In a simplest case, just launch offers flow.
         this.subscriptions.showOffers();
+        let products = [];
         this.subscriptions.getPropensityModule().then(module => {
-          module.sendEvent('offers_shown', {'offers': []});
+          module.sendEvent('offers_shown', {'offers': products});
         });
       }
     }, reason => {
