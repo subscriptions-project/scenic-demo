@@ -72,7 +72,7 @@ export class DemoPaywallController {
     const entitlements = ents && ents['entitlements'];
     for (i = 0; i < entitlements.length; i++) {
       const entitlement = entitlements[i];
-      const entitlements_products = entitlements[entitlement.products];
+      const entitlements_products = entitlement['products'];
       for(j = 0; j < entitlements_products.length; j++) {
         const product = entitlements_products[j];
         products.push(product);
