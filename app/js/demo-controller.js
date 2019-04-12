@@ -37,6 +37,7 @@ export class DemoPaywallController {
   constructor(subscriptions, opt_options) {
     /** @const {!Subscriptions} */
     this.subscriptions = subscriptions;
+
     this.subscriptions.setOnEntitlementsResponse(
         this.onEntitlements_.bind(this));
     this.subscriptions.setOnLoginRequest(this.loginRequest_.bind(this));
