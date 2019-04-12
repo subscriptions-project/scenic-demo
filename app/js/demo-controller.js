@@ -76,9 +76,9 @@ export class DemoPaywallController {
     }
     for (i = 0; i < entitlements.length; i++) {
       const entitlement = entitlements[i];
-      const entitlements_products = entitlement['products'];
-      for(j = 0; j < entitlements_products.length; j++) {
-        const product = entitlements_products[j];
+      const entitlement_products = entitlement['products'];
+      for(j = 0; j < entitlement_products.length; j++) {
+        const product = entitlement_products[j];
         products.push(product);
       }
     }
