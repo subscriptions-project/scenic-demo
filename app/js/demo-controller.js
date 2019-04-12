@@ -15,6 +15,7 @@
  */
 
 import {log} from './log';
+import { timingSafeEqual } from 'crypto';
 
 class Account {
   constructor(name, email) {
@@ -89,11 +90,15 @@ export class DemoPaywallController {
         const products = this.getProductList_(entitlements.json());
         this.subscriptions.getPropensityModule().then(module => {
           if (products.length > 0) {
-            module.sendSubscriptionState('yes', {'product': products});
+            module.sendSubscriptionState('subscriber', {'product': products});
           } else {
-            module.sendSubscriptionState('no');
+            module.sendSubscriptionState('non_subscriber');
           }
         });
+      } else {
+         this.subscriptions.getPropensityModule().then(module => {
+           module.sendSubscriptionState('unknown');
+         });
       }
       if (entitlements && entitlements.enablesThis()) {
         if (!this.completeDeferredAccountCreation_(entitlements)) {
