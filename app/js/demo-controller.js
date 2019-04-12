@@ -71,6 +71,9 @@ export class DemoPaywallController {
   getProductList_(ents) {
     const products = [];
     const entitlements = ents && ents['entitlements'];
+    if (!entitlements) {
+      return products;
+    }
     for (i = 0; i < entitlements.length; i++) {
       const entitlement = entitlements[i];
       const entitlements_products = entitlement['products'];
@@ -86,6 +89,7 @@ export class DemoPaywallController {
   onEntitlements_(entitlementsPromise) {
     entitlementsPromise.then(entitlements => {
       log('got entitlements: ', entitlements, entitlements.enablesThis());
+      // Send event upon subscription state of the user discovery
       if (entitlements) {
         const products = this.getProductList_(entitlements.json());
         this.subscriptions.getPropensityModule().then(module => {
@@ -126,12 +130,13 @@ export class DemoPaywallController {
               });
         }
       } else {
-        // A list of offers to show to the user, if available.
-        const offers = [];
         // In a simplest case, just launch offers flow.
         this.subscriptions.showOffers();
         this.subscriptions.getPropensityModule().then(module => {
-          module.sendEvent('offers_shown', {'offers': offers});
+          // If a list of offers was passed in to showOffers() or some
+          // other interface that displays offers, that list can be
+          // sent here instead of an empty array.
+          module.sendEvent('offers_shown', {'offers': []});
         });
       }
     }, reason => {
@@ -191,6 +196,7 @@ export class DemoPaywallController {
       setTimeout(() => {
         response.complete().then(() => {
           log('subscription has been confirmed');
+          // Payment confirmation received, send payment_complete event
           this.subscriptions.getPropensityModule().then(module => {
             const jsonResponse = response && response.json();
             const entitlementsJson = jsonResponse && jsonResponse['entitlements'];
