@@ -62,10 +62,48 @@ export class DemoPaywallController {
     this.subscriptions.start();
   }
 
+  /**
+   * Returns a list of products
+   * @param {!JsonObject} ents
+   * @return {!Array<string>}
+   * @private
+   */
+  getProductList_(ents) {
+    const products = [];
+    const entitlements = ents && ents['entitlements'];
+    if (!entitlements) {
+      return products;
+    }
+    for (let i = 0; i < entitlements.length; i++) {
+      const entitlement = entitlements[i];
+      const entitlementProducts = entitlement['products'];
+      for (let j = 0; j < entitlementProducts.length; j++) {
+        const product = entitlementProducts[j];
+        products.push(product);
+      }
+    }
+    return products;
+  }
+
   /** @private */
   onEntitlements_(entitlementsPromise) {
     entitlementsPromise.then(entitlements => {
       log('got entitlements: ', entitlements, entitlements.enablesThis());
+      // Send event upon discovery of the user's subscription state
+      if (entitlements) {
+        const products = this.getProductList_(entitlements.json());
+        this.subscriptions.getPropensityModule().then(module => {
+          if (products.length > 0) {
+            module.sendSubscriptionState('subscriber', {'product': products});
+          } else {
+            module.sendSubscriptionState('non_subscriber');
+          }
+        });
+      } else {
+        this.subscriptions.getPropensityModule().then(module => {
+          module.sendSubscriptionState('unknown');
+        });
+      }
       if (entitlements && entitlements.enablesThis()) {
         if (!this.completeDeferredAccountCreation_(entitlements)) {
           return; // Do nothing.
@@ -94,6 +132,12 @@ export class DemoPaywallController {
       } else {
         // In a simplest case, just launch offers flow.
         this.subscriptions.showOffers();
+        this.subscriptions.getPropensityModule().then(module => {
+          // If a list of offers was passed in to showOffers() or some
+          // other interface that displays offers, that list can be
+          // sent here instead of an empty array.
+          module.sendEvent('offers_shown', {'offers': []});
+        });
       }
     }, reason => {
       log('entitlements failed: ', reason);
@@ -152,6 +196,14 @@ export class DemoPaywallController {
       setTimeout(() => {
         response.complete().then(() => {
           log('subscription has been confirmed');
+          // Payment confirmation received, send payment_complete event
+          this.subscriptions.getPropensityModule().then(module => {
+            const jsonResponse = response && response.json();
+            const entitlementsJson =
+                jsonResponse && jsonResponse['entitlements'];
+            const products = this.getProductList_(entitlementsJson);
+            module.sendEvent('payment_complete', {'product': products});
+          });
           // Open the content.
           this.subscriptions.reset();
           this.start();
