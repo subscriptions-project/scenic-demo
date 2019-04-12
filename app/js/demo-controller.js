@@ -89,7 +89,7 @@ export class DemoPaywallController {
   onEntitlements_(entitlementsPromise) {
     entitlementsPromise.then(entitlements => {
       log('got entitlements: ', entitlements, entitlements.enablesThis());
-      // Send event upon subscription state of the user discovery
+      // Send event upon discovery of the user's subscription state
       if (entitlements) {
         const products = this.getProductList_(entitlements.json());
         this.subscriptions.getPropensityModule().then(module => {
