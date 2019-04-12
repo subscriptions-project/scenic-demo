@@ -74,11 +74,11 @@ export class DemoPaywallController {
     if (!entitlements) {
       return products;
     }
-    for (i = 0; i < entitlements.length; i++) {
+    for (let i = 0; i < entitlements.length; i++) {
       const entitlement = entitlements[i];
-      const entitlement_products = entitlement['products'];
-      for(j = 0; j < entitlement_products.length; j++) {
-        const product = entitlement_products[j];
+      const entitlementProducts = entitlement['products'];
+      for (let j = 0; j < entitlementProducts.length; j++) {
+        const product = entitlementProducts[j];
         products.push(product);
       }
     }
@@ -100,9 +100,9 @@ export class DemoPaywallController {
           }
         });
       } else {
-         this.subscriptions.getPropensityModule().then(module => {
-           module.sendSubscriptionState('unknown');
-         });
+        this.subscriptions.getPropensityModule().then(module => {
+          module.sendSubscriptionState('unknown');
+        });
       }
       if (entitlements && entitlements.enablesThis()) {
         if (!this.completeDeferredAccountCreation_(entitlements)) {
@@ -199,7 +199,8 @@ export class DemoPaywallController {
           // Payment confirmation received, send payment_complete event
           this.subscriptions.getPropensityModule().then(module => {
             const jsonResponse = response && response.json();
-            const entitlementsJson = jsonResponse && jsonResponse['entitlements'];
+            const entitlementsJson =
+                jsonResponse && jsonResponse['entitlements'];
             const products = this.getProductList_(entitlementsJson);
             module.sendEvent('payment_complete', {'product': products});
           });
