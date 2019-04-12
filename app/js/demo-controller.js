@@ -15,7 +15,6 @@
  */
 
 import {log} from './log';
-import { timingSafeEqual } from 'crypto';
 
 class Account {
   constructor(name, email) {
@@ -126,11 +125,12 @@ export class DemoPaywallController {
               });
         }
       } else {
+        // A list of offers to show to the user, if available.
+        const offers = [];
         // In a simplest case, just launch offers flow.
         this.subscriptions.showOffers();
-        let products = [];
         this.subscriptions.getPropensityModule().then(module => {
-          module.sendEvent('offers_shown', {'offers': products});
+          module.sendEvent('offers_shown', {'offers': offers});
         });
       }
     }, reason => {

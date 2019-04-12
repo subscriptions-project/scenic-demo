@@ -20,7 +20,6 @@
  *    name: string,
  *    countryCode: string,
  *    publicationId: string,
- *    adsServer: string,
  * }}
  */
 let Config;
@@ -39,7 +38,6 @@ const DEFAULT_CONFIG = {
     name: 'The Scenic - USA',
     countryCode: 'us',
     publicationId: process.env.SERVE_PUBID || 'scenic-2017.appspot.com',
-    adsServer: process.env.AD_SERVER || 'https://pubads.g.doubleclick.net',
 }
 
 /** @const {Object<Config>} */
