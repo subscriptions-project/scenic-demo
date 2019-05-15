@@ -23,6 +23,44 @@ class Account {
   }
 }
 
+class PropensityModule {
+  /**
+   * @param {!Subscriptions} subscriptions
+   */
+  constructor(subscriptions) {
+    /** @private @const {!Subscriptions} */
+    this.subscriptions_ = subscriptions;
+  }
+
+  /**
+   * @param {!Object} event
+   */
+  sendEvent(event) {
+    this.subscriptions_.getPropensityModule().then(module => {
+      module.sendEvent(event);
+    });
+  }
+
+  /**
+   * @param {string} state
+   * @param {?Object} jsonEntitlements
+   */
+  sendSubscriptionState(state, jsonEntitlements) {
+    this.subscriptions_.getPropensityModule().then(module => {
+      module.sendSubscriptionState(state, jsonEntitlements);
+    });
+  }
+
+  /**
+   * @param {?string} type
+   * @return {!Promise<!Object>}
+   */
+  getPropensityScore(type) {
+    return this.subscriptions_.getPropensityModule().then(module => {
+      return module.getPropensityScore();
+    });
+  }
+}
 /**
  * Demo paywall controller to demonstrate some key features.
  */
@@ -55,6 +93,9 @@ export class DemoPaywallController {
     /** @private @const {boolean} */
     this.consentRequired_ = (opt_options &&
         opt_options['consentRequired'] == 'true') ? true : false;
+
+    /** @private @const {!propensityMoudle} */
+    this.propensityModule_ = new PropensityModule(subscriptions);
   }
 
   start() {
@@ -92,17 +133,13 @@ export class DemoPaywallController {
       // Send event upon discovery of the user's subscription state
       if (entitlements) {
         const products = this.getProductList_(entitlements.json());
-        this.subscriptions.getPropensityModule().then(module => {
-          if (products.length > 0) {
-            module.sendSubscriptionState('subscriber', {'product': products});
-          } else {
-            module.sendSubscriptionState('non_subscriber');
-          }
-        });
+        if (products.length > 0) {
+          this.propensityModule_.sendSubscriptionState('subscriber', {'product': products});
+        } else {
+          this.propensityModule_.sendSubscriptionState('non_subscriber');
+        }
       } else {
-        this.subscriptions.getPropensityModule().then(module => {
-          module.sendSubscriptionState('unknown');
-        });
+        this.propensityModule_.sendSubscriptionState('unknown');
       }
       if (entitlements && entitlements.enablesThis()) {
         if (!this.completeDeferredAccountCreation_(entitlements)) {
@@ -202,18 +239,16 @@ export class DemoPaywallController {
         response.complete().then(() => {
           log('subscription has been confirmed');
           // Payment confirmation received, send payment_complete event
-          this.subscriptions.getPropensityModule().then(module => {
-            const jsonResponse = response && response.json();
-            const entitlementsJson =
-                jsonResponse && jsonResponse['entitlements'];
-            const products = this.getProductList_(entitlementsJson);
-            module.sendEvent(
-              {
-                name: 'payment_complete',
-                active: true,
-                data: {'product': products}
-              });
-          });
+          const jsonResponse = response && response.json();
+          const entitlementsJson =
+              jsonResponse && jsonResponse['entitlements'];
+          const products = this.getProductList_(entitlementsJson);
+          this.propensityModule_.sendEvent(
+            {
+              name: 'payment_complete',
+              active: true,
+              data: {'product': products}
+            });
           // Open the content.
           this.subscriptions.reset();
           this.start();
