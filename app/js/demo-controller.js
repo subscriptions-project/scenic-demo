@@ -136,7 +136,12 @@ export class DemoPaywallController {
           // If a list of offers was passed in to showOffers() or some
           // other interface that displays offers, that list can be
           // sent here instead of an empty array.
-          module.sendEvent('offers_shown', {'offers': []});
+          module.sendEvent(
+            {
+              name: 'offers_shown',
+              active: false,
+              data: {'offers': []}
+            });
         });
       }
     }, reason => {
@@ -202,7 +207,12 @@ export class DemoPaywallController {
             const entitlementsJson =
                 jsonResponse && jsonResponse['entitlements'];
             const products = this.getProductList_(entitlementsJson);
-            module.sendEvent('payment_complete', {'product': products});
+            module.sendEvent(
+              {
+                name: 'payment_complete',
+                active: true,
+                data: {'product': products}
+              });
           });
           // Open the content.
           this.subscriptions.reset();
