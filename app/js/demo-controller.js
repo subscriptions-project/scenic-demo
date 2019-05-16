@@ -56,7 +56,7 @@ class PropensityModule {
    * @return {!Promise<!Object>}
    */
   getPropensityScore(type) {
-    return this.subscriptions_.getPropensityModule().then(module => {
+    return this.subscriptions_.getPropensityModule(type).then(module => {
       return module.getPropensityScore();
     });
   }
@@ -134,7 +134,8 @@ export class DemoPaywallController {
       if (entitlements) {
         const products = this.getProductList_(entitlements.json());
         if (products.length > 0) {
-          this.propensityModule_.sendSubscriptionState('subscriber', {'product': products});
+          this.propensityModule_.sendSubscriptionState(
+              'subscriber', {'product': products});
         } else {
           this.propensityModule_.sendSubscriptionState('non_subscriber');
         }
@@ -174,11 +175,11 @@ export class DemoPaywallController {
           // other interface that displays offers, that list can be
           // sent here instead of an empty array.
           module.sendEvent(
-            {
-              name: 'offers_shown',
-              active: false,
-              data: {'offers': []}
-            });
+              {
+                name: 'offers_shown',
+                active: false,
+                data: {'offers': []},
+              });
         });
       }
     }, reason => {
@@ -244,11 +245,11 @@ export class DemoPaywallController {
               jsonResponse && jsonResponse['entitlements'];
           const products = this.getProductList_(entitlementsJson);
           this.propensityModule_.sendEvent(
-            {
-              name: 'payment_complete',
-              active: true,
-              data: {'product': products}
-            });
+              {
+                name: 'payment_complete',
+                active: true,
+                data: {'product': products},
+              });
           // Open the content.
           this.subscriptions.reset();
           this.start();
