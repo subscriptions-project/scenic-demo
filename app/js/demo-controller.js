@@ -112,7 +112,7 @@ export class DemoPaywallController {
                 } else {
                   log('Not available: ', scoreDetail.error);
                 }
-              })
+              });
             } else {
               let reason;
               if (score.header) {
@@ -160,11 +160,11 @@ export class DemoPaywallController {
           // other interface that displays offers, that list can be
           // sent here instead of an empty array.
           module.sendEvent(
-            {
-              name: 'offers_shown',
-              active: false,
-              data: {'offers': []}
-            });
+              {
+                name: 'offers_shown',
+                active: false,
+                data: {'offers': []},
+              });
         });
       }
     }, reason => {
@@ -231,11 +231,11 @@ export class DemoPaywallController {
                 jsonResponse && jsonResponse['entitlements'];
             const products = this.getProductList_(entitlementsJson);
             module.sendEvent(
-              {
-                name: 'payment_complete',
-                active: true,
-                data: {'product': products}
-              });
+                {
+                  name: 'payment_complete',
+                  active: true,
+                  data: {'product': products},
+                });
           });
           // Open the content.
           this.subscriptions.reset();
