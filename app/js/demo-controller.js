@@ -44,6 +44,7 @@ export class DemoPaywallController {
     this.subscriptions.setOnLinkComplete(this.linkComplete_.bind(this));
     this.subscriptions.setOnSubscribeResponse(
         this.subscribeResponse_.bind(this));
+    this.subscriptions.configure({'experiments': ['hejira']});
 
     /** @const {?Entitlements} */
     this.entitlements = null;
@@ -98,6 +99,28 @@ export class DemoPaywallController {
           } else {
             module.sendSubscriptionState('non_subscriber');
           }
+          // Get initial propensity scores
+          module.getPropensity().then(score => {
+            if (score.header && score.header.ok) {
+              const scores = score.body.scores;
+              scores.forEach(scoreDetail => {
+                const value = scoreDetail.score && scoreDetail.score.value;
+                log('Propensity to subscribe for ', scoreDetail.product);
+                if (value) {
+                  log('bucketed: ', scoreDetail.score.bucketed);
+                  log('score: ', value);
+                } else {
+                  log('Not available: ', scoreDetail.error);
+                }
+              });
+            } else {
+              let reason;
+              if (score.header) {
+                reason = score.body && score.body.error;
+              }
+              log('Propensity score unavailable: ', reason);
+            }
+          });
         });
       } else {
         this.subscriptions.getPropensityModule().then(module => {
@@ -137,11 +160,11 @@ export class DemoPaywallController {
           // other interface that displays offers, that list can be
           // sent here instead of an empty array.
           module.sendEvent(
-            {
-              name: 'offers_shown',
-              active: false,
-              data: {'offers': []}
-            });
+              {
+                name: 'offers_shown',
+                active: false,
+                data: {'offers': []},
+              });
         });
       }
     }, reason => {
@@ -208,11 +231,11 @@ export class DemoPaywallController {
                 jsonResponse && jsonResponse['entitlements'];
             const products = this.getProductList_(entitlementsJson);
             module.sendEvent(
-              {
-                name: 'payment_complete',
-                active: true,
-                data: {'product': products}
-              });
+                {
+                  name: 'payment_complete',
+                  active: true,
+                  data: {'product': products},
+                });
           });
           // Open the content.
           this.subscriptions.reset();
