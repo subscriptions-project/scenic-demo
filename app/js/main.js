@@ -118,7 +118,7 @@ function startFlowAuto() {
     return;
   }
   if (flow === 'attachSmartButton') {
-    whenReady(function(subscriptions) {
+    whenReady(subscriptions => {
       let smartButton = document.querySelector('button#smartButton');
       if (!smartButton) {
         // Create a DOM element for SmartButton demo.
