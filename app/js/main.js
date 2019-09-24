@@ -117,6 +117,29 @@ function startFlowAuto() {
     });
     return;
   }
+  if (flow === 'attachSmartButton') {
+    whenReady(function(subscriptions) {
+      let smartButton = document.querySelector('button#smartButton');
+      if (!smartButton) {
+        // Create a DOM element for SmartButton demo.
+        smartButton = document.createElement('button');
+        smartButton.id = 'smartButton';
+        const firstParagraph = document.querySelector('.text');
+        const container = firstParagraph.parentNode;
+        container.insertBefore(smartButton, firstParagraph);
+      }
+      subscriptions.attachSmartButton(smartButton,
+          {
+            theme: 'light',
+            lang: 'en',
+            messageTextColor: 'rgba(66, 133, 244, 0.95)',
+          },
+          () => {
+            subscriptions.showOffers({isClosable: true});
+          });
+    });
+    return;
+  }
   startFlow(flow);
 }
 
