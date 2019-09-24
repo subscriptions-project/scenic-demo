@@ -117,7 +117,7 @@ function startFlowAuto() {
     });
     return;
   }
-  if (flow === 'attachSmartButton') {
+  if (flow === 'smartbutton') {
     whenReady(subscriptions => {
       let smartButton = document.querySelector('button#smartButton');
       if (!smartButton) {
