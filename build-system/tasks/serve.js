@@ -18,7 +18,8 @@
 const argv = require('minimist')(process.argv.slice(2));
 const gulp = require('gulp-help')(require('gulp'));
 const path = require('path');
-const util = require('gulp-util');
+const colors = require('ansi-colors');
+const log = require('fancy-log');
 const nodemon = require('nodemon');
 
 const host = argv.host || 'localhost';
@@ -32,7 +33,7 @@ const ampLocal = argv.ampLocal != undefined;
  * Starts a simple http server at the repository root
  */
 function serve() {
-  util.log(util.colors.green('Serving unminified js'));
+  log(colors.green('Serving unminified js'));
 
   nodemon({
     script: require.resolve('../server/server.js'),
@@ -52,10 +53,10 @@ function serve() {
     },
   })
   .once('quit', function() {
-    util.log(util.colors.green('Shutting down server'));
+    log(colors.green('Shutting down server'));
   });
   if (!quiet) {
-    util.log(util.colors.yellow('Run `gulp build` then go to ' + getHost() + '/'
+    log(colors.yellow('Run `gulp build` then go to ' + getHost() + '/'
     ));
   }
 }

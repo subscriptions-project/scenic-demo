@@ -23,11 +23,10 @@ const del = require('del');
 const fs = require('fs-extra');
 const gulp = $$.help(require('gulp'));
 const lazypipe = require('lazypipe');
-const minimatch = require('minimatch');
-const minimist = require('minimist');
 const source = require('vinyl-source-stream');
-const touch = require('touch');
 const watchify = require('watchify');
+const colors = require('ansi-colors');
+const log = require('fancy-log');
 
 
 /**
@@ -113,9 +112,9 @@ function compile(opt_opts) {
     return toPromise(bundler.bundle()
         .on('error', function(err) {
           if (err instanceof SyntaxError) {
-            console.error($$.util.colors.red('Syntax error:', err.message));
+            console.error(colors.red('Syntax error:', err.message));
           } else {
-            console.error($$.util.colors.red(err.message));
+            console.error(colors.red(err.message));
           }
         })
         .pipe(lazybuild())
@@ -190,10 +189,10 @@ function endBuildStep(stepName, targetName, startTime) {
     timeString += secs + '.' + ms + ' s)';
   }
   if (!process.env.TRAVIS) {
-    $$.util.log(
+    log(
         stepName,
-        $$.util.colors.cyan(targetName),
-        $$.util.colors.green(timeString));
+        colors.cyan(targetName),
+        colors.green(timeString));
   }
 }
 
