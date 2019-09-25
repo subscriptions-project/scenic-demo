@@ -24,3 +24,11 @@ Then start the server with gulp.
 ```bash
 gulp
 ```
+
+
+## How to deploy the demo
+
+- Install gcloud: https://cloud.google.com/sdk/install
+- Login: `gcloud auth login`
+- Set the project: `gcloud config set project scenic-2017`
+- Deploy: `npm run deploy`
