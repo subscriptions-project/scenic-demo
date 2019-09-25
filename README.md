@@ -31,4 +31,4 @@ gulp
 - Install gcloud: https://cloud.google.com/sdk/install
 - Login: `gcloud auth login`
 - Set the project: `gcloud config set project scenic-2017`
-- Deploy: `gcloud app deploy`
+- Deploy: `npm run deploy`
