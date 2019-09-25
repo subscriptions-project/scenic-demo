@@ -12,7 +12,6 @@
 # limitations under the License.
 
 # [START app_yaml]
-runtime: custom
-env: flex
-skip_files: yarn.lock
+runtime: nodejs10
+instance_class: F4_1G
 # [END app_yaml]
