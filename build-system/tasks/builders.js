@@ -196,8 +196,14 @@ function endBuildStep(stepName, targetName, startTime) {
   }
 }
 
+clean.description = 'Removes build output';
+gulp.task('clean', clean);
 
-gulp.task('clean', 'Removes build output', clean);
-gulp.task('watch', 'Watches for changes in files, re-build', watch);
-gulp.task('build', 'Builds the demo', build);
-gulp.task('dist', 'Build the demo in prod mode', dist);
+watch.description = 'Watches for changes in files, re-build';
+gulp.task('watch', watch);
+
+build.description = 'Builds the demo';
+gulp.task('build', build);
+
+dist.description = 'Build the demo in prod mode';
+gulp.task('dist', dist);

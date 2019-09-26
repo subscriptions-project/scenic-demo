@@ -15,21 +15,8 @@
  */
 
 const $$ = require('gulp-load-plugins')();
-const fs = require('fs-extra');
 const gulp = $$.help(require('gulp'));
-const gulpSequence = require('gulp-sequence')
-const lazypipe = require('lazypipe');
-const minimatch = require('minimatch');
-const minimist = require('minimist');
-const source = require('vinyl-source-stream');
-const touch = require('touch');
-const watchify = require('watchify');
-
-/**
- * @const {!Object}
- */
-const argv =
-    minimist(process.argv.slice(2), {boolean: ['strictBabelTransform']});
+const {lint} = require('./build-system/tasks/lint');
 
 /** @const {number} */
 const NODE_MIN_VERSION = 4;
@@ -58,6 +45,5 @@ function checkMinVersion() {
 
 
 // Gulp tasks.
-gulp.task('presubmit', 'Run through all checks and tests',
-    gulpSequence('lint'));
-gulp.task('default', 'Same as "watch"', ['watch', 'serve']);
+gulp.task('presubmit', lint);
+gulp.task('default', gulp.series(['watch', 'serve']));
