@@ -22,7 +22,6 @@ module.exports = {
     '!{node_modules,build,dist,third_party,build-system}/**/*.*',
     '!eslint-rules/**/*.*',
     '!gulpfile.js',
-    '!karma.conf.js',
   ],
   jsonGlobs: [
     '**/*.json',
