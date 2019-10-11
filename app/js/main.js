@@ -140,6 +140,30 @@ function startFlowAuto() {
     });
     return;
   }
+  if (flow === 'updateSubscription') {
+    whenReady(subscriptions => {
+      let smartButton = document.querySelector('button#smartButton');
+      if (!smartButton) {
+        // Create a DOM element for SmartButton demo.
+        smartButton = document.createElement('button');
+        smartButton.id = 'smartButton';
+        const firstParagraph = document.querySelector('.text');
+        const container = firstParagraph.parentNode;
+        container.insertBefore(smartButton, firstParagraph);
+      }
+      subscriptions.attachButton(smartButton,
+          {
+            theme: 'light',
+            lang: 'en',
+            messageTextColor: 'rgba(66, 133, 244, 0.95)',
+          },
+          () => {
+            console.log(subscriptions);
+            subscriptions.showUpdateOffers({isClosable: true, oldSku: 'oldSku', skus: ['sku1', 'sku2']});
+          });
+    });
+    return;
+  }
   startFlow(flow);
 }
 
