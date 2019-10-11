@@ -158,7 +158,11 @@ function startFlowAuto() {
             messageTextColor: 'rgba(66, 133, 244, 0.95)',
           },
           () => {
-            subscriptions.showUpdateOffers({isClosable: true, oldSku: 'oldSku', skus: ['sku1', 'sku2']});
+            subscriptions.showUpdateOffers({
+              isClosable: true, 
+              oldSku: 'oldSku', 
+              skus: ['sku1', 'sku2'],
+            });
           });
     });
     return;
