@@ -85,7 +85,9 @@ function startFlow(flow, var_args) {
  * Selects the flow based on the URL query parameter.
  * The query parameter is the name of the function defined in runtime.
  * Defaults to 'showOffers'.
- * Current valid values are: 'showOffers', 'linkAccount', 'getEntitlements'.
+ * Current valid values are: 'showOffers', 'linkAccount', 'getEntitlements',
+ * 'demoConsentRequired', 'demoUnknownSubscription', 'smartbutton',
+ * and 'updateSubscription'.
  */
 function startFlowAuto() {
   const flow = (window.location.search || '').split('?')[1] || 'demo';
@@ -136,6 +138,33 @@ function startFlowAuto() {
           },
           () => {
             subscriptions.showOffers({isClosable: true});
+          });
+    });
+    return;
+  }
+  if (flow === 'updateSubscription') {
+    whenReady(subscriptions => {
+      let smartButton = document.querySelector('button#smartButton');
+      if (!smartButton) {
+        // Create a button that, when clicked, will trigger Update flow
+        smartButton = document.createElement('button');
+        smartButton.id = 'smartButton';
+        const firstParagraph = document.querySelector('.text');
+        const container = firstParagraph.parentNode;
+        container.insertBefore(smartButton, firstParagraph);
+      }
+      subscriptions.attachButton(smartButton,
+          {
+            theme: 'light',
+            lang: 'en',
+            messageTextColor: 'rgba(66, 133, 244, 0.95)',
+          },
+          () => {
+            subscriptions.showUpdateOffers({
+              isClosable: true,
+              oldSku: 'oldSku',
+              skus: ['sku1', 'sku2'],
+            });
           });
     });
     return;
