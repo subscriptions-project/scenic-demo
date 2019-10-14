@@ -1,11 +1,11 @@
-(function(){(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
+(function(){(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 exports.__esModule = true;
-var CSS = ".swg-dialog,.swg-toast{box-sizing:border-box;background-color:#fff!important}@media (max-height:640px), (max-width:640px){.swg-dialog,.swg-toast{width:480px!important;left:-240px!important;margin-left:50vw!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}@media (min-width:640px) and (min-height:640px){.swg-dialog{width:630px!important;left:-315px!important;margin-left:50vw!important;background-color:transparent!important;border:none!important}}@media (max-width:480px){.swg-dialog,.swg-toast{width:100%!important;left:0!important;right:0!important;margin-left:0!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}@-webkit-keyframes swg-notify{0%{-webkit-transform:translateY(100%);transform:translateY(100%);opacity:0}to{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes swg-notify-hide{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}to{-webkit-transform:translateY(100%);transform:translateY(100%);opacity:0}}\n/*# sourceURL=/./src/components/dialog.css*/";
+var CSS = ".swg-dialog,.swg-toast{box-sizing:border-box;background-color:#fff!important}.swg-toast{position:fixed!important;bottom:0!important;max-height:46px!important;z-index:2147483647!important;border:none!important}@media (max-height:640px), (max-width:640px){.swg-dialog,.swg-toast{width:480px!important;left:-240px!important;margin-left:50vw!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}@media (min-width:640px) and (min-height:640px){.swg-dialog{width:630px!important;left:-315px!important;margin-left:50vw!important;background-color:transparent!important;border:none!important}.swg-toast{left:0!important}}@media (max-width:480px){.swg-dialog,.swg-toast{width:100%!important;left:0!important;right:0!important;margin-left:0!important}}\n/*# sourceURL=/./src/components/dialog.css*/";
 exports.CSS = CSS;
 
 },{}],2:[function(require,module,exports){
 exports.__esModule = true;
-var CSS = "body{padding:0;margin:0}swg-container,swg-loading,swg-loading-animate,swg-loading-image{display:block}swg-loading-container{width:100%!important;display:-webkit-box!important;display:-ms-flexbox!important;display:flex!important;-webkit-box-align:center!important;-ms-flex-align:center!important;align-items:center!important;-webkit-box-pack:center!important;-ms-flex-pack:center!important;justify-content:center!important;min-height:148px!important;height:100%!important;bottom:0!important;margin-top:5px!important;z-index:2147483647!important}@media (min-height:630px), (min-width:630px){swg-loading-container{width:560px!important;margin-left:35px!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;background-color:#fff!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}swg-loading{z-index:2147483647!important;width:36px;height:36px;overflow:hidden;-webkit-animation:mspin-rotate 1568.63ms infinite linear;animation:mspin-rotate 1568.63ms infinite linear}swg-loading-animate{-webkit-animation:mspin-revrot 5332ms infinite steps(4);animation:mspin-revrot 5332ms infinite steps(4)}swg-loading-image{background-image:url('data:image/svg+xml;charset=utf-8;base64,DQo8c3ZnIHZlcnNpb249IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxMTY2NCIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDExNjY0IDM2Ij48ZGVmcz48cGF0aCBpZD0iYSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWRhc2hhcnJheT0iNTguOSIgZD0iTTE4IDUuNUExMi41IDEyLjUgMCAxIDEgNS41IDE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiLz48ZyBpZD0iYiI+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE3Ni42NiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzYuNTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzYuMzIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzUuODUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTc1LjE0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE3NC4xMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNzIuNzgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTcxLjAxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE2OC43OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNjYuMDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyNCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTYyLjczIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNjApIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE1OS4wMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzk2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNTUuMDQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQzMikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTUxLjA1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjE0Ny4yMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTA0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxNDMuNzEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU0MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTQwLjU0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEzNy43MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjEyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMzUuMjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTMyLjk4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2ODQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEzMS4wMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzIwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjkuMjYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDc1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTI3LjcxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3OTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyNi4zMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODI4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjUuMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODY0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjQuMDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDkwMCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTIzLjA0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5MzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyMi4xOSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMjEuNDMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMDgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyMC43NyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA0NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTIwLjE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTkuNjkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDExMTYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExOS4yNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTE1MikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE4Ljg5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTguNTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMjQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExOC4zMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI2MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE4LjEzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjk2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuOTgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEzMzIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExNy44OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTM2OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE3LjgyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDA0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQ0MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE3LjcyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDc2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTcuNDYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1MTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTU0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTE2LjI5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTg0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMTUuMjkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2MjApIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjExMy45NCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTY1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTEyLjE5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNjkyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMDkuOTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE3MjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEwNy4yMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTc2NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iMTAzLjk2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODAwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSIxMDAuMjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MzYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijk2LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODcyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI5Mi4zNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTkwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iODguNTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5NDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijg1LjA3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOTgwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI4MS45MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNzkuMTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwNTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9Ijc2LjYxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDg4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI3NC40IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMTI0KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI3Mi40NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE2MCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNzAuNzEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIxOTYpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY5LjE2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMjMyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2Ny43OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjI2OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjYuNTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY1LjQ5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMzQwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NC41MyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM3NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjMuNjgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0MTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYyLjkzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDQ4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2Mi4yNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjQ4NCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUyMCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjU1NikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjAuNzciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1OTIpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2MjgpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2NjQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5Ljg1IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNzAwKSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS42NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjczNikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjc3MikiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjgwOCkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuMzQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4NDQpIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODgwKSIvPjwvZz48ZyBpZD0iYyI+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjcwLjcxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMTk2KSIgb3BhY2l0eT0iLjA1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjY5LjE2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMjMyKSIgb3BhY2l0eT0iLjEiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjcuNzkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIyNjgpIiBvcGFjaXR5PSIuMTUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjYuNTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzMDQpIiBvcGFjaXR5PSIuMiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NS40OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM0MCkiIG9wYWNpdHk9Ii4yNSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2NC41MyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjM3NikiIG9wYWNpdHk9Ii4zIi8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYzLjY4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDEyKSIgb3BhY2l0eT0iLjM1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYyLjkzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNDQ4KSIgb3BhY2l0eT0iLjQiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjIuMjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0ODQpIiBvcGFjaXR5PSIuNDUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjEuNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUyMCkiIG9wYWNpdHk9Ii41Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYxLjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1NTYpIiBvcGFjaXR5PSIuNTUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNjAuNzciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1OTIpIiBvcGFjaXR5PSIuNiIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI2MC40IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNjI4KSIgb3BhY2l0eT0iLjY1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjYwLjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2NjQpIiBvcGFjaXR5PSIuNyIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS44NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjcwMCkiIG9wYWNpdHk9Ii43NSIvPjx1c2UgeGxpbms6aHJlZj0iI2EiIHN0cm9rZS1kYXNob2Zmc2V0PSI1OS42NSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjczNikiIG9wYWNpdHk9Ii44Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI3NzIpIiBvcGFjaXR5PSIuODUiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiBzdHJva2UtZGFzaG9mZnNldD0iNTkuNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjgwOCkiIG9wYWNpdHk9Ii45Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjM0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODQ0KSIgb3BhY2l0eT0iLjk1Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjU5LjMyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODgwKSIvPjwvZz48L2RlZnM+PHVzZSB4bGluazpocmVmPSIjYiIgc3Ryb2tlPSIjNDI4NWY0Ii8+PHVzZSB4bGluazpocmVmPSIjYyIgc3Ryb2tlPSIjZGI0NDM3Ii8+PHVzZSB4bGluazpocmVmPSIjYiIgc3Ryb2tlPSIjZGI0NDM3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOTE2KSIvPjx1c2UgeGxpbms6aHJlZj0iI2MiIHN0cm9rZT0iI2Y0YjQwMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjkxNikiLz48dXNlIHhsaW5rOmhyZWY9IiNiIiBzdHJva2U9IiNmNGI0MDAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU4MzIpIi8+PHVzZSB4bGluazpocmVmPSIjYyIgc3Ryb2tlPSIjMGY5ZDU4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1ODMyKSIvPjx1c2UgeGxpbms6aHJlZj0iI2IiIHN0cm9rZT0iIzBmOWQ1OCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODc0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiNjIiBzdHJva2U9IiM0Mjg1ZjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDg3NDgpIi8+PC9zdmc+');background-size:100%;width:11664px;height:36px;-webkit-animation:swg-loading-film 5332ms infinite steps(324);animation:swg-loading-film 5332ms infinite steps(324)}@-webkit-keyframes swg-loading-film{0%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-11664px);transform:translateX(-11664px)}}@keyframes swg-loading-film{0%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-11664px);transform:translateX(-11664px)}}@-webkit-keyframes mspin-rotate{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes mspin-rotate{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes mspin-revrot{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(-360deg);transform:rotate(-360deg)}}@keyframes mspin-revrot{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(-360deg);transform:rotate(-360deg)}}\n/*# sourceURL=/./src/ui/ui.css*/";
+var CSS = "body{padding:0;margin:0}swg-container,swg-loading,swg-loading-animate,swg-loading-image{display:block}swg-loading-container{width:100%!important;display:-ms-flexbox!important;display:flex!important;-ms-flex-align:center!important;align-items:center!important;-ms-flex-pack:center!important;justify-content:center!important;min-height:148px!important;height:100%!important;bottom:0!important;margin-top:5px!important;z-index:2147483647!important}@media (min-height:630px), (min-width:630px){swg-loading-container{width:560px!important;margin-left:35px!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;background-color:#fff!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}swg-loading{z-index:2147483647!important;width:36px;height:36px;overflow:hidden;animation:mspin-rotate 1568.63ms linear infinite}swg-loading-animate{animation:mspin-revrot 5332ms steps(4) infinite}swg-loading-image{background-image:url(/assets/loader.svg);background-size:100%;width:11664px;height:36px;animation:swg-loading-film 5332ms steps(324) infinite}@keyframes swg-loading-film{0%{transform:translateX(0)}to{transform:translateX(-11664px)}}@keyframes mspin-rotate{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}@keyframes mspin-revrot{0%{transform:rotate(0deg)}to{transform:rotate(-1turn)}}\n/*# sourceURL=/./src/ui/ui.css*/";
 exports.CSS = CSS;
 
 },{}],3:[function(require,module,exports){
@@ -542,7 +542,7 @@ module.exports = Promise;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- /** Version: 1.9 */
+ /** Version: 1.24 */
 'use strict';
 
 /*eslint no-unused-vars: 0*/
@@ -616,7 +616,7 @@ class ActivityResult {
  *   originVerified: (boolean|undefined),
  * }}
  */
-
+let ActivityRequest;
 
 
 /**
@@ -628,10 +628,16 @@ class ActivityResult {
  *   redirect is used. By default, the activity request is appended to the
  *   activity URL. This option can be used if the activity request is passed
  *   to the activity by some alternative means.
+ * - disableRedirectFallback: disallows popup fallback to redirect. By default
+ *   the redirect fallback is allowed. This option has to be used very carefully
+ *   because there are many user agents that may fail to open a popup and it
+ *   won't be always possible for the opener window to even be aware of such
+ *   failures.
  *
  * @typedef {{
  *   returnUrl: (string|undefined),
  *   skipRequestInUrl: (boolean|undefined),
+ *   disableRedirectFallback: (boolean|undefined),
  *   width: (number|undefined),
  *   height: (number|undefined),
  * }}
@@ -669,16 +675,327 @@ class ActivityPort {
 
 
 /**
- * Activity implementation. The host provides interfaces, callbacks and
- * signals for the activity's implementation to communicate with the client
- * and return the results.
+ * Activity client-side binding for messaging.
+ *
+ * Whether the host can or cannot receive a message depends on the type of
+ * host and its state. Ensure that the code has an alternative path if
+ * messaging is not available.
  *
  * @interface
  */
+class ActivityMessagingPort {
+
+  /**
+   * Returns the target window where host is loaded. May be unavailable.
+   * @return {?Window}
+   */
+  getTargetWin() {}
+
+  /**
+   * Sends a message to the host.
+   * @param {!Object} payload
+   */
+  message(payload) {}
+
+  /**
+   * Registers a callback to receive messages from the host.
+   * @param {function(!Object)} callback
+   */
+  onMessage(callback) {}
+
+  /**
+   * Creates a new communication channel or returns an existing one.
+   * @param {string=} opt_name
+   * @return {!Promise<!MessagePort>}
+   */
+  messageChannel(opt_name) {}
+}
+
+
+
+/** DOMException.ABORT_ERR name */
+const ABORT_ERR_NAME = 'AbortError';
+
+/** DOMException.ABORT_ERR = 20 */
+const ABORT_ERR_CODE = 20;
+
+/** @type {?HTMLAnchorElement} */
+let aResolver;
+
+
+/**
+ * @param {string} urlString
+ * @return {!HTMLAnchorElement}
+ */
+function parseUrl(urlString) {
+  if (!aResolver) {
+    aResolver = /** @type {!HTMLAnchorElement} */ (document.createElement('a'));
+  }
+  aResolver.href = urlString;
+  return /** @type {!HTMLAnchorElement} */ (aResolver);
+}
+
+
+/**
+ * @param {!Location|!URL|!HTMLAnchorElement} loc
+ * @return {string}
+ */
+function getOrigin(loc) {
+  if (loc.origin) {
+    return loc.origin;
+  }
+  // Make sure that the origin is normalized. Specifically on IE, host sometimes
+  // includes the default port, which is not per standard.
+  const protocol = loc.protocol;
+  let host = loc.host;
+  if (protocol == 'https:' && host.indexOf(':443') == host.length - 4) {
+    host = host.replace(':443', '');
+  } else if (protocol == 'http:' && host.indexOf(':80') == host.length - 3) {
+    host = host.replace(':80', '');
+  }
+  return protocol + '//' + host;
+}
+
+
+/**
+ * @param {string} urlString
+ * @return {string}
+ */
+function getOriginFromUrl(urlString) {
+  return getOrigin(parseUrl(urlString));
+}
+
+
+/**
+ * @param {string} urlString
+ * @return {string}
+ */
+function removeFragment(urlString) {
+  const index = urlString.indexOf('#');
+  if (index == -1) {
+    return urlString;
+  }
+  return urlString.substring(0, index);
+}
+
+
+/**
+ * Parses and builds Object of URL query string.
+ * @param {string} query The URL query string.
+ * @return {!Object<string, string>}
+ */
+function parseQueryString(query) {
+  if (!query) {
+    return {};
+  }
+  return (/^[?#]/.test(query) ? query.slice(1) : query)
+      .split('&')
+      .reduce((params, param) => {
+        const item = param.split('=');
+        const key = decodeURIComponent(item[0] || '');
+        const value = decodeURIComponent(item[1] || '');
+        if (key) {
+          params[key] = value;
+        }
+        return params;
+      }, {});
+}
+
+
+/**
+ * @param {string} queryString  A query string in the form of "a=b&c=d". Could
+ *   be optionally prefixed with "?" or "#".
+ * @param {string} param The param to get from the query string.
+ * @return {?string}
+ */
+function getQueryParam(queryString, param) {
+  return parseQueryString(queryString)[param];
+}
+
+
+/**
+ * Add a query-like parameter to the fragment string.
+ * @param {string} url
+ * @param {string} param
+ * @param {string} value
+ * @return {string}
+ */
+function addFragmentParam(url, param, value) {
+  return url +
+      (url.indexOf('#') == -1 ? '#' : '&') +
+      encodeURIComponent(param) + '=' + encodeURIComponent(value);
+}
+
+
+/**
+ * @param {string} queryString  A query string in the form of "a=b&c=d". Could
+ *   be optionally prefixed with "?" or "#".
+ * @param {string} param The param to remove from the query string.
+ * @return {?string}
+ */
+function removeQueryParam(queryString, param) {
+  if (!queryString) {
+    return queryString;
+  }
+  const search = encodeURIComponent(param) + '=';
+  let index = -1;
+  do {
+    index = queryString.indexOf(search, index);
+    if (index != -1) {
+      const prev = index > 0 ? queryString.substring(index - 1, index) : '';
+      if (prev == '' || prev == '?' || prev == '#' || prev == '&') {
+        let end = queryString.indexOf('&', index + 1);
+        if (end == -1) {
+          end = queryString.length;
+        }
+        queryString =
+            queryString.substring(0, index) +
+            queryString.substring(end + 1);
+      } else {
+        index++;
+      }
+    }
+  } while (index != -1 && index < queryString.length);
+  return queryString;
+}
+
+
+/**
+ * @param {!ActivityRequest} request
+ * @return {string}
+ */
+function serializeRequest(request) {
+  const map = {
+    'requestId': request.requestId,
+    'returnUrl': request.returnUrl,
+    'args': request.args,
+  };
+  if (request.origin !== undefined) {
+    map['origin'] = request.origin;
+  }
+  if (request.originVerified !== undefined) {
+    map['originVerified'] = request.originVerified;
+  }
+  return JSON.stringify(map);
+}
+
+
+/**
+ * @param {*} error
+ * @return {boolean}
+ */
+function isAbortError(error) {
+  if (!error || typeof error != 'object') {
+    return false;
+  }
+  return (error['name'] === ABORT_ERR_NAME);
+}
+
+
+/**
+ * Creates or emulates a DOMException of AbortError type.
+ * See https://heycam.github.io/webidl/#aborterror.
+ * @param {!Window} win
+ * @param {string=} opt_message
+ * @return {!DOMException}
+ */
+function createAbortError(win, opt_message) {
+  const message = 'AbortError' + (opt_message ? ': ' + opt_message : '');
+  let error = null;
+  if (typeof win['DOMException'] == 'function') {
+    // TODO(dvoytenko): remove typecast once externs are fixed.
+    const constr = /** @type {function(new:DOMException, string, string)} */ (
+        win['DOMException']);
+    try {
+      error = new constr(message, ABORT_ERR_NAME);
+    } catch (e) {
+      // Ignore. In particular, `new DOMException()` fails in Edge.
+    }
+  }
+  if (!error) {
+    // TODO(dvoytenko): remove typecast once externs are fixed.
+    const constr = /** @type {function(new:DOMException, string)} */ (
+        Error);
+    error = new constr(message);
+    error.name = ABORT_ERR_NAME;
+    error.code = ABORT_ERR_CODE;
+  }
+  return error;
+}
+
+
+/**
+ * Resolves the activity result as a promise:
+ *  - `OK` result is yielded as the promise's payload;
+ *  - `CANCEL` result is rejected with the `AbortError`;
+ *  - `FAILED` result is rejected with the embedded error.
+ *
+ * @param {!Window} win
+ * @param {!ActivityResult} result
+ * @param {function((!ActivityResult|!Promise))} resolver
+ */
+function resolveResult(win, result, resolver) {
+  if (result.ok) {
+    resolver(result);
+  } else {
+    const error = result.error || createAbortError(win);
+    error.activityResult = result;
+    resolver(Promise.reject(error));
+  }
+}
+
+
+/**
+ * @param {!Window} win
+ * @return {boolean}
+ */
+function isIeBrowser(win) {
+  // MSIE and Trident are typical user agents for IE browsers.
+  const nav = win.navigator;
+  return /Trident|MSIE|IEMobile/i.test(nav && nav.userAgent);
+}
+
+
+/**
+ * @param {!Window} win
+ * @return {boolean}
+ */
+function isEdgeBrowser(win) {
+  const nav = win.navigator;
+  return /Edge/i.test(nav && nav.userAgent);
+}
+
+
+/**
+ * @param {!Error} e
+ */
+function throwAsync(e) {
+  setTimeout(() => {throw e;});
+}
+
+
+/**
+ * Polyfill of the `Node.isConnected` API. See
+ * https://developer.mozilla.org/en-US/docs/Web/API/Node/isConnected.
+ * @param {!Node} node
+ * @return {boolean}
+ */
+function isNodeConnected(node) {
+  // Ensure that node is attached if specified. This check uses a new and
+  // fast `isConnected` API and thus only checked on platforms that have it.
+  // See https://www.chromestatus.com/feature/5676110549352448.
+  if ('isConnected' in node) {
+    return node['isConnected'];
+  }
+  // Polyfill.
+  const root = node.ownerDocument && node.ownerDocument.documentElement;
+  return (root && root.contains(node)) || false;
+}
 
 
 
 const SENTINEL = '__ACTIVITIES__';
+
 
 /**
  * The messenger helper for activity's port and host.
@@ -689,10 +1006,12 @@ class Messenger {
    * @param {!Window} win
    * @param {!Window|function():?Window} targetOrCallback
    * @param {?string} targetOrigin
+   * @param {boolean} requireTarget
    */
-  constructor(win, targetOrCallback, targetOrigin) {
+  constructor(win, targetOrCallback, targetOrigin, requireTarget) {
     /** @private @const {!Window} */
     this.win_ = win;
+
     /** @private @const {!Window|function():?Window} */
     this.targetOrCallback_ = targetOrCallback;
 
@@ -701,6 +1020,9 @@ class Messenger {
      * @private {?string}
      */
     this.targetOrigin_ = targetOrigin;
+
+    /** @private @const {boolean} */
+    this.requireTarget_ = requireTarget;
 
     /** @private {?Window} */
     this.target_ = null;
@@ -818,7 +1140,18 @@ class Messenger {
    * "start" command. See `sendStartCommand` method.
    */
   sendConnectCommand() {
-    this.sendCommand('connect', {'acceptsChannel': true});
+    // TODO(dvoytenko): MessageChannel is critically necessary for IE/Edge,
+    // since window messaging doesn't always work. It's also preferred as an API
+    // for other browsers: it's newer, cleaner and arguably more secure.
+    // Unfortunately, browsers currently do not propagate user gestures via
+    // MessageChannel, only via window messaging. This should be re-enabled
+    // once browsers fix user gesture propagation.
+    // See:
+    // Safari: https://bugs.webkit.org/show_bug.cgi?id=186593
+    // Chrome: https://bugs.chromium.org/p/chromium/issues/detail?id=851493
+    // Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=1469422
+    const acceptsChannel = isIeBrowser(this.win_) || isEdgeBrowser(this.win_);
+    this.sendCommand('connect', {'acceptsChannel': acceptsChannel});
   }
 
   /**
@@ -980,6 +1313,13 @@ class Messenger {
    * @private
    */
   handleEvent_(event) {
+    if (this.requireTarget_ && this.getOptionalTarget_() != event.source) {
+      // When target is required, confirm it against the event.source. This
+      // is normally only needed for ports where a single window can include
+      // multiple iframes to match the event to a specific iframe. Otherwise,
+      // the origin checks below are sufficient.
+      return;
+    }
     const data = event.data;
     if (!data || data['sentinel'] != SENTINEL) {
       return;
@@ -1062,229 +1402,6 @@ function closePort(port) {
 
 
 
-/** DOMException.ABORT_ERR name */
-const ABORT_ERR_NAME = 'AbortError';
-
-/** DOMException.ABORT_ERR = 20 */
-const ABORT_ERR_CODE = 20;
-
-/** @type {?HTMLAnchorElement} */
-let aResolver;
-
-
-/**
- * @param {string} urlString
- * @return {!HTMLAnchorElement}
- */
-function parseUrl(urlString) {
-  if (!aResolver) {
-    aResolver = /** @type {!HTMLAnchorElement} */ (document.createElement('a'));
-  }
-  aResolver.href = urlString;
-  return /** @type {!HTMLAnchorElement} */ (aResolver);
-}
-
-
-/**
- * @param {!Location|!URL|!HTMLAnchorElement} loc
- * @return {string}
- */
-function getOrigin(loc) {
-  return loc.origin || loc.protocol + '//' + loc.host;
-}
-
-
-/**
- * @param {string} urlString
- * @return {string}
- */
-function getOriginFromUrl(urlString) {
-  return getOrigin(parseUrl(urlString));
-}
-
-
-/**
- * @param {!Window} win
- * @return {string}
- */
-
-
-
-/**
- * @param {string} urlString
- * @return {string}
- */
-function removeFragment(urlString) {
-  const index = urlString.indexOf('#');
-  if (index == -1) {
-    return urlString;
-  }
-  return urlString.substring(0, index);
-}
-
-
-/**
- * Parses and builds Object of URL query string.
- * @param {string} query The URL query string.
- * @return {!Object<string, string>}
- */
-function parseQueryString(query) {
-  if (!query) {
-    return {};
-  }
-  return (/^[?#]/.test(query) ? query.slice(1) : query)
-      .split('&')
-      .reduce((params, param) => {
-        const item = param.split('=');
-        const key = decodeURIComponent(item[0] || '');
-        const value = decodeURIComponent(item[1] || '');
-        if (key) {
-          params[key] = value;
-        }
-        return params;
-      }, {});
-}
-
-
-/**
- * @param {string} queryString  A query string in the form of "a=b&c=d". Could
- *   be optionally prefixed with "?" or "#".
- * @param {string} param The param to get from the query string.
- * @return {?string}
- */
-function getQueryParam(queryString, param) {
-  return parseQueryString(queryString)[param];
-}
-
-
-/**
- * Add a query-like parameter to the fragment string.
- * @param {string} url
- * @param {string} param
- * @param {string} value
- * @return {string}
- */
-function addFragmentParam(url, param, value) {
-  return url +
-      (url.indexOf('#') == -1 ? '#' : '&') +
-      encodeURIComponent(param) + '=' + encodeURIComponent(value);
-}
-
-
-/**
- * @param {string} queryString  A query string in the form of "a=b&c=d". Could
- *   be optionally prefixed with "?" or "#".
- * @param {string} param The param to remove from the query string.
- * @return {?string}
- */
-function removeQueryParam(queryString, param) {
-  if (!queryString) {
-    return queryString;
-  }
-  const search = encodeURIComponent(param) + '=';
-  let index = -1;
-  do {
-    index = queryString.indexOf(search, index);
-    if (index != -1) {
-      const prev = index > 0 ? queryString.substring(index - 1, index) : '';
-      if (prev == '' || prev == '?' || prev == '#' || prev == '&') {
-        let end = queryString.indexOf('&', index + 1);
-        if (end == -1) {
-          end = queryString.length;
-        }
-        queryString =
-            queryString.substring(0, index) +
-            queryString.substring(end + 1);
-      } else {
-        index++;
-      }
-    }
-  } while (index != -1 && index < queryString.length);
-  return queryString;
-}
-
-
-/**
- * @param {?string} requestString
- * @param {boolean=} trusted
- * @return {?ActivityRequest}
- */
-
-
-
-/**
- * @param {!ActivityRequest} request
- * @return {string}
- */
-function serializeRequest(request) {
-  const map = {
-    'requestId': request.requestId,
-    'returnUrl': request.returnUrl,
-    'args': request.args,
-  };
-  if (request.origin !== undefined) {
-    map['origin'] = request.origin;
-  }
-  if (request.originVerified !== undefined) {
-    map['originVerified'] = request.originVerified;
-  }
-  return JSON.stringify(map);
-}
-
-
-/**
- * Creates or emulates a DOMException of AbortError type.
- * See https://heycam.github.io/webidl/#aborterror.
- * @param {!Window} win
- * @param {string=} opt_message
- * @return {!DOMException}
- */
-function createAbortError(win, opt_message) {
-  const message = 'AbortError' + (opt_message ? ': ' + opt_message : '');
-  let error = null;
-  if (typeof win['DOMException'] == 'function') {
-    // TODO(dvoytenko): remove typecast once externs are fixed.
-    const constr = /** @type {function(new:DOMException, string, string)} */ (
-        win['DOMException']);
-    try {
-      error = new constr(message, ABORT_ERR_NAME);
-    } catch (e) {
-      // Ignore. In particular, `new DOMException()` fails in Edge.
-    }
-  }
-  if (!error) {
-    // TODO(dvoytenko): remove typecast once externs are fixed.
-    const constr = /** @type {function(new:DOMException, string)} */ (
-        Error);
-    error = new constr(message);
-    error.name = ABORT_ERR_NAME;
-    error.code = ABORT_ERR_CODE;
-  }
-  return error;
-}
-
-
-/**
- * Resolves the activity result as a promise:
- *  - `OK` result is yielded as the promise's payload;
- *  - `CANCEL` result is rejected with the `AbortError`;
- *  - `FAILED` result is rejected with the embedded error.
- *
- * @param {!Window} win
- * @param {!ActivityResult} result
- * @param {function((!ActivityResult|!Promise))} resolver
- */
-function resolveResult(win, result, resolver) {
-  if (result.ok) {
-    resolver(result);
-  } else {
-    const error = result.error || createAbortError(win);
-    error.activityResult = result;
-    resolver(Promise.reject(error));
-  }
-}
-
-
 
 /**
  * The `ActivityPort` implementation for the iframe case. Unlike other types
@@ -1292,6 +1409,7 @@ function resolveResult(win, result, resolver) {
  * to size requests.
  *
  * @implements {ActivityPort}
+ * @implements {ActivityMessagingPort}
  */
 class ActivityIframePort {
 
@@ -1351,7 +1469,8 @@ class ActivityIframePort {
     this.messenger_ = new Messenger(
         this.win_,
         () => this.iframe_.contentWindow,
-        this.targetOrigin_);
+        this.targetOrigin_,
+        /* requireTarget */ true);
   }
 
   /** @override */
@@ -1364,7 +1483,7 @@ class ActivityIframePort {
    * @return {!Promise}
    */
   connect() {
-    if (!this.win_.document.documentElement.contains(this.iframe_)) {
+    if (!isNodeConnected(this.iframe_)) {
       throw new Error('iframe must be in DOM');
     }
     this.messenger_.connect(this.handleCommand_.bind(this));
@@ -1385,27 +1504,22 @@ class ActivityIframePort {
     return this.resultPromise_;
   }
 
-  /**
-   * Sends a message to the host.
-   * @param {!Object} payload
-   */
+  /** @override */
+  getTargetWin() {
+    return this.iframe_.contentWindow || null;
+  }
+
+  /** @override */
   message(payload) {
     this.messenger_.customMessage(payload);
   }
 
-  /**
-   * Registers a callback to receive messages from the host.
-   * @param {function(!Object)} callback
-   */
+  /** @override */
   onMessage(callback) {
     this.messenger_.onCustomMessage(callback);
   }
 
-  /**
-   * Creates a new communication channel or returns an existing one.
-   * @param {string=} opt_name
-   * @return {!Promise<!MessagePort>}
-   */
+  /** @override */
   messageChannel(opt_name) {
     return this.messenger_.askChannel(opt_name);
   }
@@ -1492,11 +1606,13 @@ class ActivityIframePort {
 
 
 
+
 /**
  * The `ActivityPort` implementation for the standalone window activity
  * client executed as a popup.
  *
  * @implements {ActivityPort}
+ * @implements {ActivityMessagingPort}
  */
 class ActivityWindowPort {
 
@@ -1527,8 +1643,16 @@ class ActivityWindowPort {
     this.openTarget_ = target;
     /** @private @const {?Object} */
     this.args_ = opt_args || null;
-    /** @private @const {?ActivityOpenOptions} */
-    this.options_ = opt_options || null;
+    /** @private @const {!ActivityOpenOptions} */
+    this.options_ = opt_options || {};
+
+    /** @private {?function()} */
+    this.connectedResolver_ = null;
+
+    /** @private @const {!Promise} */
+    this.connectedPromise_ = new Promise(resolve => {
+      this.connectedResolver_ = resolve;
+    });
 
     /** @private {?function((!ActivityResult|!Promise))} */
     this.resultResolver_ = null;
@@ -1568,10 +1692,11 @@ class ActivityWindowPort {
   }
 
   /**
-   * @return {?Window}
+   * Waits until the activity port is connected to the host.
+   * @return {!Promise}
    */
-  getTargetWin() {
-    return this.targetWin_;
+  whenConnected() {
+    return this.connectedPromise_;
   }
 
   /**
@@ -1599,8 +1724,46 @@ class ActivityWindowPort {
   }
 
   /** @override */
+  getTargetWin() {
+    return this.targetWin_;
+  }
+
+  /** @override */
   acceptResult() {
     return this.resultPromise_;
+  }
+
+  /**
+   * Sends a message to the host.
+   * Whether the host can or cannot receive a message depends on the type of
+   * host and its state. Ensure that the code has an alternative path if
+   * messaging is not available.
+   * @override
+   */
+  message(payload) {
+    this.messenger_.customMessage(payload);
+  }
+
+  /**
+   * Registers a callback to receive messages from the host.
+   * Whether the host can or cannot receive a message depends on the type of
+   * host and its state. Ensure that the code has an alternative path if
+   * messaging is not available.
+   * @override
+   */
+  onMessage(callback) {
+    this.messenger_.onCustomMessage(callback);
+  }
+
+  /**
+   * Creates a new communication channel or returns an existing one.
+   * Whether the host can or cannot receive a message depends on the type of
+   * host and its state. Ensure that the code has an alternative path if
+   * messaging is not available.
+   * @override
+   */
+  messageChannel(opt_name) {
+    return this.messenger_.askChannel(opt_name);
   }
 
   /**
@@ -1618,9 +1781,9 @@ class ActivityWindowPort {
     // Protectively, the URL will contain the request payload, unless explicitly
     // directed not to via `skipRequestInUrl` option.
     let url = this.url_;
-    if (!(this.options_ && this.options_.skipRequestInUrl)) {
+    if (!this.options_.skipRequestInUrl) {
       const returnUrl =
-          this.options_ && this.options_.returnUrl ||
+          this.options_.returnUrl ||
           removeFragment(this.win_.location.href);
       const requestString = serializeRequest({
         requestId: this.requestId_,
@@ -1631,18 +1794,27 @@ class ActivityWindowPort {
     }
 
     // Open the window.
+    let targetWin;
+    let openTarget = this.openTarget_;
+    // IE does not support CORS popups - the popup has to fallback to redirect
+    // mode.
+    if (openTarget != '_top') {
+      if (isIeBrowser(this.win_)) {
+        openTarget = '_top';
+      }
+    }
     // Try first with the specified target. If we're inside the WKWebView or
     // a similar environments, this method is expected to fail by default for
     // all targets except `_top`.
-    let targetWin;
-    let openTarget = this.openTarget_;
     try {
       targetWin = this.win_.open(url, openTarget, featuresStr);
     } catch (e) {
       // Ignore.
     }
     // Then try with `_top` target.
-    if (!targetWin && openTarget != '_top') {
+    if (!targetWin &&
+        openTarget != '_top' &&
+        !this.options_.disableRedirectFallback) {
       openTarget = '_top';
       try {
         targetWin = this.win_.open(url, openTarget);
@@ -1672,16 +1844,38 @@ class ActivityWindowPort {
    * @private
    */
   buildFeatures_() {
+    // The max width and heights are calculated as following:
+    // MaxSize = AvailSize - ControlsSize
+    // ControlsSize = OuterSize - InnerSize
     const screen = this.win_.screen;
-    let w = Math.floor(Math.min(600, screen.width * 0.9));
-    let h = Math.floor(Math.min(600, screen.height * 0.9));
-    if (this.options_) {
-      if (this.options_.width) {
-        w = Math.min(this.options_.width, screen.width);
-      }
-      if (this.options_.height) {
-        h = Math.min(this.options_.height, screen.height);
-      }
+    const availWidth = screen.availWidth || screen.width;
+    const availHeight = screen.availHeight || screen.height;
+    const isTop = this.isTopWindow_();
+    const isEdge = isEdgeBrowser(this.win_);
+    // Limit controls to 100px width and height. Notice that it's only
+    // possible to calculate controls size in the top window, not in iframes.
+    // Notice that the Edge behavior is somewhat unique. If we can't find the
+    // right width/height, it will launch in the full-screen. Other browsers
+    // deal with such cases more gracefully.
+    const controlsWidth =
+        isTop && this.win_.outerWidth > this.win_.innerWidth ?
+        Math.min(100, this.win_.outerWidth - this.win_.innerWidth) :
+        (isEdge ? 100 : 0);
+    const controlsHeight =
+        isTop && this.win_.outerHeight > this.win_.innerHeight ?
+        Math.min(100, this.win_.outerHeight - this.win_.innerHeight) :
+        (isEdge ? 100 : 0);
+    // With all the adjustments, at least 50% of the available width/height
+    // should be made available to a popup.
+    const maxWidth = Math.max(availWidth - controlsWidth, availWidth * 0.5);
+    const maxHeight = Math.max(availHeight - controlsHeight, availHeight * 0.5);
+    let w = Math.floor(Math.min(600, maxWidth * 0.9));
+    let h = Math.floor(Math.min(600, maxHeight * 0.9));
+    if (this.options_.width) {
+      w = Math.min(this.options_.width, maxWidth);
+    }
+    if (this.options_.height) {
+      h = Math.min(this.options_.height, maxHeight);
     }
     const x = Math.floor((screen.width - w) / 2);
     const y = Math.floor((screen.height - h) / 2);
@@ -1692,8 +1886,7 @@ class ActivityWindowPort {
       'scrollbars': 'yes',
     };
     // Do not set left/top in Edge: it fails.
-    const nav = this.win_.navigator;
-    if (!/Edge/i.test(nav && nav.userAgent)) {
+    if (!isEdge) {
       features['left'] = x;
       features['top'] = y;
     }
@@ -1705,6 +1898,16 @@ class ActivityWindowPort {
       featuresStr += `${f}=${features[f]}`;
     }
     return featuresStr;
+  }
+
+  /**
+   * This method only exists to make iframe/top emulation possible in tests.
+   * Otherwise `window.top` cannot be overridden.
+   * @return {boolean}
+   * @private
+   */
+  isTopWindow_() {
+    return this.win_ == this.win_.top;
   }
 
   /** @private */
@@ -1721,7 +1924,8 @@ class ActivityWindowPort {
     this.messenger_ = new Messenger(
         this.win_,
         /** @type {!Window} */ (this.targetWin_),
-        /* targetOrigin */ null);
+        /* targetOrigin */ null,
+        /* requireTarget */ true);
     this.messenger_.connect(this.handleCommand_.bind(this));
   }
 
@@ -1731,8 +1935,10 @@ class ActivityWindowPort {
    */
   check_(opt_delayCancel) {
     if (!this.targetWin_ || this.targetWin_.closed) {
-      this.win_.clearInterval(this.heartbeatInterval_);
-      this.heartbeatInterval_ = null;
+      if (this.heartbeatInterval_) {
+        this.win_.clearInterval(this.heartbeatInterval_);
+        this.heartbeatInterval_ = null;
+      }
       // Give a chance for the result to arrive, but otherwise consider the
       // responce to be empty.
       this.win_.setTimeout(() => {
@@ -1791,6 +1997,7 @@ class ActivityWindowPort {
     if (cmd == 'connect') {
       // First ever message. Indicates that the receiver is listening.
       this.messenger_.sendStartCommand(this.args_);
+      this.connectedResolver_();
     } else if (cmd == 'result') {
       // The last message. Indicates that the result has been received.
       const code = /** @type {!ActivityResultCode} */ (payload['code']);
@@ -1819,8 +2026,7 @@ function discoverRedirectPort(win, fragment, requestId) {
   if (!fragmentParam) {
     return null;
   }
-  const response = /** @type {?Object} */ (JSON.parse(
-      decodeURIComponent(fragmentParam)));
+  const response = /** @type {?Object} */ (JSON.parse(fragmentParam));
   if (!response || response['requestId'] != requestId) {
     return null;
   }
@@ -1902,6 +2108,7 @@ class ActivityWindowRedirectPort {
 
 
 
+
 /**
  * The page-level activities manager ports. This class is intended to be used
  * as a singleton. It can start activities of all modes: iframe, popup, and
@@ -1914,7 +2121,7 @@ class ActivityPorts {
    */
   constructor(win) {
     /** @const {string} */
-    this.version = '1.9';
+    this.version = '1.24';
 
     /** @private @const {!Window} */
     this.win_ = win;
@@ -1932,6 +2139,14 @@ class ActivityPorts {
      * @private @const {!Object<string, !ActivityPort>}
      */
     this.resultBuffer_ = {};
+
+    /** @private {?function(!Error)} */
+    this.redirectErrorResolver_ = null;
+
+    /** @private {!Promise<!Error>} */
+    this.redirectErrorPromise_ = new Promise(resolve => {
+      this.redirectErrorResolver_ = resolve;
+    });
   }
 
   /**
@@ -1972,14 +2187,26 @@ class ActivityPorts {
    * @return {{targetWin: ?Window}}
    */
   open(requestId, url, target, opt_args, opt_options) {
-    const port = new ActivityWindowPort(
-        this.win_, requestId, url, target, opt_args, opt_options);
-    port.open().then(() => {
-      // Await result if possible. Notice that when falling back to "redirect",
-      // the result will never arrive through this port.
-      this.consumeResultAll_(requestId, port);
-    });
+    const port = this.openWin_(requestId, url, target, opt_args, opt_options);
     return {targetWin: port.getTargetWin()};
+  }
+
+  /**
+   * Start an activity in a separate window and tries to setup messaging with
+   * this window.
+   *
+   * See `open()` method for more details, including `onResult` callback.
+   *
+   * @param {string} requestId
+   * @param {string} url
+   * @param {string} target
+   * @param {?Object=} opt_args
+   * @param {?ActivityOpenOptions=} opt_options
+   * @return {!Promise<!ActivityMessagingPort>}
+   */
+  openWithMessaging(requestId, url, target, opt_args, opt_options) {
+    const port = this.openWin_(requestId, url, target, opt_args, opt_options);
+    return port.whenConnected().then(() => port);
   }
 
   /**
@@ -2029,6 +2256,32 @@ class ActivityPorts {
   }
 
   /**
+   * @param {function(!Error)} handler
+   */
+  onRedirectError(handler) {
+    this.redirectErrorPromise_.then(handler);
+  }
+
+  /**
+   * @param {string} requestId
+   * @param {string} url
+   * @param {string} target
+   * @param {?Object=} opt_args
+   * @param {?ActivityOpenOptions=} opt_options
+   * @return {!ActivityWindowPort}
+   */
+  openWin_(requestId, url, target, opt_args, opt_options) {
+    const port = new ActivityWindowPort(
+        this.win_, requestId, url, target, opt_args, opt_options);
+    port.open().then(() => {
+      // Await result if possible. Notice that when falling back to "redirect",
+      // the result will never arrive through this port.
+      this.consumeResultAll_(requestId, port);
+    });
+    return port;
+  }
+
+  /**
    * @param {string} requestId
    * @return {?ActivityPort}
    * @private
@@ -2036,8 +2289,13 @@ class ActivityPorts {
   discoverResult_(requestId) {
     let port = this.resultBuffer_[requestId];
     if (!port && this.fragment_) {
-      port = discoverRedirectPort(
-          this.win_, this.fragment_, requestId);
+      try {
+        port = discoverRedirectPort(
+            this.win_, this.fragment_, requestId);
+      } catch (e) {
+        throwAsync(e);
+        this.redirectErrorResolver_(e);
+      }
       if (port) {
         this.resultBuffer_[requestId] = port;
       }
@@ -2079,15 +2337,109 @@ class ActivityPorts {
 module.exports = {
   ActivityPorts,
   ActivityIframePort,
+  ActivityMessagingPort,
   ActivityMode,
   ActivityOpenOptions,
   ActivityPort,
+  ActivityRequest,
   ActivityResult,
   ActivityResultCode,
   ActivityWindowPort,
+  createAbortError,
+  isAbortError,
 };
 
 },{}],5:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _protoApi_messages = require('../proto/api_messages');
+
+/** @enum {number}  */
+var FilterResult = {
+  /** The event is allowed to proceed to the listeners. */
+  PROCESS_EVENT: 0,
+  /** The event is canceled and the listeners are not informed about it. */
+  CANCEL_EVENT: 1
+};
+
+exports.FilterResult = FilterResult;
+/**
+ * Defines a client event in SwG
+ * Properties:
+ * - eventType: Required. The AnalyticsEvent type that occurred.
+ * - eventOriginator: Required.  The codebase that initiated the event.
+ * - isFromUserAction: Optional.  True if the user took an action to generate
+ *   the event.
+ * - additionalParameters: Optional.  A JSON object to store generic data.
+ *
+ *  @typedef {{
+ *    eventType: !AnalyticsEvent,
+ *    eventOriginator: !EventOriginator,
+ *    isFromUserAction: ?boolean,
+ *    additionalParameters: ?Object,
+ * }}
+ */
+var ClientEvent = undefined;
+
+exports.ClientEvent = ClientEvent;
+/**
+ * @interface
+ */
+
+var ClientEventManagerApi = (function () {
+  function ClientEventManagerApi() {
+    babelHelpers.classCallCheck(this, ClientEventManagerApi);
+  }
+
+  /**
+   * Call this function to log an event. The registered listeners will be
+   * invoked unless the event is filtered.
+   * @param {!function(!ClientEvent)} listener
+   */
+
+  ClientEventManagerApi.prototype.registerEventListener = function registerEventListener(listener) {};
+
+  /**
+   * Register a filterer for events if you need to potentially prevent the
+   * listeners from hearing about it.  A filterer should return
+   * FilterResult.CANCEL_EVENT to prevent listeners from hearing about the
+   * event.
+   * @param {!function(!ClientEvent):FilterResult} filterer
+   */
+
+  ClientEventManagerApi.prototype.registerEventFilterer = function registerEventFilterer(filterer) {};
+
+  /**
+   * Call this function to log an event.  It will immediately throw an error if
+   * the event is invalid.  It will then asynchronously call the filterers and
+   * stop the event if a filterer cancels it.  After that, it will call each
+   * listener asynchronously.
+   * @param {!ClientEvent} event
+   */
+
+  ClientEventManagerApi.prototype.logEvent = function logEvent(event) {};
+
+  return ClientEventManagerApi;
+})();
+
+exports.ClientEventManagerApi = ClientEventManagerApi;
+
+},{"../proto/api_messages":33}],6:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2133,19 +2485,22 @@ var DeferredAccountCreationResponse = (function () {
   /**
    * @param {!Entitlements} entitlements
    * @param {!UserData} userData
-   * @param {!PurchaseData} purchaseData
+   * @param {!Array<!PurchaseData>} purchaseDataList
    * @param {function():!Promise} completeHandler
    */
 
-  function DeferredAccountCreationResponse(entitlements, userData, purchaseData, completeHandler) {
+  function DeferredAccountCreationResponse(entitlements, userData, purchaseDataList, completeHandler) {
     babelHelpers.classCallCheck(this, DeferredAccountCreationResponse);
 
     /** @const {!Entitlements} */
     this.entitlements = entitlements;
     /** @const {!UserData} */
     this.userData = userData;
+    /** @const {!Array<!PurchaseData>} */
+    this.purchaseDataList = purchaseDataList;
+    // TODO(dvoytenko): deprecate.
     /** @const {!PurchaseData} */
-    this.purchaseData = purchaseData;
+    this.purchaseData = purchaseDataList[0];
     /** @private @const {function():!Promise} */
     this.completeHandler_ = completeHandler;
   }
@@ -2155,7 +2510,7 @@ var DeferredAccountCreationResponse = (function () {
    */
 
   DeferredAccountCreationResponse.prototype.clone = function clone() {
-    return new DeferredAccountCreationResponse(this.entitlements, this.userData, this.purchaseData, this.completeHandler_);
+    return new DeferredAccountCreationResponse(this.entitlements, this.userData, this.purchaseDataList, this.completeHandler_);
   };
 
   /**
@@ -2166,6 +2521,10 @@ var DeferredAccountCreationResponse = (function () {
     return {
       'entitlements': this.entitlements.json(),
       'userData': this.userData.json(),
+      'purchaseDataList': this.purchaseDataList.map(function (pd) {
+        return pd.json();
+      }),
+      // TODO(dvoytenko): deprecate.
       'purchaseData': this.purchaseData.json()
     };
   };
@@ -2193,7 +2552,7 @@ var DeferredAccountCreationResponse = (function () {
 
 exports.DeferredAccountCreationResponse = DeferredAccountCreationResponse;
 
-},{"./entitlements":6,"./subscribe-response":8,"./user-data":10}],6:[function(require,module,exports){
+},{"./entitlements":7,"./subscribe-response":11,"./user-data":13}],7:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2223,9 +2582,11 @@ var Entitlements = (function () {
    * @param {!Array<!Entitlement>} entitlements
    * @param {?string} currentProduct
    * @param {function(!Entitlements)} ackHandler
+   * @param {?boolean|undefined} isReadyToPay
+   * @param {?string|undefined} decryptedDocumentKey
    */
 
-  function Entitlements(service, raw, entitlements, currentProduct, ackHandler) {
+  function Entitlements(service, raw, entitlements, currentProduct, ackHandler, isReadyToPay, decryptedDocumentKey) {
     babelHelpers.classCallCheck(this, Entitlements);
 
     /** @const {string} */
@@ -2234,6 +2595,10 @@ var Entitlements = (function () {
     this.raw = raw;
     /** @const {!Array<!Entitlement>} */
     this.entitlements = entitlements;
+    /** @const {boolean} */
+    this.isReadyToPay = isReadyToPay || false;
+    /** @const {?string} */
+    this.decryptedDocumentKey = decryptedDocumentKey || null;
 
     /** @private @const {?string} */
     this.product_ = currentProduct;
@@ -2252,7 +2617,7 @@ var Entitlements = (function () {
   Entitlements.prototype.clone = function clone() {
     return new Entitlements(this.service, this.raw, this.entitlements.map(function (ent) {
       return ent.clone();
-    }), this.product_, this.ackHandler_);
+    }), this.product_, this.ackHandler_, this.isReadyToPay, this.decryptedDocumentKey);
   };
 
   /**
@@ -2264,7 +2629,8 @@ var Entitlements = (function () {
       'service': this.service,
       'entitlements': this.entitlements.map(function (item) {
         return item.json();
-      })
+      }),
+      'isReadyToPay': this.isReadyToPay
     };
   };
 
@@ -2416,6 +2782,11 @@ var Entitlement = (function () {
     if (!product) {
       return false;
     }
+    // Wildcard allows this product.
+    var eq = product.indexOf(':');
+    if (eq != -1 && this.products.includes(product.substring(0, eq + 1) + '*')) {
+      return true;
+    }
     return this.products.includes(product);
   };
 
@@ -2455,7 +2826,275 @@ var Entitlement = (function () {
 
 exports.Entitlement = Entitlement;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @enum {string}
+ */
+var SubscriptionState = {
+  // user's subscription state not known.
+  UNKNOWN: 'unknown',
+  // user is not a subscriber.
+  NON_SUBSCRIBER: 'non_subscriber',
+  // user is a subscriber.
+  SUBSCRIBER: 'subscriber',
+  // user's subscription has expired.
+  PAST_SUBSCRIBER: 'past_subscriber'
+};
+
+exports.SubscriptionState = SubscriptionState;
+/**
+ * Subscription related events. Listed below are enum strings that
+ * represent events related to Subscription flow. Event parameters
+ * that provide more context about the event are sent as a JSON
+ * block of depth 1 in the sendEvent() API call.
+ * @enum {string}
+ */
+var Event = {
+  /**
+   * IMPRESSION_PAYWALL event.
+   * User hits a paywall.
+   * Every impression should be qualified as active or passive.
+   * The field 'active' of PropensityEvent, which carries this
+   * event, must be set to true or false to indicate this.
+   * If the user has run out of metering, and that’s why was shown
+   * a paywall, that would be a passive impression of the paywall.
+   * For example:
+   * const propensityEvent = {
+   *  name: 'paywall',
+   *  active: false,
+   * }
+   */
+  IMPRESSION_PAYWALL: 'paywall',
+  /**
+   * IMPRESSION_AD event.
+   * User has been shown a subscription ad.
+   * Every impression should be qualified as active or passive.
+   * The field 'active' of PropensityEvent, which carries this
+   * event, must be set to true or false to indicate this.
+   * The JSON block can provide the name of the subscription ad
+   * creative or campaign. Ad impressions are usually passive.
+   * const propensityEvent = {
+   *   name: 'ad_shown',
+   *   active: false,
+   *   data: {'ad_name': 'fall_ad'}
+   * }
+   */
+  IMPRESSION_AD: 'ad_shown',
+  /**
+   * IMPRESSION_OFFERS event.
+   * User has been shown a list of available offers for subscription.
+   * Every impression should be qualified as active or passive.
+   * The field 'active' of PropensityEvent, which carries this
+   * event, must be set to true or false to indicate this.
+   * The JSON block can provide a list of products displayed,
+   * and the source to indicate why the user was shown the offer.
+   * Note: source is not the same as referrer.
+   * In the cases below, the user took action before seeing the offers,
+   * and therefore considered active impression.
+   * For example:
+   * const propensityEvent = {
+   *   name: 'offers_shown',
+   *   active: true,
+   *   data: {'offers': ['basic-monthly', 'premium-weekly'],
+   *           'source': 'ad-click'}
+   * }
+   * For example:
+   * const propensityEvent = {
+   *   name: 'offers_shown',
+   *   active: true,
+   *   data: {'offers': ['basic-monthly', 'premium-weekly'],
+   *           'source': ‘navigate-to-offers-page’}
+   * }
+   * If the user was shown the offers as a result of paywall metering
+   * expiration, it is considered a passive impression.
+   * For example:
+   * const propensityEvent = {
+   *   name: 'offers_shown',
+   *   active: false,
+   *   data: {'offers': ['basic-monthly', 'premium-weekly'],
+   *           'source': ‘paywall-metering-expired’}
+   * }
+   */
+  IMPRESSION_OFFERS: 'offers_shown',
+  /**
+   * ACTION_SUBSCRIPTIONS_LANDING_PAGE event.
+   * User has taken the action to arrive at a landing page of the
+   * subscription workflow. The landing page should satisfy one of
+   * the following conditions and hence be a part of the funnel to
+   * get the user to subscribe:
+   * - have a button to navigate the user to an offers page, (in
+   *   this case, the next event will be IMPRESSION_OFFERS, with
+   *   parameter 'source' as subscriptions-landing-page and
+   *   'is_active' set to true),
+   * - show offers the user can select, (in this case, the next
+   *   event will be IMPRESSION_OFFERS, with a parameter 'source'
+   *   as navigate-to-offers-page and 'is_active' set to true),
+   * - provide a way to start the payment flow for a specific offer.
+   *   (in this case, the next event will be ACTION_OFFER_SELECTED
+   *   or ACTION_PAYMENT_FLOW_STARTED depending on if that button
+   *   took the user to a checkout page on the publishers site or
+   *   directly started the payment flow).
+   * The field 'active' of PropensityEvent, which carries this
+   * event, must be set to true since this is a user action.
+   * The JSON block with this event can provide additional information
+   * such as the source, indicating what caused the user to navigate
+   * to this page.
+   * For example:
+   * const propensityEvent = {
+   *   name: 'subscriptions_landing_page',
+   *   active: true,
+   *   data: {'source': 'marketing_via_email'}
+   * }
+   */
+  ACTION_SUBSCRIPTIONS_LANDING_PAGE: 'subscriptions_landing_page',
+  /**
+   * ACTION_OFFER_SELECTED event.
+   * User has selected an offer.
+   * The field 'active' of PropensityEvent, which carries this
+   * event, must be set to true since this is a user action.
+   * The JSON block can provide the product selected.
+   * For example: {
+   *   name: 'offer_selected',
+   *   active: true,
+   *   data: {product': 'basic-monthly'}
+   * }
+   * When offer selection starts the payment flow directly,
+   * use the next event ACTION_PAYMENT_FLOW_STARTED instead.
+   */
+  ACTION_OFFER_SELECTED: 'offer_selected',
+  /**
+   * ACTION_PAYMENT_FLOW_STARTED event.
+   * User has started payment flow.
+   * The field 'active' of PropensityEvent, which carries this
+   * event, must be set to true since this is a user action.
+   * The JSON block can provide the product selected.
+   * For example:
+   * const propensityEvent = {
+   *   name: 'payment_flow_started',
+   *   active: true,
+   *   data: {product': 'basic-monthly'}
+   * }
+   */
+  ACTION_PAYMENT_FLOW_STARTED: 'payment_flow_start',
+  /**
+   * ACTION_PAYMENT_COMPLETED.
+   * User has made the payment for a subscription.
+   * The field 'active' of PropensityEvent, which carries this
+   * event, must be set to true since this is a user action.
+   * The JSON block can provide the product user paid for.
+   * For example:
+   * const propensityEvent = {
+   *   name: 'payment_complete',
+   *   active: true,
+   *   data: {product': 'basic-monthly'}
+   * }
+   */
+  ACTION_PAYMENT_COMPLETED: 'payment_complete',
+  /**
+   * EVENT_CUSTOM: custom publisher event.
+   * The field 'active' of PropensityEvent, which carries this
+   * event, must be set to true or false depending on if the event
+   * was generated as a result of a user action.
+   * The JSON block can provide the event name for the custom event.
+   * For example:
+   * const propensityEvent = {
+   *   name: 'custom',
+   *   active: true,
+   *   data: {
+   *     'event_name': 'social_share',
+   *     'platform_used': 'whatsapp'
+   *   }
+   *  }
+   */
+  EVENT_CUSTOM: 'custom'
+};
+
+exports.Event = Event;
+/**
+ * Propensity Event
+ * Properties:
+ * - name: Required. Name should be valid string in the Event
+ *         enum within src/api/logger-api.js.
+ * - active: Required. A boolean that indicates whether the
+ *         user took some action to participate in the flow
+ *         that generated this event. For impression event,
+ *         this is set to true if is_active field would be
+ *         set to true, as described in documentation for
+ *         enum Event. Otherwise, set this field to false.
+ *         For action events, this field must always be set
+ *         to true. The caller must always set this field.
+ * - data: Optional. JSON block of depth '1' provides event
+ *         parameters. The guideline to create this JSON block
+ *         that describes the event is provided against each
+ *         enum listed in the Event enum above.
+ *
+ *  @typedef {{
+  *    name: string,
+  *    active: boolean,
+  *    data: ?JsonObject,
+  * }}
+  */
+var PublisherEvent = undefined;
+
+exports.PublisherEvent = PublisherEvent;
+/**
+ * @interface
+ */
+
+var LoggerApi = (function () {
+  function LoggerApi() {
+    babelHelpers.classCallCheck(this, LoggerApi);
+  }
+
+  /**
+   * Send a buy-flow event that occurred on the publisher's site to Google.  The
+   * ultimate destination is controlled by configuration settings.  Data is
+   * sent to Propensity if the Propensity module is fetched from runtime and to
+   * Google's analytics service if you activate buy-flow comparative analysis.
+   * @param {!PublisherEvent} userEvent
+   */
+
+  LoggerApi.prototype.sendEvent = function sendEvent(userEvent) {};
+
+  /**
+   * Send user subscription state upon initial discovery.
+   * A user may have active subscriptions to some products
+   * and expired subscriptions to others. Make one API call
+   * per subscription state and provide a corresponding
+   * list of products with a json object of depth 1.
+   * For example:
+   *     {'product': ['product1', 'product2']}
+   * Each call to this API should have the first argument
+   * as a valid string from the enum SubscriptionState.
+   * @param {SubscriptionState} state
+   * @param {?JsonObject} jsonProducts
+   */
+
+  LoggerApi.prototype.sendSubscriptionState = function sendSubscriptionState(state, jsonProducts) {};
+
+  return LoggerApi;
+})();
+
+exports.LoggerApi = LoggerApi;
+
+},{}],9:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2499,7 +3138,7 @@ function Offer(skuId, title, description, price) {
 
 exports.Offer = Offer;
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2517,6 +3156,181 @@ exports.__esModule = true;
  * limitations under the License.
  */
 
+var _loggerApi = require('./logger-api');
+
+var LoggerApi = babelHelpers.interopRequireWildcard(_loggerApi);
+
+/**
+ * @enum {string}
+ */
+var PropensityType = {
+  // Propensity score for a user to subscribe to a publication.
+  GENERAL: 'general',
+  // Propensity score when blocked access to content by paywall.
+  PAYWALL: 'paywall'
+};
+
+exports.PropensityType = PropensityType;
+/**
+ * The Propensity Score
+ * - value: Required. A number that indicates the propensity to subscribe.
+ * - bucketed: Required. Indicates if the score is a raw score [1-100] or bucketed[1-20].
+ *
+ * @typedef {{
+ *   value: number,
+ *   bucketed: boolean,
+ * }}
+ */
+var Score = undefined;
+
+exports.Score = Score;
+/**
+ * Propensity Score Detail
+ * Properties:
+ * - product: Required. Indicates the publication_id:product_id for which the score is provided.
+ * - score: Optional. When score is available, this field contains the propensity score for this product.
+ * - error: Optional. When no score is avaialble, a string provides the error message.
+ *
+ * @typedef {{
+ *   product: string,
+ *   score: ?Score,
+ *   error: ?string,
+ * }}
+ */
+var ScoreDetail = undefined;
+
+exports.ScoreDetail = ScoreDetail;
+/**
+ * The Body field of the Propensity Score.
+ * Properties:
+ * - scores: Optional, an array of scores. When header indicates so, atleast one score is available.
+ * - error: Optional, string describing why, if no scores were provided by the server.
+ *
+ *  @typedef {{
+ *    scores: ?Array<ScoreDetail>,
+ *    error: ?string,
+ * }}
+ */
+var Body = undefined;
+
+exports.Body = Body;
+/**
+ * The Header of the Propensity Score.
+ * Properties:
+ * - ok: Required. true, if propensity score is available, false otherwise.
+ *
+ *  @typedef {{
+ *    ok: boolean,
+ * }}
+ */
+var Header = undefined;
+
+exports.Header = Header;
+/**
+ * The Propensity Score.
+ * Properties:
+ * - header: Required. Provides the header of the Score response.
+ * - body: Required. Provides the body of the Score response.
+ *
+ *  @typedef {{
+ *    header: Header,
+ *    body: Body,
+ * }}
+ */
+var PropensityScore = undefined;
+
+exports.PropensityScore = PropensityScore;
+/**
+ * Propensity Event
+ *   Please note that the primary defition of this object has changed to
+ *   PublisherEvent and is defined in logger-api.js.  These two object
+ *   definitions are identical.
+ * Properties:
+ * - name: Required. Name should be valid string in the Event
+ *         enum within src/api/logger-api.js.
+ * - active: Required. A boolean that indicates whether the
+ *         user took some action to participate in the flow
+ *         that generated this event. For impression event,
+ *         this is set to true if is_active field would be
+ *         set to true, as described in documentation for
+ *         enum Event. Otherwise, set this field to false.
+ *         For action events, this field must always be set
+ *         to true. The caller must always set this field.
+ * - data: Optional. JSON block of depth '1' provides event
+ *         parameters. The guideline to create this JSON block
+ *         that describes the event is provided against each
+ *         enum listed in the Event enum above.
+ *
+ *  @typedef {{
+ *    name: string,
+ *    active: boolean,
+ *    data: ?JsonObject,
+ * }}
+ */
+var PropensityEvent = undefined;
+
+exports.PropensityEvent = PropensityEvent;
+/*
+ * Please note that the definitions of Event and SubscriptionState have moved
+ * to logger-api.js.  This is now the preferred interface to use for logging
+ * publisher events and setting the user's current subscription state.
+ * Propensity will continue to function as an event logger until we are certain
+ * no publishers are actively using it to log events.
+ */
+var Event = LoggerApi.Event;
+exports.Event = Event;
+var SubscriptionState = LoggerApi.SubscriptionState;
+
+exports.SubscriptionState = SubscriptionState;
+/**
+ * @extends {LoggerApi.LoggerApi}
+ * @interface
+ */
+
+var PropensityApi = (function (_LoggerApi$LoggerApi) {
+  babelHelpers.inherits(PropensityApi, _LoggerApi$LoggerApi);
+
+  function PropensityApi() {
+    babelHelpers.classCallCheck(this, PropensityApi);
+
+    _LoggerApi$LoggerApi.apply(this, arguments);
+  }
+
+  /**
+   * Get the propensity of a user to subscribe based on the type.
+   * The argument should be a valid string from PropensityType.
+   * If no type is provided, GENERAL score is returned.
+   * @param {PropensityType=} type
+   * @return {?Promise<!PropensityScore>}
+   */
+
+  PropensityApi.prototype.getPropensity = function getPropensity(type) {};
+
+  return PropensityApi;
+})(LoggerApi.LoggerApi);
+
+exports.PropensityApi = PropensityApi;
+
+},{"./logger-api":8}],11:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _entitlements = require('./entitlements');
+
 var _userData = require('./user-data');
 
 /**
@@ -2528,10 +3342,12 @@ var SubscribeResponse = (function () {
    * @param {string} raw
    * @param {!PurchaseData} purchaseData
    * @param {?UserData} userData
+   * @param {?Entitlements} entitlements
+   * @param {!string} productType
    * @param {function():!Promise} completeHandler
    */
 
-  function SubscribeResponse(raw, purchaseData, userData, completeHandler) {
+  function SubscribeResponse(raw, purchaseData, userData, entitlements, productType, completeHandler) {
     babelHelpers.classCallCheck(this, SubscribeResponse);
 
     /** @const {string} */
@@ -2540,6 +3356,10 @@ var SubscribeResponse = (function () {
     this.purchaseData = purchaseData;
     /** @const {?UserData} */
     this.userData = userData;
+    /** @const {?Entitlements} */
+    this.entitlements = entitlements;
+    /** @const {string} */
+    this.productType = productType;
     /** @private @const {function():!Promise} */
     this.completeHandler_ = completeHandler;
   }
@@ -2552,7 +3372,7 @@ var SubscribeResponse = (function () {
    */
 
   SubscribeResponse.prototype.clone = function clone() {
-    return new SubscribeResponse(this.raw, this.purchaseData, this.userData, this.completeHandler_);
+    return new SubscribeResponse(this.raw, this.purchaseData, this.userData, this.entitlements, this.productType, this.completeHandler_);
   };
 
   /**
@@ -2562,7 +3382,9 @@ var SubscribeResponse = (function () {
   SubscribeResponse.prototype.json = function json() {
     return {
       'purchaseData': this.purchaseData.json(),
-      'userData': this.userData ? this.userData.json() : null
+      'userData': this.userData ? this.userData.json() : null,
+      'entitlements': this.entitlements ? this.entitlements.json() : null,
+      'productType': this.productType
     };
   };
 
@@ -2602,6 +3424,8 @@ var PurchaseData = (function () {
     /** @const {string} */
     this.raw = raw;
     /** @const {string} */
+    this.data = raw;
+    /** @const {string} */
     this.signature = signature;
   }
 
@@ -2629,8 +3453,9 @@ var PurchaseData = (function () {
 
 exports.PurchaseData = PurchaseData;
 
-},{"./user-data":10}],9:[function(require,module,exports){
+},{"./entitlements":7,"./user-data":13}],12:[function(require,module,exports){
 exports.__esModule = true;
+exports.defaultConfig = defaultConfig;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -2655,6 +3480,10 @@ var _deferredAccountCreation = require('./deferred-account-creation');
 
 var _subscribeResponse = require('./subscribe-response');
 
+var _propensityApi = require('./propensity-api');
+
+var _loggerApi = require('./logger-api');
+
 /**
  * @interface
  */
@@ -2676,6 +3505,14 @@ var Subscriptions = (function () {
   Subscriptions.prototype.init = function init(productOrPublicationId) {};
 
   /**
+   * Optionally configures the runtime with non-default properties. See
+   * `Config` definition for details.
+   * @param {!Config} config
+   */
+
+  Subscriptions.prototype.configure = function configure(config) {};
+
+  /**
    * Starts the entitlement flow.
    */
 
@@ -2688,10 +3525,17 @@ var Subscriptions = (function () {
   Subscriptions.prototype.reset = function reset() {};
 
   /**
+   * Resets the entitlements and clears all of the caches.
+   */
+
+  Subscriptions.prototype.clear = function clear() {};
+
+  /**
+   * @param {?string=} opt_encryptedDocumentKey
    * @return {!Promise<!Entitlements>}
    */
 
-  Subscriptions.prototype.getEntitlements = function getEntitlements() {};
+  Subscriptions.prototype.getEntitlements = function getEntitlements(opt_encryptedDocumentKey) {};
 
   /**
    * Set the subscribe callback.
@@ -2718,6 +3562,13 @@ var Subscriptions = (function () {
   Subscriptions.prototype.showOffers = function showOffers(opt_options) {};
 
   /**
+   * Starts the Offers flow for a subscription update.
+   * @param {!OffersRequest=} opt_options
+   */
+
+  Subscriptions.prototype.showUpdateOffers = function showUpdateOffers(opt_options) {};
+
+  /**
    * Show subscription option.
    * @param {!OffersRequest=} opt_options
    */
@@ -2730,6 +3581,18 @@ var Subscriptions = (function () {
    */
 
   Subscriptions.prototype.showAbbrvOffer = function showAbbrvOffer(opt_options) {};
+
+  /**
+   * Show contribution options for the users to select from.
+   * The options are grouped together by periods (Weekly, Monthly, etc.).
+   * User can select the amount to contribute to from available options
+   * to the publisher. These options are based on the SKUs defined in the Play
+   * console for a given publication.
+   * Each SKU has Amount, Period, SKUId and other attributes.
+   * @param {!OffersRequest=} opt_options
+   */
+
+  Subscriptions.prototype.showContributionOptions = function showContributionOptions(opt_options) {};
 
   /**
    * Set the callback for the native subscribe request. Setting this callback
@@ -2754,7 +3617,27 @@ var Subscriptions = (function () {
   Subscriptions.prototype.subscribe = function subscribe(sku) {};
 
   /**
-   * (Not launched)
+   * Starts subscription purchase flow.
+   * @param {SubscriptionRequest} subscriptionRequest
+   */
+
+  Subscriptions.prototype.updateSubscription = function updateSubscription(subscriptionRequest) {};
+
+  /**
+   * Set the contribution complete callback.
+   * @param {function(!Promise<!SubscribeResponse>)} callback
+   */
+
+  Subscriptions.prototype.setOnContributionResponse = function setOnContributionResponse(callback) {};
+
+  /**
+  * Starts contributions purchase flow.
+  * @param {string|SubscriptionRequest} skuOrSubscriptionRequest
+  */
+
+  Subscriptions.prototype.contribute = function contribute(skuOrSubscriptionRequest) {};
+
+  /**
    * Starts the deferred account creation flow.
    * See `DeferredAccountCreationRequest` for more details.
    * @param {?DeferredAccountCreationRequest=} opt_options
@@ -2770,10 +3653,31 @@ var Subscriptions = (function () {
   Subscriptions.prototype.setOnLoginRequest = function setOnLoginRequest(callback) {};
 
   /**
+   * Starts the login prompt flow.
+   * @return {!Promise}
+   */
+
+  Subscriptions.prototype.showLoginPrompt = function showLoginPrompt() {};
+
+  /**
+   * Starts the login notification flow.
+   * @return {!Promise}
+   */
+
+  Subscriptions.prototype.showLoginNotification = function showLoginNotification() {};
+
+  /**
    * @param {function()} callback
    */
 
   Subscriptions.prototype.setOnLinkComplete = function setOnLinkComplete(callback) {};
+
+  /**
+   * @param {!Promise} accountPromise Publisher's promise to lookup account.
+   * @return {!Promise}
+   */
+
+  Subscriptions.prototype.waitForSubscriptionLookup = function waitForSubscriptionLookup(accountPromise) {};
 
   /**
    * Starts the Account linking flow.
@@ -2813,11 +3717,11 @@ var Subscriptions = (function () {
 
   /**
    * Starts the save subscriptions flow.
-   * @param {!SaveSubscriptionRequest} request
-   * @return {!Promise<boolean>} status or promise of status of request
+   * @param {!SaveSubscriptionRequestCallback} requestCallback
+   * @return {!Promise} a promise indicating flow is started
    */
 
-  Subscriptions.prototype.saveSubscription = function saveSubscription(request) {};
+  Subscriptions.prototype.saveSubscription = function saveSubscription(requestCallback) {};
 
   /**
    * Creates an element with the SwG button style and the provided callback.
@@ -2841,6 +3745,29 @@ var Subscriptions = (function () {
 
   Subscriptions.prototype.attachButton = function attachButton(button, optionsOrCallback, opt_callback) {};
 
+  /**
+   * Attaches smartButton element and the provided callback.
+   * The default theme is "light".
+   *
+   * @param {!Element} button
+   * @param {!SmartButtonOptions|function()} optionsOrCallback
+   * @param {function()=} opt_callback
+   */
+
+  Subscriptions.prototype.attachSmartButton = function attachSmartButton(button, optionsOrCallback, opt_callback) {};
+
+  /**
+   * Retrieves the propensity module that provides APIs to
+   * get propensity scores based on user state and events
+   * @return {!Promise<PropensityApi>}
+   */
+
+  Subscriptions.prototype.getPropensityModule = function getPropensityModule() {};
+
+  /** @return {!Promise<LoggerApi>} */
+
+  Subscriptions.prototype.getLogger = function getLogger() {};
+
   return Subscriptions;
 })();
 
@@ -2849,12 +3776,96 @@ var SubscriptionFlows = {
   SHOW_OFFERS: 'showOffers',
   SHOW_SUBSCRIBE_OPTION: 'showSubscribeOption',
   SHOW_ABBRV_OFFER: 'showAbbrvOffer',
+  SHOW_CONTRIBUTION_OPTIONS: 'showContributionOptions',
   SUBSCRIBE: 'subscribe',
+  CONTRIBUTE: 'contribute',
   COMPLETE_DEFERRED_ACCOUNT_CREATION: 'completeDeferredAccountCreation',
-  LINK_ACCOUNT: 'linkAccount'
+  LINK_ACCOUNT: 'linkAccount',
+  SHOW_LOGIN_PROMPT: 'showLoginPrompt',
+  SHOW_LOGIN_NOTIFICATION: 'showLoginNotification'
 };
 
 exports.SubscriptionFlows = SubscriptionFlows;
+/**
+ * Configuration properties:
+ * - windowOpenMode - either "auto" or "redirect". The "redirect" value will
+ *   force redirect flow for any window.open operation, including payments.
+ *   The "auto" value either uses a redirect or a popup flow depending on
+ *   what's possible on a specific environment. Defaults to "auto".
+ * - enableSwgAnalytics - if set to true then events logged by the publisher's
+ *   client will be sent to Google's SwG analytics service.  This information is
+ *   used to compare the effectiveness of Google's buy-flow events to those
+ *   generated by the publisher's client code.  This includes events sent to
+ *   both PropensityApi and LoggerApi.
+ * - enablePropensity - If true events from the logger api are sent to the
+ *   propensity server.  Note events from the legacy propensity endpoint are
+ *   always sent. 
+ * @typedef {{
+ *   experiments: (!Array<string>|undefined),
+ *   windowOpenMode: (!WindowOpenMode|undefined),
+ *   analyticsMode: (!AnalyticsMode|undefined),
+ *   enableSwgAnalytics: (boolean|undefined),
+ *   enablePropensity: (boolean|undefined),
+ * }}
+ */
+var Config = undefined;
+
+exports.Config = Config;
+/**
+ * @enum {number}
+ */
+var AnalyticsMode = {
+  DEFAULT: 0,
+  IMPRESSIONS: 1
+};
+
+exports.AnalyticsMode = AnalyticsMode;
+/**
+ * @enum {string}
+ */
+var WindowOpenMode = {
+  AUTO: 'auto',
+  REDIRECT: 'redirect'
+};
+
+exports.WindowOpenMode = WindowOpenMode;
+/**
+ * @enum {string}
+ */
+var ReplaceSkuProrationMode = {
+  // The replacement takes effect immediately, and the remaining time will
+  // be prorated and credited to the user. This is the current default
+  // behavior.
+  IMMEDIATE_WITH_TIME_PRORATION: 'IMMEDIATE_WITH_TIME_PRORATION'
+};
+
+exports.ReplaceSkuProrationMode = ReplaceSkuProrationMode;
+/**
+ * The Offers/Contributions UI is rendered differently based on the
+ * ProductType. The ProductType parameter is passed to the Payments flow, and
+ * then passed back to the Payments confirmation page to render messages/text
+ * based on the ProductType.
+ * @enum {string}
+ */
+var ProductType = {
+  SUBSCRIPTION: 'SUBSCRIPTION',
+  UI_CONTRIBUTION: 'UI_CONTRIBUTION'
+};
+
+exports.ProductType = ProductType;
+/**
+ * @return {!Config}
+ */
+
+function defaultConfig() {
+  return {
+    windowOpenMode: WindowOpenMode.AUTO,
+    analyticsMode: AnalyticsMode.DEFAULT,
+    enableSwgAnalytics: false,
+    enablePropensity: false
+  };
+}
+
 /**
  * Properties:
  * - skus - a list of SKUs to return from the defined or default list. The
@@ -2881,25 +3892,74 @@ var LoginRequest = undefined;
 
 exports.LoginRequest = LoginRequest;
 /**
+ * Properties:
+ * - one and only one of "token" or "authCode"
+ * AuthCode reference: https://developers.google.com/actions/identity/oauth2-code-flow
+ * Token reference: https://developers.google.com/actions/identity/oauth2-implicit-flow
  * @typedef {{
- *   token: string,
+ *   token: (string|undefined),
+ *   authCode: (string|undefined),
  * }}
  */
 var SaveSubscriptionRequest = undefined;
 
 exports.SaveSubscriptionRequest = SaveSubscriptionRequest;
 /**
+ * Callback for retrieving subscription request
+ *
+ * @callback SaveSubscriptionRequestCallback
+ * @return {!Promise<SaveSubscriptionRequest> | !SaveSubscriptionRequest} request
+ */
+var SaveSubscriptionRequestCallback = undefined;
+
+exports.SaveSubscriptionRequestCallback = SaveSubscriptionRequestCallback;
+/**
  * Properties:
+ * - lang: Sets the button SVG and title. Default is "en".
  * - theme: "light" or "dark". Default is "light".
  *
  * @typedef {{
- *   theme: string,
+ *   theme: (string|undefined),
+ *   lang: (string|undefined),
  * }}
  */
 var ButtonOptions = undefined;
-exports.ButtonOptions = ButtonOptions;
 
-},{"./deferred-account-creation":5,"./entitlements":6,"./offer":7,"./subscribe-response":8}],10:[function(require,module,exports){
+exports.ButtonOptions = ButtonOptions;
+/**
+ * Properties:
+ * - lang: Sets the button SVG and title. Default is "en".
+ * - theme: "light" or "dark". Default is "light".
+ * - messageTextColor: Overrides theme color for message text. (ex: "#09f")
+ *
+ * @typedef {{
+ *   theme: (string|undefined),
+ *   lang: (string|undefined),
+ *   messageTextColor: (string|undefined),
+ * }}
+ */
+var SmartButtonOptions = undefined;
+
+exports.SmartButtonOptions = SmartButtonOptions;
+/**
+ * Properties:
+ * - sku: Required. Sku to add to the user's subscriptions.
+ * - oldSku: Optional. This is if you want to replace one sku with another. For
+ *  example, if a user wants to upgrade or downgrade their current subscription.
+ * - prorationMode: Optional. When replacing a subscription you can decide on a
+ *  specific proration mode to charge the user.
+ *  The default is IMMEDIATE_WITH_TIME_PRORATION.
+ *
+ *  @typedef {{
+ *    skuId: string,
+ *    oldSku: (string|undefined),
+ *    replaceSkuProrationMode: (ReplaceSkuProrationMode|undefined),
+ * }}
+ */
+var SubscriptionRequest = undefined;
+exports.SubscriptionRequest = SubscriptionRequest;
+
+},{"./deferred-account-creation":6,"./entitlements":7,"./logger-api":8,"./offer":9,"./propensity-api":10,"./subscribe-response":11}],13:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -2932,7 +3992,7 @@ var UserData = (function () {
 
     /** @const {string} */
     this.idToken = idToken;
-    /** @private @const {!Object} */
+    /** @const {!Object} */
     this.data = data;
 
     /** @const {string} */
@@ -2980,7 +4040,456 @@ var UserData = (function () {
 
 exports.UserData = UserData;
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _protoApi_messages = require('../proto/api_messages');
+
+var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+
+var _utilsLog = require('../utils/log');
+
+/**
+ * @interface
+ */
+
+var ActivityPortDef = (function () {
+  function ActivityPortDef() {
+    babelHelpers.classCallCheck(this, ActivityPortDef);
+  }
+
+  /**
+   * @interface
+   */
+
+  /**
+   * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
+   */
+
+  ActivityPortDef.prototype.acceptResult = function acceptResult() {};
+
+  return ActivityPortDef;
+})();
+
+exports.ActivityPortDef = ActivityPortDef;
+
+var ActivityPort = (function (_ActivityPortDef) {
+  babelHelpers.inherits(ActivityPort, _ActivityPortDef);
+
+  function ActivityPort() {
+    babelHelpers.classCallCheck(this, ActivityPort);
+
+    _ActivityPortDef.apply(this, arguments);
+  }
+
+  /**
+   * @implements {ActivityPortDef}
+   */
+
+  /**
+   * Returns the mode of the activity: iframe, popup or redirect.
+   * @return {!web-activities/activity-ports.ActivityMode}
+   */
+
+  ActivityPort.prototype.getMode = function getMode() {};
+
+  /**
+   * Accepts the result when ready. The client should verify the activity's
+   * mode, origin, verification and secure channel flags before deciding
+   * whether or not to trust the result.
+   *
+   * Returns the promise that yields when the activity has been completed and
+   * either a result, a cancelation or a failure has been returned.
+   *
+   * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
+   * @override
+   */
+
+  ActivityPort.prototype.acceptResult = function acceptResult() {};
+
+  /**
+   * Returns a promise that yields when the iframe is ready to be interacted
+   * with.
+   * @return {!Promise}
+   */
+
+  ActivityPort.prototype.whenReady = function whenReady() {};
+
+  /**
+   * Waits until the activity port is connected to the host.
+   * @return {!Promise}
+   */
+
+  ActivityPort.prototype.connect = function connect() {};
+
+  /**
+   * Disconnect the activity binding and cleanup listeners.
+   */
+
+  ActivityPort.prototype.disconnect = function disconnect() {};
+
+  /**
+   * Register a callback to handle resize requests. Once successfully resized,
+   * ensure to call `resized()` method.
+   * @param {function(number)} unusedCallback
+   */
+
+  ActivityPort.prototype.onResizeRequest = function onResizeRequest(unusedCallback) {};
+
+  /**
+   * Sends a message to the host.
+   * @param {!Object} unusedPayload
+   */
+
+  ActivityPort.prototype.messageDeprecated = function messageDeprecated(unusedPayload) {};
+
+  /**
+   * Registers a callback to receive messages from the host.
+   * @param {function(!Object)} unusedCallback
+   */
+
+  ActivityPort.prototype.onMessageDeprecated = function onMessageDeprecated(unusedCallback) {};
+
+  /**
+   * @param {!../proto/api_messages.Message} unusedRequest
+   */
+
+  ActivityPort.prototype.execute = function execute(unusedRequest) {};
+
+  /**
+   * @param {!function(new: T)} unusedMessage
+   * @param {function(Object)} unusedCallback
+   * @template T
+   */
+
+  ActivityPort.prototype.on = function on(unusedMessage, unusedCallback) {};
+
+  /**
+   * Signals back to the activity implementation that the client has updated
+   * the activity's size.
+   */
+
+  ActivityPort.prototype.resized = function resized() {};
+
+  return ActivityPort;
+})(ActivityPortDef);
+
+exports.ActivityPort = ActivityPort;
+
+var ActivityPortDeprecated = (function () {
+  /**
+   * @param {!web-activities/activity-ports.ActivityPort} port
+   */
+
+  function ActivityPortDeprecated(port) {
+    babelHelpers.classCallCheck(this, ActivityPortDeprecated);
+
+    /** @private @const {!web-activities/activity-ports.ActivityPort} */
+    this.port_ = port;
+  }
+
+  /**
+   * @implements {ActivityPortDef}
+   */
+
+  /**
+   * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
+   */
+
+  ActivityPortDeprecated.prototype.acceptResult = function acceptResult() {
+    return this.port_.acceptResult();
+  };
+
+  return ActivityPortDeprecated;
+})();
+
+var ActivityIframePort = (function () {
+  /**
+   * @param {!HTMLIFrameElement} iframe
+   * @param {string} url
+   * @param {?Object=} opt_args
+   */
+
+  function ActivityIframePort(iframe, url, opt_args) {
+    babelHelpers.classCallCheck(this, ActivityIframePort);
+
+    /** @private @const {!web-activities/activity-ports.ActivityIframePort} */
+    this.iframePort_ = new _webActivitiesActivityPorts.ActivityIframePort(iframe, url, opt_args);
+    /** @private @const {!Object<string, function(!Object)>} */
+    this.callbackMap_ = {};
+    /** @private {?function(!../proto/api_messages.Message)} */
+    this.callbackOriginal_ = null;
+  }
+
+  /**
+   * Returns a promise that yields when the iframe is ready to be interacted
+   * with.
+   * @return {!Promise}
+   */
+
+  ActivityIframePort.prototype.whenReady = function whenReady() {
+    return this.iframePort_.whenReady();
+  };
+
+  /**
+   * Waits until the activity port is connected to the host.
+   * @return {!Promise}
+   */
+
+  ActivityIframePort.prototype.connect = function connect() {
+    var _this = this;
+
+    return this.iframePort_.connect().then(function () {
+      // Attach a callback to receive messages after connection complete
+      _this.iframePort_.onMessage(function (data) {
+        if (_this.callbackOriginal_) {
+          _this.callbackOriginal_(data);
+        }
+        var response = data && data['RESPONSE'];
+        if (!response) {
+          return;
+        }
+        var cb = _this.callbackMap_[response[0]];
+        if (cb) {
+          cb(_protoApi_messages.deserialize(response));
+        }
+      });
+    });
+  };
+
+  /**
+   * Disconnect the activity binding and cleanup listeners.
+   */
+
+  ActivityIframePort.prototype.disconnect = function disconnect() {
+    this.iframePort_.disconnect();
+  };
+
+  /**
+   * Returns the mode of the activity: iframe, popup or redirect.
+   * @return {!web-activities/activity-ports.ActivityMode}
+   */
+
+  ActivityIframePort.prototype.getMode = function getMode() {
+    return this.iframePort_.getMode();
+  };
+
+  /**
+   * Accepts the result when ready. The client should verify the activity's
+   * mode, origin, verification and secure channel flags before deciding
+   * whether or not to trust the result.
+   *
+   * Returns the promise that yields when the activity has been completed and
+   * either a result, a cancelation or a failure has been returned.
+   *
+   * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
+   * @override
+   */
+
+  ActivityIframePort.prototype.acceptResult = function acceptResult() {
+    return this.iframePort_.acceptResult();
+  };
+
+  /**
+   * Register a callback to handle resize requests. Once successfully resized,
+   * ensure to call `resized()` method.
+   * @param {function(number)} callback
+   */
+
+  ActivityIframePort.prototype.onResizeRequest = function onResizeRequest(callback) {
+    return this.iframePort_.onResizeRequest(callback);
+  };
+
+  /**
+   * Sends a message to the host.
+   * @param {!Object} payload
+   */
+
+  ActivityIframePort.prototype.messageDeprecated = function messageDeprecated(payload) {
+    this.iframePort_.message(payload);
+    _utilsLog.debugLog('WARNING: messageDeprecated() is deprecated');
+  };
+
+  /**
+   * Registers a callback to receive messages from the host.
+   * @param {function(!Object)} callback
+   */
+
+  ActivityIframePort.prototype.onMessageDeprecated = function onMessageDeprecated(callback) {
+    this.callbackOriginal_ = callback;
+    _utilsLog.debugLog('WARNING: use of deprecated API onMessageDeprecated()');
+  };
+
+  /**
+   * @param {!../proto/api_messages.Message} request
+   */
+
+  ActivityIframePort.prototype.execute = function execute(request) {
+    this.iframePort_.message({ 'REQUEST': request.toArray() });
+  };
+
+  /**
+   * @param {!function(new: T)} message
+   * @param {function(!../proto/api_messages.Message)} callback
+   * @template T
+   */
+
+  ActivityIframePort.prototype.on = function on(message, callback) {
+    var label = _protoApi_messages.getLabel(message);
+    if (!label) {
+      throw new Error('Invalid data type');
+    } else if (this.callbackMap_[label]) {
+      throw new Error('Invalid type or duplicate callback for ', label);
+    }
+    this.callbackMap_[label] = callback;
+  };
+
+  /**
+   * Signals back to the activity implementation that the client has updated
+   * the activity's size.
+   */
+
+  ActivityIframePort.prototype.resized = function resized() {
+    this.iframePort_.resized();
+  };
+
+  return ActivityIframePort;
+})();
+
+exports.ActivityIframePort = ActivityIframePort;
+
+var ActivityPorts = (function () {
+  /**
+   * @param {!Window} win
+   */
+
+  function ActivityPorts(win) {
+    babelHelpers.classCallCheck(this, ActivityPorts);
+
+    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    this.activityPorts_ = new _webActivitiesActivityPorts.ActivityPorts(win);
+  }
+
+  /**
+   * Start an activity within the specified iframe.
+   * @param {!HTMLIFrameElement} iframe
+   * @param {string} url
+   * @param {?Object=} opt_args
+   * @return {!Promise<!ActivityIframePort>}
+   */
+
+  ActivityPorts.prototype.openIframe = function openIframe(iframe, url, opt_args) {
+    var activityPort = new ActivityIframePort(iframe, url, opt_args);
+    return activityPort.connect().then(function () {
+      return activityPort;
+    });
+  };
+
+  /**
+   * Start an activity in a separate window. The result will be delivered
+   * to the `onResult` callback.
+   *
+   * The activity can be opened in two modes: "popup" and "redirect". This
+   * depends on the `target` value, but also on the browser/environment.
+   *
+   * The allowed `target` values are `_blank`, `_top` and name targets. The
+   * `_self`, `_parent` and similar targets are not allowed.
+   *
+   * The `_top` target indicates that the activity should be opened as a
+   * "redirect", while other targets indicate that the activity should be
+   * opened as a popup. The activity client will try to honor the requested
+   * target. However, it's not always possible. Some environments do not
+   * allow popups and they either force redirect or fail the window open
+   * request. In this case, the activity will try to fallback to the "redirect"
+   * mode.
+   *
+   * @param {string} requestId
+   * @param {string} url
+   * @param {string} target
+   * @param {?Object=} opt_args
+   * @param {?web-activities/activity-ports.ActivityOpenOptions=} opt_options
+   * @return {{targetWin: ?Window}}
+   */
+
+  ActivityPorts.prototype.open = function open(requestId, url, target, opt_args, opt_options) {
+    return this.activityPorts_.open(requestId, url, target, opt_args, opt_options);
+  };
+
+  /**
+   * Registers the callback for the result of the activity opened with the
+   * specified `requestId` (see the `open()` method). The callback is a
+   * function that takes a single `ActivityPort` argument. The client
+   * can use this object to verify the port using it's origin, verified and
+   * secure channel flags. Then the client can call
+   * `ActivityPort.acceptResult()` method to accept the result.
+   *
+   * The activity result is handled via a separate callback because of a
+   * possible redirect. So use of direct callbacks and/or promises is not
+   * possible in that case.
+   *
+   * A typical implementation would look like:
+   * ```
+   * ports.onResult('request1', function(port) {
+   *   port.acceptResult().then(function(result) {
+   *     // Only verified origins are allowed.
+   *     if (result.origin == expectedOrigin &&
+   *         result.originVerified &&
+   *         result.secureChannel) {
+   *       handleResultForRequest1(result);
+   *     }
+   *   });
+   * })
+   *
+   * ports.open('request1', request1Url, '_blank');
+   * ```
+   *
+   * @param {string} requestId
+   * @param {function(!ActivityPortDef)} callback
+   */
+
+  ActivityPorts.prototype.onResult = function onResult(requestId, callback) {
+    this.activityPorts_.onResult(requestId, function (port) {
+      callback(new ActivityPortDeprecated(port));
+    });
+  };
+
+  /**
+   * @param {function(!Error)} handler
+   */
+
+  ActivityPorts.prototype.onRedirectError = function onRedirectError(handler) {
+    this.activityPorts_.onRedirectError(handler);
+  };
+
+  /**
+   * @return {!web-activities/activity-ports.ActivityPorts}
+   */
+
+  ActivityPorts.prototype.getOriginalWebActivityPorts = function getOriginalWebActivityPorts() {
+    return this.activityPorts_;
+  };
+
+  return ActivityPorts;
+})();
+
+exports.ActivityPorts = ActivityPorts;
+
+},{"../proto/api_messages":33,"../utils/log":74,"web-activities/activity-ports":4}],15:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -3012,7 +4521,6 @@ var POPUP_Z_INDEX = 2147483647;
  */
 
 var DialogManager = (function () {
-
   /**
    * @param {!../model/doc.Doc} doc
    */
@@ -3049,24 +4557,30 @@ var DialogManager = (function () {
   }
 
   /**
+   * @param {boolean=} hidden
    * @return {!Promise<!Dialog>}
    */
 
   DialogManager.prototype.openDialog = function openDialog() {
+    var hidden = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+
     if (!this.openPromise_) {
       this.dialog_ = new _dialog.Dialog(this.doc_);
-      this.openPromise_ = this.dialog_.open();
+      this.openPromise_ = this.dialog_.open(hidden);
     }
     return this.openPromise_;
   };
 
   /**
    * @param {!./view.View} view
+   * @param {boolean=} hidden
    * @return {!Promise}
    */
 
   DialogManager.prototype.openView = function openView(view) {
     var _this2 = this;
+
+    var hidden = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
     view.whenComplete()['catch'](function (reason) {
       if (_utilsErrors.isCancelError(reason)) {
@@ -3074,7 +4588,7 @@ var DialogManager = (function () {
       }
       throw reason;
     });
-    return this.openDialog().then(function (dialog) {
+    return this.openDialog(hidden).then(function (dialog) {
       return dialog.openView(view);
     });
   };
@@ -3143,7 +4657,7 @@ var DialogManager = (function () {
 
 exports.DialogManager = DialogManager;
 
-},{"../utils/errors":49,"./dialog":12,"./graypane":14}],12:[function(require,module,exports){
+},{"../utils/errors":70,"./dialog":16,"./graypane":18}],16:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -3162,6 +4676,8 @@ exports.__esModule = true;
  */
 
 var _buildCssUiUiCss = require('../../build/css/ui/ui.css');
+
+var _modelDoc = require('../model/doc');
 
 var _graypane = require('./graypane');
 
@@ -3230,7 +4746,6 @@ var PositionAt = {
  */
 
 var Dialog = (function () {
-
   /**
    * Create a dialog for the provided doc.
    * @param {!../model/doc.Doc} doc
@@ -3247,7 +4762,9 @@ var Dialog = (function () {
     this.doc_ = doc;
 
     /** @private @const {!FriendlyIframe} */
-    this.iframe_ = new _friendlyIframe.FriendlyIframe(doc.getWin().document, { 'class': 'swg-dialog' });
+    this.iframe_ = new _friendlyIframe.FriendlyIframe(doc.getWin().document, {
+      'class': 'swg-dialog'
+    });
 
     /** @private @const {!Graypane} */
     this.graypane_ = new _graypane.Graypane(doc, Z_INDEX - 1);
@@ -3268,18 +4785,27 @@ var Dialog = (function () {
 
     /** @private {?Promise} */
     this.animating_ = null;
+
+    /** @private {boolean} */
+    this.hidden_ = false;
+
+    /** @private {?./view.View} */
+    this.previousProgressView_ = null;
+
+    /** @private {boolean} */
+    this.useFixedLayer_ = false;
   }
 
   /**
    * Opens the dialog and builds the iframe container.
-   * @param {boolean=} animated
+   * @param {boolean=} hidden
    * @return {!Promise<!Dialog>}
    */
 
   Dialog.prototype.open = function open() {
     var _this = this;
 
-    var animated = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+    var hidden = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
     var iframe = this.iframe_;
     if (iframe.isConnected()) {
@@ -3288,23 +4814,32 @@ var Dialog = (function () {
 
     // Attach.
     this.doc_.getBody().appendChild(iframe.getElement()); // Fires onload.
+
     this.graypane_.attach();
 
-    if (animated) {
-      this.animate_(function () {
-        _utilsStyle.setImportantStyles(iframe.getElement(), {
-          'transform': 'translateY(100%)'
-        });
-        return _utilsAnimation.transition(iframe.getElement(), {
-          'transform': 'translateY(0)'
-        }, 300, 'ease-out');
+    if (hidden) {
+      _utilsStyle.setImportantStyles(iframe.getElement(), {
+        'visibility': 'hidden',
+        'opacity': 0
       });
+      this.hidden_ = hidden;
+    } else {
+      this.show_();
     }
 
-    return iframe.whenReady().then(function () {
-      _this.buildIframe_();
-      return _this;
-    });
+    if (this.useFixedLayer_) {
+      return this.doc_.addToFixedLayer(iframe.getElement()).then(function () {
+        return iframe.whenReady();
+      }).then(function () {
+        _this.buildIframe_();
+        return _this;
+      });
+    } else {
+      return iframe.whenReady().then(function () {
+        _this.buildIframe_();
+        return _this;
+      });
+    }
   };
 
   /**
@@ -3318,7 +4853,7 @@ var Dialog = (function () {
     var iframeDoc = /** @type {!HTMLDocument} */this.iframe_.getDocument();
 
     // Inject Google fonts in <HEAD> section of the iframe.
-    _utilsDom.injectStyleSheet(iframeDoc, _buildCssUiUiCss.CSS);
+    _utilsDom.injectStyleSheet(_modelDoc.resolveDoc(iframeDoc), _buildCssUiUiCss.CSS);
 
     // Add Loading indicator.
     this.loadingView_ = new _uiLoadingView.LoadingView(iframeDoc);
@@ -3353,7 +4888,9 @@ var Dialog = (function () {
       animating = Promise.resolve();
     }
     return animating.then(function () {
-      _this2.doc_.getBody().removeChild(_this2.iframe_.getElement());
+      var iframeEl = _this2.iframe_.getElement();
+      iframeEl.parentNode.removeChild(iframeEl);
+
       _this2.removePaddingToHtml_();
       _this2.graypane_.destroy();
     });
@@ -3390,13 +4927,33 @@ var Dialog = (function () {
   };
 
   /**
-   * Whether to display loading indicator.
-   * @param {boolean} isLoading
+   * Transitions to the next view.
+   * @private
    */
 
-  Dialog.prototype.setLoading = function setLoading(isLoading) {
-    if (isLoading) {
+  Dialog.prototype.entryTransitionToNextView_ = function entryTransitionToNextView_() {
+    if (this.view_ && this.view_.hasLoadingIndicator()) {
+      // Temporarily cache the old view.
+      this.previousProgressView_ = this.view_;
+    } else {
+      // Since loading indicator will be shown, remove contents of old view.
+      _utilsDom.removeChildren(this.getContainer());
+      // When loading indicator was not displayed in the previous view,
+      // loading indicator must be displayed while transitioning to new view.
       this.loadingView_.show();
+    }
+  };
+
+  /**
+   * Transition out of an old view.
+   * @private
+   */
+
+  Dialog.prototype.exitTransitionFromOldView_ = function exitTransitionFromOldView_() {
+    // If previous view is still around, remove it.
+    if (this.previousProgressView_) {
+      _utilsDom.removeElement(this.previousProgressView_.getElement());
+      this.previousProgressView_ = null;
     } else {
       this.loadingView_.hide();
     }
@@ -3417,26 +4974,52 @@ var Dialog = (function () {
   Dialog.prototype.openView = function openView(view) {
     var _this3 = this;
 
-    if (this.view_) {
-      // TODO(dparikh): Maybe I need to keep it until the new one is ready.
-      _utilsDom.removeChildren(this.getContainer());
-    }
-    this.view_ = view;
-
     _utilsStyle.setImportantStyles(view.getElement(), resetViewStyles);
-    this.setLoading(true);
+    this.entryTransitionToNextView_();
+
+    this.view_ = view;
     this.getContainer().appendChild(view.getElement());
 
     // If the current view should fade the parent document.
-    if (view.shouldFadeBody()) {
+    if (view.shouldFadeBody() && !this.hidden_) {
       this.graypane_.show( /* animate */true);
     }
+
     return view.init(this).then(function () {
       _utilsStyle.setImportantStyles(view.getElement(), {
         'opacity': 1
       });
-      _this3.setLoading(false);
+      if (_this3.hidden_) {
+        if (view.shouldFadeBody()) {
+          _this3.graypane_.show( /* animated */true);
+        }
+        _this3.show_();
+      }
+      _this3.exitTransitionFromOldView_();
     });
+  };
+
+  /**
+   * Show the iframe.
+   * @private
+   */
+
+  Dialog.prototype.show_ = function show_() {
+    var _this4 = this;
+
+    this.animate_(function () {
+      _utilsStyle.setImportantStyles(_this4.getElement(), {
+        'transform': 'translateY(100%)',
+        'opactiy': 1,
+        'visibility': 'visible'
+      });
+      return _utilsAnimation.transition(_this4.getElement(), {
+        'transform': 'translateY(0)',
+        'opacity': 1,
+        'visibility': 'visible'
+      }, 300, 'ease-out');
+    });
+    this.hidden_ = false;
   };
 
   /**
@@ -3448,7 +5031,7 @@ var Dialog = (function () {
    */
 
   Dialog.prototype.resizeView = function resizeView(view, height) {
-    var _this4 = this;
+    var _this5 = this;
 
     var animated = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
@@ -3460,25 +5043,25 @@ var Dialog = (function () {
     var animating = undefined;
     if (animated) {
       (function () {
-        var oldHeight = _this4.getElement().offsetHeight;
+        var oldHeight = _this5.getElement().offsetHeight;
         if (newHeight >= oldHeight) {
           // Expand.
-          animating = _this4.animate_(function () {
-            _utilsStyle.setImportantStyles(_this4.getElement(), {
+          animating = _this5.animate_(function () {
+            _utilsStyle.setImportantStyles(_this5.getElement(), {
               'height': newHeight + 'px',
               'transform': 'translateY(' + (newHeight - oldHeight) + 'px)'
             });
-            return _utilsAnimation.transition(_this4.getElement(), {
+            return _utilsAnimation.transition(_this5.getElement(), {
               'transform': 'translateY(0)'
             }, 300, 'ease-out');
           });
         } else {
           // Collapse.
-          animating = _this4.animate_(function () {
-            return _utilsAnimation.transition(_this4.getElement(), {
+          animating = _this5.animate_(function () {
+            return _utilsAnimation.transition(_this5.getElement(), {
               'transform': 'translateY(' + (oldHeight - newHeight) + 'px)'
             }, 300, 'ease-out').then(function () {
-              _utilsStyle.setImportantStyles(_this4.getElement(), {
+              _utilsStyle.setImportantStyles(_this5.getElement(), {
                 'height': newHeight + 'px',
                 'transform': 'translateY(0)'
               });
@@ -3493,7 +5076,7 @@ var Dialog = (function () {
       animating = Promise.resolve();
     }
     return animating.then(function () {
-      _this4.updatePaddingToHtml_(height);
+      _this5.updatePaddingToHtml_(height);
       view.resized();
     });
   };
@@ -3505,7 +5088,7 @@ var Dialog = (function () {
    */
 
   Dialog.prototype.animate_ = function animate_(callback) {
-    var _this5 = this;
+    var _this6 = this;
 
     var wait = this.animating_ || Promise.resolve();
     return this.animating_ = wait.then(function () {
@@ -3513,7 +5096,7 @@ var Dialog = (function () {
     }, function () {
       // Ignore errors to make sure animations don't get stuck.
     }).then(function () {
-      _this5.animating_ = null;
+      _this6.animating_ = null;
     });
   };
 
@@ -3565,7 +5148,7 @@ var Dialog = (function () {
 
   /**
    * Removes previouly added bottom padding from the document.
-   * @private`
+   * @private
    */
 
   Dialog.prototype.removePaddingToHtml_ = function removePaddingToHtml_() {
@@ -3621,7 +5204,7 @@ var Dialog = (function () {
 
 exports.Dialog = Dialog;
 
-},{"../../build/css/ui/ui.css":2,"../ui/loading-view":42,"../utils/animation":45,"../utils/dom":48,"../utils/style":56,"./friendly-iframe":13,"./graypane":14}],13:[function(require,module,exports){
+},{"../../build/css/ui/ui.css":2,"../model/doc":22,"../ui/loading-view":63,"../utils/animation":66,"../utils/dom":69,"../utils/style":79,"./friendly-iframe":17,"./graypane":18}],17:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -3655,7 +5238,6 @@ var friendlyIframeAttributes = {
  */
 
 var FriendlyIframe = (function () {
-
   /**
    * @param {!Document} doc
    * @param {!Object<string, string|number>=} attrs
@@ -3670,8 +5252,7 @@ var FriendlyIframe = (function () {
     var mergedAttrs = Object.assign({}, friendlyIframeAttributes, attrs);
 
     /** @private @const {!HTMLIFrameElement} */
-    this.iframe_ =
-    /** @type {!HTMLIFrameElement} */_utilsDom.createElement(doc, 'iframe', mergedAttrs);
+    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(doc, 'iframe', mergedAttrs);
 
     // Ensure that the new iframe does not inherit any CSS styles.
     _utilsStyle.resetAllStyles(this.iframe_);
@@ -3730,10 +5311,7 @@ var FriendlyIframe = (function () {
    */
 
   FriendlyIframe.prototype.isConnected = function isConnected() {
-    if (!this.getElement().ownerDocument) {
-      return false;
-    }
-    return this.getElement().ownerDocument.contains(this.iframe_);
+    return _utilsDom.isConnected(this.getElement());
   };
 
   return FriendlyIframe;
@@ -3741,7 +5319,7 @@ var FriendlyIframe = (function () {
 
 exports.FriendlyIframe = FriendlyIframe;
 
-},{"../utils/dom":48,"../utils/style":56}],14:[function(require,module,exports){
+},{"../utils/dom":69,"../utils/style":79}],18:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -3764,7 +5342,6 @@ var _utilsStyle = require('../utils/style');
 var _utilsAnimation = require('../utils/animation');
 
 var Graypane = (function () {
-
   /**
    * @param {!../model/doc.Doc} doc
    * @param {number} zIndex
@@ -3868,7 +5445,7 @@ var Graypane = (function () {
 
 exports.Graypane = Graypane;
 
-},{"../utils/animation":45,"../utils/style":56}],15:[function(require,module,exports){
+},{"../utils/animation":66,"../utils/style":79}],19:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -3893,7 +5470,6 @@ exports.__esModule = true;
  */
 
 var View = (function () {
-
   /**
    * Empty constructor.
    */
@@ -3925,9 +5501,10 @@ var View = (function () {
   View.prototype.resized = function resized() {}
   // Do nothing by default. Override if needed.
 
-  /*
+  /**
    * Accept the result.
    * @return {!Promise}
+   * @abstract
    */
   ;
 
@@ -3940,12 +5517,19 @@ var View = (function () {
 
   View.prototype.shouldFadeBody = function shouldFadeBody() {};
 
+  /**
+   * @return {boolean}
+   * @abstract
+   */
+
+  View.prototype.hasLoadingIndicator = function hasLoadingIndicator() {};
+
   return View;
 })();
 
 exports.View = View;
 
-},{}],16:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -3969,7 +5553,7 @@ require('../third_party/babel/custom-babel-helpers');
 
 require('./main');
 
-},{"../third_party/babel/custom-babel-helpers":60,"./main":17}],17:[function(require,module,exports){
+},{"../third_party/babel/custom-babel-helpers":83,"./main":21}],21:[function(require,module,exports){
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -3995,11 +5579,13 @@ require('./polyfills');
 
 var _runtimeRuntime = require('./runtime/runtime');
 
+var _utilsLog = require('./utils/log');
+
+_utilsLog.log('Subscriptions Runtime: 0.1.22-1571092749932');
+
 _runtimeRuntime.installRuntime(self);
 
-console.info('Subscriptions Runtime: 0.1.22-1525394011963');
-
-},{"./polyfills":21,"./runtime/runtime":38}],18:[function(require,module,exports){
+},{"./polyfills":25,"./runtime/runtime":57,"./utils/log":74}],22:[function(require,module,exports){
 exports.__esModule = true;
 exports.resolveDoc = resolveDoc;
 /**
@@ -4081,13 +5667,22 @@ var Doc = (function () {
 
   Doc.prototype.whenReady = function whenReady() {};
 
+  /**
+   * Adds the element to the fixed layer.
+   * @param {!Element} unusedElement
+   * @return {!Promise}
+   *
+   * This is a no-op for except in AMP on iOS < 13.0.
+   */
+
+  Doc.prototype.addToFixedLayer = function addToFixedLayer(unusedElement) {};
+
   return Doc;
 })();
 
 exports.Doc = Doc;
 
 var GlobalDoc = (function () {
-
   /**
    * @param {!Window|!Document} winOrDoc
    */
@@ -4097,13 +5692,9 @@ var GlobalDoc = (function () {
 
     var isWin = !!winOrDoc.document;
     /** @private @const {!Window} */
-    this.win_ = isWin ?
-    /** @type {!Window} */winOrDoc :
-    /** @type {!Window} */ /** @type {!Document} */winOrDoc.defaultView;
+    this.win_ = /** @type {!Window} */isWin ? /** @type {!Window} */winOrDoc : /** @type {!Document} */winOrDoc.defaultView;
     /** @private @const {!Document} */
-    this.doc_ = isWin ?
-    /** @type {!Window} */winOrDoc.document :
-    /** @type {!Document} */winOrDoc;
+    this.doc_ = isWin ? /** @type {!Window} */winOrDoc.document : /** @type {!Document} */winOrDoc;
   }
 
   /**
@@ -4155,6 +5746,12 @@ var GlobalDoc = (function () {
     return _utilsDocumentReady.whenDocumentReady(this.doc_);
   };
 
+  /** @override */
+
+  GlobalDoc.prototype.addToFixedLayer = function addToFixedLayer(unusedElement) {
+    return Promise.resolve();
+  };
+
   return GlobalDoc;
 })();
 
@@ -4173,7 +5770,7 @@ function resolveDoc(input) {
   );
 }
 
-},{"../utils/document-ready":47}],19:[function(require,module,exports){
+},{"../utils/document-ready":68}],23:[function(require,module,exports){
 exports.__esModule = true;
 exports.getControlFlag = getControlFlag;
 exports.getDocClassForTesting = getDocClassForTesting;
@@ -4197,6 +5794,8 @@ var _doc = require('./doc');
 
 var _pageConfig = require('./page-config');
 
+var _utilsLog = require('../utils/log');
+
 var _utilsDom = require('../utils/dom');
 
 var _utilsTypes = require('../utils/types');
@@ -4206,11 +5805,15 @@ var _utilsJson = require('../utils/json');
 var ALREADY_SEEN = '__SWG-SEEN__';
 var CONTROL_FLAG = 'subscriptions-control';
 
+var ALLOWED_TYPES = ['CreativeWork', 'Article', 'NewsArticle', 'Blog', 'Comment', 'Course', 'HowTo', 'Message', 'Review', 'WebPage'];
+
+// RegExp for quickly scanning LD+JSON for allowed types
+var RE_ALLOWED_TYPES = new RegExp(ALLOWED_TYPES.join('|'));
+
 /**
  */
 
 var PageConfigResolver = (function () {
-
   /**
    * @param {!Window|!Document|!Doc} winOrDoc
    */
@@ -4274,6 +5877,7 @@ var PageConfigResolver = (function () {
       this.configResolver_(Promise.reject(new Error('No config could be discovered in the page')));
       this.configResolver_ = null;
     }
+    _utilsLog.debugLog(config);
     return config;
   };
 
@@ -4281,6 +5885,66 @@ var PageConfigResolver = (function () {
 })();
 
 exports.PageConfigResolver = PageConfigResolver;
+
+var TypeChecker = (function () {
+  function TypeChecker() {
+    babelHelpers.classCallCheck(this, TypeChecker);
+  }
+
+  /**
+   * Check value from json
+   * @param {?Array|string} value
+   * @param {Array<string>} expectedTypes
+   * @return {boolean}
+   */
+
+  TypeChecker.prototype.checkValue = function checkValue(value, expectedTypes) {
+    if (!value) {
+      return false;
+    }
+    return this.checkArray(this.toArray_(value), expectedTypes);
+  };
+
+  /**
+   * Checks space delimited list of types
+   * @param {?string} itemtype
+   * @param {Array<string>} expectedTypes
+   * @return {boolean}
+   */
+
+  TypeChecker.prototype.checkString = function checkString(itemtype, expectedTypes) {
+    if (!itemtype) {
+      return false;
+    }
+    return this.checkArray(itemtype.split(/\s+/), expectedTypes);
+  };
+
+  /**
+   * @param {Array<?string>} typeArray
+   * @param {Array<string>} expectedTypes
+   * @return {boolean}
+   */
+
+  TypeChecker.prototype.checkArray = function checkArray(typeArray, expectedTypes) {
+    var found = false;
+    typeArray.forEach(function (candidateType) {
+      found = found || expectedTypes.includes(candidateType.replace(/^http:\/\/schema.org\//i, ''));
+    });
+    return found;
+  };
+
+  /*
+   * @param {?Array|string} value
+   * @return {Array}
+   * @private
+   */
+
+  TypeChecker.prototype.toArray_ = function toArray_(value) {
+    return _utilsTypes.isArray(value) ? value : [value];
+  };
+
+  return TypeChecker;
+})();
 
 var MetaParser = (function () {
   /**
@@ -4330,6 +5994,8 @@ var JsonLdParser = (function () {
 
     /** @private @const {!Doc} */
     this.doc_ = doc;
+    /** @private @const @function */
+    this.checkType_ = new TypeChecker();
   }
 
   /**
@@ -4352,7 +6018,7 @@ var JsonLdParser = (function () {
         continue;
       }
       element[ALREADY_SEEN] = true;
-      if (element.textContent.indexOf('NewsArticle') == -1) {
+      if (!RE_ALLOWED_TYPES.test(element.textContent)) {
         continue;
       }
       var possibleConfig = this.tryExtractConfig_(element);
@@ -4374,8 +6040,8 @@ var JsonLdParser = (function () {
       return null;
     }
 
-    // Must be a NewsArticle.
-    if (!this.checkType_(json, 'NewsArticle')) {
+    // Must be an ALLOWED_TYPE
+    if (!this.checkType_.checkValue(json['@type'], ALLOWED_TYPES)) {
       return null;
     }
 
@@ -4433,7 +6099,7 @@ var JsonLdParser = (function () {
 
   JsonLdParser.prototype.discoverProductId_ = function discoverProductId_(json) {
     // Must have type `Product`.
-    if (!this.checkType_(json, 'Product')) {
+    if (!this.checkType_.checkValue(json['@type'], ['Product'])) {
       return null;
     }
     return (/** @type {?string} */this.singleValue_(json, 'productID')
@@ -4466,20 +6132,6 @@ var JsonLdParser = (function () {
     return value == null || value === '' ? null : value;
   };
 
-  /**
-   * @param {!Object} json
-   * @param {string} expectedType
-   * @return {boolean}
-   */
-
-  JsonLdParser.prototype.checkType_ = function checkType_(json, expectedType) {
-    var typeArray = this.valueArray_(json, '@type');
-    if (!typeArray) {
-      return false;
-    }
-    return typeArray.includes(expectedType) || typeArray.includes('http://schema.org/' + expectedType);
-  };
-
   return JsonLdParser;
 })();
 
@@ -4497,6 +6149,8 @@ var MicrodataParser = (function () {
     this.access_ = null;
     /** @private {?string} */
     this.productId_ = null;
+    /** @private @const @function */
+    this.checkType_ = new TypeChecker();
   }
 
   /**
@@ -4506,7 +6160,7 @@ var MicrodataParser = (function () {
 
   /**
    * Returns false if access is restricted, otherwise true
-   * @param {!Element} root An element that is an item of type 'NewsArticle'
+   * @param {!Element} root An element that is an item of type in ALLOWED_TYPES list
    * @return {?boolean} locked access
    * @private
    */
@@ -4535,7 +6189,7 @@ var MicrodataParser = (function () {
 
   /**
    * Verifies if an element is valid based on the following
-   * - child of an item of type 'NewsArticle'
+   * - child of an item of one the the ALLOWED_TYPES
    * - not a child of an item of any other type
    * - not seen before, marked using the alreadySeen tag
    * @param {?Element} current the element to be verified
@@ -4548,14 +6202,11 @@ var MicrodataParser = (function () {
   MicrodataParser.prototype.isValidElement_ = function isValidElement_(current, root, alreadySeen) {
     for (var node = current; node && !node[alreadySeen]; node = node.parentNode) {
       node[alreadySeen] = true;
-      if (node.hasAttribute('itemscope')) {
+      // document nodes don't have hasAttribute
+      if (node.hasAttribute && node.hasAttribute('itemscope')) {
         /**{?string} */
         var type = node.getAttribute('itemtype');
-        if (type.indexOf('http://schema.org/NewsArticle') >= 0) {
-          return true;
-        } else {
-          return false;
-        }
+        return this.checkType_.checkString(type, ALLOWED_TYPES);
       }
     }
     return false;
@@ -4563,10 +6214,10 @@ var MicrodataParser = (function () {
 
   /**
    * Obtains the product ID that meets the requirements
-   * - child of an item of type 'NewsArticle'
+   * - child of an item of one of ALLOWED_TYPES
    * - Not a child of an item of type 'Section'
    * - child of an item of type 'productID'
-   * @param {!Element} root An element that is an item of type 'NewsArticle'
+   * @param {!Element} root An element that is an item of an ALLOWED_TYPES
    * @return {?string} product ID, if found
    * @private
    */
@@ -4614,11 +6265,18 @@ var MicrodataParser = (function () {
    */
 
   MicrodataParser.prototype.tryExtractConfig_ = function tryExtractConfig_() {
+    var _this2 = this;
+
     var config = this.getPageConfig_();
     if (config) {
       return config;
     }
-    var nodeList = this.doc_.getRootNode().querySelectorAll('[itemscope][itemtype*="http://schema.org/NewsArticle"]');
+
+    // Grab all the nodes with an itemtype and filter for our allowed types
+    var nodeList = Array.prototype.slice.call(this.doc_.getRootNode().querySelectorAll('[itemscope][itemtype]')).filter(function (node) {
+      return _this2.checkType_.checkString(node.getAttribute('itemtype'), ALLOWED_TYPES);
+    });
+
     for (var i = 0; nodeList[i] && config == null; i++) {
       var element = nodeList[i];
       if (this.access_ == null) {
@@ -4685,7 +6343,7 @@ function getDocClassForTesting() {
   return _doc.Doc;
 }
 
-},{"../utils/dom":48,"../utils/json":50,"../utils/types":57,"./doc":18,"./page-config":20}],20:[function(require,module,exports){
+},{"../utils/dom":69,"../utils/json":72,"../utils/log":74,"../utils/types":80,"./doc":22,"./page-config":24}],24:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -4707,7 +6365,6 @@ exports.__esModule = true;
  */
 
 var PageConfig = (function () {
-
   /**
    * @param {string} productOrPublicationId
    * @param {boolean} locked
@@ -4725,6 +6382,9 @@ var PageConfig = (function () {
       productId = productOrPublicationId;
       publicationId = productId.substring(0, div);
       label = productId.substring(div + 1);
+      if (label == '*') {
+        throw new Error('wildcard disallowed');
+      }
     } else {
       // The argument is a publication id.
       publicationId = productOrPublicationId;
@@ -4779,7 +6439,7 @@ var PageConfig = (function () {
 
 exports.PageConfig = PageConfig;
 
-},{}],21:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -4809,6 +6469,8 @@ var _polyfillsMathSign = require('./polyfills/math-sign');
 
 var _polyfillsObjectAssign = require('./polyfills/object-assign');
 
+var _polyfillsObjectValues = require('./polyfills/object-values');
+
 var _polyfillsPromise = require('./polyfills/promise');
 
 var _polyfillsArrayIncludes = require('./polyfills/array-includes');
@@ -4816,11 +6478,12 @@ var _polyfillsArrayIncludes = require('./polyfills/array-includes');
 _polyfillsDomtokenlistToggle.install(self);
 _polyfillsMathSign.install(self);
 _polyfillsObjectAssign.install(self);
+_polyfillsObjectValues.install(self);
 _polyfillsPromise.install(self);
 _polyfillsDocumentContains.install(self);
 _polyfillsArrayIncludes.install(self);
 
-},{"./polyfills/array-includes":22,"./polyfills/document-contains":23,"./polyfills/domtokenlist-toggle":24,"./polyfills/math-sign":25,"./polyfills/object-assign":26,"./polyfills/promise":27}],22:[function(require,module,exports){
+},{"./polyfills/array-includes":26,"./polyfills/document-contains":27,"./polyfills/domtokenlist-toggle":28,"./polyfills/math-sign":29,"./polyfills/object-assign":30,"./polyfills/object-values":31,"./polyfills/promise":32}],26:[function(require,module,exports){
 exports.__esModule = true;
 exports.install = install;
 /**
@@ -4863,9 +6526,9 @@ function includes(value, opt_fromIndex) {
 }
 
 /**
-* Sets the Array.contains polyfill if it does not exist.
-* @param {!Window} win
-*/
+ * Sets the Array.contains polyfill if it does not exist.
+ * @param {!Window} win
+ */
 
 function install(win) {
   if (!win.Array.prototype.includes) {
@@ -4878,7 +6541,7 @@ function install(win) {
   }
 }
 
-},{}],23:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 exports.__esModule = true;
 exports.install = install;
 /**
@@ -4928,7 +6591,7 @@ function install(win) {
   }
 }
 
-},{}],24:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 exports.__esModule = true;
 exports.install = install;
 /**
@@ -4993,7 +6656,7 @@ function isIe(win) {
   );
 }
 
-},{}],25:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 exports.__esModule = true;
 exports.sign = sign;
 exports.install = install;
@@ -5033,8 +6696,6 @@ function sign(x) {
   return x > 0 ? 1 : -1;
 }
 
-;
-
 /**
  * Sets the Math.sign polyfill if it does not exist.
  * @param {!Window} win
@@ -5051,7 +6712,7 @@ function install(win) {
   }
 }
 
-},{}],26:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 exports.__esModule = true;
 exports.assign = assign;
 exports.install = install;
@@ -5117,7 +6778,67 @@ function install(win) {
   }
 }
 
-},{}],27:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
+exports.__esModule = true;
+exports.values = values;
+exports.install = install;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+/**
+ * Implements `Object.values` API.
+ * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Object/values.
+ *
+ * @param {!Object} target
+ * @returns {!Array<*>}
+ */
+
+function values(target) {
+  if (target == null) {
+    throw new TypeError('Cannot convert undefined or null to object');
+  }
+
+  var output = [];
+  for (var key in target) {
+    if (hasOwnProperty.call(target, key)) {
+      output.push(target[key]);
+    }
+  }
+  return output;
+}
+
+/**
+ * Sets the Object.values polyfill if it does not exist.
+ * @param {!Window} win
+ */
+
+function install(win) {
+  if (!win.Object.values) {
+    win.Object.defineProperty(win.Object, 'values', {
+      enumerable: false,
+      configurable: true,
+      writable: true,
+      value: values
+    });
+  }
+}
+
+},{}],32:[function(require,module,exports){
 exports.__esModule = true;
 exports.install = install;
 /**
@@ -5162,7 +6883,1221 @@ function install(win) {
   }
 }
 
-},{"promise-pjs/promise":3}],28:[function(require,module,exports){
+},{"promise-pjs/promise":3}],33:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+ * @interface
+ */
+
+var Message = (function () {
+  function Message() {
+    babelHelpers.classCallCheck(this, Message);
+  }
+
+  /** @enum {number} */
+
+  /**
+   * @return {string}
+   */
+
+  Message.prototype.label = function label() {};
+
+  /**
+   * @return {!Array}
+   */
+
+  Message.prototype.toArray = function toArray() {};
+
+  return Message;
+})();
+
+var AnalyticsEvent = {
+  UNKNOWN: 0,
+  IMPRESSION_PAYWALL: 1,
+  IMPRESSION_AD: 2,
+  IMPRESSION_OFFERS: 3,
+  IMPRESSION_SUBSCRIBE_BUTTON: 4,
+  IMPRESSION_SMARTBOX: 5,
+  IMPRESSION_SWG_BUTTON: 6,
+  IMPRESSION_CLICK_TO_SHOW_OFFERS: 7,
+  IMPRESSION_CLICK_TO_SHOW_OFFERS_OR_ALREADY_SUBSCRIBED: 8,
+  IMPRESSION_SUBSCRIPTION_COMPLETE: 9,
+  IMPRESSION_ACCOUNT_CHANGED: 10,
+  ACTION_SUBSCRIBE: 1000,
+  ACTION_PAYMENT_COMPLETE: 1001,
+  ACTION_ACCOUNT_CREATED: 1002,
+  ACTION_ACCOUNT_ACKNOWLEDGED: 1003,
+  ACTION_SUBSCRIPTIONS_LANDING_PAGE: 1004,
+  ACTION_PAYMENT_FLOW_STARTED: 1005,
+  ACTION_OFFER_SELECTED: 1006,
+  ACTION_SWG_BUTTON_CLICK: 1007,
+  ACTION_VIEW_OFFERS: 1008,
+  ACTION_ALREADY_SUBSCRIBED: 1009,
+  ACTION_NEW_DEFERRED_ACCOUNT: 1010,
+  EVENT_PAYMENT_FAILED: 2000,
+  EVENT_CUSTOM: 3000,
+  EVENT_CONFIRM_TX_ID: 3001,
+  EVENT_CHANGED_TX_ID: 3002,
+  EVENT_GPAY_NO_TX_ID: 3003,
+  EVENT_GPAY_CANNOT_CONFIRM_TX_ID: 3004,
+  EVENT_SUBSCRIPTION_STATE: 4000
+};
+/** @enum {number} */
+var EventOriginator = {
+  UNKNOWN_CLIENT: 0,
+  SWG_CLIENT: 1,
+  AMP_CLIENT: 2,
+  PROPENSITY_CLIENT: 3,
+  SWG_SERVER: 4,
+  PUBLISHER_CLIENT: 5
+};
+
+/**
+ * @implements {Message}
+ */
+
+var AccountCreationRequest = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function AccountCreationRequest() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, AccountCreationRequest);
+
+    /** @private {?boolean} */
+    this.complete_ = data[1] == null ? null : data[1];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?boolean}
+   */
+
+  AccountCreationRequest.prototype.getComplete = function getComplete() {
+    return this.complete_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  AccountCreationRequest.prototype.setComplete = function setComplete(value) {
+    this.complete_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  AccountCreationRequest.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.complete_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 1 - complete
+
+  AccountCreationRequest.prototype.label = function label() {
+    return 'AccountCreationRequest';
+  };
+
+  return AccountCreationRequest;
+})();
+
+var AlreadySubscribedResponse = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function AlreadySubscribedResponse() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, AlreadySubscribedResponse);
+
+    /** @private {?boolean} */
+    this.subscriberOrMember_ = data[1] == null ? null : data[1];
+
+    /** @private {?boolean} */
+    this.linkRequested_ = data[2] == null ? null : data[2];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?boolean}
+   */
+
+  AlreadySubscribedResponse.prototype.getSubscriberOrMember = function getSubscriberOrMember() {
+    return this.subscriberOrMember_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  AlreadySubscribedResponse.prototype.setSubscriberOrMember = function setSubscriberOrMember(value) {
+    this.subscriberOrMember_ = value;
+  };
+
+  /**
+   * @return {?boolean}
+   */
+
+  AlreadySubscribedResponse.prototype.getLinkRequested = function getLinkRequested() {
+    return this.linkRequested_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  AlreadySubscribedResponse.prototype.setLinkRequested = function setLinkRequested(value) {
+    this.linkRequested_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  AlreadySubscribedResponse.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.subscriberOrMember_, // field 1 - subscriber_or_member
+    this.linkRequested_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 2 - link_requested
+
+  AlreadySubscribedResponse.prototype.label = function label() {
+    return 'AlreadySubscribedResponse';
+  };
+
+  return AlreadySubscribedResponse;
+})();
+
+var AnalyticsContext = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function AnalyticsContext() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, AnalyticsContext);
+
+    /** @private {?string} */
+    this.embedderOrigin_ = data[1] == null ? null : data[1];
+
+    /** @private {?string} */
+    this.transactionId_ = data[2] == null ? null : data[2];
+
+    /** @private {?string} */
+    this.referringOrigin_ = data[3] == null ? null : data[3];
+
+    /** @private {?string} */
+    this.utmSource_ = data[4] == null ? null : data[4];
+
+    /** @private {?string} */
+    this.utmCampaign_ = data[5] == null ? null : data[5];
+
+    /** @private {?string} */
+    this.utmMedium_ = data[6] == null ? null : data[6];
+
+    /** @private {?string} */
+    this.sku_ = data[7] == null ? null : data[7];
+
+    /** @private {?boolean} */
+    this.readyToPay_ = data[8] == null ? null : data[8];
+
+    /** @private {!Array<string>} */
+    this.label_ = data[9] || [];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?string}
+   */
+
+  AnalyticsContext.prototype.getEmbedderOrigin = function getEmbedderOrigin() {
+    return this.embedderOrigin_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  AnalyticsContext.prototype.setEmbedderOrigin = function setEmbedderOrigin(value) {
+    this.embedderOrigin_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  AnalyticsContext.prototype.getTransactionId = function getTransactionId() {
+    return this.transactionId_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  AnalyticsContext.prototype.setTransactionId = function setTransactionId(value) {
+    this.transactionId_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  AnalyticsContext.prototype.getReferringOrigin = function getReferringOrigin() {
+    return this.referringOrigin_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  AnalyticsContext.prototype.setReferringOrigin = function setReferringOrigin(value) {
+    this.referringOrigin_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  AnalyticsContext.prototype.getUtmSource = function getUtmSource() {
+    return this.utmSource_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  AnalyticsContext.prototype.setUtmSource = function setUtmSource(value) {
+    this.utmSource_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  AnalyticsContext.prototype.getUtmCampaign = function getUtmCampaign() {
+    return this.utmCampaign_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  AnalyticsContext.prototype.setUtmCampaign = function setUtmCampaign(value) {
+    this.utmCampaign_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  AnalyticsContext.prototype.getUtmMedium = function getUtmMedium() {
+    return this.utmMedium_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  AnalyticsContext.prototype.setUtmMedium = function setUtmMedium(value) {
+    this.utmMedium_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  AnalyticsContext.prototype.getSku = function getSku() {
+    return this.sku_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  AnalyticsContext.prototype.setSku = function setSku(value) {
+    this.sku_ = value;
+  };
+
+  /**
+   * @return {?boolean}
+   */
+
+  AnalyticsContext.prototype.getReadyToPay = function getReadyToPay() {
+    return this.readyToPay_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  AnalyticsContext.prototype.setReadyToPay = function setReadyToPay(value) {
+    this.readyToPay_ = value;
+  };
+
+  /**
+   * @return {!Array<string>}
+   */
+
+  AnalyticsContext.prototype.getLabelList = function getLabelList() {
+    return this.label_;
+  };
+
+  /**
+   * @param {!Array<string>} value
+   */
+
+  AnalyticsContext.prototype.setLabelList = function setLabelList(value) {
+    this.label_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  AnalyticsContext.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.embedderOrigin_, // field 1 - embedder_origin
+    this.transactionId_, // field 2 - transaction_id
+    this.referringOrigin_, // field 3 - referring_origin
+    this.utmSource_, // field 4 - utm_source
+    this.utmCampaign_, // field 5 - utm_campaign
+    this.utmMedium_, // field 6 - utm_medium
+    this.sku_, // field 7 - sku
+    this.readyToPay_, // field 8 - ready_to_pay
+    this.label_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 9 - label
+
+  AnalyticsContext.prototype.label = function label() {
+    return 'AnalyticsContext';
+  };
+
+  return AnalyticsContext;
+})();
+
+var AnalyticsEventMeta = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function AnalyticsEventMeta() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, AnalyticsEventMeta);
+
+    /** @private {?EventOriginator} */
+    this.eventOriginator_ = data[1] == null ? null : data[1];
+
+    /** @private {?boolean} */
+    this.isFromUserAction_ = data[2] == null ? null : data[2];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?EventOriginator}
+   */
+
+  AnalyticsEventMeta.prototype.getEventOriginator = function getEventOriginator() {
+    return this.eventOriginator_;
+  };
+
+  /**
+   * @param {!EventOriginator} value
+   */
+
+  AnalyticsEventMeta.prototype.setEventOriginator = function setEventOriginator(value) {
+    this.eventOriginator_ = value;
+  };
+
+  /**
+   * @return {?boolean}
+   */
+
+  AnalyticsEventMeta.prototype.getIsFromUserAction = function getIsFromUserAction() {
+    return this.isFromUserAction_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  AnalyticsEventMeta.prototype.setIsFromUserAction = function setIsFromUserAction(value) {
+    this.isFromUserAction_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  AnalyticsEventMeta.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.eventOriginator_, // field 1 - event_originator
+    this.isFromUserAction_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 2 - is_from_user_action
+
+  AnalyticsEventMeta.prototype.label = function label() {
+    return 'AnalyticsEventMeta';
+  };
+
+  return AnalyticsEventMeta;
+})();
+
+var AnalyticsRequest = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function AnalyticsRequest() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, AnalyticsRequest);
+
+    /** @private {?AnalyticsContext} */
+    this.context_ = data[1] == null || data[1] == undefined ? null : new AnalyticsContext(data[1]);
+
+    /** @private {?AnalyticsEvent} */
+    this.event_ = data[2] == null ? null : data[2];
+
+    /** @private {?AnalyticsEventMeta} */
+    this.meta_ = data[3] == null || data[3] == undefined ? null : new AnalyticsEventMeta(data[3]);
+
+    /** @private {?EventParams} */
+    this.params_ = data[4] == null || data[4] == undefined ? null : new EventParams(data[4]);
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?AnalyticsContext}
+   */
+
+  AnalyticsRequest.prototype.getContext = function getContext() {
+    return this.context_;
+  };
+
+  /**
+   * @param {!AnalyticsContext} value
+   */
+
+  AnalyticsRequest.prototype.setContext = function setContext(value) {
+    this.context_ = value;
+  };
+
+  /**
+   * @return {?AnalyticsEvent}
+   */
+
+  AnalyticsRequest.prototype.getEvent = function getEvent() {
+    return this.event_;
+  };
+
+  /**
+   * @param {!AnalyticsEvent} value
+   */
+
+  AnalyticsRequest.prototype.setEvent = function setEvent(value) {
+    this.event_ = value;
+  };
+
+  /**
+   * @return {?AnalyticsEventMeta}
+   */
+
+  AnalyticsRequest.prototype.getMeta = function getMeta() {
+    return this.meta_;
+  };
+
+  /**
+   * @param {!AnalyticsEventMeta} value
+   */
+
+  AnalyticsRequest.prototype.setMeta = function setMeta(value) {
+    this.meta_ = value;
+  };
+
+  /**
+   * @return {?EventParams}
+   */
+
+  AnalyticsRequest.prototype.getParams = function getParams() {
+    return this.params_;
+  };
+
+  /**
+   * @param {!EventParams} value
+   */
+
+  AnalyticsRequest.prototype.setParams = function setParams(value) {
+    this.params_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  AnalyticsRequest.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.context_ ? this.context_.toArray() : [], // field 1 - context
+    this.event_, // field 2 - event
+    this.meta_ ? this.meta_.toArray() : [], // field 3 - meta
+    this.params_ ? this.params_.toArray() : []];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 4 - params
+
+  AnalyticsRequest.prototype.label = function label() {
+    return 'AnalyticsRequest';
+  };
+
+  return AnalyticsRequest;
+})();
+
+var EntitlementsResponse = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function EntitlementsResponse() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, EntitlementsResponse);
+
+    /** @private {?string} */
+    this.jwt_ = data[1] == null ? null : data[1];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?string}
+   */
+
+  EntitlementsResponse.prototype.getJwt = function getJwt() {
+    return this.jwt_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  EntitlementsResponse.prototype.setJwt = function setJwt(value) {
+    this.jwt_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  EntitlementsResponse.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.jwt_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 1 - jwt
+
+  EntitlementsResponse.prototype.label = function label() {
+    return 'EntitlementsResponse';
+  };
+
+  return EntitlementsResponse;
+})();
+
+var EventParams = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function EventParams() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, EventParams);
+
+    /** @private {?string} */
+    this.smartboxMessage_ = data[1] == null ? null : data[1];
+
+    /** @private {?string} */
+    this.gpayTransactionId_ = data[2] == null ? null : data[2];
+
+    /** @private {?boolean} */
+    this.hadLogged_ = data[3] == null ? null : data[3];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?string}
+   */
+
+  EventParams.prototype.getSmartboxMessage = function getSmartboxMessage() {
+    return this.smartboxMessage_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  EventParams.prototype.setSmartboxMessage = function setSmartboxMessage(value) {
+    this.smartboxMessage_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  EventParams.prototype.getGpayTransactionId = function getGpayTransactionId() {
+    return this.gpayTransactionId_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  EventParams.prototype.setGpayTransactionId = function setGpayTransactionId(value) {
+    this.gpayTransactionId_ = value;
+  };
+
+  /**
+   * @return {?boolean}
+   */
+
+  EventParams.prototype.getHadLogged = function getHadLogged() {
+    return this.hadLogged_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  EventParams.prototype.setHadLogged = function setHadLogged(value) {
+    this.hadLogged_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  EventParams.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.smartboxMessage_, // field 1 - smartbox_message
+    this.gpayTransactionId_, // field 2 - gpay_transaction_id
+    this.hadLogged_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 3 - had_logged
+
+  EventParams.prototype.label = function label() {
+    return 'EventParams';
+  };
+
+  return EventParams;
+})();
+
+var LinkSaveTokenRequest = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function LinkSaveTokenRequest() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, LinkSaveTokenRequest);
+
+    /** @private {?string} */
+    this.authCode_ = data[1] == null ? null : data[1];
+
+    /** @private {?string} */
+    this.token_ = data[2] == null ? null : data[2];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?string}
+   */
+
+  LinkSaveTokenRequest.prototype.getAuthCode = function getAuthCode() {
+    return this.authCode_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  LinkSaveTokenRequest.prototype.setAuthCode = function setAuthCode(value) {
+    this.authCode_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  LinkSaveTokenRequest.prototype.getToken = function getToken() {
+    return this.token_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  LinkSaveTokenRequest.prototype.setToken = function setToken(value) {
+    this.token_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  LinkSaveTokenRequest.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.authCode_, // field 1 - auth_code
+    this.token_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 2 - token
+
+  LinkSaveTokenRequest.prototype.label = function label() {
+    return 'LinkSaveTokenRequest';
+  };
+
+  return LinkSaveTokenRequest;
+})();
+
+var LinkingInfoResponse = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function LinkingInfoResponse() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, LinkingInfoResponse);
+
+    /** @private {?boolean} */
+    this.requested_ = data[1] == null ? null : data[1];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?boolean}
+   */
+
+  LinkingInfoResponse.prototype.getRequested = function getRequested() {
+    return this.requested_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  LinkingInfoResponse.prototype.setRequested = function setRequested(value) {
+    this.requested_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  LinkingInfoResponse.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.requested_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 1 - requested
+
+  LinkingInfoResponse.prototype.label = function label() {
+    return 'LinkingInfoResponse';
+  };
+
+  return LinkingInfoResponse;
+})();
+
+var SkuSelectedResponse = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function SkuSelectedResponse() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, SkuSelectedResponse);
+
+    /** @private {?string} */
+    this.sku_ = data[1] == null ? null : data[1];
+
+    /** @private {?string} */
+    this.oldSku_ = data[2] == null ? null : data[2];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?string}
+   */
+
+  SkuSelectedResponse.prototype.getSku = function getSku() {
+    return this.sku_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  SkuSelectedResponse.prototype.setSku = function setSku(value) {
+    this.sku_ = value;
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  SkuSelectedResponse.prototype.getOldSku = function getOldSku() {
+    return this.oldSku_;
+  };
+
+  /**
+   * @param {string} value
+   */
+
+  SkuSelectedResponse.prototype.setOldSku = function setOldSku(value) {
+    this.oldSku_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  SkuSelectedResponse.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.sku_, // field 1 - sku
+    this.oldSku_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 2 - old_sku
+
+  SkuSelectedResponse.prototype.label = function label() {
+    return 'SkuSelectedResponse';
+  };
+
+  return SkuSelectedResponse;
+})();
+
+var SmartBoxMessage = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function SmartBoxMessage() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, SmartBoxMessage);
+
+    /** @private {?boolean} */
+    this.isClicked_ = data[1] == null ? null : data[1];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?boolean}
+   */
+
+  SmartBoxMessage.prototype.getIsClicked = function getIsClicked() {
+    return this.isClicked_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  SmartBoxMessage.prototype.setIsClicked = function setIsClicked(value) {
+    this.isClicked_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  SmartBoxMessage.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.isClicked_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 1 - is_clicked
+
+  SmartBoxMessage.prototype.label = function label() {
+    return 'SmartBoxMessage';
+  };
+
+  return SmartBoxMessage;
+})();
+
+var SubscribeResponse = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function SubscribeResponse() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, SubscribeResponse);
+
+    /** @private {?boolean} */
+    this.subscribe_ = data[1] == null ? null : data[1];
+  }
+
+  /**
+   * @implements {Message}
+   */
+
+  /**
+   * @return {?boolean}
+   */
+
+  SubscribeResponse.prototype.getSubscribe = function getSubscribe() {
+    return this.subscribe_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  SubscribeResponse.prototype.setSubscribe = function setSubscribe(value) {
+    this.subscribe_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  SubscribeResponse.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.subscribe_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 1 - subscribe
+
+  SubscribeResponse.prototype.label = function label() {
+    return 'SubscribeResponse';
+  };
+
+  return SubscribeResponse;
+})();
+
+var ViewSubscriptionsResponse = (function () {
+  /**
+   * @param {!Array=} data
+   */
+
+  function ViewSubscriptionsResponse() {
+    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+    babelHelpers.classCallCheck(this, ViewSubscriptionsResponse);
+
+    /** @private {?boolean} */
+    this.native_ = data[1] == null ? null : data[1];
+  }
+
+  /**
+   * @return {?boolean}
+   */
+
+  ViewSubscriptionsResponse.prototype.getNative = function getNative() {
+    return this.native_;
+  };
+
+  /**
+   * @param {boolean} value
+   */
+
+  ViewSubscriptionsResponse.prototype.setNative = function setNative(value) {
+    this.native_ = value;
+  };
+
+  /**
+   * @return {!Array}
+   * @override
+   */
+
+  ViewSubscriptionsResponse.prototype.toArray = function toArray() {
+    return [this.label(), // message label
+    this.native_];
+  };
+
+  /**
+   * @return {string}
+   * @override
+   */
+  // field 1 - native
+
+  ViewSubscriptionsResponse.prototype.label = function label() {
+    return 'ViewSubscriptionsResponse';
+  };
+
+  return ViewSubscriptionsResponse;
+})();
+
+var PROTO_MAP = {
+  'AccountCreationRequest': AccountCreationRequest,
+  'AlreadySubscribedResponse': AlreadySubscribedResponse,
+  'AnalyticsContext': AnalyticsContext,
+  'AnalyticsEventMeta': AnalyticsEventMeta,
+  'AnalyticsRequest': AnalyticsRequest,
+  'EntitlementsResponse': EntitlementsResponse,
+  'EventParams': EventParams,
+  'LinkSaveTokenRequest': LinkSaveTokenRequest,
+  'LinkingInfoResponse': LinkingInfoResponse,
+  'SkuSelectedResponse': SkuSelectedResponse,
+  'SmartBoxMessage': SmartBoxMessage,
+  'SubscribeResponse': SubscribeResponse,
+  'ViewSubscriptionsResponse': ViewSubscriptionsResponse
+};
+
+/**
+ * Utility to deserialize a buffer
+ * @param {!Array} data
+ * @return {!Message}
+ */
+function deserialize(data) {
+  /** {?string} */
+  var key = data ? data[0] : null;
+  if (key) {
+    var ctor = PROTO_MAP[key];
+    if (ctor) {
+      return new ctor(data);
+    }
+  }
+  throw new Error('Deserialization failed for ' + data);
+}
+
+/**
+ * @param {function(new: T)} messageType
+ * @return {string}
+ * @template T
+ */
+function getLabel(messageType) {
+  var message = /** @type {!Message} */new messageType();
+  return message.label();
+}
+
+exports.AccountCreationRequest = AccountCreationRequest;
+exports.AlreadySubscribedResponse = AlreadySubscribedResponse;
+exports.AnalyticsContext = AnalyticsContext;
+exports.AnalyticsEvent = AnalyticsEvent;
+exports.AnalyticsEventMeta = AnalyticsEventMeta;
+exports.AnalyticsRequest = AnalyticsRequest;
+exports.EntitlementsResponse = EntitlementsResponse;
+exports.EventOriginator = EventOriginator;
+exports.EventParams = EventParams;
+exports.LinkSaveTokenRequest = LinkSaveTokenRequest;
+exports.LinkingInfoResponse = LinkingInfoResponse;
+exports.Message = Message;
+exports.SkuSelectedResponse = SkuSelectedResponse;
+exports.SmartBoxMessage = SmartBoxMessage;
+exports.SubscribeResponse = SubscribeResponse;
+exports.ViewSubscriptionsResponse = ViewSubscriptionsResponse;
+exports.deserialize = deserialize;
+exports.getLabel = getLabel;
+
+},{}],34:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5180,25 +8115,379 @@ exports.__esModule = true;
  * limitations under the License.
  */
 
+var _protoApi_messages = require('../proto/api_messages');
+
 var _utilsDom = require('../utils/dom');
+
+var _services = require('./services');
+
+var _experiments = require('./experiments');
+
+var _utilsUrl = require('../utils/url');
+
+var _utilsStyle = require('../utils/style');
+
+var _utilsString = require('../utils/string');
+
+var _clientEventManager = require('./client-event-manager');
+
+/** @const {!Object<string, string>} */
+var iframeStyles = {
+  display: 'none'
+};
+
+var AnalyticsService = (function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   */
+
+  function AnalyticsService(deps) {
+    babelHelpers.classCallCheck(this, AnalyticsService);
+
+    /** @private @const {!../model/doc.Doc} */
+    this.doc_ = deps.doc();
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = deps.activities();
+
+    /** @private @const {!HTMLIFrameElement} */
+    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_.getWin().document, 'iframe', {});
+
+    _utilsStyle.setImportantStyles(this.iframe_, iframeStyles);
+
+    /** @private @const {string} */
+    this.src_ = _services.feUrl('/serviceiframe');
+
+    /** @private @const {string} */
+    this.publicationId_ = deps.pageConfig().getPublicationId();
+
+    this.args_ = _services.feArgs({
+      publicationId: this.publicationId_
+    });
+
+    /** @private @type {!boolean} */
+    this.everLogged_ = false;
+
+    /**
+     * @private @const {!AnalyticsContext}
+     */
+    this.context_ = new _protoApi_messages.AnalyticsContext();
+
+    this.context_.setTransactionId(_utilsString.getUuid());
+
+    /** @private {?Promise<!web-activities/activity-ports.ActivityIframePort>} */
+    this.serviceReady_ = null;
+
+    /** @private {?Promise} */
+    this.lastAction_ = null;
+
+    /** @private @const {!ClientEventManager} */
+    this.eventManager_ = deps.eventManager();
+    this.eventManager_.registerEventListener(this.handleClientEvent_.bind(this));
+  }
+
+  /**
+   * @param {string} transactionId
+   */
+
+  AnalyticsService.prototype.setTransactionId = function setTransactionId(transactionId) {
+    this.context_.setTransactionId(transactionId);
+  };
+
+  /**
+   * @return {string}
+   */
+
+  AnalyticsService.prototype.getTransactionId = function getTransactionId() {
+    return (/** @type {string} */this.context_.getTransactionId()
+    );
+  };
+
+  /**
+   * @return {?string}
+   */
+
+  AnalyticsService.prototype.getSku = function getSku() {
+    return this.context_.getSku();
+  };
+
+  /**
+   * @param {string} sku
+   */
+
+  AnalyticsService.prototype.setSku = function setSku(sku) {
+    this.context_.setSku(sku);
+  };
+
+  /**
+   * @param {!Array<string>} labels
+   */
+
+  AnalyticsService.prototype.addLabels = function addLabels(labels) {
+    var _this = this;
+
+    if (labels && labels.length > 0) {
+      (function () {
+        var newLabels = [].concat(_this.context_.getLabelList());
+        labels.forEach(function (label) {
+          if (newLabels.indexOf(label) == -1) {
+            newLabels.push(label);
+          }
+        });
+        _this.context_.setLabelList(newLabels);
+      })();
+    }
+  };
+
+  /**
+   * @return {!HTMLIFrameElement}
+   */
+
+  AnalyticsService.prototype.getElement = function getElement() {
+    return this.iframe_;
+  };
+
+  /**
+   * @return {string}
+   * @private
+   */
+
+  AnalyticsService.prototype.getQueryString_ = function getQueryString_() {
+    return this.doc_.getWin().location.search;
+  };
+
+  /**
+   * @return {string}
+   * @private
+   */
+
+  AnalyticsService.prototype.getReferrer_ = function getReferrer_() {
+    return this.doc_.getWin().document.referrer;
+  };
+
+  /**
+   * @private
+   */
+
+  AnalyticsService.prototype.setContext_ = function setContext_() {
+    var utmParams = _utilsUrl.parseQueryString(this.getQueryString_());
+    this.context_.setReferringOrigin(_utilsUrl.parseUrl(this.getReferrer_()).origin);
+    var campaign = utmParams['utm_campaign'];
+    var medium = utmParams['utm_medium'];
+    var source = utmParams['utm_source'];
+    if (campaign) {
+      this.context_.setUtmCampaign(campaign);
+    }
+    if (medium) {
+      this.context_.setUtmMedium(medium);
+    }
+    if (source) {
+      this.context_.setUtmSource(source);
+    }
+    this.addLabels(_experiments.getOnExperiments(this.doc_.getWin()));
+  };
+
+  /**
+   * @return {!Promise<!../components/activities.ActivityIframePort>}
+   * @private
+   */
+
+  AnalyticsService.prototype.start_ = function start_() {
+    var _this2 = this;
+
+    if (!this.serviceReady_) {
+      // TODO(sohanirao): Potentially do this even earlier
+      this.doc_.getBody().appendChild(this.getElement());
+      this.serviceReady_ = this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
+        _this2.setContext_();
+        return port.whenReady().then(function () {
+          return port;
+        });
+      });
+    }
+    return this.serviceReady_;
+  };
+
+  /**
+   * @param {boolean} isReadyToPay
+   */
+
+  AnalyticsService.prototype.setReadyToPay = function setReadyToPay(isReadyToPay) {
+    this.context_.setReadyToPay(isReadyToPay);
+  };
+
+  /**
+   */
+
+  AnalyticsService.prototype.close = function close() {
+    this.doc_.getBody().removeChild(this.getElement());
+  };
+
+  /**
+   * @return {!AnalyticsContext}
+   */
+
+  AnalyticsService.prototype.getContext = function getContext() {
+    return this.context_;
+  };
+
+  /**
+   * Returns true if any logs have already be sent to the analytics server.
+   * @return {boolean}
+   */
+
+  AnalyticsService.prototype.getHasLogged = function getHasLogged() {
+    return this.everLogged_;
+  };
+
+  /**
+   * @param {!../api/client-event-manager-api.ClientEvent} event
+   * @return {!AnalyticsRequest}
+   */
+
+  AnalyticsService.prototype.createLogRequest_ = function createLogRequest_(event) {
+    var meta = new _protoApi_messages.AnalyticsEventMeta();
+    meta.setEventOriginator(event.eventOriginator);
+    meta.setIsFromUserAction(event.isFromUserAction);
+
+    var request = new _protoApi_messages.AnalyticsRequest();
+    request.setEvent(event.eventType);
+    request.setContext(this.context_);
+    request.setMeta(meta);
+    if (event.additionalParameters instanceof _protoApi_messages.EventParams) {
+      request.setParams(event.additionalParameters);
+    } // Ignore event.additionalParameters.  It may have data we shouldn't log.
+    return request;
+  };
+
+  /**
+   * Handles the message received by the port.
+   * @param {function(!Object<string, string|boolean>)} callback
+   */
+
+  AnalyticsService.prototype.onMessage = function onMessage(callback) {
+    this.lastAction_ = this.start_().then(function (port) {
+      port.onMessageDeprecated(callback);
+    });
+  };
+
+  /**
+   * @return {boolean}
+   */
+
+  AnalyticsService.prototype.shouldLogPublisherEvents_ = function shouldLogPublisherEvents_() {
+    return this.deps_.config().enableSwgAnalytics === true;
+  };
+
+  /**
+   *  Listens for new events from the events manager and handles logging
+   * @param {!../api/client-event-manager-api.ClientEvent} event
+   */
+
+  AnalyticsService.prototype.handleClientEvent_ = function handleClientEvent_(event) {
+    var _this3 = this;
+
+    //this event is just used to communicate information internally.  It should
+    //not be reported to the SwG analytics service.
+    if (event.eventType === _protoApi_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE) {
+      return;
+    }
+
+    if (_clientEventManager.ClientEventManager.isPublisherEvent(event) && !this.shouldLogPublisherEvents_()) {
+      return;
+    }
+    this.lastAction_ = this.start_().then(function (port) {
+      var request = _this3.createLogRequest_(event);
+      _this3.everLogged_ = true;
+      port.execute(request);
+    });
+  };
+
+  return AnalyticsService;
+})();
+
+exports.AnalyticsService = AnalyticsService;
+
+},{"../proto/api_messages":33,"../utils/dom":69,"../utils/string":78,"../utils/style":79,"../utils/url":81,"./client-event-manager":37,"./experiments":44,"./services":58}],35:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _protoApi_messages = require('../proto/api_messages');
+
+var _utilsDom = require('../utils/dom');
+
+var _utilsI18n = require('../utils/i18n');
+
+var _smartButtonApi = require('./smart-button-api');
+
+/**
+ * The button title should match that of button's SVG.
+ */
+/** @type {!Object<string, string>} */
+var TITLE_LANG_MAP = {
+  'en': 'Subscribe with Google',
+  'ar': 'Google اشترك مع',
+  'de': 'Abonnieren mit Google',
+  'es': 'Suscríbete con Google',
+  'es-latam': 'Suscríbete con Google',
+  'es-latn': 'Suscríbete con Google',
+  'fr': "S'abonner avec Google",
+  'hi': 'Google के ज़रिये सदस्यता',
+  'id': 'Berlangganan dengan Google',
+  'it': 'Abbonati con Google',
+  'jp': 'Google で購読',
+  'ko': 'Google 을 통한구독',
+  'ms': 'Langgan dengan Google',
+  'nl': 'Abonneren via Google',
+  'no': 'Abonner med Google',
+  'pl': 'Subskrybuj z Google',
+  'pt': 'Subscrever com o Google',
+  'pt-br': 'Assine com o Google',
+  'ru': 'Подпиcka через Google',
+  'se': 'Prenumerera med Google',
+  'th': 'สมัครฟาน Google',
+  'tr': 'Google ile Abone Ol',
+  'uk': 'Підписатися через Google',
+  'zh-tw': '透過 Google 訂閱'
+};
 
 /**
  * The button stylesheet can be found in the `/assets/swg-button.css`.
- * It's produced by the `assets:swg-button` gulp task and deployed to
+ * It's produced by the `gulp assets` task and deployed to
  * `https://news.google.com/swg/js/v1/swg-button.css`.
  */
 
 var ButtonApi = (function () {
-
   /**
    * @param {!../model/doc.Doc} doc
+   * @param {!Promise<!./runtime.ConfiguredRuntime>} configuredRuntimePromise
    */
 
-  function ButtonApi(doc) {
+  function ButtonApi(doc, configuredRuntimePromise) {
     babelHelpers.classCallCheck(this, ButtonApi);
 
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = doc;
+
+    /** @private @const {!Promise<!./runtime.ConfiguredRuntime>} */
+    this.configuredRuntimePromise_ = configuredRuntimePromise;
   }
 
   /**
@@ -5210,7 +8499,7 @@ var ButtonApi = (function () {
       return;
     }
 
-    var url = 'https://news.google.com/swg/js/v1/swg-button.css';
+    var url = '/assets/swg-button.css';
     var existing = head.querySelector('link[href="' + url + '"]');
     if (existing) {
       return;
@@ -5225,7 +8514,7 @@ var ButtonApi = (function () {
   };
 
   /**
-   * @param {!Object|function()} optionsOrCallback
+   * @param {!../api/subscriptions.ButtonOptions|function()} optionsOrCallback
    * @param {function()=} opt_callback
    * @return {!Element}
    */
@@ -5237,24 +8526,93 @@ var ButtonApi = (function () {
 
   /**
    * @param {!Element} button
-   * @param {!Object|function()} optionsOrCallback
+   * @param {../api/subscriptions.ButtonOptions|function()} optionsOrCallback
    * @param {function()=} opt_callback
    * @return {!Element}
    */
 
   ButtonApi.prototype.attach = function attach(button, optionsOrCallback, opt_callback) {
-    var options = typeof optionsOrCallback != 'function' ? optionsOrCallback : null;
-    var callback = /** @type {function()} */(typeof optionsOrCallback == 'function' ? optionsOrCallback : null) || opt_callback;
-    var theme = options && options['theme'];
-    if (theme !== 'light' && theme !== 'dark') {
-      theme = 'light';
-    }
+    var _this = this;
+
+    var options = /** @type {!../api/subscriptions.ButtonOptions} */this.getOptions_(optionsOrCallback);
+    var callback = this.getCallback_(optionsOrCallback, opt_callback);
+
+    var theme = options['theme'];
     button.classList.add('swg-button-' + theme);
     button.setAttribute('role', 'button');
-    // TODO(dvoytenko): i18n.
-    button.setAttribute('title', 'Subscribe with Google');
+    if (options['lang']) {
+      button.setAttribute('lang', options['lang']);
+    }
+    button.setAttribute('title', _utilsI18n.msg(TITLE_LANG_MAP, button) || '');
     button.addEventListener('click', callback);
+    button.addEventListener('click', function () {
+      _this.configuredRuntimePromise_.then(function (configuredRuntime) {
+        configuredRuntime.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_SWG_BUTTON_CLICK,
+        /* isFromUserAction */true);
+      });
+    });
+    this.configuredRuntimePromise_.then(function (configuredRuntime) {
+      configuredRuntime.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_SWG_BUTTON);
+    });
     return button;
+  };
+
+  /**
+   *
+   * @param {../api/subscriptions.ButtonOptions|../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
+   * @return {!../api/subscriptions.ButtonOptions|!../api/subscriptions.SmartButtonOptions}
+   * @private
+   */
+
+  ButtonApi.prototype.getOptions_ = function getOptions_(optionsOrCallback) {
+    var options =
+    /** @type {!../api/subscriptions.ButtonOptions|!../api/subscriptions.SmartButtonOptions} */optionsOrCallback && typeof optionsOrCallback != 'function' ? optionsOrCallback : { 'theme': _smartButtonApi.Theme.LIGHT };
+
+    var theme = options['theme'];
+    if (theme !== _smartButtonApi.Theme.LIGHT && theme !== _smartButtonApi.Theme.DARK) {
+      options['theme'] = _smartButtonApi.Theme.LIGHT;
+    }
+    return options;
+  };
+
+  /**
+   *
+   * @param {?../api/subscriptions.ButtonOptions|?../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
+   * @param {function()=} opt_callback
+   * @return {function()|function(Event):boolean}
+   * @private
+   */
+
+  ButtonApi.prototype.getCallback_ = function getCallback_(optionsOrCallback, opt_callback) {
+    var callback =
+    /** @type {function()|function(Event):boolean} */(typeof optionsOrCallback == 'function' ? optionsOrCallback : null) || opt_callback;
+    return callback;
+  };
+
+  /**
+   * @param {!./deps.DepsDef} deps
+   * @param {!Element} button
+   * @param {../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
+   * @param {function()=} opt_callback
+   * @return {!Element}
+   */
+
+  ButtonApi.prototype.attachSmartButton = function attachSmartButton(deps, button, optionsOrCallback, opt_callback) {
+    var _this2 = this;
+
+    var options = /** @type {!../api/subscriptions.SmartButtonOptions} */this.getOptions_(optionsOrCallback);
+    var callback = /** @type {function()} */this.getCallback_(optionsOrCallback, opt_callback);
+
+    // Add required CSS class, if missing.
+    button.classList.add('swg-smart-button');
+    button.addEventListener('click', function () {
+      return _this2.configuredRuntimePromise_.then(function (configuredRuntime) {
+        return configuredRuntime.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_SWG_BUTTON_CLICK,
+        /* isFromUserAction */true);
+      });
+    });
+
+    return new _smartButtonApi.SmartSubscriptionButtonApi(deps, button, options, callback).start();
   };
 
   return ButtonApi;
@@ -5262,7 +8620,7 @@ var ButtonApi = (function () {
 
 exports.ButtonApi = ButtonApi;
 
-},{"../utils/dom":48}],29:[function(require,module,exports){
+},{"../proto/api_messages":33,"../utils/dom":69,"../utils/i18n":71,"./smart-button-api":59}],36:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5289,14 +8647,14 @@ var CallbackId = {
   LINK_PROGRESS: 5,
   LINK_COMPLETE: 6,
   FLOW_STARTED: 7,
-  FLOW_CANCELED: 8
+  FLOW_CANCELED: 8,
+  CONTRIBUTION_RESPONSE: 9
 };
 
 /**
  */
 
 var Callbacks = (function () {
-
   /**
    */
 
@@ -5432,6 +8790,14 @@ var Callbacks = (function () {
   };
 
   /**
+   * @param {function(!Promise<!../api/subscribe-response.SubscribeResponse>)} callback
+   */
+
+  Callbacks.prototype.setOnContributionResponse = function setOnContributionResponse(callback) {
+    this.setCallback_(CallbackId.CONTRIBUTION_RESPONSE, callback);
+  };
+
+  /**
    * @param {!Promise<!../api/subscribe-response.SubscribeResponse>} responsePromise
    * @return {boolean} Whether the callback has been found.
    */
@@ -5443,11 +8809,30 @@ var Callbacks = (function () {
   };
 
   /**
+   * @param {!Promise<!../api/subscribe-response.SubscribeResponse>} responsePromise
+   * @return {boolean} Whether the callback has been found.
+   */
+
+  Callbacks.prototype.triggerContributionResponse = function triggerContributionResponse(responsePromise) {
+    return this.trigger_(CallbackId.CONTRIBUTION_RESPONSE, responsePromise.then(function (res) {
+      return res.clone();
+    }));
+  };
+
+  /**
    * @return {boolean}
    */
 
   Callbacks.prototype.hasSubscribeResponsePending = function hasSubscribeResponsePending() {
     return !!this.resultBuffer_[CallbackId.SUBSCRIBE_RESPONSE];
+  };
+
+  /**
+   * @return {boolean}
+   */
+
+  Callbacks.prototype.hasContributionResponsePending = function hasContributionResponsePending() {
+    return !!this.resultBuffer_[CallbackId.CONTRIBUTION_RESPONSE];
   };
 
   /**
@@ -5555,7 +8940,294 @@ var Callbacks = (function () {
 
 exports.Callbacks = Callbacks;
 
-},{}],30:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _apiClientEventManagerApi = require('../api/client-event-manager-api');
+
+var _protoApi_messages = require('../proto/api_messages');
+
+var _utilsTypes = require('../utils/types');
+
+var _utilsLog = require('../utils/log');
+
+/**
+ * Helper function to describe an issue with an event object
+ * @param {!string} valueName
+ * @param {?*} value
+ * @returns {!string}
+ */
+function createEventErrorMessage(valueName, value) {
+  return 'Event has an invalid ' + valueName + '(' + value + ')';
+}
+
+/**
+ * Throws an error if the event is invalid.
+ * @param {!../api/client-event-manager-api.ClientEvent} event
+ */
+function validateEvent(event) {
+  if (!_utilsTypes.isObject(event)) {
+    throw new Error('Event must be a valid object');
+  }
+
+  if (!_utilsTypes.isEnumValue(_protoApi_messages.AnalyticsEvent, event.eventType)) {
+    throw new Error(createEventErrorMessage('eventType', event.eventType));
+  }
+
+  if (!_utilsTypes.isEnumValue(_protoApi_messages.EventOriginator, event.eventOriginator)) {
+    throw new Error(createEventErrorMessage('eventOriginator', event.eventOriginator));
+  }
+
+  if (!_utilsTypes.isObject(event.additionalParameters) && event.additionalParameters != null) {
+    throw new Error(createEventErrorMessage('additionalParameters', event.additionalParameters));
+  }
+
+  if (event.isFromUserAction != null && !_utilsTypes.isBoolean(event.isFromUserAction)) {
+    throw new Error(createEventErrorMessage('isFromUserAction', event.isFromUserAction));
+  }
+}
+
+/** @implements {../api/client-event-manager-api.ClientEventManagerApi} */
+
+var ClientEventManager = (function () {
+  /**
+   * @param {!../api/client-event-manager-api.ClientEvent} event
+   * @return {boolean}
+   */
+
+  ClientEventManager.isPublisherEvent = function isPublisherEvent(event) {
+    return event.eventOriginator === _protoApi_messages.EventOriginator.PROPENSITY_CLIENT || event.eventOriginator === _protoApi_messages.EventOriginator.PUBLISHER_CLIENT || event.eventOriginator === _protoApi_messages.EventOriginator.AMP_CLIENT;
+  };
+
+  /**
+   *
+   * @param {!Promise} configuredPromise
+   */
+
+  function ClientEventManager(configuredPromise) {
+    babelHelpers.classCallCheck(this, ClientEventManager);
+
+    /** @private {!Array<function(!../api/client-event-manager-api.ClientEvent)>} */
+    this.listeners_ = [];
+
+    /** @private {!Array<function(!../api/client-event-manager-api.ClientEvent):!FilterResult>} */
+    this.filterers_ = [];
+
+    /** @private {?Promise} */
+    this.lastAction_ = null;
+
+    /** @private @const {!Promise} */
+    this.isReadyPromise_ = configuredPromise;
+  }
+
+  /**
+   * @overrides
+   */
+
+  ClientEventManager.prototype.registerEventListener = function registerEventListener(listener) {
+    if (!_utilsTypes.isFunction(listener)) {
+      throw new Error('Event manager listeners must be a function');
+    }
+    this.listeners_.push(listener);
+  };
+
+  /**
+   * @overrides
+   */
+
+  ClientEventManager.prototype.registerEventFilterer = function registerEventFilterer(filterer) {
+    if (!_utilsTypes.isFunction(filterer)) {
+      throw new Error('Event manager filterers must be a function');
+    }
+    this.filterers_.push(filterer);
+  };
+
+  /**
+   * @overrides
+   */
+
+  ClientEventManager.prototype.logEvent = function logEvent(event) {
+    var _this = this;
+
+    validateEvent(event);
+    this.lastAction_ = this.isReadyPromise_.then(function () {
+      for (var filterer = 0; filterer < _this.filterers_.length; filterer++) {
+        try {
+          if (_this.filterers_[filterer](event) === _apiClientEventManagerApi.FilterResult.CANCEL_EVENT) {
+            return Promise.resolve();
+          }
+        } catch (e) {
+          _utilsLog.log(e);
+        }
+      }
+      for (var listener = 0; listener < _this.listeners_.length; listener++) {
+        try {
+          _this.listeners_[listener](event);
+        } catch (e) {
+          _utilsLog.log(e);
+        }
+      }
+      return Promise.resolve();
+    });
+  };
+
+  /**
+   * Creates an event with the arguments provided and calls logEvent.
+   * @param {!AnalyticsEvent} eventType
+   * @param {?boolean=} isFromUserAction
+   * @param {../proto/api_messages.EventParams=} eventParams
+   */
+
+  ClientEventManager.prototype.logSwgEvent = function logSwgEvent(eventType) {
+    var isFromUserAction = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+    var eventParams = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
+    this.logEvent({
+      eventType: eventType,
+      eventOriginator: _protoApi_messages.EventOriginator.SWG_CLIENT,
+      isFromUserAction: isFromUserAction,
+      additionalParameters: eventParams
+    });
+  };
+
+  return ClientEventManager;
+})();
+
+exports.ClientEventManager = ClientEventManager;
+
+},{"../api/client-event-manager-api":5,"../proto/api_messages":33,"../utils/log":74,"../utils/types":80}],38:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _uiActivityIframeView = require('../ui/activity-iframe-view');
+
+var _payFlow = require('./pay-flow');
+
+var _apiSubscriptions = require('../api/subscriptions');
+
+var _services = require('./services');
+
+var _protoApi_messages = require('../proto/api_messages');
+
+/**
+ * The class for Contributions flow.
+ */
+
+var ContributionsFlow = (function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   * @param {!../api/subscriptions.OffersRequest|undefined} options
+   */
+
+  function ContributionsFlow(deps, options) {
+    babelHelpers.classCallCheck(this, ContributionsFlow);
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+
+    /** @private @const {!../api/subscriptions.OffersRequest|undefined} */
+    this.options_ = options;
+
+    /** @private @const {!Window} */
+    this.win_ = deps.win();
+
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = deps.activities();
+
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+    this.dialogManager_ = deps.dialogManager();
+
+    var isClosable = options && options.isClosable || true;
+
+    /** @private @const {!ActivityIframeView} */
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/contributionsiframe'), _services.feArgs({
+      'productId': deps.pageConfig().getProductId(),
+      'publicationId': deps.pageConfig().getPublicationId(),
+      'productType': _apiSubscriptions.ProductType.UI_CONTRIBUTION,
+      'list': options && options.list || 'default',
+      'skus': options && options.skus || null,
+      'isClosable': isClosable
+    }),
+    /* shouldFadeBody */true);
+  }
+
+  /**
+   * @param {AlreadySubscribedResponse} response
+   */
+
+  ContributionsFlow.prototype.handleLinkRequest_ = function handleLinkRequest_(response) {
+    if (response.getSubscriberOrMember()) {
+      this.deps_.callbacks().triggerLoginRequest({
+        linkRequested: !!response.getLinkRequested()
+      });
+    }
+  };
+
+  /**
+   * @param {SkuSelectedResponse} response
+   */
+
+  ContributionsFlow.prototype.startPayFlow_ = function startPayFlow_(response) {
+    var sku = response.getSku();
+    if (sku) {
+      new _payFlow.PayStartFlow(this.deps_, sku, _apiSubscriptions.ProductType.UI_CONTRIBUTION).start();
+    }
+  };
+
+  /**
+   * Starts the contributions flow or alreadyMember flow.
+   * @return {!Promise}
+   */
+
+  ContributionsFlow.prototype.start = function start() {
+    var _this = this;
+
+    // Start/cancel events.
+    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_CONTRIBUTION_OPTIONS);
+    this.activityIframeView_.onCancel(function () {
+      _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_CONTRIBUTION_OPTIONS);
+    });
+    this.activityIframeView_.on(_protoApi_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
+    this.activityIframeView_.on(_protoApi_messages.SkuSelectedResponse, this.startPayFlow_.bind(this));
+
+    return this.dialogManager_.openView(this.activityIframeView_);
+  };
+
+  return ContributionsFlow;
+})();
+
+exports.ContributionsFlow = ContributionsFlow;
+
+},{"../api/subscriptions":12,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"./pay-flow":54,"./services":58}],39:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5591,13 +9263,14 @@ var _services = require('./services');
 
 var _utilsErrors = require('../utils/errors');
 
+var _protoApi_messages = require('../proto/api_messages');
+
 /**
  * The flow to initiate deferred account process.
  * See `Subscriptions.completeDeferredAccountCreation` API.
  */
 
 var DeferredAccountFlow = (function () {
-
   /**
    * @param {!./deps.DepsDef} deps
    * @param {?../api/deferred-account-creation.DeferredAccountCreationRequest} options
@@ -5612,7 +9285,7 @@ var DeferredAccountFlow = (function () {
     /** @private @const {!Window} */
     this.win_ = deps.win();
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {!../components/dialog-manager.DialogManager} */
@@ -5664,7 +9337,8 @@ var DeferredAccountFlow = (function () {
     this.openPromise_ = this.dialogManager_.openView(this.activityIframeView_);
     return this.activityIframeView_.acceptResult().then(function (result) {
       // The consent part is complete.
-      return _this.handleConsentResponse_( /** @type {!Object} */result.data);
+      return _this.handleConsentResponse_(
+      /** @type {!Object} */result.data);
     }, function (reason) {
       if (_utilsErrors.isCancelError(reason)) {
         _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.COMPLETE_DEFERRED_ACCOUNT_CREATION);
@@ -5687,21 +9361,28 @@ var DeferredAccountFlow = (function () {
     // Parse the response.
     var entitlementsJwt = data['entitlements'];
     var idToken = data['idToken'];
+    var productType = data['productType'];
     var entitlements = this.deps_.entitlementsManager().parseEntitlements({ 'signedEntitlements': entitlementsJwt });
     var userData = new _apiUserData.UserData(idToken,
     /** @type {!Object} */new _utilsJwt.JwtHelper().decode(idToken));
-    var purchaseData = new _apiSubscribeResponse.PurchaseData(data['purchaseData'], data['purchaseDataSignature']);
+    var purchaseDataList = data['purchaseDataList'] ? data['purchaseDataList'].map(function (pd) {
+      return new _apiSubscribeResponse.PurchaseData(pd['data'], pd['signature']);
+    }) : [
+    // TODO(dvoytenko): cleanup/deprecate.
+    new _apiSubscribeResponse.PurchaseData(data['purchaseData']['data'], data['purchaseData']['signature'])];
 
     // For now, we'll use the `PayCompleteFlow` as a "creating account" flow.
     // But this can be eventually implemented by the same iframe.
     var creatingFlow = new _payFlow.PayCompleteFlow(this.deps_);
     var completeHandler = creatingFlow.complete.bind(creatingFlow);
 
-    var response = new _apiDeferredAccountCreation.DeferredAccountCreationResponse(entitlements, userData, purchaseData, completeHandler);
+    var response = new _apiDeferredAccountCreation.DeferredAccountCreationResponse(entitlements, userData, purchaseDataList, completeHandler);
+
+    this.deps_.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_NEW_DEFERRED_ACCOUNT, true);
 
     // Start the "sync" flow.
     creatingFlow.start(new _apiSubscribeResponse.SubscribeResponse('', // raw field doesn't matter in this case
-    purchaseData, userData, function () {
+    purchaseDataList[0], userData, entitlements, productType, function () {
       return Promise.resolve();
     } // completeHandler doesn't matter in this case
     ));
@@ -5713,7 +9394,7 @@ var DeferredAccountFlow = (function () {
 
 exports.DeferredAccountFlow = DeferredAccountFlow;
 
-},{"../api/deferred-account-creation":5,"../api/subscribe-response":8,"../api/subscriptions":9,"../api/user-data":10,"../ui/activity-iframe-view":41,"../utils/errors":49,"../utils/jwt":51,"./pay-flow":37,"./services":39}],31:[function(require,module,exports){
+},{"../api/deferred-account-creation":6,"../api/subscribe-response":11,"../api/subscriptions":12,"../api/user-data":13,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"../utils/errors":70,"../utils/jwt":73,"./pay-flow":54,"./services":58}],40:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5751,16 +9432,28 @@ var DepsDef = (function () {
   DepsDef.prototype.win = function win() {};
 
   /**
+   * @return {!../api/subscriptions.Config}
+   */
+
+  DepsDef.prototype.config = function config() {};
+
+  /**
    * @return {!../model/page-config.PageConfig}
    */
 
   DepsDef.prototype.pageConfig = function pageConfig() {};
 
   /**
-   * @return {!web-activities/activity-ports.ActivityPorts}
+   * @return {!../components/activities.ActivityPorts}
    */
 
   DepsDef.prototype.activities = function activities() {};
+
+  /**
+   * @return {!./pay-client.PayClient}
+   */
+
+  DepsDef.prototype.payClient = function payClient() {};
 
   /**
    * @return {!../components/dialog-manager.DialogManager}
@@ -5786,12 +9479,30 @@ var DepsDef = (function () {
 
   DepsDef.prototype.storage = function storage() {};
 
+  /**
+   * @return {!../runtime/analytics-service.AnalyticsService}
+   */
+
+  DepsDef.prototype.analytics = function analytics() {};
+
+  /**
+   * @return {!../runtime/jserror.JsError}
+   */
+
+  DepsDef.prototype.jserror = function jserror() {};
+
+  /**
+   * @return {!../runtime/client-event-manager.ClientEventManager}
+   */
+
+  DepsDef.prototype.eventManager = function eventManager() {};
+
   return DepsDef;
 })();
 
 exports.DepsDef = DepsDef;
 
-},{}],32:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5821,30 +9532,31 @@ var _runtimeServices = require('../runtime/services');
 
 var SERVICE_ID = 'subscribe.google.com';
 var TOAST_STORAGE_KEY = 'toast';
+var ENTS_STORAGE_KEY = 'ents';
+var IS_READY_TO_PAY_STORAGE_KEY = 'isreadytopay';
 
 /**
  */
 
 var EntitlementsManager = (function () {
-
   /**
    * @param {!Window} win
-   * @param {!../model/page-config.PageConfig} config
+   * @param {!../model/page-config.PageConfig} pageConfig
    * @param {!./fetcher.Fetcher} fetcher
    * @param {!./deps.DepsDef} deps
    */
 
-  function EntitlementsManager(win, config, fetcher, deps) {
+  function EntitlementsManager(win, pageConfig, fetcher, deps) {
     babelHelpers.classCallCheck(this, EntitlementsManager);
 
     /** @private @const {!Window} */
     this.win_ = win;
 
     /** @private @const {!../model/page-config.PageConfig} */
-    this.config_ = config;
+    this.pageConfig_ = pageConfig;
 
     /** @private @const {string} */
-    this.publicationId_ = this.config_.getPublicationId();
+    this.publicationId_ = this.pageConfig_.getPublicationId();
 
     /** @private @const {!./fetcher.Fetcher} */
     this.fetcher_ = fetcher;
@@ -5866,7 +9578,21 @@ var EntitlementsManager = (function () {
 
     /** @private @const {!./storage.Storage} */
     this.storage_ = deps.storage();
+
+    /** @private @const {!../runtime/analytics-service.AnalyticsService} */
+    this.analyticsService_ = deps.analytics();
+
+    /** @private @const {!../api/subscriptions.Config} */
+    this.config_ = deps.config();
   }
+
+  /**
+   * Convert String value of isReadyToPay
+   * (from JSON or Cache) to a boolean value.
+   * @param {string} value
+   * @return {boolean|undefined}
+   * @private
+   */
 
   /**
    * @param {boolean=} opt_expectPositive
@@ -5875,37 +9601,137 @@ var EntitlementsManager = (function () {
   EntitlementsManager.prototype.reset = function reset(opt_expectPositive) {
     this.responsePromise_ = null;
     this.positiveRetries_ = Math.max(this.positiveRetries_, opt_expectPositive ? 3 : 0);
-  };
-
-  /**
-   * @return {!Promise<!Entitlements>}
-   */
-
-  EntitlementsManager.prototype.getEntitlements = function getEntitlements() {
-    if (!this.responsePromise_) {
-      this.responsePromise_ = this.getEntitlementsFlow_();
+    if (opt_expectPositive) {
+      this.storage_.remove(ENTS_STORAGE_KEY);
+      this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
     }
-    return this.responsePromise_;
   };
 
   /**
+   * Clears all of the entitlements state and cache.
+   */
+
+  EntitlementsManager.prototype.clear = function clear() {
+    this.responsePromise_ = null;
+    this.positiveRetries_ = 0;
+    this.unblockNextNotification();
+    this.storage_.remove(ENTS_STORAGE_KEY);
+    this.storage_.remove(TOAST_STORAGE_KEY);
+    this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
+  };
+
+  /**
+   * @return {string}
+   * @private
+   */
+
+  EntitlementsManager.prototype.getQueryString_ = function getQueryString_() {
+    return this.win_.location.search;
+  };
+
+  /**
+   * @param {?string=} opt_encryptedDocumentKey
    * @return {!Promise<!Entitlements>}
    */
 
-  EntitlementsManager.prototype.fetchEntitlements = function fetchEntitlements() {
+  EntitlementsManager.prototype.getEntitlements = function getEntitlements(opt_encryptedDocumentKey) {
     var _this = this;
+
+    if (!this.responsePromise_) {
+      this.responsePromise_ = this.getEntitlementsFlow_(opt_encryptedDocumentKey);
+    }
+    return this.responsePromise_.then(function (response) {
+      if (response.isReadyToPay != null) {
+        _this.analyticsService_.setReadyToPay(response.isReadyToPay);
+      }
+      return response;
+    });
+  };
+
+  /**
+   * @param {string} raw
+   * @param {boolean=} opt_isReadyToPay
+   * @return {boolean}
+   */
+
+  EntitlementsManager.prototype.pushNextEntitlements = function pushNextEntitlements(raw, opt_isReadyToPay) {
+    var entitlements = this.getValidJwtEntitlements_(raw,
+    /* requireNonExpired */true, opt_isReadyToPay);
+    if (entitlements && entitlements.enablesThis()) {
+      this.storage_.set(ENTS_STORAGE_KEY, raw);
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * @param {?string=} opt_encryptedDocumentKey
+   * @return {!Promise<!Entitlements>}
+   * @private
+   */
+
+  EntitlementsManager.prototype.getEntitlementsFlow_ = function getEntitlementsFlow_(opt_encryptedDocumentKey) {
+    var _this2 = this;
+
+    return this.fetchEntitlementsWithCaching_(opt_encryptedDocumentKey).then(function (entitlements) {
+      _this2.onEntitlementsFetched_(entitlements);
+      return entitlements;
+    });
+  };
+
+  /**
+   * @param {?string=} opt_encryptedDocumentKey
+   * @return {!Promise<!Entitlements>}
+   * @private
+   */
+
+  EntitlementsManager.prototype.fetchEntitlementsWithCaching_ = function fetchEntitlementsWithCaching_(opt_encryptedDocumentKey) {
+    var _this3 = this;
+
+    return Promise.all([this.storage_.get(ENTS_STORAGE_KEY), this.storage_.get(IS_READY_TO_PAY_STORAGE_KEY)]).then(function (cachedValues) {
+      var raw = cachedValues[0];
+      var irtp = cachedValues[1];
+      // Try cache first.
+      if (raw && !opt_encryptedDocumentKey) {
+        var cached = _this3.getValidJwtEntitlements_(raw,
+        /* requireNonExpired */true, irtpStringToBoolean(irtp));
+        if (cached && cached.enablesThis()) {
+          // Already have a positive response.
+          _this3.positiveRetries_ = 0;
+          return cached;
+        }
+      }
+      // If cache didn't match, perform fetch.
+      return _this3.fetchEntitlements_(opt_encryptedDocumentKey).then(function (ents) {
+        // If entitlements match the product, store them in cache.
+        if (ents && ents.enablesThis() && ents.raw) {
+          _this3.storage_.set(ENTS_STORAGE_KEY, ents.raw);
+        }
+        return ents;
+      });
+    });
+  };
+
+  /**
+   * @param {?string=} opt_encryptedDocumentKey
+   * @return {!Promise<!Entitlements>}
+   * @private
+   */
+
+  EntitlementsManager.prototype.fetchEntitlements_ = function fetchEntitlements_(opt_encryptedDocumentKey) {
+    var _this4 = this;
 
     // TODO(dvoytenko): Replace retries with consistent fetch.
     var positiveRetries = this.positiveRetries_;
     this.positiveRetries_ = 0;
     var attempt = function () {
       positiveRetries--;
-      return _this.fetch_().then(function (entitlements) {
+      return _this4.fetch_(opt_encryptedDocumentKey).then(function (entitlements) {
         if (entitlements.enablesThis() || positiveRetries <= 0) {
           return entitlements;
         }
         return new Promise(function (resolve) {
-          _this.win_.setTimeout(function () {
+          _this4.win_.setTimeout(function () {
             resolve(attempt());
           }, 550);
         });
@@ -5944,35 +9770,70 @@ var EntitlementsManager = (function () {
    */
 
   EntitlementsManager.prototype.parseEntitlements = function parseEntitlements(json) {
-    var ackHandler = this.ack_.bind(this);
+    var isReadyToPay = json['isReadyToPay'];
+    if (isReadyToPay == null) {
+      this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
+    } else {
+      this.storage_.set(IS_READY_TO_PAY_STORAGE_KEY, String(isReadyToPay));
+    }
     var signedData = json['signedEntitlements'];
     if (signedData) {
-      var jwt = this.jwtHelper_.decode(signedData);
-      var entitlementsClaim = jwt['entitlements'];
-      if (entitlementsClaim) {
-        return new _apiEntitlements.Entitlements(SERVICE_ID, signedData, _apiEntitlements.Entitlement.parseListFromJson(entitlementsClaim), this.config_.getProductId(), ackHandler);
+      var entitlements = this.getValidJwtEntitlements_(signedData,
+      /* requireNonExpired */false, isReadyToPay);
+      if (entitlements) {
+        return entitlements;
       }
     } else {
       var plainEntitlements = json['entitlements'];
       if (plainEntitlements) {
-        return new _apiEntitlements.Entitlements(SERVICE_ID, '', _apiEntitlements.Entitlement.parseListFromJson(plainEntitlements), this.config_.getProductId(), ackHandler);
+        return this.createEntitlements_('', plainEntitlements, isReadyToPay);
       }
     }
     // Empty response.
-    return new _apiEntitlements.Entitlements(SERVICE_ID, '', [], this.config_.getProductId(), ackHandler);
+    return this.createEntitlements_('', [], isReadyToPay);
   };
 
   /**
-   * @return {!Promise<!Entitlements>}
+   * @param {string} raw
+   * @param {boolean} requireNonExpired
+   * @param {boolean=} opt_isReadyToPay
+   * @param {?string=} opt_decryptedDocumentKey
+   * @return {?Entitlements}
+   * @private
    */
 
-  EntitlementsManager.prototype.getEntitlementsFlow_ = function getEntitlementsFlow_() {
-    var _this2 = this;
+  EntitlementsManager.prototype.getValidJwtEntitlements_ = function getValidJwtEntitlements_(raw, requireNonExpired, opt_isReadyToPay, opt_decryptedDocumentKey) {
+    try {
+      var jwt = this.jwtHelper_.decode(raw);
+      if (requireNonExpired) {
+        var now = Date.now();
+        var exp = jwt['exp'];
+        if (parseFloat(exp) * 1000 < now) {
+          return null;
+        }
+      }
+      var entitlementsClaim = jwt['entitlements'];
+      return entitlementsClaim && this.createEntitlements_(raw, entitlementsClaim, opt_isReadyToPay, opt_decryptedDocumentKey) || null;
+    } catch (e) {
+      // Ignore the error.
+      this.win_.setTimeout(function () {
+        throw e;
+      });
+    }
+    return null;
+  };
 
-    return this.fetchEntitlements().then(function (entitlements) {
-      _this2.onEntitlementsFetched_(entitlements);
-      return entitlements;
-    });
+  /**
+   * @param {string} raw
+   * @param {!Object|!Array<!Object>} json
+   * @param {boolean=} opt_isReadyToPay
+   * @param {?string=} opt_decryptedDocumentKey
+   * @return {!Entitlements}
+   * @private
+   */
+
+  EntitlementsManager.prototype.createEntitlements_ = function createEntitlements_(raw, json, opt_isReadyToPay, opt_decryptedDocumentKey) {
+    return new _apiEntitlements.Entitlements(SERVICE_ID, raw, _apiEntitlements.Entitlement.parseListFromJson(json), this.pageConfig_.getProductId(), this.ack_.bind(this), opt_isReadyToPay, opt_decryptedDocumentKey);
   };
 
   /**
@@ -6003,7 +9864,7 @@ var EntitlementsManager = (function () {
    */
 
   EntitlementsManager.prototype.maybeShowToast_ = function maybeShowToast_(entitlements) {
-    var _this3 = this;
+    var _this5 = this;
 
     var entitlement = entitlements.getEntitlementForThis();
     if (!entitlement) {
@@ -6017,7 +9878,7 @@ var EntitlementsManager = (function () {
         return;
       }
       if (entitlement) {
-        _this3.showToast_(entitlement);
+        _this5.showToast_(entitlement);
       }
     });
   };
@@ -6047,16 +9908,21 @@ var EntitlementsManager = (function () {
   };
 
   /**
+   * @param {?string=} opt_encryptedDocumentKey
    * @return {!Promise<!Entitlements>}
    * @private
    */
 
-  EntitlementsManager.prototype.fetch_ = function fetch_() {
-    var _this4 = this;
+  EntitlementsManager.prototype.fetch_ = function fetch_(opt_encryptedDocumentKey) {
+    var _this6 = this;
 
-    var url = _services.serviceUrl('/publication/' + encodeURIComponent(this.publicationId_) + '/entitlements');
-    return this.fetcher_.fetchCredentialedJson(url).then(function (json) {
-      return _this4.parseEntitlements(json);
+    var url = '/publication/' + encodeURIComponent(this.publicationId_) + '/entitlements';
+    if (opt_encryptedDocumentKey) {
+      //TODO(chenshay): Make this a 'Post'.
+      url += '?crypt=' + encodeURIComponent(opt_encryptedDocumentKey);
+    }
+    return this.fetcher_.fetchCredentialedJson(_services.serviceUrl(url)).then(function (json) {
+      return _this6.parseEntitlements(json);
     });
   };
 
@@ -6064,8 +9930,371 @@ var EntitlementsManager = (function () {
 })();
 
 exports.EntitlementsManager = EntitlementsManager;
+function irtpStringToBoolean(value) {
+  switch (value) {
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    default:
+      return undefined;
+  }
+}
 
-},{"../api/entitlements":6,"../runtime/services":39,"../ui/toast":43,"../utils/jwt":51,"./services":39}],33:[function(require,module,exports){
+},{"../api/entitlements":7,"../runtime/services":58,"../ui/toast":64,"../utils/jwt":73,"./services":58}],42:[function(require,module,exports){
+exports.__esModule = true;
+
+var _PublisherEventToAnalyticsEvent, _AnalyticsEventToPublisherEvent;
+
+exports.publisherEventToAnalyticsEvent = publisherEventToAnalyticsEvent;
+exports.analyticsEventToPublisherEvent = analyticsEventToPublisherEvent;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _apiLoggerApi = require('../api/logger-api');
+
+var _protoApi_messages = require('../proto/api_messages');
+
+/** @const {!Object<string,AnalyticsEvent>} */
+var PublisherEventToAnalyticsEvent = (_PublisherEventToAnalyticsEvent = {}, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.IMPRESSION_PAYWALL] = _protoApi_messages.AnalyticsEvent.IMPRESSION_PAYWALL, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.IMPRESSION_AD] = _protoApi_messages.AnalyticsEvent.IMPRESSION_AD, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.IMPRESSION_OFFERS] = _protoApi_messages.AnalyticsEvent.IMPRESSION_OFFERS, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.ACTION_SUBSCRIPTIONS_LANDING_PAGE] = _protoApi_messages.AnalyticsEvent.ACTION_SUBSCRIPTIONS_LANDING_PAGE, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.ACTION_OFFER_SELECTED] = _protoApi_messages.AnalyticsEvent.ACTION_OFFER_SELECTED, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.ACTION_PAYMENT_FLOW_STARTED] = _protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.ACTION_PAYMENT_COMPLETED] = _protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.EVENT_CUSTOM] = _protoApi_messages.AnalyticsEvent.EVENT_CUSTOM, _PublisherEventToAnalyticsEvent);
+
+/** @const {!Object<number,?Event>} */
+var AnalyticsEventToPublisherEvent = (_AnalyticsEventToPublisherEvent = {}, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.UNKNOWN] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_PAYWALL] = _apiLoggerApi.Event.IMPRESSION_PAYWALL, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_AD] = _apiLoggerApi.Event.IMPRESSION_AD, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_OFFERS] = _apiLoggerApi.Event.IMPRESSION_OFFERS, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_SUBSCRIBE_BUTTON] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_SMARTBOX] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_SUBSCRIBE] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE] = _apiLoggerApi.Event.ACTION_PAYMENT_COMPLETED, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_ACCOUNT_CREATED] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_ACCOUNT_ACKNOWLEDGED] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_SUBSCRIPTIONS_LANDING_PAGE] = _apiLoggerApi.Event.ACTION_SUBSCRIPTIONS_LANDING_PAGE, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED] = _apiLoggerApi.Event.ACTION_PAYMENT_FLOW_STARTED, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_OFFER_SELECTED] = _apiLoggerApi.Event.ACTION_OFFER_SELECTED, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.EVENT_CUSTOM] = _apiLoggerApi.Event.EVENT_CUSTOM, _AnalyticsEventToPublisherEvent);
+
+/**
+ * Converts a propensity event enum into an analytics event enum.
+ * @param {!Event|string} propensityEvent
+ * @returns {!AnalyticsEvent}
+ */
+
+function publisherEventToAnalyticsEvent(propensityEvent) {
+  return PublisherEventToAnalyticsEvent[propensityEvent];
+}
+
+/**
+ * Converts an analytics event enum into a propensity event enum.
+ * @param {!AnalyticsEvent} analyticsEvent
+ * @returns {?Event}
+ */
+
+function analyticsEventToPublisherEvent(analyticsEvent) {
+  return AnalyticsEventToPublisherEvent[analyticsEvent];
+}
+
+},{"../api/logger-api":8,"../proto/api_messages":33}],43:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @enum {string}
+ */
+var ExperimentFlags = {
+  /**
+   * Enables GPay API in SwG.
+   * Cleanup issue: #406.
+   */
+  GPAY_API: 'gpay-api',
+
+  /**
+   * Enables GPay native support.
+   * Cleanup issue: #441.
+   */
+  GPAY_NATIVE: 'gpay-native',
+
+  /**
+   * Enables the feature that allows you to replace one subscription
+   * for another in the subscribe() API.
+   */
+  REPLACE_SUBSCRIPTION: 'replace-subscription',
+
+  /**
+   * Enables the contributions feature.
+   */
+  CONTRIBUTIONS: 'contributions',
+
+  /**
+   * Enables the Propensity feature
+   */
+  PROPENSITY: 'propensity',
+
+  /**
+   * Enables the Smartbox feature.
+   */
+  SMARTBOX: 'smartbox',
+
+  /**
+   * Enables using new Activities APIs
+   */
+  HEJIRA: 'hejira'
+};
+exports.ExperimentFlags = ExperimentFlags;
+
+},{}],44:[function(require,module,exports){
+exports.__esModule = true;
+exports.setExperimentsStringForTesting = setExperimentsStringForTesting;
+exports.isExperimentOn = isExperimentOn;
+exports.setExperiment = setExperiment;
+exports.getOnExperiments = getOnExperiments;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _utilsErrors = require('../utils/errors');
+
+var _utilsUrl = require('../utils/url');
+
+/**
+ * @fileoverview
+ *
+ * Client-side experiments in SwG.
+ *
+ * The experiments can be set in a few different ways:
+ *  1. By gulp build rules using `--experiments=${experimentsString}` argument.
+ *  2. By `#swg.experiments=${experimentsString}` parameter in the URL's
+ *     fragment.
+ *  3. By `swg.configure({experiments: [array]})` call.
+ *
+ * The `${experimentsString}` is defined as following:
+ *  - experimentString = (experimentSpec,)*
+ *  - experimentSpec = experimentId | experimentId '=' num100 ('c')?
+ *
+ * Some examples:
+ *  - `A,B` - defines two experiments "A" and "B" that will be turned on.
+ *  - `A:100,B:100` - the same: "A" and "B" will be turned on.
+ *  - `A:0` - the experiment "A" will be disabled.
+ *  - `A:1` - enable the experiment "A" in 1% of impressions.
+ *  - `A:10c` - enable the experiment "A" in 10% of impressions with 10%
+ *    control. In this case, 20% of the impressions will be split into two
+ *    categories: experiment and control. Notice, a control can be requested
+ *    only for the fraction under 20%.
+ */
+
+/**
+ * @enum {string}
+ */
+var Selection = {
+  EXPERIMENT: 'e',
+  CONTROL: 'c'
+};
+
+/**
+ * A comma-separated set of experiments.
+ * @type {string}
+ */
+var experimentsString = '';
+
+/**
+ * A parsed map of experiments.
+ * @type {?Object<string, boolean>}
+ */
+var experimentMap = null;
+
+/**
+ * @param {string} s
+ * @package Visible for testing only.
+ */
+
+function setExperimentsStringForTesting(s) {
+  experimentsString = s;
+  experimentMap = null;
+}
+
+/**
+ * Ensures that the experiments have been initialized and returns them.
+ * @param {!Window} win
+ * @return {!Object<string, boolean>}
+ */
+function getExperiments(win) {
+  if (!experimentMap) {
+    experimentMap = {};
+    var combinedExperimentString = experimentsString;
+    try {
+      var query = _utilsUrl.parseQueryString(win.location.hash);
+      var experimentStringFromHash = query['swg.experiments'];
+      if (experimentStringFromHash) {
+        combinedExperimentString += ',' + experimentStringFromHash;
+      }
+    } catch (e) {
+      // Ignore: experiment parsing cannot block runtime.
+      _utilsErrors.ErrorUtils.throwAsync(e);
+    }
+
+    // Format:
+    // - experimentString = (experimentSpec,)*
+    combinedExperimentString.split(',').forEach(function (s) {
+      s = s.trim();
+      if (!s) {
+        return;
+      }
+      try {
+        parseSetExperiment(win, experimentMap, s);
+      } catch (e) {
+        // Ignore: experiment parsing cannot block runtime.
+        _utilsErrors.ErrorUtils.throwAsync(e);
+      }
+    });
+  }
+  return experimentMap;
+}
+
+/**
+ * @param {!Window} win
+ * @param {?Object<string, boolean>} experimentMap
+ * @param {string} spec
+ */
+function parseSetExperiment(win, experimentMap, spec) {
+  // Format:
+  // - experimentSpec = experimentId | experimentId '=' num100 ('c')?
+  var experimentId = undefined;
+  var fraction = undefined;
+  var control = false;
+  var eq = spec.indexOf(':');
+  if (eq == -1) {
+    experimentId = spec;
+    fraction = 100;
+    control = false;
+  } else {
+    experimentId = spec.substring(0, eq).trim();
+    spec = spec.substring(eq + 1);
+    if (spec.substring(spec.length - 1) == Selection.CONTROL) {
+      control = true;
+      spec = spec.substring(0, spec.length - 1);
+    }
+    fraction = parseInt(spec, 10);
+  }
+  if (isNaN(fraction)) {
+    throw new Error('invalid fraction');
+  }
+
+  // Calculate "on"/"off".
+  var on = undefined;
+  if (fraction > 99) {
+    // Explicitly "on".
+    on = true;
+  } else if (fraction < 1) {
+    // Explicitly "off".
+    on = false;
+  } else if (win.sessionStorage) {
+    // Fractional and possibly with the control.
+    // Note that:
+    // a. We can't do persistent experiments if storage is not available.
+    // b. We can't run control on more than 20%.
+    control = control && fraction <= 20;
+    try {
+      // Set fraction in the experiment to make it unlaunchable.
+      var storageKey = 'subscribe.google.com:e:' + experimentId + ':' + fraction + (control ? 'c' : '');
+      var selection = parseSelection(win.sessionStorage.getItem(storageKey));
+      if (!selection) {
+        // Is experiment/control range?
+        if (win.Math.random() * 100 <= fraction * (control ? 2 : 1)) {
+          var inExperiment = control ? win.Math.random() <= 0.5 : true;
+          selection = inExperiment ? Selection.EXPERIMENT : Selection.CONTROL;
+          win.sessionStorage.setItem(storageKey, selection);
+        }
+      }
+      on = !!selection;
+      if (selection == Selection.CONTROL) {
+        experimentId = 'c-' + experimentId;
+      }
+    } catch (e) {
+      // Ignore: experiment parsing cannot block runtime.
+      on = false;
+      _utilsErrors.ErrorUtils.throwAsync(e);
+    }
+  } else {
+    on = false;
+  }
+
+  experimentMap[experimentId] = on;
+}
+
+/**
+ * @param {?string} s
+ * @return {?Selection}
+ */
+function parseSelection(s) {
+  // Do a simple if-then to inline the whole Selection enum.
+  return s == Selection.EXPERIMENT ? Selection.EXPERIMENT : s == Selection.CONTROL ? Selection.CONTROL : null;
+}
+
+/**
+ * Whether the specified experiment is on or off.
+ * @param {!Window} win
+ * @param {string} experimentId
+ * @return {boolean}
+ */
+
+function isExperimentOn(win, experimentId) {
+  return getExperiments(win)[experimentId] || false;
+}
+
+/**
+ * Toggles the experiment on or off. Returns the actual value of the experiment
+ * after toggling is done.
+ * @param {!Window} win
+ * @param {string} experimentId
+ * @param {boolean} on
+ */
+
+function setExperiment(win, experimentId, on) {
+  getExperiments(win)[experimentId] = on;
+}
+
+/**
+ * @return {!Array<string>}
+ */
+
+function getOnExperiments(win) {
+  var experimentMap = getExperiments(win);
+  var experiments = [];
+  for (var experiment in experimentMap) {
+    if (experimentMap[experiment]) {
+      experiments.push(experiment);
+    }
+  }
+  return experiments;
+}
+
+},{"../utils/errors":70,"../utils/url":81}],45:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -6105,13 +10334,20 @@ var Fetcher = (function () {
 
   Fetcher.prototype.fetchCredentialedJson = function fetchCredentialedJson(unusedUrl) {};
 
+  /**
+   * @param {string} unusedUrl
+   * @param {!../utils/xhr.FetchInitDef} unusedInit
+   * @return {!Promise<!../utils/xhr.FetchResponse>}
+   */
+
+  Fetcher.prototype.fetch = function fetch(unusedUrl, unusedInit) {};
+
   return Fetcher;
 })();
 
 exports.Fetcher = Fetcher;
 
 var XhrFetcher = (function () {
-
   /**
    * @param {!Window} win
    */
@@ -6136,12 +10372,131 @@ var XhrFetcher = (function () {
     });
   };
 
+  /** @override */
+
+  XhrFetcher.prototype.fetch = function fetch(url, init) {
+    return this.xhr_.fetch(url, init);
+  };
+
   return XhrFetcher;
 })();
 
 exports.XhrFetcher = XhrFetcher;
 
-},{"../utils/xhr":59}],34:[function(require,module,exports){
+},{"../utils/xhr":82}],46:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ */
+
+var JsError = (function () {
+  /**
+   * @param {!../model/doc.Doc} doc
+   */
+
+  function JsError(doc) {
+    babelHelpers.classCallCheck(this, JsError);
+
+    /** @private @const {!../model/doc.Doc} */
+    this.doc_ = doc;
+
+    /** @private @const {!Promise} */
+    this.microTask_ = Promise.resolve();
+  }
+
+  /**
+   * @param {...*} var_args
+   * @return {!Error}
+   */
+
+  /**
+   * @param {...*} var_args
+   * @return {!Promise}
+   */
+
+  JsError.prototype.error = function error(var_args) {
+    var _this = this;
+
+    var args = Array.prototype.slice.call(arguments, 0);
+    return this.microTask_.then(function () {
+      var error = createErrorVargs.apply(null, args);
+      if (error.reported) {
+        return;
+      }
+      var img = _this.doc_.getWin().document.createElement('img');
+      img.src = 'https://subscribe-qual.sandbox.google.com/_/SubscribewithgoogleClientUi/jserror' + '?error=' + encodeURIComponent(String(error)) + '&script=' + encodeURIComponent('https://subscribe-qual.sandbox.google.com/swg/js/v1/swg.js') + '&line=' + (error.lineNumber || 1) + '&trace=' + encodeURIComponent(error.stack);
+      // Appending this image to DOM is not necessary.
+      error.reported = true;
+    });
+  };
+
+  return JsError;
+})();
+
+exports.JsError = JsError;
+function createErrorVargs(var_args) {
+  var error = null;
+  var message = '';
+  for (var i = 0; i < arguments.length; i++) {
+    var arg = arguments[i];
+    if (arg instanceof Error && !error) {
+      error = duplicateErrorIfNecessary(arg);
+    } else {
+      if (message) {
+        message += ' ';
+      }
+      message += arg;
+    }
+  }
+
+  if (!error) {
+    error = new Error(message);
+  } else if (message) {
+    error.message = message + ': ' + error.message;
+  }
+  return error;
+}
+
+/**
+ * Some exceptions (DOMException, namely) have read-only message.
+ * @param {!Error} error
+ * @return {!Error}
+ */
+function duplicateErrorIfNecessary(error) {
+  var messageProperty = Object.getOwnPropertyDescriptor(error, 'message');
+  if (messageProperty && messageProperty.writable) {
+    return error;
+  }
+
+  var message = error.message;
+  var stack = error.stack;
+
+  var e = new Error(message);
+  // Copy all the extraneous things we attach.
+  for (var prop in error) {
+    e[prop] = error[prop];
+  }
+  // Ensure these are copied.
+  e.stack = stack;
+  return e;
+}
+
+},{}],47:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -6169,6 +10524,8 @@ var _services = require('./services');
 
 var _utilsErrors = require('../utils/errors');
 
+var _protoApi_messages = require('../proto/api_messages');
+
 var LINK_REQUEST_ID = 'swg-link';
 
 /**
@@ -6176,7 +10533,6 @@ var LINK_REQUEST_ID = 'swg-link';
  */
 
 var LinkbackFlow = (function () {
-
   /**
    * @param {!./deps.DepsDef} deps
    */
@@ -6187,7 +10543,7 @@ var LinkbackFlow = (function () {
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {!../model/page-config.PageConfig} */
@@ -6208,7 +10564,8 @@ var LinkbackFlow = (function () {
 
   LinkbackFlow.prototype.start = function start() {
     this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.LINK_ACCOUNT);
-    var opener = this.activityPorts_.open(LINK_REQUEST_ID, _services.feUrl('/linkbackstart'), '_blank', _services.feArgs({
+    var forceRedirect = this.deps_.config().windowOpenMode == _apiSubscriptions.WindowOpenMode.REDIRECT;
+    var opener = this.activityPorts_.open(LINK_REQUEST_ID, _services.feUrl('/linkbackstart'), forceRedirect ? '_top' : '_blank', _services.feArgs({
       'publicationId': this.pageConfig_.getPublicationId()
     }), {});
     this.dialogManager_.popupOpened(opener && opener.targetWin);
@@ -6221,12 +10578,15 @@ var LinkbackFlow = (function () {
 exports.LinkbackFlow = LinkbackFlow;
 
 var LinkCompleteFlow = (function () {
-
   /**
    * @param {!./deps.DepsDef} deps
    */
 
   LinkCompleteFlow.configurePending = function configurePending(deps) {
+    /**
+     * Handler function.
+     * @param {!../components/activities.ActivityPortDef} port
+     */
     function handler(port) {
       deps.entitlementsManager().blockNextNotification();
       deps.callbacks().triggerLinkProgress();
@@ -6242,7 +10602,7 @@ var LinkCompleteFlow = (function () {
           deps.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.LINK_ACCOUNT);
         }
       });
-    };
+    }
     deps.activities().onResult(LINK_REQUEST_ID, handler);
   };
 
@@ -6259,7 +10619,7 @@ var LinkCompleteFlow = (function () {
     /** @private @const {!Window} */
     this.win_ = deps.win();
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {!../components/dialog-manager.DialogManager} */
@@ -6300,11 +10660,9 @@ var LinkCompleteFlow = (function () {
   LinkCompleteFlow.prototype.start = function start() {
     var _this2 = this;
 
-    var promise = this.activityIframeView_.port().then(function (port) {
-      return _utilsActivityUtils.acceptPortResultData(port, _services.feOrigin(),
-      /* requireOriginVerified */true,
-      /* requireSecureChannel */true);
-    });
+    var promise = this.activityIframeView_.acceptResultAndVerify(_services.feOrigin(),
+    /* requireOriginVerified */true,
+    /* requireSecureChannel */true);
     promise.then(function (response) {
       _this2.complete_(response);
     })['catch'](function (reason) {
@@ -6330,6 +10688,9 @@ var LinkCompleteFlow = (function () {
     this.entitlementsManager_.setToastShown(true);
     this.entitlementsManager_.unblockNextNotification();
     this.entitlementsManager_.reset(response && response['success'] || false);
+    if (response && response['entitlements']) {
+      this.entitlementsManager_.pushNextEntitlements(response['entitlements']);
+    }
     this.completeResolver_();
   };
 
@@ -6345,13 +10706,12 @@ var LinkCompleteFlow = (function () {
 exports.LinkCompleteFlow = LinkCompleteFlow;
 
 var LinkSaveFlow = (function () {
-
   /**
    * @param {!./deps.DepsDef} deps
-   * @param {!../api/subscriptions.SaveSubscriptionRequest} saveSubscriptionRequest
+   * @param {!../api/subscriptions.SaveSubscriptionRequestCallback} callback
    */
 
-  function LinkSaveFlow(deps, saveSubscriptionRequest) {
+  function LinkSaveFlow(deps, callback) {
     babelHelpers.classCallCheck(this, LinkSaveFlow);
 
     /** @private @const {!Window} */
@@ -6360,52 +10720,144 @@ var LinkSaveFlow = (function () {
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {!../components/dialog-manager.DialogManager} */
     this.dialogManager_ = deps.dialogManager();
 
-    /** TODO(sohanirao): Default request only for test */
-    /** @type {!../api/subscriptions.SaveSubscriptionRequest} */
-    var defaultRequest = { token: 'test' };
+    /** @private {!../api/subscriptions.SaveSubscriptionRequestCallback} */
+    this.callback_ = callback;
 
-    /** @private {!../api/subscriptions.SaveSubscriptionRequest} */
-    this.saveSubscriptionRequest_ = saveSubscriptionRequest || defaultRequest;
+    /** @private {?Promise<!../api/subscriptions.SaveSubscriptionRequest>} */
+    this.requestPromise_ = null;
+
+    /** @private {?Promise} */
+    this.openPromise_ = null;
 
     /** @private {?ActivityIframeView} */
     this.activityIframeView_ = null;
   }
 
   /**
+   * @return {?Promise<!../api/subscriptions.SaveSubscriptionRequest>}
+   * @package Visible for testing.
+   */
+
+  LinkSaveFlow.prototype.getRequestPromise = function getRequestPromise() {
+    return this.requestPromise_;
+  };
+
+  /**
+   * @private
+   */
+
+  LinkSaveFlow.prototype.complete_ = function complete_() {
+    this.dialogManager_.completeView(this.activityIframeView_);
+  };
+
+  /**
+   * @param {!Object} result
+   * @return {!Promise<boolean>}
+   * @private
+   */
+
+  LinkSaveFlow.prototype.handleLinkSaveResponse_ = function handleLinkSaveResponse_(result) {
+    var _this3 = this;
+
+    // This flow is complete
+    this.complete_();
+    var startPromise = undefined;
+    var linkConfirm = null;
+    if (result['linked']) {
+      // When linking succeeds, start link confirmation flow
+      this.dialogManager_.popupClosed();
+      this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.LINK_ACCOUNT);
+      linkConfirm = new LinkCompleteFlow(this.deps_, result);
+      startPromise = linkConfirm.start();
+    } else {
+      startPromise = Promise.reject(_utilsErrors.createCancelError(this.win_, 'not linked'));
+    }
+    var completePromise = startPromise.then(function () {
+      _this3.deps_.callbacks().triggerLinkProgress();
+      return linkConfirm.whenComplete();
+    });
+
+    return completePromise.then(function () {
+      return true;
+    });
+  };
+
+  /**
+   * @param {LinkingInfoResponse} response
+   * @private
+   */
+
+  LinkSaveFlow.prototype.sendLinkSaveToken_ = function sendLinkSaveToken_(response) {
+    var _this4 = this;
+
+    if (!response || !response.getRequested()) {
+      return;
+    }
+    this.requestPromise_ = new Promise(function (resolve) {
+      resolve(_this4.callback_());
+    }).then(function (request) {
+      var saveRequest = new _protoApi_messages.LinkSaveTokenRequest();
+      if (request && request.token) {
+        if (request.authCode) {
+          throw new Error('Both authCode and token are available');
+        } else {
+          saveRequest.setToken(request.token);
+        }
+      } else if (request && request.authCode) {
+        saveRequest.setAuthCode(request.authCode);
+      } else {
+        throw new Error('Neither token or authCode is available');
+      }
+      _this4.activityIframeView_.execute(saveRequest);
+    })['catch'](function (reason) {
+      // The flow is complete.
+      _this4.complete_();
+      throw reason;
+    });
+  };
+
+  /**
+   * @return {?Promise}
+   */
+  /**
    * Starts the save subscription
    * @return {!Promise}
    */
 
   LinkSaveFlow.prototype.start = function start() {
-    var _this3 = this;
+    var _this5 = this;
 
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/linksaveiframe'), _services.feArgs({
+    var iframeArgs = {
       'publicationId': this.deps_.pageConfig().getPublicationId(),
-      'token': this.saveSubscriptionRequest_['token'],
       'isClosable': true
-    }),
-    /* shouldFadeBody */false);
+    };
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/linksaveiframe'), _services.feArgs(iframeArgs),
+    /* shouldFadeBody */false,
+    /* hasLoadingIndicator */true);
+    this.activityIframeView_.on(_protoApi_messages.LinkingInfoResponse, this.sendLinkSaveToken_.bind(this));
+
+    this.openPromise_ = this.dialogManager_.openView(this.activityIframeView_,
+    /* hidden */true);
     /** {!Promise<boolean>} */
-    return this.dialogManager_.openView(this.activityIframeView_).then(function () {
-      return _this3.activityIframeView_.port().then(function (port) {
-        return _utilsActivityUtils.acceptPortResultData(port, _services.feOrigin(),
-        /* requireOriginVerified */true,
-        /* requireSecureChannel */true);
-      }).then(function (result) {
-        return result['linked'];
-      })['catch'](function () {
+    return this.activityIframeView_.acceptResultAndVerify(_services.feOrigin(),
+    /* requireOriginVerified */true,
+    /* requireSecureChannel */true).then(function (result) {
+      return _this5.handleLinkSaveResponse_(result);
+    })['catch'](function (reason) {
+      // In case this flow wasn't complete, complete it here
+      _this5.complete_();
+      // Handle cancellation from user, link confirm start or completion here
+      if (_utilsErrors.isCancelError(reason)) {
+        _this5.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.LINK_ACCOUNT);
         return false;
-      }).then(function (result) {
-        // The flow is complete.
-        _this3.dialogManager_.completeView(_this3.activityIframeView_);
-        return result;
-      });
+      }
+      throw reason;
     });
   };
 
@@ -6414,7 +10866,288 @@ var LinkSaveFlow = (function () {
 
 exports.LinkSaveFlow = LinkSaveFlow;
 
-},{"../api/subscriptions":9,"../ui/activity-iframe-view":41,"../utils/activity-utils":44,"../utils/errors":49,"./services":39}],35:[function(require,module,exports){
+},{"../api/subscriptions":12,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"../utils/activity-utils":65,"../utils/errors":70,"./services":58}],48:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _apiLoggerApi = require('../api/logger-api');
+
+var _utilsTypes = require('../utils/types');
+
+var _protoApi_messages = require('../proto/api_messages');
+
+var _eventTypeMapping = require('./event-type-mapping');
+
+/**
+ * @implements {../api/logger-api.LoggerApi}
+ */
+
+var Logger = (function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   */
+
+  function Logger(deps) {
+    babelHelpers.classCallCheck(this, Logger);
+
+    /** @private @const {!../api/client-event-manager-api.ClientEventManagerApi} */
+    this.eventManager_ = deps.eventManager();
+  }
+
+  /** @override */
+
+  Logger.prototype.sendSubscriptionState = function sendSubscriptionState(state, jsonProducts) {
+    if (!_utilsTypes.isEnumValue(_apiLoggerApi.SubscriptionState, state)) {
+      throw new Error('Invalid subscription state provided');
+    }
+    if ((_apiLoggerApi.SubscriptionState.SUBSCRIBER == state || _apiLoggerApi.SubscriptionState.PAST_SUBSCRIBER == state) && !jsonProducts) {
+      throw new Error('Entitlements must be provided for users with' + ' active or expired subscriptions');
+    }
+    if (jsonProducts && !_utilsTypes.isObject(jsonProducts)) {
+      throw new Error('Entitlements must be an Object');
+    }
+    var productsOrSkus = null;
+    if (jsonProducts) {
+      productsOrSkus = JSON.stringify(jsonProducts);
+    }
+    this.eventManager_.logEvent({
+      eventType: _protoApi_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE,
+      eventOriginator: _protoApi_messages.EventOriginator.PUBLISHER_CLIENT,
+      isFromUserAction: null,
+      additionalParameters: {
+        state: state,
+        productsOrSkus: productsOrSkus
+      }
+    });
+  };
+
+  /** @override */
+
+  Logger.prototype.sendEvent = function sendEvent(userEvent) {
+    var data = null;
+    if (!_utilsTypes.isEnumValue(_apiLoggerApi.Event, userEvent.name) || !_eventTypeMapping.publisherEventToAnalyticsEvent(userEvent.name)) {
+      throw new Error('Invalid user event provided(' + userEvent.name + ')');
+    }
+
+    if (userEvent.data) {
+      if (!_utilsTypes.isObject(userEvent.data)) {
+        throw new Error('Event data must be an Object(' + userEvent.data + ')');
+      } else {
+        data = {};
+        Object.assign(data, userEvent.data);
+      }
+    }
+
+    if (_utilsTypes.isBoolean(userEvent.active)) {
+      if (!data) {
+        data = {};
+      }
+      Object.assign(data, { 'is_active': userEvent.active });
+    } else if (userEvent.active != null) {
+      throw new Error('Event active must be a boolean');
+    }
+    this.eventManager_.logEvent({
+      eventType: _eventTypeMapping.publisherEventToAnalyticsEvent(userEvent.name),
+      eventOriginator: _protoApi_messages.EventOriginator.PUBLISHER_CLIENT,
+      isFromUserAction: userEvent.active,
+      additionalParameters: data
+    });
+  };
+
+  return Logger;
+})();
+
+exports.Logger = Logger;
+
+},{"../api/logger-api":8,"../proto/api_messages":33,"../utils/types":80,"./event-type-mapping":42}],49:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _uiActivityIframeView = require('../ui/activity-iframe-view');
+
+var _apiSubscriptions = require('../api/subscriptions');
+
+var _services = require('./services');
+
+var LoginNotificationApi = (function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   */
+
+  function LoginNotificationApi(deps) {
+    babelHelpers.classCallCheck(this, LoginNotificationApi);
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+
+    /** @private @const {!Window} */
+    this.win_ = deps.win();
+
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = deps.activities();
+
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+    this.dialogManager_ = deps.dialogManager();
+
+    /** @private {?Promise} */
+    this.openViewPromise_ = null;
+
+    /** @private @const {!ActivityIframeView} */
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/loginiframe'), _services.feArgs({
+      publicationId: deps.pageConfig().getPublicationId(),
+      productId: deps.pageConfig().getProductId(),
+      // No need to ask the user. Just tell them you're logging them in.
+      userConsent: false
+    }), // TODO(chenshay): Pass entitlements value here.
+
+    /* shouldFadeBody */true);
+  }
+
+  /**
+   * Continues the Login flow (after waiting).
+   * @return {!Promise}
+   */
+
+  LoginNotificationApi.prototype.start = function start() {
+    var _this = this;
+
+    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_LOGIN_NOTIFICATION);
+
+    this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+
+    return this.activityIframeView_.acceptResult().then(function () {
+      // The consent part is complete.
+      _this.dialogManager_.completeView(_this.activityIframeView_);
+    }, function (reason) {
+      _this.dialogManager_.completeView(_this.activityIframeView_);
+      throw reason;
+    });
+  };
+
+  return LoginNotificationApi;
+})();
+
+exports.LoginNotificationApi = LoginNotificationApi;
+
+},{"../api/subscriptions":12,"../ui/activity-iframe-view":62,"./services":58}],50:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _uiActivityIframeView = require('../ui/activity-iframe-view');
+
+var _apiSubscriptions = require('../api/subscriptions');
+
+var _services = require('./services');
+
+var _utilsErrors = require('../utils/errors');
+
+var LoginPromptApi = (function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   */
+
+  function LoginPromptApi(deps) {
+    babelHelpers.classCallCheck(this, LoginPromptApi);
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+
+    /** @private @const {!Window} */
+    this.win_ = deps.win();
+
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = deps.activities();
+
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+    this.dialogManager_ = deps.dialogManager();
+
+    /** @private {?Promise} */
+    this.openViewPromise_ = null;
+
+    /** @private @const {!ActivityIframeView} */
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/loginiframe'), _services.feArgs({
+      publicationId: deps.pageConfig().getPublicationId(),
+      productId: deps.pageConfig().getProductId(),
+      // First ask the user if they want us to log them in.
+      userConsent: true
+    }), // TODO(chenshay): Pass entitlements value here.
+
+    /* shouldFadeBody */true);
+  }
+
+  /**
+   * Prompts the user to login.
+   * @return {!Promise}
+   */
+
+  LoginPromptApi.prototype.start = function start() {
+    var _this = this;
+
+    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_LOGIN_PROMPT);
+
+    this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+
+    return this.activityIframeView_.acceptResult().then(function () {
+      // The consent part is complete.
+      _this.dialogManager_.completeView(_this.activityIframeView_);
+    }, function (reason) {
+      if (_utilsErrors.isCancelError(reason)) {
+        _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_LOGIN_PROMPT);
+      } else {
+        _this.dialogManager_.completeView(_this.activityIframeView_);
+      }
+      throw reason;
+    });
+  };
+
+  return LoginPromptApi;
+})();
+
+exports.LoginPromptApi = LoginPromptApi;
+
+},{"../api/subscriptions":12,"../ui/activity-iframe-view":62,"../utils/errors":70,"./services":58}],51:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -6435,7 +11168,6 @@ exports.__esModule = true;
 var _services = require('./services');
 
 var OffersApi = (function () {
-
   /**
    * @param {!../model/page-config.PageConfig} config
    * @param {!./fetcher.Fetcher} fetcher
@@ -6483,7 +11215,7 @@ var OffersApi = (function () {
 
 exports.OffersApi = OffersApi;
 
-},{"./services":39}],36:[function(require,module,exports){
+},{"./services":58}],52:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -6507,7 +11239,11 @@ var _payFlow = require('./pay-flow');
 
 var _apiSubscriptions = require('../api/subscriptions');
 
+var _protoApi_messages = require('../proto/api_messages');
+
 var _services = require('./services');
+
+var _utilsLog = require('../utils/log');
 
 /**
  * Offers view is closable when request was originated from 'AbbrvOfferFlow'
@@ -6520,7 +11256,6 @@ var OFFERS_VIEW_CLOSABLE = true;
  */
 
 var OffersFlow = (function () {
-
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest|undefined} options
@@ -6535,32 +11270,123 @@ var OffersFlow = (function () {
     /** @private @const {!Window} */
     this.win_ = deps.win();
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {!../components/dialog-manager.DialogManager} */
     this.dialogManager_ = deps.dialogManager();
+
+    /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
+    this.eventManager_ = deps.eventManager();
 
     var isClosable = options && options.isClosable;
     if (isClosable == undefined) {
       isClosable = false; // Default is to hide Close button.
     }
 
-    /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/offersiframe'), _services.feArgs({
+    var feArgsObj = {
       'productId': deps.pageConfig().getProductId(),
       'publicationId': deps.pageConfig().getPublicationId(),
       'showNative': deps.callbacks().hasSubscribeRequestCallback(),
+      'productType': _apiSubscriptions.ProductType.SUBSCRIPTION,
       'list': options && options.list || 'default',
       'skus': options && options.skus || null,
       'isClosable': isClosable
-    }),
+    };
+
+    this.prorationMode = feArgsObj['replaceSkuProrationMode'] || undefined;
+
+    if (options && options.oldSku) {
+      feArgsObj['oldSku'] = options.oldSku;
+    }
+
+    if (feArgsObj['oldSku']) {
+      (function () {
+        _utilsLog.assert(feArgsObj['skus'], 'Need a sku list if old sku is provided!');
+
+        // Remove old sku from offers if in list.
+        var skuList = feArgsObj['skus'];
+        var /** @type {string} */oldSku = feArgsObj['oldSku'];
+        skuList = skuList.filter(function (sku) {
+          return sku !== oldSku;
+        });
+
+        _utilsLog.assert(skuList.length > 0, 'Sku list only contained offer user already has');
+        feArgsObj['skus'] = skuList;
+      })();
+    }
+
+    // Redirect to payments if only one upgrade option is passed.
+    if (feArgsObj['skus'] && feArgsObj['skus'].length === 1) {
+      var sku = feArgsObj['skus'][0];
+      var /** @type {string|undefined} */oldSku = feArgsObj['oldSku'];
+      // Update subscription triggers experimental flag if oldSku is passed,
+      // so we need to check for oldSku to decide if it needs to be sent.
+      // Otherwise we might accidentally block a regular subscription request.
+      if (oldSku) {
+        new _payFlow.PayStartFlow(this.deps_, {
+          skuId: sku,
+          oldSku: oldSku,
+          replaceSkuProrationMode: this.prorationMode
+        }).start();
+        return;
+      }
+    }
+    /** @private @const {!ActivityIframeView} */
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/offersiframe'), _services.feArgs(feArgsObj),
     /* shouldFadeBody */true);
   }
 
   /**
    * The class for subscribe option flow.
    */
+
+  /**
+   * @param {SkuSelectedResponse} response
+   * @private
+   */
+
+  OffersFlow.prototype.startPayFlow_ = function startPayFlow_(response) {
+    var sku = response.getSku();
+    var oldSku = response.getOldSku();
+    if (sku) {
+      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_OFFER_SELECTED, true);
+      var skuOrSubscriptionRequest = undefined;
+      if (oldSku) {
+        skuOrSubscriptionRequest = {};
+        skuOrSubscriptionRequest['skuId'] = sku;
+        skuOrSubscriptionRequest['oldSku'] = oldSku;
+      } else {
+        skuOrSubscriptionRequest = sku;
+      }
+      new _payFlow.PayStartFlow(this.deps_, skuOrSubscriptionRequest).start();
+    }
+  };
+
+  /**
+   * @param {AlreadySubscribedResponse} response
+   * @private
+   */
+
+  OffersFlow.prototype.handleLinkRequest_ = function handleLinkRequest_(response) {
+    if (response.getSubscriberOrMember()) {
+      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_ALREADY_SUBSCRIBED, true);
+      this.deps_.callbacks().triggerLoginRequest({
+        linkRequested: !!response.getLinkRequested()
+      });
+    }
+  };
+
+  /**
+   * @param {ViewSubscriptionsResponse} response
+   * @private
+   */
+
+  OffersFlow.prototype.startNativeFlow_ = function startNativeFlow_(response) {
+    if (response.getNative()) {
+      this.deps_.callbacks().triggerSubscribeRequest();
+    }
+  };
 
   /**
    * Starts the offers flow or alreadySubscribed flow.
@@ -6570,32 +11396,22 @@ var OffersFlow = (function () {
   OffersFlow.prototype.start = function start() {
     var _this = this;
 
-    // Start/cancel events.
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_OFFERS);
-    this.activityIframeView_.onCancel(function () {
-      _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_OFFERS);
-    });
+    if (this.activityIframeView_) {
+      // So no error if skipped to payment screen.
+      // Start/cancel events.
+      this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_OFFERS);
+      this.activityIframeView_.onCancel(function () {
+        _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_OFFERS);
+      });
+      this.activityIframeView_.on(_protoApi_messages.SkuSelectedResponse, this.startPayFlow_.bind(this));
+      this.activityIframeView_.on(_protoApi_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
+      this.activityIframeView_.on(_protoApi_messages.ViewSubscriptionsResponse, this.startNativeFlow_.bind(this));
 
-    // If result is due to OfferSelection, redirect to payments.
-    this.activityIframeView_.onMessage(function (result) {
-      if (result['alreadySubscribed']) {
-        _this.deps_.callbacks().triggerLoginRequest({
-          linkRequested: !!result['linkRequested']
-        });
-        return;
-      }
-      if (result['sku']) {
-        new _payFlow.PayStartFlow(_this.deps_,
-        /** @type {string} */result['sku']).start();
-        return;
-      }
-      if (result['native']) {
-        _this.deps_.callbacks().triggerSubscribeRequest();
-        return;
-      }
-    });
+      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_OFFERS);
 
-    return this.dialogManager_.openView(this.activityIframeView_);
+      return this.dialogManager_.openView(this.activityIframeView_);
+    }
+    return Promise.resolve();
   };
 
   return OffersFlow;
@@ -6604,7 +11420,6 @@ var OffersFlow = (function () {
 exports.OffersFlow = OffersFlow;
 
 var SubscribeOptionFlow = (function () {
-
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest|undefined} options
@@ -6619,11 +11434,14 @@ var SubscribeOptionFlow = (function () {
     /** @private @const {!../api/subscriptions.OffersRequest|undefined} */
     this.options_ = options;
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {!../components/dialog-manager.DialogManager} */
     this.dialogManager_ = deps.dialogManager();
+
+    /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
+    this.eventManager_ = deps.eventManager();
 
     /** @private @const {!ActivityIframeView} */
     this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(deps.win(), this.activityPorts_, _services.feUrl('/optionsiframe'), _services.feArgs({
@@ -6654,30 +11472,35 @@ var SubscribeOptionFlow = (function () {
     this.activityIframeView_.onCancel(function () {
       _this2.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_SUBSCRIBE_OPTION);
     });
+    this.activityIframeView_.on(_protoApi_messages.SubscribeResponse, this.maybeOpenOffersFlow_.bind(this));
 
-    this.activityIframeView_.onMessage(function (data) {
-      _this2.maybeOpenOffersFlow_(data);
-    });
     this.activityIframeView_.acceptResult().then(function (result) {
-      _this2.maybeOpenOffersFlow_(result.data);
+      var data = result.data;
+      var response = new _protoApi_messages.SubscribeResponse();
+      if (data['subscribe']) {
+        response.setSubscribe(true);
+      }
+      _this2.maybeOpenOffersFlow_(response);
     }, function (reason) {
       _this2.dialogManager_.completeView(_this2.activityIframeView_);
       throw reason;
     });
+    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_CLICK_TO_SHOW_OFFERS);
     return this.dialogManager_.openView(this.activityIframeView_);
   };
 
   /**
-   * @param {*} data
+   * @param {SubscribeResponse} response
    * @private
    */
 
-  SubscribeOptionFlow.prototype.maybeOpenOffersFlow_ = function maybeOpenOffersFlow_(data) {
-    if (data && data['subscribe']) {
+  SubscribeOptionFlow.prototype.maybeOpenOffersFlow_ = function maybeOpenOffersFlow_(response) {
+    if (response.getSubscribe()) {
       var options = this.options_ || {};
       if (options.isClosable == undefined) {
         options.isClosable = OFFERS_VIEW_CLOSABLE;
       }
+      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_VIEW_OFFERS, true);
       new OffersFlow(this.deps_, options).start();
     }
   };
@@ -6688,7 +11511,6 @@ var SubscribeOptionFlow = (function () {
 exports.SubscribeOptionFlow = SubscribeOptionFlow;
 
 var AbbrvOfferFlow = (function () {
-
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest=} options
@@ -6707,11 +11529,14 @@ var AbbrvOfferFlow = (function () {
     /** @private @const {!Window} */
     this.win_ = deps.win();
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {!../components/dialog-manager.DialogManager} */
     this.dialogManager_ = deps.dialogManager();
+
+    /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
+    this.eventManager_ = deps.eventManager();
 
     /** @private @const {!ActivityIframeView} */
     this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/abbrvofferiframe'), _services.feArgs({
@@ -6724,6 +11549,20 @@ var AbbrvOfferFlow = (function () {
     }),
     /* shouldFadeBody */false);
   }
+
+  /**
+   * @param {AlreadySubscribedResponse} response
+   * @private
+   */
+
+  AbbrvOfferFlow.prototype.handleLinkRequest_ = function handleLinkRequest_(response) {
+    if (response.getSubscriberOrMember()) {
+      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_ALREADY_SUBSCRIBED, true);
+      this.deps_.callbacks().triggerLoginRequest({
+        linkRequested: !!response.getLinkRequested()
+      });
+    }
+  };
 
   /**
    * Starts the offers flow
@@ -6740,14 +11579,8 @@ var AbbrvOfferFlow = (function () {
     });
 
     // If the user is already subscribed, trigger login flow
-    this.activityIframeView_.onMessage(function (data) {
-      if (data['alreadySubscribed']) {
-        _this3.deps_.callbacks().triggerLoginRequest({
-          linkRequested: !!data['linkRequested']
-        });
-        return;
-      }
-    });
+    this.activityIframeView_.on(_protoApi_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
+
     // If result is due to requesting offers, redirect to offers flow
     this.activityIframeView_.acceptResult().then(function (result) {
       if (result.data['viewOffers']) {
@@ -6755,6 +11588,7 @@ var AbbrvOfferFlow = (function () {
         if (options.isClosable == undefined) {
           options.isClosable = OFFERS_VIEW_CLOSABLE;
         }
+        _this3.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_VIEW_OFFERS, true);
         new OffersFlow(_this3.deps_, options).start();
         return;
       }
@@ -6766,6 +11600,8 @@ var AbbrvOfferFlow = (function () {
       }
     });
 
+    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_CLICK_TO_SHOW_OFFERS_OR_ALREADY_SUBSCRIBED);
+
     return this.dialogManager_.openView(this.activityIframeView_);
   };
 
@@ -6774,11 +11610,9 @@ var AbbrvOfferFlow = (function () {
 
 exports.AbbrvOfferFlow = AbbrvOfferFlow;
 
-},{"../api/subscriptions":9,"../ui/activity-iframe-view":41,"./pay-flow":37,"./services":39}],37:[function(require,module,exports){
+},{"../api/subscriptions":12,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"../utils/log":74,"./pay-flow":54,"./services":58}],53:[function(require,module,exports){
 exports.__esModule = true;
-exports.validatePayResponse = validatePayResponse;
-exports.parseSubscriptionResponse = parseSubscriptionResponse;
-exports.parseUserData = parseUserData;
+exports.getPayjsBindingForTesting = getPayjsBindingForTesting;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6795,26 +11629,33 @@ exports.parseUserData = parseUserData;
  * limitations under the License.
  */
 
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
+var _experimentFlags = require('./experiment-flags');
 
-var _utilsJwt = require('../utils/jwt');
-
-var _apiSubscribeResponse = require('../api/subscribe-response');
-
-var _apiSubscriptions = require('../api/subscriptions');
-
-var _apiUserData = require('../api/user-data');
+var _third_partyGpaySrcPayjs_async = require('../../third_party/gpay/src/payjs_async');
 
 var _utilsXhr = require('../utils/xhr');
 
-var _services = require('./services');
+var _utilsBytes = require('../utils/bytes');
 
 var _utilsErrors = require('../utils/errors');
 
-var _utilsJson = require('../utils/json');
+var _services = require('./services');
+
+var _experiments = require('./experiments');
 
 var PAY_REQUEST_ID = 'swg-pay';
+var GPAY_ACTIVITY_REQUEST = 'GPAY';
 
+var REDIRECT_STORAGE_KEY = 'subscribe.google.com:rk';
+
+/**
+ * @typedef {{
+ *   forceRedirect: (boolean|undefined),
+ * }}
+ */
+var PayOptionsDef = undefined;
+
+exports.PayOptionsDef = PayOptionsDef;
 /**
  * @const {!Object<string, string>}
  * @package Visible for testing only.
@@ -6841,35 +11682,609 @@ function payDecryptUrl() {
 }
 
 /**
- * The flow to initiate payment process.
  */
 
-var PayStartFlow = (function () {
+var PayClient = (function () {
+  /**
+   * @param {!Window} win
+   * @param {!../components/activities.ActivityPorts} activityPorts
+   * @param {!../components/dialog-manager.DialogManager} dialogManager
+   */
+
+  function PayClient(win, activityPorts, dialogManager) {
+    babelHelpers.classCallCheck(this, PayClient);
+
+    /** @const @private {!PayClientBindingDef} */
+    this.binding_ = _experiments.isExperimentOn(win, _experimentFlags.ExperimentFlags.GPAY_API) ? new PayClientBindingPayjs(win, activityPorts) : new PayClientBindingSwg(win, activityPorts, dialogManager);
+  }
+
+  /**
+   * TODO(dvoytenko, #406): remove delegated class once GPay launches.
+   * @interface
+   */
 
   /**
    * @param {!../utils/preconnect.Preconnect} pre
    */
 
-  PayStartFlow.preconnect = function preconnect(pre) {
+  PayClient.prototype.preconnect = function preconnect(pre) {
     pre.prefetch(payUrl());
+    pre.prefetch('https://payments.google.com/payments/v4/js/integrator.js?ss=md');
+    pre.prefetch('https://clients2.google.com/gr/gr_full_2.0.6.js');
+    pre.preconnect('https://www.gstatic.com/');
+    pre.preconnect('https://fonts.googleapis.com/');
+    pre.preconnect('https://www.google.com/');
   };
 
   /**
-   * @param {!./deps.DepsDef} deps
-   * @param {string} sku
+   * @return {string}
    */
 
-  function PayStartFlow(deps, sku) {
+  PayClient.prototype.getType = function getType() {
+    // TODO(dvoytenko, #406): remove once GPay API is launched.
+    return this.binding_.getType();
+  };
+
+  /**
+   * @param {!Object} paymentRequest
+   * @param {!PayOptionsDef=} options
+   */
+
+  PayClient.prototype.start = function start(paymentRequest) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    this.binding_.start(paymentRequest, options);
+  };
+
+  /**
+   * @param {function(!Promise<!Object>)} callback
+   */
+
+  PayClient.prototype.onResponse = function onResponse(callback) {
+    this.binding_.onResponse(callback);
+  };
+
+  return PayClient;
+})();
+
+exports.PayClient = PayClient;
+
+var PayClientBindingDef = (function () {
+  function PayClientBindingDef() {
+    babelHelpers.classCallCheck(this, PayClientBindingDef);
+  }
+
+  /**
+   * @implements {PayClientBindingDef}
+   */
+
+  /**
+   * @return {string}
+   */
+
+  PayClientBindingDef.prototype.getType = function getType() {};
+
+  /**
+   * @param {!Object} unusedPaymentRequest
+   * @param {!PayOptionsDef} unusedOptions
+   */
+
+  PayClientBindingDef.prototype.start = function start(unusedPaymentRequest, unusedOptions) {};
+
+  /**
+   * @param {function(!Promise<!Object>)} unusedCallback
+   */
+
+  PayClientBindingDef.prototype.onResponse = function onResponse(unusedCallback) {};
+
+  return PayClientBindingDef;
+})();
+
+var PayClientBindingSwg = (function () {
+  /**
+   * @param {!Window} win
+   * @param {!../components/activities.ActivityPorts} activityPorts
+   * @param {!../components/dialog-manager.DialogManager} dialogManager
+   */
+
+  function PayClientBindingSwg(win, activityPorts, dialogManager) {
+    babelHelpers.classCallCheck(this, PayClientBindingSwg);
+
+    /** @private @const {!Window} */
+    this.win_ = win;
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = activityPorts;
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+    this.dialogManager_ = dialogManager;
+  }
+
+  /**
+   * Binding based on the https://github.com/google/payjs.
+   * @implements {PayClientBindingDef}
+   * @package Visible for testing only.
+   */
+
+  /** @override */
+
+  PayClientBindingSwg.prototype.getType = function getType() {
+    return 'SWG';
+  };
+
+  /** @override */
+
+  PayClientBindingSwg.prototype.start = function start(paymentRequest, options) {
+    var opener = this.activityPorts_.open(GPAY_ACTIVITY_REQUEST, payUrl(), options.forceRedirect ? '_top' : '_blank', _services.feArgs(paymentRequest), {});
+    this.dialogManager_.popupOpened(opener && opener.targetWin || null);
+  };
+
+  /** @override */
+
+  PayClientBindingSwg.prototype.onResponse = function onResponse(callback) {
+    var _this = this;
+
+    var responseCallback = function (port) {
+      _this.dialogManager_.popupClosed();
+      callback(_this.validatePayResponse_(port));
+    };
+    this.activityPorts_.onResult(GPAY_ACTIVITY_REQUEST, responseCallback);
+    this.activityPorts_.onResult(PAY_REQUEST_ID, responseCallback);
+  };
+
+  /**
+   * @param {!../components/activities.ActivityPortDef} port
+   * @return {!Promise<!Object>}
+   * @private
+   */
+
+  PayClientBindingSwg.prototype.validatePayResponse_ = function validatePayResponse_(port) {
+    var _this2 = this;
+
+    // Do not require security immediately: it will be checked below.
+    return port.acceptResult().then(function (result) {
+      if (result.origin != payOrigin()) {
+        throw new Error('channel mismatch');
+      }
+      var data = /** @type {!Object} */result.data;
+      if (data['redirectEncryptedCallbackData']) {
+        // Data is supplied as an encrypted blob.
+        var xhr = new _utilsXhr.Xhr(_this2.win_);
+        var url = payDecryptUrl();
+        var init = /** @type {!../utils/xhr.FetchInitDef} */{
+          method: 'post',
+          headers: { 'Accept': 'text/plain, application/json' },
+          credentials: 'include',
+          body: data['redirectEncryptedCallbackData'],
+          mode: 'cors'
+        };
+        return xhr.fetch(url, init).then(function (response) {
+          return response.json();
+        }).then(function (response) {
+          var dataClone = Object.assign({}, data);
+          delete dataClone['redirectEncryptedCallbackData'];
+          return Object.assign(dataClone, response);
+        });
+      }
+      // Data is supplied directly: must be a verified and secure channel.
+      if (result.originVerified && result.secureChannel) {
+        return data;
+      }
+      throw new Error('channel mismatch');
+    });
+  };
+
+  return PayClientBindingSwg;
+})();
+
+var PayClientBindingPayjs = (function () {
+  /**
+   * @param {!Window} win
+   * @param {!../components/activities.ActivityPorts} activityPorts
+   */
+
+  function PayClientBindingPayjs(win, activityPorts) {
+    babelHelpers.classCallCheck(this, PayClientBindingPayjs);
+
+    /** @private @const {!Window} */
+    this.win_ = win;
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = activityPorts;
+
+    /** @private {?function(!Promise<!Object>)} */
+    this.responseCallback_ = null;
+
+    /** @private {?Promise<!Object>} */
+    this.response_ = null;
+
+    /** @private @const {!RedirectVerifierHelper} */
+    this.redirectVerifierHelper_ = new RedirectVerifierHelper(this.win_);
+
+    /** @private @const {!PaymentsAsyncClient} */
+    this.client_ = this.createClient_({
+      environment: 'SANDBOX',
+      'i': {
+        'redirectKey': this.redirectVerifierHelper_.restoreKey()
+      }
+    }, this.handleResponse_.bind(this));
+
+    // Prepare new verifier pair.
+    this.redirectVerifierHelper_.prepare();
+  }
+
+  /**
+   * @typedef {{
+   *   key: string,
+   *   verifier: string,
+   * }}
+   */
+
+  /**
+   * @param {!Object} options
+   * @param {function(!Promise<!Object>)} handler
+   * @return {!PaymentsAsyncClient}
+   * @private
+   */
+
+  PayClientBindingPayjs.prototype.createClient_ = function createClient_(options, handler) {
+    return new _third_partyGpaySrcPayjs_async.PaymentsAsyncClient(options, handler,
+    /* useIframe */false, this.activityPorts_.getOriginalWebActivityPorts());
+  };
+
+  /** @override */
+
+  PayClientBindingPayjs.prototype.getType = function getType() {
+    return 'PAYJS';
+  };
+
+  /** @override */
+
+  PayClientBindingPayjs.prototype.start = function start(paymentRequest, options) {
+    var _this3 = this;
+
+    if (options.forceRedirect) {
+      paymentRequest = Object.assign(paymentRequest, {
+        'forceRedirect': options.forceRedirect || false
+      });
+    }
+    setInternalParam(paymentRequest, 'disableNative',
+    // The page cannot be iframed at this time. May be relaxed later
+    // for AMP and similar contexts.
+    this.win_ != this.top_() ||
+    // Experiment must be enabled.
+    !_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.GPAY_NATIVE));
+    // Notice that the callback for verifier may execute asynchronously.
+    this.redirectVerifierHelper_.useVerifier(function (verifier) {
+      if (verifier) {
+        setInternalParam(paymentRequest, 'redirectVerifier', verifier);
+      }
+      _this3.client_.loadPaymentData(paymentRequest);
+    });
+  };
+
+  /** @override */
+
+  PayClientBindingPayjs.prototype.onResponse = function onResponse(callback) {
+    var _this4 = this;
+
+    this.responseCallback_ = callback;
+    var response = this.response_;
+    if (response) {
+      Promise.resolve().then(function () {
+        if (response) {
+          callback(_this4.convertResponse_(response));
+        }
+      });
+    }
+  };
+
+  /**
+   * @param {!Promise<!Object>} responsePromise
+   * @private
+   */
+
+  PayClientBindingPayjs.prototype.handleResponse_ = function handleResponse_(responsePromise) {
+    this.response_ = responsePromise;
+    if (this.responseCallback_) {
+      this.responseCallback_(this.convertResponse_(this.response_));
+    }
+  };
+
+  /**
+   * @param {!Promise<!Object>} response
+   * @return {!Promise<!Object>}
+   * @private
+   */
+
+  PayClientBindingPayjs.prototype.convertResponse_ = function convertResponse_(response) {
+    var _this5 = this;
+
+    return response['catch'](function (reason) {
+      if (typeof reason == 'object' && reason['statusCode'] == 'CANCELED') {
+        return Promise.reject(_utilsErrors.createCancelError(_this5.win_));
+      }
+      return Promise.reject(reason);
+    });
+  };
+
+  /**
+   * @return {!Window}
+   * @private
+   */
+
+  PayClientBindingPayjs.prototype.top_ = function top_() {
+    // Only exists for testing since it's not possible to override `window.top`.
+    return this.win_.top;
+  };
+
+  return PayClientBindingPayjs;
+})();
+
+exports.PayClientBindingPayjs = PayClientBindingPayjs;
+var RedirectVerifierPairDef = undefined;
+
+/**
+ * This helper generates key/verifier pair for the redirect mode. When the
+ * redirect mode is used, the encrypted payload is returned via nivigation URL.
+ * This payload need to be decrypted and to avoid session fixation attacks, a
+ * verifier has to be used. This redirect verifier is not the only session
+ * verifier in use: we also use GAIA. However, we have to fallback to this
+ * verifier when GAIA is not available.
+ *
+ * @package Visible for testing only.
+ */
+
+var RedirectVerifierHelper = (function () {
+  /**
+   * @param {!Window} win
+   */
+
+  function RedirectVerifierHelper(win) {
+    babelHelpers.classCallCheck(this, RedirectVerifierHelper);
+
+    /** @private @const {!Window} */
+    this.win_ = win;
+
+    /** @private {boolean} */
+    this.pairCreated_ = false;
+
+    /** @private {?RedirectVerifierPairDef} */
+    this.pair_ = null;
+
+    /** @private {?Promise<?RedirectVerifierPairDef>} */
+    this.pairPromise_ = null;
+  }
+
+  /**
+   * @param {!Object} paymentRequest
+   * @param {string} param
+   * @param {*} value
+   */
+
+  /**
+   * To avoid popup blockers, the key/verifier pair is created as soon as
+   * possible.
+   * @return {?Promise}
+   */
+
+  RedirectVerifierHelper.prototype.prepare = function prepare() {
+    return this.getOrCreatePair_(function () {});
+  };
+
+  /**
+   * Calls the provided callback with the generated redirect verifier. This
+   * API is sync/async, which is a big anti-pattern. However, it's necessary
+   * to reduce the risk of popup blockers. If the verifier is already available
+   * (see `prepare` method), the callback will be called immediately and thus
+   * in the same event loop as the user action.
+   *
+   * The return verifier could be `null`. This could mean either that its
+   * generation failed, or if the platform doesn't support necessary APIs, such
+   * as Web Crypto. The redirect can still proceed and try to fallback on GAIA
+   * as a redirect verifier. The set of platforms where GAIA is not available
+   * and the redirect verifier cannot be created is negligible.
+   *
+   * The key corresponding to the returned verifier is stored in the session
+   * storage and can be later restored using `restoreKey` method.
+   *
+   * @param {function(?string)} callback
+   */
+
+  RedirectVerifierHelper.prototype.useVerifier = function useVerifier(callback) {
+    var _this6 = this;
+
+    this.getOrCreatePair_(function (pair) {
+      if (pair) {
+        try {
+          _this6.win_.localStorage.setItem(REDIRECT_STORAGE_KEY, pair.key);
+        } catch (e) {
+          // If storage has failed, there's no point in using the verifer.
+          // However, there are other ways to recover the redirect, so it's
+          // not necessarily a fatal condition.
+          pair = null;
+        }
+      }
+      callback(pair && pair.verifier || null);
+    });
+  };
+
+  /**
+   * Restores the redirect key from the session storage. The key may be null.
+   * @return {?string}
+   */
+
+  RedirectVerifierHelper.prototype.restoreKey = function restoreKey() {
+    try {
+      return this.win_.localStorage && this.win_.localStorage.getItem(REDIRECT_STORAGE_KEY) || null;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  /**
+   * @param {function(?RedirectVerifierPairDef)} callback
+   * @return {?Promise}
+   * @private
+   */
+
+  RedirectVerifierHelper.prototype.getOrCreatePair_ = function getOrCreatePair_(callback) {
+    this.createPair_();
+    if (this.pairCreated_) {
+      // Already created.
+      callback(this.pair_);
+    } else if (this.pairPromise_) {
+      // Otherwise wait for it to be created.
+      this.pairPromise_.then(function (pair) {
+        return callback(pair);
+      });
+    }
+    return this.pairPromise_;
+  };
+
+  /**
+   * @private
+   */
+
+  RedirectVerifierHelper.prototype.createPair_ = function createPair_() {
+    var _this7 = this;
+
+    // Either already created or already started.
+    if (this.pairCreated_ || this.pairPromise_) {
+      return;
+    }
+
+    // Check that the platform can fully support verification. That means
+    // that it's expected to implement the following APIs:
+    // a. Local storage (localStorage);
+    // b. WebCrypto (crypto.subtle);
+    // c. Crypto random (crypto.getRandomValues);
+    // d. SHA284 (crypto.subtle.digest).
+    var crypto = this.win_.crypto;
+    if (this.win_.localStorage && crypto && crypto.getRandomValues && crypto.subtle && crypto.subtle.digest) {
+      this.pairPromise_ = new Promise(function (resolve, reject) {
+        // 1. Use crypto random to create a 128-bit (16 byte) redirect key.
+        var keyBytes = new Uint8Array(16);
+        crypto.getRandomValues(keyBytes);
+
+        // 2. Encode key as base64.
+        var key = btoa(_utilsBytes.bytesToString(keyBytes));
+
+        // 3. Create a hash.
+        crypto.subtle.digest({ name: 'SHA-384' }, _utilsBytes.stringToBytes(key)).then(function (buffer) {
+          var verifier = btoa(_utilsBytes.bytesToString(new Uint8Array( /** @type {!ArrayBuffer} */buffer)));
+          resolve({ key: key, verifier: verifier });
+        }, function (reason) {
+          reject(reason);
+        });
+      })['catch'](function () {
+        // Ignore failures. A failure to create a redirect verifier is often
+        // recoverable.
+        return null;
+      }).then(function (pair) {
+        _this7.pairCreated_ = true;
+        _this7.pair_ = pair;
+        return pair;
+      });
+    } else {
+      // Not supported.
+      this.pairCreated_ = true;
+      this.pair_ = null;
+    }
+  };
+
+  return RedirectVerifierHelper;
+})();
+
+exports.RedirectVerifierHelper = RedirectVerifierHelper;
+function setInternalParam(paymentRequest, param, value) {
+  var _Object$assign;
+
+  paymentRequest['i'] = Object.assign(paymentRequest['i'] || {}, (_Object$assign = {}, _Object$assign[param] = value, _Object$assign));
+}
+
+// TODO(dvoytenko, #406): Remove once GPay API is supported.
+
+function getPayjsBindingForTesting() {
+  return PayClientBindingPayjs;
+}
+
+},{"../../third_party/gpay/src/payjs_async":88,"../utils/bytes":67,"../utils/errors":70,"../utils/xhr":82,"./experiment-flags":43,"./experiments":44,"./services":58}],54:[function(require,module,exports){
+exports.__esModule = true;
+exports.parseSubscriptionResponse = parseSubscriptionResponse;
+exports.parseUserData = parseUserData;
+exports.parseEntitlements = parseEntitlements;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * The Flow goes like this:
+ * a. Start Payments
+ * b. Complete Payments
+ * c. Create Account
+ * d. Acknowledge Account
+ *
+ * In other words, Flow = Payments + Account Creation.
+ */
+
+var _uiActivityIframeView = require('../ui/activity-iframe-view');
+
+var _protoApi_messages = require('../proto/api_messages');
+
+var _utilsJwt = require('../utils/jwt');
+
+var _apiSubscribeResponse = require('../api/subscribe-response');
+
+var _apiSubscriptions = require('../api/subscriptions');
+
+var _apiUserData = require('../api/user-data');
+
+var _services = require('./services');
+
+var _utilsErrors = require('../utils/errors');
+
+var _utilsJson = require('../utils/json');
+
+/**
+ * String values input by the publisher are mapped to the number values.
+ * @type {!Object<string, number>}
+ */
+var ReplaceSkuProrationModeMapping = {
+  // The replacement takes effect immediately, and the remaining time will
+  // be prorated and credited to the user. This is the current default
+  // behavior.
+  'IMMEDIATE_WITH_TIME_PRORATION': 1
+};
+
+exports.ReplaceSkuProrationModeMapping = ReplaceSkuProrationModeMapping;
+/**
+ * The flow to initiate payment process.
+ */
+
+var PayStartFlow = (function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   * @param {!../api/subscriptions.SubscriptionRequest|string} skuOrSubscriptionRequest
+   * @param {!../api/subscriptions.ProductType} productType
+   */
+
+  function PayStartFlow(deps, skuOrSubscriptionRequest) {
+    var productType = arguments.length <= 2 || arguments[2] === undefined ? _apiSubscriptions.ProductType.SUBSCRIPTION : arguments[2];
     babelHelpers.classCallCheck(this, PayStartFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
 
-    /** @private @const {!Window} */
-    this.win_ = deps.win();
-
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
-    this.activityPorts_ = deps.activities();
+    /** @private @const {!./pay-client.PayClient} */
+    this.payClient_ = deps.payClient();
 
     /** @private @const {!../model/page-config.PageConfig} */
     this.pageConfig_ = deps.pageConfig();
@@ -6877,8 +12292,26 @@ var PayStartFlow = (function () {
     /** @private @const {!../components/dialog-manager.DialogManager} */
     this.dialogManager_ = deps.dialogManager();
 
-    /** @private @const {string} */
-    this.sku_ = sku;
+    /** @private @const {!../api/subscriptions.SubscriptionRequest} */
+    this.subscriptionRequest_ = typeof skuOrSubscriptionRequest == 'string' ? { 'skuId': skuOrSubscriptionRequest } : skuOrSubscriptionRequest;
+
+    /**@private @const {!ProductType} */
+    this.productType_ = productType;
+
+    /** @private @const {!../runtime/analytics-service.AnalyticsService} */
+    this.analyticsService_ = deps.analytics();
+
+    /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
+    this.eventManager_ = deps.eventManager();
+
+    // Map the proration mode to the enum value (if proration exists).
+    this.prorationMode = this.subscriptionRequest_.replaceSkuProrationMode;
+    this.prorationEnum = 0;
+    if (this.prorationMode) {
+      this.prorationEnum = ReplaceSkuProrationModeMapping[this.prorationMode];
+    } else if (this.subscriptionRequest_.oldSku) {
+      this.prorationEnum = ReplaceSkuProrationModeMapping['IMMEDIATE_WITH_TIME_PRORATION'];
+    }
   }
 
   /**
@@ -6891,23 +12324,34 @@ var PayStartFlow = (function () {
    */
 
   PayStartFlow.prototype.start = function start() {
-    // Start/cancel events.
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SUBSCRIBE, {
-      'sku': this.sku_
+    // Add the 'publicationId' key to the subscriptionRequest_ object.
+    var swgPaymentRequest = Object.assign({}, this.subscriptionRequest_, {
+      'publicationId': this.pageConfig_.getPublicationId()
     });
 
-    // TODO(dvoytenko): switch to gpay async client.
-    var opener = this.activityPorts_.open(PAY_REQUEST_ID, payUrl(), '_blank', _services.feArgs({
+    if (this.prorationEnum) {
+      swgPaymentRequest.replaceSkuProrationMode = this.prorationEnum;
+    }
+
+    // Start/cancel events.
+    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SUBSCRIBE, this.subscriptionRequest_);
+    // TODO(chenshay): Create analytics for 'replace subscription'.
+    this.analyticsService_.setSku(this.subscriptionRequest_.skuId);
+    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED, true);
+    this.payClient_.start({
       'apiVersion': 1,
       'allowedPaymentMethods': ['CARD'],
       'environment': 'SANDBOX',
       'playEnvironment': 'STAGING',
-      'swg': {
-        'publicationId': this.pageConfig_.getPublicationId(),
-        'skuId': this.sku_
+      'swg': swgPaymentRequest,
+      'i': {
+        'startTimeMs': Date.now(),
+        'googleTransactionId': this.analyticsService_.getTransactionId(),
+        'productType': this.productType_
       }
-    }), {});
-    this.dialogManager_.popupOpened(opener && opener.targetWin);
+    }, {
+      forceRedirect: this.deps_.config().windowOpenMode == _apiSubscriptions.WindowOpenMode.REDIRECT
+    });
     return Promise.resolve();
   };
 
@@ -6917,23 +12361,28 @@ var PayStartFlow = (function () {
 exports.PayStartFlow = PayStartFlow;
 
 var PayCompleteFlow = (function () {
-
   /**
    * @param {!./deps.DepsDef} deps
    */
 
   PayCompleteFlow.configurePending = function configurePending(deps) {
-    deps.activities().onResult(PAY_REQUEST_ID, function (port) {
-      deps.dialogManager().popupClosed();
+    /** @const @type {./client-event-manager.ClientEventManager} */
+    var eventManager = deps.eventManager();
+
+    deps.payClient().onResponse(function (payPromise) {
       deps.entitlementsManager().blockNextNotification();
       var flow = new PayCompleteFlow(deps);
-      var promise = validatePayResponse(deps.win(), port, flow.complete.bind(flow));
+      var promise = validatePayResponse(deps, payPromise, flow.complete.bind(flow));
       deps.callbacks().triggerSubscribeResponse(promise);
       return promise.then(function (response) {
+        eventManager.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE, true);
         flow.start(response);
       }, function (reason) {
         if (_utilsErrors.isCancelError(reason)) {
           deps.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SUBSCRIBE);
+        } else {
+          deps.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED, false);
+          deps.jserror().error('Pay failed', reason);
         }
         throw reason;
       });
@@ -6953,14 +12402,11 @@ var PayCompleteFlow = (function () {
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {!../components/dialog-manager.DialogManager} */
     this.dialogManager_ = deps.dialogManager();
-
-    /** @private @const {!../runtime/callbacks.Callbacks} */
-    this.callbacks_ = deps.callbacks();
 
     /** @private {?ActivityIframeView} */
     this.activityIframeView_ = null;
@@ -6970,14 +12416,19 @@ var PayCompleteFlow = (function () {
 
     /** @private {?Promise} */
     this.readyPromise_ = null;
+
+    /** @private @const {!../runtime/analytics-service.AnalyticsService} */
+    this.analyticsService_ = deps.analytics();
+
+    /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
+    this.eventManager_ = deps.eventManager();
   }
 
   /**
-    *@param {!Window} win
-   * @param {!web-activities/activity-ports.ActivityPort} port
+   * @param {!./deps.DepsDef} deps
+   * @param {!Promise<!Object>} payPromise
    * @param {function():!Promise} completeHandler
    * @return {!Promise<!SubscribeResponse>}
-   * @package Visible for testing only.
    */
 
   /**
@@ -6989,13 +12440,36 @@ var PayCompleteFlow = (function () {
   PayCompleteFlow.prototype.start = function start(response) {
     var _this = this;
 
+    if (!this.analyticsService_.getSku()) {
+      // This is a redirect response. Extract the SKU if possible.
+      this.analyticsService_.addLabels(['redirect']);
+      var sku = parseSkuFromPurchaseDataSafe(response.purchaseData);
+      if (sku) {
+        this.analyticsService_.setSku(sku);
+      }
+    }
+
+    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_ACCOUNT_CHANGED, true);
     this.deps_.entitlementsManager().reset(true);
     this.response_ = response;
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/payconfirmiframe'), _services.feArgs({
+    // TODO(dianajing): find a way to specify whether response is a subscription update
+    var args = {
       'publicationId': this.deps_.pageConfig().getPublicationId(),
-      'loginHint': response.userData && response.userData.email
-    }),
+      'productType': this.response_['productType']
+    };
+    // TODO(dvoytenko, #400): cleanup once entitlements is launched everywhere.
+    // 'isSubscriptionUpdate': !!response.oldSku,
+    if (response.userData && response.entitlements) {
+      args['idToken'] = response.userData.idToken;
+      this.deps_.entitlementsManager().pushNextEntitlements(response.entitlements.raw);
+    } else {
+      args['loginHint'] = response.userData && response.userData.email;
+    }
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/payconfirmiframe'), _services.feArgs(args),
     /* shouldFadeBody */true);
+
+    this.activityIframeView_.on(_protoApi_messages.EntitlementsResponse, this.handleEntitlementsResponse_.bind(this));
+
     this.activityIframeView_.acceptResult().then(function () {
       // The flow is complete.
       _this.dialogManager_.completeView(_this.activityIframeView_);
@@ -7005,19 +12479,35 @@ var PayCompleteFlow = (function () {
   };
 
   /**
+   * @param {!EntitlementsResponse} response
+   * @private
+   */
+
+  PayCompleteFlow.prototype.handleEntitlementsResponse_ = function handleEntitlementsResponse_(response) {
+    var jwt = response.getJwt();
+    if (jwt) {
+      this.deps_.entitlementsManager().pushNextEntitlements(jwt);
+    }
+  };
+
+  /**
    * @return {!Promise}
    */
 
   PayCompleteFlow.prototype.complete = function complete() {
     var _this2 = this;
 
+    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_ACCOUNT_CREATED, true);
     this.deps_.entitlementsManager().unblockNextNotification();
     this.readyPromise_.then(function () {
-      _this2.activityIframeView_.message({ 'complete': true });
+      var accountCompletionRequest = new _protoApi_messages.AccountCreationRequest();
+      accountCompletionRequest.setComplete(true);
+      _this2.activityIframeView_.execute(accountCompletionRequest);
     });
     return this.activityIframeView_.acceptResult()['catch'](function () {
       // Ignore errors.
     }).then(function () {
+      _this2.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_ACCOUNT_ACKNOWLEDGED, true);
       _this2.deps_.entitlementsManager().setToastShown(true);
     });
   };
@@ -7026,48 +12516,64 @@ var PayCompleteFlow = (function () {
 })();
 
 exports.PayCompleteFlow = PayCompleteFlow;
+function validatePayResponse(deps, payPromise, completeHandler) {
+  return payPromise.then(function (data) {
+    // 1) We log against a random TX ID which is how we track a specific user
+    //    anonymously.
+    // 2) If there was a redirect to gPay, we may have lost our stored TX ID.
+    // 3) Pay service is supposed to give us the TX ID it logged against.
 
-function validatePayResponse(win, port, completeHandler) {
-  // Do not require security immediately: it will be checked below.
-  return port.acceptResult().then(function (result) {
-    if (result.origin != payOrigin()) {
-      throw new Error('channel mismatch');
+    var hasLogged = deps.analytics().getHasLogged();
+    var eventType = _protoApi_messages.AnalyticsEvent.UNKNOWN;
+    var eventParams = undefined;
+    if (typeof data !== 'object' || !data['googleTransactionId']) {
+      // If gPay doesn't give us a TX ID it means that something may
+      // be wrong.  If we previously logged then we are at least continuing to
+      // log against the same TX ID.  If we didn't previously log then we have
+      // lost all connection to the events that preceded the payment event and
+      // we at least want to know why that data was lost.
+      eventParams = new _protoApi_messages.EventParams();
+      eventParams.setHadLogged(hasLogged);
+      eventType = _protoApi_messages.AnalyticsEvent.EVENT_GPAY_NO_TX_ID;
+    } else {
+      var oldTxId = deps.analytics().getTransactionId();
+      var newTxId = data['googleTransactionId'];
+
+      if (!hasLogged) {
+        // This is the expected case for full redirects.  It may be happening
+        // unexpectedly at other times too though and we want to be aware of it
+        // if it does.
+        deps.analytics().setTransactionId(newTxId);
+        eventType = _protoApi_messages.AnalyticsEvent.EVENT_GPAY_CANNOT_CONFIRM_TX_ID;
+      } else {
+        if (oldTxId === newTxId) {
+          // This is the expected case for non-redirect pay events
+          eventType = _protoApi_messages.AnalyticsEvent.EVENT_CONFIRM_TX_ID;
+        } else {
+          // This is an unexpected case: gPay rejected our TX ID and created
+          // its own.  Log the gPay TX ID but keep our logging consistent.
+          eventParams = new _protoApi_messages.EventParams();
+          eventParams.setGpayTransactionId(newTxId);
+          eventType = _protoApi_messages.AnalyticsEvent.EVENT_CHANGED_TX_ID;
+        }
+      }
     }
-    var data = /** @type {!Object} */result.data;
-    if (data['redirectEncryptedCallbackData']) {
-      // Data is supplied as an encrypted blob.
-      var xhr = new _utilsXhr.Xhr(win);
-      var url = payDecryptUrl();
-      var init = /** @type {!../utils/xhr.FetchInitDef} */{
-        method: 'post',
-        headers: { 'Accept': 'text/plain, application/json' },
-        credentials: 'include',
-        body: data['redirectEncryptedCallbackData'],
-        mode: 'cors'
-      };
-      return xhr.fetch(url, init).then(function (response) {
-        return response.json();
-      });
-    }
-    // Data is supplied directly: must be a verified and secure channel.
-    if (result.originVerified && result.secureChannel) {
-      return data;
-    }
-    throw new Error('channel mismatch');
-  }).then(function (data) {
-    return parseSubscriptionResponse(data, completeHandler);
+    deps.eventManager().logSwgEvent(eventType, true, eventParams);
+    return parseSubscriptionResponse(deps, data, completeHandler);
   });
 }
 
 /**
+ * @param {!./deps.DepsDef} deps
  * @param {*} data
  * @param {function():!Promise} completeHandler
  * @return {!SubscribeResponse}
  */
 
-function parseSubscriptionResponse(data, completeHandler) {
+function parseSubscriptionResponse(deps, data, completeHandler) {
   var swgData = null;
   var raw = null;
+  var productType = null;
   if (data) {
     if (typeof data == 'string') {
       raw = /** @type {string} */data;
@@ -7075,12 +12581,18 @@ function parseSubscriptionResponse(data, completeHandler) {
       // Assume it's a json object in the format:
       // `{integratorClientCallbackData: "..."}` or `{swgCallbackData: "..."}`.
       var json = /** @type {!Object} */data;
+      if ('productType' in data) {
+        productType = data['productType'];
+      }
       if ('swgCallbackData' in json) {
         swgData = /** @type {!Object} */json['swgCallbackData'];
       } else if ('integratorClientCallbackData' in json) {
         raw = json['integratorClientCallbackData'];
       }
     }
+  }
+  if (!productType) {
+    productType = _apiSubscriptions.ProductType.SUBSCRIPTION;
   }
   if (raw && !swgData) {
     raw = atob(raw);
@@ -7093,7 +12605,7 @@ function parseSubscriptionResponse(data, completeHandler) {
     throw new Error('unexpected payment response');
   }
   raw = JSON.stringify( /** @type {!JsonObject} */swgData);
-  return new _apiSubscribeResponse.SubscribeResponse(raw, parsePurchaseData(swgData), parseUserData(swgData), completeHandler);
+  return new _apiSubscribeResponse.SubscribeResponse(raw, parsePurchaseData(swgData), parseUserData(swgData), parseEntitlements(deps, swgData), productType, completeHandler);
 }
 
 /**
@@ -7121,7 +12633,415 @@ function parseUserData(swgData) {
   return new _apiUserData.UserData(idToken, jwt);
 }
 
-},{"../api/subscribe-response":8,"../api/subscriptions":9,"../api/user-data":10,"../ui/activity-iframe-view":41,"../utils/errors":49,"../utils/json":50,"../utils/jwt":51,"../utils/xhr":59,"./services":39}],38:[function(require,module,exports){
+/**
+ * @param {!./deps.DepsDef} deps
+ * @param {!Object} swgData
+ * @return {?../api/entitlements.Entitlements}
+ * @package Visible for testing.
+ */
+
+function parseEntitlements(deps, swgData) {
+  if (swgData['signedEntitlements']) {
+    return deps.entitlementsManager().parseEntitlements(swgData);
+  }
+  return null;
+}
+
+/**
+ * @param {!PurchaseData} purchaseData
+ * @return {?string}
+ */
+function parseSkuFromPurchaseDataSafe(purchaseData) {
+  var json = _utilsJson.tryParseJson(purchaseData.raw);
+  return json && json['productId'] || null;
+}
+
+},{"../api/subscribe-response":11,"../api/subscriptions":12,"../api/user-data":13,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"../utils/errors":70,"../utils/json":72,"../utils/jwt":73,"./services":58}],55:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _services = require('./services');
+
+var _protoApi_messages = require('../proto/api_messages');
+
+var _utilsTypes = require('../utils/types');
+
+var _eventTypeMapping = require('./event-type-mapping');
+
+/**
+ * Implements interface to Propensity server
+ */
+
+var PropensityServer = (function () {
+  /**
+   * Page configuration is known when Propensity API
+   * is available, publication ID is therefore used
+   * in constructor for the server interface.
+   * @param {!Window} win
+   * @param {!./deps.DepsDef} deps
+   * @param {!./fetcher.Fetcher} fetcher
+   */
+
+  function PropensityServer(win, deps, fetcher) {
+    babelHelpers.classCallCheck(this, PropensityServer);
+
+    /** @private @const {!Window} */
+    this.win_ = win;
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+    /** @private @const {string} */
+    this.publicationId_ = this.deps_.pageConfig().getPublicationId();
+    /** @private {?string} */
+    this.clientId_ = null;
+    /** @private @const {!./fetcher.Fetcher} */
+    this.fetcher_ = fetcher;
+    /** @private @const {number} */
+    this.version_ = 1;
+
+    this.deps_.eventManager().registerEventListener(this.handleClientEvent_.bind(this));
+  }
+
+  /**
+   * @private
+   * @return {string}
+   */
+
+  PropensityServer.prototype.getDocumentCookie_ = function getDocumentCookie_() {
+    return this.win_.document.cookie;
+  };
+
+  /**
+   * Returns the client ID to be used.
+   * @return {?string}
+   * @private
+   */
+
+  PropensityServer.prototype.getClientId_ = function getClientId_() {
+    if (!this.clientId_) {
+      // Match '__gads' (name of the cookie) dropped by Ads Tag.
+      var gadsmatch = this.getDocumentCookie_().match('(^|;)\\s*__gads\\s*=\\s*([^;]+)');
+      // Since the cookie will be consumed using decodeURIComponent(),
+      // use encodeURIComponent() here to match.
+      this.clientId_ = gadsmatch && encodeURIComponent(gadsmatch.pop());
+    }
+    return this.clientId_;
+  };
+
+  /**
+   * @private
+   * @param {string} url
+   * @return {string}
+   */
+
+  PropensityServer.prototype.propensityUrl_ = function propensityUrl_(url) {
+    url = url + '&u_tz=240&v=' + this.version_;
+    var clientId = this.getClientId_();
+    if (clientId) {
+      url = url + '&cookie=' + clientId;
+    }
+    url = url + '&cdm=' + this.win_.location.hostname;
+    return url;
+  };
+
+  /**
+   * @param {string} state
+   * @param {?string} productsOrSkus
+   */
+
+  PropensityServer.prototype.sendSubscriptionState = function sendSubscriptionState(state, productsOrSkus) {
+    var init = /** @type {!../utils/xhr.FetchInitDef} */{
+      method: 'GET',
+      credentials: 'include'
+    };
+    var userState = this.publicationId_ + ':' + state;
+    if (productsOrSkus) {
+      userState = userState + ':' + encodeURIComponent(productsOrSkus);
+    }
+    var url = _services.adsUrl('/subopt/data?states=') + encodeURIComponent(userState);
+    return this.fetcher_.fetch(this.propensityUrl_(url), init);
+  };
+
+  /**
+   * @param {string} event
+   * @param {?string} context
+   * @private
+   */
+
+  PropensityServer.prototype.sendEvent_ = function sendEvent_(event, context) {
+    var init = /** @type {!../utils/xhr.FetchInitDef} */{
+      method: 'GET',
+      credentials: 'include'
+    };
+    var eventInfo = this.publicationId_ + ':' + event;
+    if (context) {
+      eventInfo = eventInfo + ':' + encodeURIComponent(context);
+    }
+    var url = _services.adsUrl('/subopt/data?events=') + encodeURIComponent(eventInfo);
+    return this.fetcher_.fetch(this.propensityUrl_(url), init);
+  };
+
+  /**
+   *
+   * @param {!../api/client-event-manager-api.ClientEvent} event
+   */
+
+  PropensityServer.prototype.handleClientEvent_ = function handleClientEvent_(event) {
+    /**
+     * Does a live check of the config because we don't know when publisher
+     * called to enable (it may be after a consent dialog).
+     */
+    if (!this.deps_.config().enablePropensity && event.eventOriginator !== _protoApi_messages.EventOriginator.PROPENSITY_CLIENT) {
+      return;
+    }
+
+    if (event.eventType === _protoApi_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE) {
+      this.sendSubscriptionState(event.additionalParameters['state'], event.additionalParameters['productsOrSkus']);
+      return;
+    }
+    var propEvent = _eventTypeMapping.analyticsEventToPublisherEvent(event.eventType);
+    if (propEvent == null) {
+      return;
+    }
+    var additionalParameters = event.additionalParameters;
+    // The EventParams object is private to SwG analytics.  Do not send.
+    if (additionalParameters instanceof _protoApi_messages.EventParams) {
+      additionalParameters = undefined;
+    }
+    if (_utilsTypes.isBoolean(event.isFromUserAction)) {
+      if (!_utilsTypes.isObject(additionalParameters)) {
+        additionalParameters = {};
+      }
+      additionalParameters['is_active'] = event.isFromUserAction;
+    }
+    this.sendEvent_(propEvent, JSON.stringify( /** @type {?JsonObject} */additionalParameters));
+  };
+
+  /**
+   * @param {JsonObject} response
+   * @return {!../api/propensity-api.PropensityScore}
+   */
+
+  PropensityServer.prototype.parsePropensityResponse_ = function parsePropensityResponse_(response) {
+    var defaultScore = /** @type {!../api/propensity-api.PropensityScore} */{};
+    if (!response['header']) {
+      defaultScore = /** @type {!../api/propensity-api.PropensityScore} */{
+        header: { ok: false },
+        body: { error: 'No valid response' }
+      };
+      return defaultScore;
+    }
+    var status = response['header'];
+    var scoreDetails = undefined;
+    if (status['ok']) {
+      var scores = response['scores'];
+      scoreDetails = [];
+      for (var i = 0; i < scores.length; i++) {
+        var result = scores[i];
+        var scoreStatus = !!result['score'];
+        var scoreDetail = undefined;
+        if (scoreStatus) {
+          var value = /** @type {!../api/propensity-api.Score} */{
+            value: result['score'],
+            bucketed: result['score_type'] == 2
+          };
+          scoreDetail = /** @type {!../api/propensity-api.Body} */{
+            product: result['product'],
+            score: value
+          };
+        } else {
+          scoreDetail = /** @type {!../api/propensity-api.Body} */{
+            product: result['product'],
+            error: result['error_message']
+          };
+        }
+        scoreDetails.push(scoreDetail);
+      }
+      if (scoreDetails) {
+        defaultScore = /** @type {!../api/propensity-api.PropensityScore} */{
+          header: { ok: true },
+          body: { scores: scoreDetails }
+        };
+      }
+      return defaultScore;
+    }
+    defaultScore = /** @type {!../api/propensity-api.PropensityScore} */{
+      header: { ok: false },
+      body: { error: response['error'] }
+    };
+    return defaultScore;
+  };
+
+  /**
+   * @param {string} referrer
+   * @param {string} type
+   * @return {?Promise<../api/propensity-api.PropensityScore>}
+   */
+
+  PropensityServer.prototype.getPropensity = function getPropensity(referrer, type) {
+    var _this = this;
+
+    var init = /** @type {!../utils/xhr.FetchInitDef} */{
+      method: 'GET',
+      credentials: 'include'
+    };
+    var url = _services.adsUrl('/subopt/pts?products=') + this.publicationId_ + '&type=' + type + '&ref=' + referrer;
+    return this.fetcher_.fetch(this.propensityUrl_(url), init).then(function (result) {
+      return result.json();
+    }).then(function (response) {
+      return _this.parsePropensityResponse_(response);
+    });
+  };
+
+  return PropensityServer;
+})();
+
+exports.PropensityServer = PropensityServer;
+
+},{"../proto/api_messages":33,"../utils/types":80,"./event-type-mapping":42,"./services":58}],56:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _apiPropensityApi = require('../api/propensity-api');
+
+var PropensityApi = babelHelpers.interopRequireWildcard(_apiPropensityApi);
+
+var _apiLoggerApi = require('../api/logger-api');
+
+var _propensityServer = require('./propensity-server');
+
+var _utilsTypes = require('../utils/types');
+
+var _protoApi_messages = require('../proto/api_messages');
+
+var _eventTypeMapping = require('./event-type-mapping');
+
+/**
+ * @implements {PropensityApi.PropensityApi}
+ */
+
+var Propensity = (function () {
+  /**
+   * @param {!Window} win
+   * @param {!./deps.DepsDef} deps
+   * @param {!./fetcher.Fetcher} fetcher
+   *
+   * IMPORTANT: deps may not be full initialized config and pageConfig are
+   * available immediately, other function should be gated on a ready promise.
+   * #TODO(jpettitt) switch refactor to take out the win and use deps to get win
+   */
+
+  function Propensity(win, deps, fetcher) {
+    babelHelpers.classCallCheck(this, Propensity);
+
+    /** @private @const {!Window} */
+    this.win_ = win;
+    /** @private {PropensityServer} */
+    this.propensityServer_ = new _propensityServer.PropensityServer(win, deps, fetcher);
+
+    /** @private @const {!../api/client-event-manager-api.ClientEventManagerApi} */
+    this.eventManager_ = deps.eventManager();
+  }
+
+  /** @override */
+
+  Propensity.prototype.sendSubscriptionState = function sendSubscriptionState(state, jsonProducts) {
+    if (!Object.values(_apiLoggerApi.SubscriptionState).includes(state)) {
+      throw new Error('Invalid subscription state provided');
+    }
+    if ((_apiLoggerApi.SubscriptionState.SUBSCRIBER == state || _apiLoggerApi.SubscriptionState.PAST_SUBSCRIBER == state) && !jsonProducts) {
+      throw new Error('Entitlements must be provided for users with' + ' active or expired subscriptions');
+    }
+    if (jsonProducts && !_utilsTypes.isObject(jsonProducts)) {
+      throw new Error('Entitlements must be an Object');
+    }
+    var productsOrSkus = null;
+    if (jsonProducts) {
+      productsOrSkus = JSON.stringify(jsonProducts);
+    }
+    this.propensityServer_.sendSubscriptionState(state, productsOrSkus);
+  };
+
+  /** @override */
+
+  Propensity.prototype.getPropensity = function getPropensity(type) {
+    if (type && !Object.values(PropensityApi.PropensityType).includes(type)) {
+      throw new Error('Invalid propensity type requested');
+    }
+    if (!type) {
+      type = PropensityApi.PropensityType.GENERAL;
+    }
+    return this.propensityServer_.getPropensity(this.win_.document.referrer, type);
+  };
+
+  /** @override */
+
+  Propensity.prototype.sendEvent = function sendEvent(userEvent) {
+    var analyticsEvent = _eventTypeMapping.publisherEventToAnalyticsEvent(userEvent.name);
+    var data = null;
+    if (!_utilsTypes.isEnumValue(_apiLoggerApi.Event, userEvent.name) || !analyticsEvent) {
+      throw new Error('Invalid user event provided(' + userEvent.name + ')');
+    }
+
+    if (userEvent.data) {
+      if (!_utilsTypes.isObject(userEvent.data)) {
+        throw new Error('Event data must be an Object(' + userEvent.data + ')');
+      } else {
+        data = {};
+        Object.assign(data, userEvent.data);
+      }
+    }
+
+    if (_utilsTypes.isBoolean(userEvent.active)) {
+      if (!data) {
+        data = {};
+      }
+      Object.assign(data, { 'is_active': userEvent.active });
+    } else if (userEvent.active != null) {
+      throw new Error('Event active must be a boolean');
+    }
+
+    this.eventManager_.logEvent({
+      eventType: analyticsEvent,
+      eventOriginator: _protoApi_messages.EventOriginator.PROPENSITY_CLIENT,
+      isFromUserAction: userEvent.active,
+      additionalParameters: data
+    });
+  };
+
+  return Propensity;
+})();
+
+exports.Propensity = Propensity;
+
+},{"../api/logger-api":8,"../api/propensity-api":10,"../proto/api_messages":33,"../utils/types":80,"./event-type-mapping":42,"./propensity-server":55}],57:[function(require,module,exports){
 exports.__esModule = true;
 exports.getRuntime = getRuntime;
 exports.installRuntime = installRuntime;
@@ -7144,13 +13064,17 @@ exports.getDocClassForTesting = getDocClassForTesting;
  * limitations under the License.
  */
 
-var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+var _componentsActivities = require('../components/activities');
+
+var _protoApi_messages = require('../proto/api_messages');
 
 var _buttonApi = require('./button-api');
 
 var _buildCssComponentsDialogCss = require('../../build/css/components/dialog.css');
 
 var _callbacks = require('./callbacks');
+
+var _contributionsFlow = require('./contributions-flow');
 
 var _deferredAccountFlow = require('./deferred-account-flow');
 
@@ -7162,9 +13086,21 @@ var _modelDoc = require('../model/doc');
 
 var _entitlementsManager = require('./entitlements-manager');
 
+var _experimentFlags = require('./experiment-flags');
+
 var _fetcher = require('./fetcher');
 
+var _jserror = require('./jserror');
+
 var _linkAccountsFlow = require('./link-accounts-flow');
+
+var _loginPromptApi = require('./login-prompt-api');
+
+var _loginNotificationApi = require('./login-notification-api');
+
+var _payClient = require('./pay-client');
+
+var _waitForSubscriptionLookupApi = require('./wait-for-subscription-lookup-api');
 
 var _offersApi = require('./offers-api');
 
@@ -7182,14 +13118,26 @@ var _storage = require('./storage');
 
 var _apiSubscriptions = require('../api/subscriptions');
 
+var _utilsLog = require('../utils/log');
+
 var _utilsDom = require('../utils/dom');
 
 var _utilsTypes = require('../utils/types');
 
+var _experiments = require('./experiments');
+
+var _analyticsService = require('./analytics-service');
+
+var _propensity = require('./propensity');
+
+var _clientEventManager = require('./client-event-manager');
+
+var _logger = require('./logger');
+
 var RUNTIME_PROP = 'SWG';
 var RUNTIME_LEGACY_PROP = 'SUBSCRIPTIONS'; // MIGRATE
 
-/** @private {Runtime} */
+/** @private {!Runtime} */
 var runtimeInstance_ = undefined;
 
 /**
@@ -7200,9 +13148,7 @@ var runtimeInstance_ = undefined;
  */
 
 function getRuntime() {
-  if (!runtimeInstance_) {
-    throw new Error('not initialized yet');
-  }
+  _utilsLog.assert(runtimeInstance_, 'not initialized yet');
   return runtimeInstance_;
 }
 
@@ -7276,6 +13222,9 @@ var Runtime = (function () {
     /** @private {?string} */
     this.productOrPublicationId_ = null;
 
+    /** @private @const {!../api/subscriptions.Config} */
+    this.config_ = {};
+
     /** @private {boolean} */
     this.committed_ = false;
 
@@ -7291,7 +13240,7 @@ var Runtime = (function () {
     this.pageConfigResolver_ = null;
 
     /** @private @const {!ButtonApi} */
-    this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_);
+    this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_, this.configuredPromise_);
     this.buttonApi_.init(); // Injects swg-button stylesheet.
   }
 
@@ -7320,19 +13269,19 @@ var Runtime = (function () {
     if (!this.committed_ && commit) {
       this.committed_ = true;
       /** @type {!Promise<!PageConfig>} */
-      var configPromise = undefined;
+      var pageConfigPromise = undefined;
       if (this.productOrPublicationId_) {
-        configPromise = Promise.resolve(new _modelPageConfig.PageConfig(this.productOrPublicationId_,
-        /* locked */false));
+        pageConfigPromise = Promise.resolve(new _modelPageConfig.PageConfig(this.productOrPublicationId_, /* locked */false));
       } else {
         this.pageConfigResolver_ = new _modelPageConfigResolver.PageConfigResolver(this.doc_);
-        configPromise = this.pageConfigResolver_.resolveConfig().then(function (config) {
+        pageConfigPromise = this.pageConfigResolver_.resolveConfig().then(function (config) {
           _this2.pageConfigResolver_ = null;
           return config;
         });
       }
-      configPromise.then(function (config) {
-        _this2.configuredResolver_(new ConfiguredRuntime(_this2.doc_, config));
+      pageConfigPromise.then(function (pageConfig) {
+        _this2.configuredResolver_(new ConfiguredRuntime(_this2.doc_, pageConfig,
+        /* opt_integr */{ configPromise: _this2.configuredPromise_ }, _this2.config_));
         _this2.configuredResolver_ = null;
       }, function (reason) {
         _this2.configuredResolver_(Promise.reject(reason));
@@ -7354,6 +13303,7 @@ var Runtime = (function () {
 
   Runtime.prototype.startSubscriptionsFlowIfNeeded = function startSubscriptionsFlowIfNeeded() {
     var control = _modelPageConfigResolver.getControlFlag(this.win_.document);
+    _utilsLog.debugLog(control, 'mode');
     if (control == 'manual') {
       // "Skipping automatic start because control flag is set to "manual".
       return null;
@@ -7364,10 +13314,18 @@ var Runtime = (function () {
   /** @override */
 
   Runtime.prototype.init = function init(productOrPublicationId) {
-    if (this.committed_) {
-      throw new Error('already configured');
-    }
+    _utilsLog.assert(!this.committed_, 'already configured');
     this.productOrPublicationId_ = productOrPublicationId;
+  };
+
+  /** @override */
+
+  Runtime.prototype.configure = function configure(config) {
+    // Accumulate config for startup.
+    Object.assign(this.config_, config);
+    return this.configured_(false).then(function (runtime) {
+      return runtime.configure(config);
+    });
   };
 
   /** @override */
@@ -7388,9 +13346,17 @@ var Runtime = (function () {
 
   /** @override */
 
-  Runtime.prototype.getEntitlements = function getEntitlements() {
+  Runtime.prototype.clear = function clear() {
     return this.configured_(true).then(function (runtime) {
-      return runtime.getEntitlements();
+      return runtime.clear();
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.getEntitlements = function getEntitlements(opt_encryptedDocumentKey) {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.getEntitlements(opt_encryptedDocumentKey);
     });
   };
 
@@ -7420,6 +13386,14 @@ var Runtime = (function () {
 
   /** @override */
 
+  Runtime.prototype.showUpdateOffers = function showUpdateOffers(opt_options) {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.showUpdateOffers(opt_options);
+    });
+  };
+
+  /** @override */
+
   Runtime.prototype.showSubscribeOption = function showSubscribeOption(opt_options) {
     return this.configured_(true).then(function (runtime) {
       return runtime.showSubscribeOption(opt_options);
@@ -7431,6 +13405,22 @@ var Runtime = (function () {
   Runtime.prototype.showAbbrvOffer = function showAbbrvOffer(opt_options) {
     return this.configured_(true).then(function (runtime) {
       return runtime.showAbbrvOffer(opt_options);
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.showContributionOptions = function showContributionOptions(opt_options) {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.showContributionOptions(opt_options);
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.waitForSubscriptionLookup = function waitForSubscriptionLookup(accountPromise) {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.waitForSubscriptionLookup(accountPromise);
     });
   };
 
@@ -7455,6 +13445,30 @@ var Runtime = (function () {
   Runtime.prototype.subscribe = function subscribe(sku) {
     return this.configured_(true).then(function (runtime) {
       return runtime.subscribe(sku);
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.updateSubscription = function updateSubscription(subscriptionRequest) {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.updateSubscription(subscriptionRequest);
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.setOnContributionResponse = function setOnContributionResponse(callback) {
+    return this.configured_(false).then(function (runtime) {
+      return runtime.setOnContributionResponse(callback);
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.contribute = function contribute(skuOrSubscriptionRequest) {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.contribute(skuOrSubscriptionRequest);
     });
   };
 
@@ -7508,9 +13522,25 @@ var Runtime = (function () {
 
   /** @override */
 
-  Runtime.prototype.saveSubscription = function saveSubscription(saveSubscriptionRequest) {
+  Runtime.prototype.saveSubscription = function saveSubscription(saveSubscriptionRequestCallback) {
     return this.configured_(true).then(function (runtime) {
-      runtime.saveSubscription(saveSubscriptionRequest);
+      return runtime.saveSubscription(saveSubscriptionRequestCallback);
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.showLoginPrompt = function showLoginPrompt() {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.showLoginPrompt();
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.showLoginNotification = function showLoginNotification() {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.showLoginNotification();
     });
   };
 
@@ -7522,8 +13552,32 @@ var Runtime = (function () {
 
   /** @override */
 
+  Runtime.prototype.attachSmartButton = function attachSmartButton(button, optionsOrCallback, opt_callback) {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.attachSmartButton(button, optionsOrCallback, opt_callback);
+    });
+  };
+
+  /** @override */
+
   Runtime.prototype.attachButton = function attachButton(button, optionsOrCallback, opt_callback) {
     return this.buttonApi_.attach(button, optionsOrCallback, opt_callback);
+  };
+
+  /** @override */
+
+  Runtime.prototype.getPropensityModule = function getPropensityModule() {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.getPropensityModule();
+    });
+  };
+
+  /** @override */
+
+  Runtime.prototype.getLogger = function getLogger() {
+    return this.configured_(true).then(function (runtime) {
+      return runtime.getLogger();
+    });
   };
 
   return Runtime;
@@ -7532,17 +13586,26 @@ var Runtime = (function () {
 exports.Runtime = Runtime;
 
 var ConfiguredRuntime = (function () {
-
   /**
    * @param {!Window|!Document|!Doc} winOrDoc
-   * @param {!../model/page-config.PageConfig} config
+   * @param {!../model/page-config.PageConfig} pageConfig
    * @param {{
    *     fetcher: (!Fetcher|undefined),
+   *     configPromise: (!Promise|undefined),
    *   }=} opt_integr
+   * @param {!../api/subscriptions.Config=} opt_config
    */
 
-  function ConfiguredRuntime(winOrDoc, config, opt_integr) {
+  function ConfiguredRuntime(winOrDoc, pageConfig, opt_integr, opt_config) {
+    var _this3 = this;
+
     babelHelpers.classCallCheck(this, ConfiguredRuntime);
+
+    opt_integr = opt_integr || {};
+    opt_integr.configPromise = opt_integr.configPromise || Promise.resolve();
+
+    /** @private @const {!ClientEventManager} */
+    this.eventManager_ = new _clientEventManager.ClientEventManager(opt_integr.configPromise);
 
     /** @private @const {!Doc} */
     this.doc_ = _modelDoc.resolveDoc(winOrDoc);
@@ -7550,14 +13613,29 @@ var ConfiguredRuntime = (function () {
     /** @private @const {!Window} */
     this.win_ = this.doc_.getWin();
 
+    /** @private @const {!../api/subscriptions.Config} */
+    this.config_ = _apiSubscriptions.defaultConfig();
+
+    if (_utilsDom.isEdgeBrowser(this.win_)) {
+      // TODO(dvoytenko, b/120607343): Find a way to remove this restriction
+      // or move it to Web Activities.
+      this.config_.windowOpenMode = _apiSubscriptions.WindowOpenMode.REDIRECT;
+    }
+    if (opt_config) {
+      this.configure_(opt_config);
+    }
+
     /** @private @const {!../model/page-config.PageConfig} */
-    this.config_ = config;
+    this.pageConfig_ = pageConfig;
 
     /** @private @const {!Promise} */
     this.documentParsed_ = this.doc_.whenReady();
 
+    /** @private @const {!JsError} */
+    this.jserror_ = new _jserror.JsError(this.doc_);
+
     /** @private @const {!Fetcher} */
-    this.fetcher_ = opt_integr && opt_integr.fetcher || new _fetcher.XhrFetcher(this.win_);
+    this.fetcher_ = opt_integr.fetcher || new _fetcher.XhrFetcher(this.win_);
 
     /** @private @const {!Storage} */
     this.storage_ = new _storage.Storage(this.win_);
@@ -7565,29 +13643,54 @@ var ConfiguredRuntime = (function () {
     /** @private @const {!DialogManager} */
     this.dialogManager_ = new _componentsDialogManager.DialogManager(this.doc_);
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
-    this.activityPorts_ = new _webActivitiesActivityPorts.ActivityPorts(this.win_);
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = new _componentsActivities.ActivityPorts(this.win_);
+
+    /** @private @const {!PayClient} */
+    this.payClient_ = new _payClient.PayClient(this.win_, this.activityPorts_, this.dialogManager_);
 
     /** @private @const {!Callbacks} */
     this.callbacks_ = new _callbacks.Callbacks();
 
+    //NOTE: 'this' is passed in as a DepsDef.  Do not pass in 'this' before
+    //analytics service and entitlements manager are constructed unless
+    //you are certain they do not rely on them because they are part of that
+    //definition.
+    /** @private @const {!Logger} */
+    this.logger_ = new _logger.Logger(this);
+
+    /** @private @const {!AnalyticsService} */
+    this.analyticsService_ = new _analyticsService.AnalyticsService(this);
+
     /** @private @const {!EntitlementsManager} */
-    this.entitlementsManager_ = new _entitlementsManager.EntitlementsManager(this.win_, this.config_, this.fetcher_, this);
+    this.entitlementsManager_ = new _entitlementsManager.EntitlementsManager(this.win_, this.pageConfig_, this.fetcher_, this // See note about 'this' above
+    );
+
+    /** @private @const {!Propensity} */
+    this.propensityModule_ = new _propensity.Propensity(this.win_, this, // See note about 'this' above
+    this.fetcher_);
 
     /** @private @const {!OffersApi} */
-    this.offersApi_ = new _offersApi.OffersApi(this.config_, this.fetcher_);
+    this.offersApi_ = new _offersApi.OffersApi(this.pageConfig_, this.fetcher_);
 
     /** @private @const {!ButtonApi} */
-    this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_);
+    this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_, Promise.resolve(this));
 
     var preconnect = new _utilsPreconnect.Preconnect(this.win_.document);
 
+    preconnect.prefetch('/assets/loader.svg');
     _linkAccountsFlow.LinkCompleteFlow.configurePending(this);
     _payFlow.PayCompleteFlow.configurePending(this);
-    _payFlow.PayStartFlow.preconnect(preconnect);
+    this.payClient_.preconnect(preconnect);
 
-    _utilsDom.injectStyleSheet(this.win_.document, _buildCssComponentsDialogCss.CSS);
-    this.buttonApi_.init(); // Injects swg-button stylesheet.
+    _utilsDom.injectStyleSheet(this.doc_, _buildCssComponentsDialogCss.CSS);
+
+    // Report redirect errors if any.
+    this.activityPorts_.onRedirectError(function (error) {
+      _this3.analyticsService_.addLabels(['redirect']);
+      _this3.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED, false);
+      _this3.jserror_.error('Redirect error', error);
+    });
   }
 
   /**
@@ -7610,13 +13713,25 @@ var ConfiguredRuntime = (function () {
   /** @override */
 
   ConfiguredRuntime.prototype.pageConfig = function pageConfig() {
-    return this.config_;
+    return this.pageConfig_;
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.jserror = function jserror() {
+    return this.jserror_;
   };
 
   /** @override */
 
   ConfiguredRuntime.prototype.activities = function activities() {
     return this.activityPorts_;
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.payClient = function payClient() {
+    return this.payClient_;
   };
 
   /** @override */
@@ -7645,11 +13760,78 @@ var ConfiguredRuntime = (function () {
 
   /** @override */
 
+  ConfiguredRuntime.prototype.analytics = function analytics() {
+    return this.analyticsService_;
+  };
+
+  /** @override */
+
   ConfiguredRuntime.prototype.init = function init() {}
   // Implemented by the `Runtime` class.
 
   /** @override */
   ;
+
+  ConfiguredRuntime.prototype.configure = function configure(config) {
+    // Indirected for constructor testing.
+    this.configure_(config);
+  };
+
+  /**
+   * @param {!../api/subscriptions.Config} config
+   * @private
+   */
+
+  ConfiguredRuntime.prototype.configure_ = function configure_(config) {
+    var _this4 = this;
+
+    // Validate first.
+    var error = '';
+    for (var k in config) {
+      var v = config[k];
+      switch (k) {
+        case 'windowOpenMode':
+          if (v != _apiSubscriptions.WindowOpenMode.AUTO && v != _apiSubscriptions.WindowOpenMode.REDIRECT) {
+            error = 'Unknown windowOpenMode: ' + v;
+          }
+          break;
+        case 'experiments':
+          v.forEach(function (experiment) {
+            return _experiments.setExperiment(_this4.win_, experiment, true);
+          });
+          break;
+        case 'analyticsMode':
+          if (v != _apiSubscriptions.AnalyticsMode.DEFAULT && v != _apiSubscriptions.AnalyticsMode.IMPRESSIONS) {
+            error = 'Unknown analytics mode: ' + v;
+          }
+          break;
+        case 'enableSwgAnalytics':
+          if (!_utilsTypes.isBoolean(v)) {
+            error = 'Unknown enableSwgAnalytics value: ' + v;
+          }
+          break;
+        case 'enablePropensity':
+          if (!_utilsTypes.isBoolean(v)) {
+            error = 'Unknown enablePropensity value: ' + v;
+          }
+          break;
+        default:
+          error = 'Unknown config property: ' + k;
+      }
+    }
+    // Throw error string if it's not null
+    _utilsLog.assert(!error, error || undefined);
+    // Assign.
+    Object.assign(this.config_, config);
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.config = function config() {
+    return this.config_;
+  };
+
+  /** @override */
 
   ConfiguredRuntime.prototype.reset = function reset() {
     this.entitlementsManager_.reset();
@@ -7658,9 +13840,16 @@ var ConfiguredRuntime = (function () {
 
   /** @override */
 
+  ConfiguredRuntime.prototype.clear = function clear() {
+    this.entitlementsManager_.clear();
+    this.dialogManager_.completeAll();
+  };
+
+  /** @override */
+
   ConfiguredRuntime.prototype.start = function start() {
     // No need to run entitlements without a product or for an unlocked page.
-    if (!this.config_.getProductId() || !this.config_.isLocked()) {
+    if (!this.pageConfig_.getProductId() || !this.pageConfig_.isLocked()) {
       return Promise.resolve();
     }
     this.getEntitlements();
@@ -7668,8 +13857,8 @@ var ConfiguredRuntime = (function () {
 
   /** @override */
 
-  ConfiguredRuntime.prototype.getEntitlements = function getEntitlements() {
-    return this.entitlementsManager_.getEntitlements().then(function (entitlements) {
+  ConfiguredRuntime.prototype.getEntitlements = function getEntitlements(opt_encryptedDocumentKey) {
+    return this.entitlementsManager_.getEntitlements(opt_encryptedDocumentKey).then(function (entitlements) {
       return entitlements.clone();
     });
   };
@@ -7689,10 +13878,26 @@ var ConfiguredRuntime = (function () {
   /** @override */
 
   ConfiguredRuntime.prototype.showOffers = function showOffers(opt_options) {
-    var _this3 = this;
+    var _this5 = this;
 
     return this.documentParsed_.then(function () {
-      var flow = new _offersFlow.OffersFlow(_this3, opt_options);
+      var errorMessage = 'The showOffers() method cannot be used to update a subscription. ' + 'Use the showUpdateOffers() method instead.';
+      _utilsLog.assert(opt_options ? !opt_options['oldSku'] : true, errorMessage);
+      var flow = new _offersFlow.OffersFlow(_this5, opt_options);
+      return flow.start();
+    });
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.showUpdateOffers = function showUpdateOffers(opt_options) {
+    var _this6 = this;
+
+    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.REPLACE_SUBSCRIPTION), 'Not yet launched!');
+    return this.documentParsed_.then(function () {
+      var errorMessage = 'The showUpdateOffers() method cannot be used for new subscribers. ' + 'Use the showOffers() method instead.';
+      _utilsLog.assert(opt_options ? !!opt_options['oldSku'] : false, errorMessage);
+      var flow = new _offersFlow.OffersFlow(_this6, opt_options);
       return flow.start();
     });
   };
@@ -7700,10 +13905,10 @@ var ConfiguredRuntime = (function () {
   /** @override */
 
   ConfiguredRuntime.prototype.showSubscribeOption = function showSubscribeOption(opt_options) {
-    var _this4 = this;
+    var _this7 = this;
 
     return this.documentParsed_.then(function () {
-      var flow = new _offersFlow.SubscribeOptionFlow(_this4, opt_options);
+      var flow = new _offersFlow.SubscribeOptionFlow(_this7, opt_options);
       return flow.start();
     });
   };
@@ -7711,11 +13916,34 @@ var ConfiguredRuntime = (function () {
   /** @override */
 
   ConfiguredRuntime.prototype.showAbbrvOffer = function showAbbrvOffer(opt_options) {
-    var _this5 = this;
+    var _this8 = this;
 
     return this.documentParsed_.then(function () {
-      var flow = new _offersFlow.AbbrvOfferFlow(_this5, opt_options);
+      var flow = new _offersFlow.AbbrvOfferFlow(_this8, opt_options);
       return flow.start();
+    });
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.showContributionOptions = function showContributionOptions(opt_options) {
+    var _this9 = this;
+
+    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.CONTRIBUTIONS), 'Not yet launched!');
+    return this.documentParsed_.then(function () {
+      var flow = new _contributionsFlow.ContributionsFlow(_this9, opt_options);
+      return flow.start();
+    });
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.waitForSubscriptionLookup = function waitForSubscriptionLookup(accountPromise) {
+    var _this10 = this;
+
+    return this.documentParsed_.then(function () {
+      var wait = new _waitForSubscriptionLookupApi.WaitForSubscriptionLookupApi(_this10, accountPromise);
+      return wait.start();
     });
   };
 
@@ -7734,20 +13962,40 @@ var ConfiguredRuntime = (function () {
   /** @override */
 
   ConfiguredRuntime.prototype.linkAccount = function linkAccount() {
-    var _this6 = this;
+    var _this11 = this;
 
     return this.documentParsed_.then(function () {
-      return new _linkAccountsFlow.LinkbackFlow(_this6).start();
+      return new _linkAccountsFlow.LinkbackFlow(_this11).start();
     });
   };
 
   /** @override */
 
-  ConfiguredRuntime.prototype.saveSubscription = function saveSubscription(saveSubscriptionRequest) {
-    var _this7 = this;
+  ConfiguredRuntime.prototype.saveSubscription = function saveSubscription(saveSubscriptionRequestCallback) {
+    var _this12 = this;
 
     return this.documentParsed_.then(function () {
-      return new _linkAccountsFlow.LinkSaveFlow(_this7, saveSubscriptionRequest).start();
+      return new _linkAccountsFlow.LinkSaveFlow(_this12, saveSubscriptionRequestCallback).start();
+    });
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.showLoginPrompt = function showLoginPrompt() {
+    var _this13 = this;
+
+    return this.documentParsed_.then(function () {
+      return new _loginPromptApi.LoginPromptApi(_this13).start();
+    });
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.showLoginNotification = function showLoginNotification() {
+    var _this14 = this;
+
+    return this.documentParsed_.then(function () {
+      return new _loginNotificationApi.LoginNotificationApi(_this14).start();
     });
   };
 
@@ -7766,20 +14014,53 @@ var ConfiguredRuntime = (function () {
   /** @override */
 
   ConfiguredRuntime.prototype.subscribe = function subscribe(sku) {
-    var _this8 = this;
+    var _this15 = this;
+
+    var errorMessage = 'The subscribe() method can only take a sku as its parameter; ' + 'for subscription updates please use the updateSubscription() method';
+    _utilsLog.assert(typeof sku === 'string', errorMessage);
+    return this.documentParsed_.then(function () {
+      return new _payFlow.PayStartFlow(_this15, sku).start();
+    });
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.updateSubscription = function updateSubscription(subscriptionRequest) {
+    var _this16 = this;
+
+    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.REPLACE_SUBSCRIPTION), 'Not yet launched!');
+    var errorMessage = 'The updateSubscription() method should be used for subscription ' + 'updates; for new subscriptions please use the subscribe() method';
+    _utilsLog.assert(subscriptionRequest ? subscriptionRequest['oldSku'] : false, errorMessage);
+    return this.documentParsed_.then(function () {
+      return new _payFlow.PayStartFlow(_this16, subscriptionRequest).start();
+    });
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.setOnContributionResponse = function setOnContributionResponse(callback) {
+    this.callbacks_.setOnContributionResponse(callback);
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.contribute = function contribute(skuOrSubscriptionRequest) {
+    var _this17 = this;
+
+    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.CONTRIBUTIONS), 'Not yet launched!');
 
     return this.documentParsed_.then(function () {
-      return new _payFlow.PayStartFlow(_this8, sku).start();
+      return new _payFlow.PayStartFlow(_this17, skuOrSubscriptionRequest, _apiSubscriptions.ProductType.UI_CONTRIBUTION).start();
     });
   };
 
   /** @override */
 
   ConfiguredRuntime.prototype.completeDeferredAccountCreation = function completeDeferredAccountCreation(opt_options) {
-    var _this9 = this;
+    var _this18 = this;
 
     return this.documentParsed_.then(function () {
-      return new _deferredAccountFlow.DeferredAccountFlow(_this9, opt_options || null).start();
+      return new _deferredAccountFlow.DeferredAccountFlow(_this18, opt_options || null).start();
     });
   };
 
@@ -7809,6 +14090,33 @@ var ConfiguredRuntime = (function () {
     this.buttonApi_.attach(button, optionsOrCallback, opt_callback);
   };
 
+  /** @override */
+
+  ConfiguredRuntime.prototype.attachSmartButton = function attachSmartButton(button, optionsOrCallback, opt_callback) {
+    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.SMARTBOX), 'Not yet launched!');
+    this.buttonApi_.attachSmartButton(this, button, optionsOrCallback, opt_callback);
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.getPropensityModule = function getPropensityModule() {
+    return Promise.resolve(this.propensityModule_);
+  };
+
+  /** @override
+   * @return {!ClientEventManager}
+   */
+
+  ConfiguredRuntime.prototype.eventManager = function eventManager() {
+    return this.eventManager_;
+  };
+
+  /** @override */
+
+  ConfiguredRuntime.prototype.getLogger = function getLogger() {
+    return Promise.resolve(this.logger_);
+  };
+
   return ConfiguredRuntime;
 })();
 
@@ -7816,26 +14124,39 @@ exports.ConfiguredRuntime = ConfiguredRuntime;
 function createPublicRuntime(runtime) {
   return (/** @type {!Subscriptions} */{
       init: runtime.init.bind(runtime),
+      configure: runtime.configure.bind(runtime),
       start: runtime.start.bind(runtime),
       reset: runtime.reset.bind(runtime),
+      clear: runtime.clear.bind(runtime),
       getEntitlements: runtime.getEntitlements.bind(runtime),
       linkAccount: runtime.linkAccount.bind(runtime),
+      showLoginPrompt: runtime.showLoginPrompt.bind(runtime),
+      showLoginNotification: runtime.showLoginNotification.bind(runtime),
       getOffers: runtime.getOffers.bind(runtime),
       showOffers: runtime.showOffers.bind(runtime),
+      showUpdateOffers: runtime.showUpdateOffers.bind(runtime),
       showAbbrvOffer: runtime.showAbbrvOffer.bind(runtime),
       showSubscribeOption: runtime.showSubscribeOption.bind(runtime),
+      showContributionOptions: runtime.showContributionOptions.bind(runtime),
+      waitForSubscriptionLookup: runtime.waitForSubscriptionLookup.bind(runtime),
       subscribe: runtime.subscribe.bind(runtime),
+      updateSubscription: runtime.updateSubscription.bind(runtime),
+      contribute: runtime.contribute.bind(runtime),
       completeDeferredAccountCreation: runtime.completeDeferredAccountCreation.bind(runtime),
       setOnEntitlementsResponse: runtime.setOnEntitlementsResponse.bind(runtime),
       setOnLoginRequest: runtime.setOnLoginRequest.bind(runtime),
       setOnLinkComplete: runtime.setOnLinkComplete.bind(runtime),
       setOnNativeSubscribeRequest: runtime.setOnNativeSubscribeRequest.bind(runtime),
       setOnSubscribeResponse: runtime.setOnSubscribeResponse.bind(runtime),
+      setOnContributionResponse: runtime.setOnContributionResponse.bind(runtime),
       setOnFlowStarted: runtime.setOnFlowStarted.bind(runtime),
       setOnFlowCanceled: runtime.setOnFlowCanceled.bind(runtime),
       saveSubscription: runtime.saveSubscription.bind(runtime),
       createButton: runtime.createButton.bind(runtime),
-      attachButton: runtime.attachButton.bind(runtime)
+      attachButton: runtime.attachButton.bind(runtime),
+      attachSmartButton: runtime.attachSmartButton.bind(runtime),
+      getPropensityModule: runtime.getPropensityModule.bind(runtime),
+      getLogger: runtime.getLogger.bind(runtime)
     }
   );
 }
@@ -7864,10 +14185,11 @@ function getDocClassForTesting() {
   return _modelDoc.Doc;
 }
 
-},{"../../build/css/components/dialog.css":1,"../api/subscriptions":9,"../components/dialog-manager":11,"../model/doc":18,"../model/page-config":20,"../model/page-config-resolver":19,"../utils/dom":48,"../utils/preconnect":54,"../utils/types":57,"./button-api":28,"./callbacks":29,"./deferred-account-flow":30,"./deps":31,"./entitlements-manager":32,"./fetcher":33,"./link-accounts-flow":34,"./offers-api":35,"./offers-flow":36,"./pay-flow":37,"./storage":40,"web-activities/activity-ports":4}],39:[function(require,module,exports){
+},{"../../build/css/components/dialog.css":1,"../api/subscriptions":12,"../components/activities":14,"../components/dialog-manager":15,"../model/doc":22,"../model/page-config":24,"../model/page-config-resolver":23,"../proto/api_messages":33,"../utils/dom":69,"../utils/log":74,"../utils/preconnect":76,"../utils/types":80,"./analytics-service":34,"./button-api":35,"./callbacks":36,"./client-event-manager":37,"./contributions-flow":38,"./deferred-account-flow":39,"./deps":40,"./entitlements-manager":41,"./experiment-flags":43,"./experiments":44,"./fetcher":45,"./jserror":46,"./link-accounts-flow":47,"./logger":48,"./login-notification-api":49,"./login-prompt-api":50,"./offers-api":51,"./offers-flow":52,"./pay-client":53,"./pay-flow":54,"./propensity":56,"./storage":60,"./wait-for-subscription-lookup-api":61}],58:[function(require,module,exports){
 exports.__esModule = true;
 exports.feOrigin = feOrigin;
 exports.serviceUrl = serviceUrl;
+exports.adsUrl = adsUrl;
 exports.feUrl = feUrl;
 exports.feCached = feCached;
 exports.feArgs = feArgs;
@@ -7909,7 +14231,7 @@ exports.CACHE_KEYS = CACHE_KEYS;
 // 12hr = 1000 * 60 * 60 * 12
 
 function feOrigin() {
-  return _utilsUrl.parseUrl('https://subscribe-autopush.sandbox.google.com').origin;
+  return _utilsUrl.parseUrl('https://subscribe-qual.sandbox.google.com').origin;
 }
 
 /**
@@ -7918,7 +14240,16 @@ function feOrigin() {
  */
 
 function serviceUrl(url) {
-  return 'https://subscribe-autopush.sandbox.google.com/swg/_/api/v1' + url;
+  return 'https://subscribe-qual.sandbox.google.com/swg/_/api/v1' + url;
+}
+
+/**
+ * @param {string} url  Relative URL, e.g. "/service1".
+ * @return {string} The complete URL.
+ */
+
+function adsUrl(url) {
+  return 'https://pubads.g.doubleclick.net' + url;
 }
 
 /**
@@ -7930,12 +14261,22 @@ function serviceUrl(url) {
 function feUrl(url) {
   var prefix = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
 
-  return feCached('https://subscribe-autopush.sandbox.google.com' + prefix + '/swg/_/ui/v1' + url);
+  // Add cache param.
+  url = feCached('https://subscribe-qual.sandbox.google.com' + prefix + '/swg/_/ui/v1' + url);
+
+  // Optionally add jsmode param. This allows us to test against "aggressively" compiled Boq JS.
+  var query = _utilsUrl.parseQueryString(self.location.hash);
+  var boqJsMode = query['swg.boqjsmode'];
+  if (boqJsMode !== undefined) {
+    url = _utilsUrl.addQueryParam(url, 'jsmode', boqJsMode);
+  }
+
+  return url;
 }
 
 /**
  * @param {string} url FE URL.
- * @return {string} The complete URL including cache params.
+ * @return {string} The complete URL including cache param.
  */
 
 function feCached(url) {
@@ -7949,7 +14290,7 @@ function feCached(url) {
 
 function feArgs(args) {
   return Object.assign(args, {
-    '_client': 'SwG 0.1.22-1525394011963'
+    '_client': 'SwG 0.1.22-1571092749932'
   });
 }
 
@@ -7971,7 +14312,159 @@ function cacheParam(cacheKey) {
   return String(period <= 1 ? now : Math.floor(now / period));
 }
 
-},{"../utils/url":58}],40:[function(require,module,exports){
+},{"../utils/url":81}],59:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _utilsDom = require('../utils/dom');
+
+var _utilsStyle = require('../utils/style');
+
+var _services = require('./services');
+
+var _protoApi_messages = require('../proto/api_messages');
+
+/** @const {!Object<string, string>} */
+var iframeAttributes = {
+  'frameborder': '0',
+  'scrolling': 'no'
+};
+
+/**
+ * @enum {string}
+ */
+var Theme = {
+  LIGHT: 'light',
+  DARK: 'dark'
+};
+
+exports.Theme = Theme;
+/**
+ * The class for Smart button Api.
+ */
+
+var SmartSubscriptionButtonApi = (function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   * @param {!Element} button
+   * @param {!../api/subscriptions.SmartButtonOptions} options
+   * @param {function()=} callback
+   */
+
+  function SmartSubscriptionButtonApi(deps, button, options, callback) {
+    babelHelpers.classCallCheck(this, SmartSubscriptionButtonApi);
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+
+    /** @private @const {!Window} */
+    this.win_ = deps.win();
+
+    /** @private @const {!Document} */
+    this.doc_ = this.win_.document;
+
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = deps.activities();
+
+    /** @private @const {!HTMLIFrameElement} */
+    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_, 'iframe', iframeAttributes);
+
+    /** @private @const {!Element} */
+    this.button_ = button;
+
+    /** @private {!../api/subscriptions.SmartButtonOptions} */
+    this.options_ = options;
+
+    /** @private const {function()=} */
+    this.callback_ = callback;
+
+    /** @private @const {string} */
+    this.src_ = _services.feUrl('/smartboxiframe');
+
+    var frontendArguments = {
+      'productId': this.deps_.pageConfig().getProductId(),
+      'publicationId': this.deps_.pageConfig().getPublicationId(),
+      'theme': this.options_ && this.options_.theme || 'light',
+      'lang': this.options_ && this.options_.lang || 'en'
+    };
+    var messageTextColor = this.options_ && this.options_.messageTextColor;
+    if (messageTextColor) {
+      frontendArguments['messageTextColor'] = messageTextColor;
+    }
+
+    /** @private @const {!Object} */
+    this.args_ = _services.feArgs(frontendArguments);
+  }
+
+  /**
+   * @param {SmartBoxMessage} smartBoxMessage
+   */
+
+  SmartSubscriptionButtonApi.prototype.handleSmartBoxClick_ = function handleSmartBoxClick_(smartBoxMessage) {
+    if (smartBoxMessage && smartBoxMessage.getIsClicked()) {
+      if (!this.callback_) {
+        throw new Error('No callback!');
+      }
+      this.callback_();
+      return;
+    }
+  };
+
+  /**
+   * Make a call to build button content and listens for the 'click' message.
+   * @return {!Element}
+   */
+
+  SmartSubscriptionButtonApi.prototype.start = function start() {
+    var _this = this;
+
+    /**
+     * Add a callback to the button itself to fire the iframe's button click
+     * action when user tabs to the container button and hits enter.
+     */
+    this.button_.addEventListener('click', function () {
+      _this.callback_();
+    });
+
+    _utilsStyle.setImportantStyles(this.iframe_, {
+      'opacity': 1,
+      'position': 'absolute',
+      'top': 0,
+      'bottom': 0,
+      'left': 0,
+      'height': '100%',
+      'right': 0,
+      'width': '100%'
+    });
+    this.button_.appendChild(this.iframe_);
+    var analyticsContext = this.deps_.analytics().getContext().toArray();
+    this.args_['analyticsContext'] = analyticsContext;
+    this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
+      port.on(_protoApi_messages.SmartBoxMessage, _this.handleSmartBoxClick_.bind(_this));
+    });
+    return this.iframe_;
+  };
+
+  return SmartSubscriptionButtonApi;
+})();
+
+exports.SmartSubscriptionButtonApi = SmartSubscriptionButtonApi;
+
+},{"../proto/api_messages":33,"../utils/dom":69,"../utils/style":79,"./services":58}],60:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -7992,7 +14485,6 @@ exports.__esModule = true;
 var PREFIX = 'subscribe.google.com';
 
 var Storage = (function () {
-
   /**
    * @param {!Window} win
    */
@@ -8059,6 +14551,27 @@ var Storage = (function () {
     });
   };
 
+  /**
+   * @param {string} key
+   * @return {!Promise}
+   */
+
+  Storage.prototype.remove = function remove(key) {
+    var _this3 = this;
+
+    delete this.values_[key];
+    return new Promise(function (resolve) {
+      if (_this3.win_.sessionStorage) {
+        try {
+          _this3.win_.sessionStorage.removeItem(storageKey(key));
+        } catch (e) {
+          // Ignore error.
+        }
+      }
+      resolve();
+    });
+  };
+
   return Storage;
 })();
 
@@ -8067,7 +14580,92 @@ function storageKey(key) {
   return PREFIX + ':' + key;
 }
 
-},{}],41:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _uiActivityIframeView = require('../ui/activity-iframe-view');
+
+var _apiDeferredAccountCreation = require('../api/deferred-account-creation');
+
+var _services = require('./services');
+
+var WaitForSubscriptionLookupApi = (function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   * @param {?Promise} accountPromise
+   */
+
+  function WaitForSubscriptionLookupApi(deps, accountPromise) {
+    babelHelpers.classCallCheck(this, WaitForSubscriptionLookupApi);
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+
+    /** @private @const {!Window} */
+    this.win_ = deps.win();
+
+    /** @private @const {!../components/activities.ActivityPorts} */
+    this.activityPorts_ = deps.activities();
+
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+    this.dialogManager_ = deps.dialogManager();
+
+    /** @private {?Promise} */
+    this.openViewPromise_ = null;
+
+    /** @private {?Promise} */
+    this.accountPromise_ = accountPromise || null;
+
+    /** @private @const {!ActivityIframeView} */
+    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/waitforsubscriptionlookupiframe'), _services.feArgs({
+      publicationId: deps.pageConfig().getPublicationId(),
+      productId: deps.pageConfig().getProductId()
+    }),
+    /* shouldFadeBody */true,
+    /* hasLoadingIndicator */true);
+  }
+
+  /**
+   * Starts the Login Flow.
+   * @return {!Promise}
+   */
+
+  WaitForSubscriptionLookupApi.prototype.start = function start() {
+    var _this = this;
+
+    this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+
+    return this.accountPromise_.then(function (account) {
+      // Account was found.
+      _this.dialogManager_.completeView(_this.activityIframeView_);
+      return account;
+    }, function (reason) {
+      _this.dialogManager_.completeView(_this.activityIframeView_);
+      throw reason;
+    });
+  };
+
+  return WaitForSubscriptionLookupApi;
+})();
+
+exports.WaitForSubscriptionLookupApi = WaitForSubscriptionLookupApi;
+
+},{"../api/deferred-account-creation":6,"../ui/activity-iframe-view":62,"./services":58}],62:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -8091,6 +14689,8 @@ var _utilsDom = require('../utils/dom');
 
 var _utilsErrors = require('../utils/errors');
 
+var _utilsActivityUtils = require('../utils/activity-utils');
+
 /** @const {!Object<string, string>} */
 var iframeAttributes = {
   'frameborder': '0',
@@ -8106,16 +14706,18 @@ var ActivityIframeView = (function (_View) {
 
   /**
    * @param {!Window} win
-   * @param {!web-activities/activity-ports.ActivityPorts} activityPorts
+   * @param {!../components/activities.ActivityPorts} activityPorts
    * @param {string} src
    * @param {!Object<string, ?>=} args
    * @param {boolean=} shouldFadeBody
+   * @param {boolean=} hasLoadingIndicator
    */
 
   function ActivityIframeView(win, activityPorts, src, args) {
     var _this = this;
 
     var shouldFadeBody = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+    var hasLoadingIndicator = arguments.length <= 5 || arguments[5] === undefined ? false : arguments[5];
     babelHelpers.classCallCheck(this, ActivityIframeView);
 
     _View.call(this);
@@ -8127,10 +14729,9 @@ var ActivityIframeView = (function (_View) {
     this.doc_ = this.win_.document;
 
     /** @private @const {!HTMLIFrameElement} */
-    this.iframe_ =
-    /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_, 'iframe', iframeAttributes);
+    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_, 'iframe', iframeAttributes);
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = activityPorts;
 
     /** @private @const {string} */
@@ -8142,7 +14743,10 @@ var ActivityIframeView = (function (_View) {
     /** @private @const {boolean} */
     this.shouldFadeBody_ = shouldFadeBody;
 
-    /** @private {?web-activities/activity-ports.ActivityIframePort} */
+    /** @private @const {boolean} */
+    this.hasLoadingIndicator_ = hasLoadingIndicator;
+
+    /** @private {?../components/activities.ActivityIframePort} */
     this.port_ = null;
 
     /**
@@ -8186,7 +14790,16 @@ var ActivityIframeView = (function (_View) {
   };
 
   /**
-   * @param {!web-activities/activity-ports.ActivityIframePort} port
+   * Returns if the view shows loading indicator.
+   * @return {boolean}
+   */
+
+  ActivityIframeView.prototype.hasLoadingIndicator = function hasLoadingIndicator() {
+    return this.hasLoadingIndicator_;
+  };
+
+  /**
+   * @param {!../components/activities.ActivityIframePort} port
    * @param {!../components/dialog.Dialog} dialog
    * @return {!Promise}
    */
@@ -8205,10 +14818,11 @@ var ActivityIframeView = (function (_View) {
   };
 
   /**
-   * @return {!Promise<!web-activities/activity-ports.ActivityIframePort>}
+   * @return {!Promise<!../components/activities.ActivityIframePort>}
+   * @private
    */
 
-  ActivityIframeView.prototype.port = function port() {
+  ActivityIframeView.prototype.getPortPromise_ = function getPortPromise_() {
     return this.portPromise_;
   };
 
@@ -8216,9 +14830,9 @@ var ActivityIframeView = (function (_View) {
    * @param {!Object} data
    */
 
-  ActivityIframeView.prototype.message = function message(data) {
-    this.port().then(function (port) {
-      port.message(data);
+  ActivityIframeView.prototype.messageDeprecated = function messageDeprecated(data) {
+    this.getPortPromise_().then(function (port) {
+      port.messageDeprecated(data);
     });
   };
 
@@ -8227,9 +14841,31 @@ var ActivityIframeView = (function (_View) {
    * @param {function(!Object<string, string|boolean>)} callback
    */
 
-  ActivityIframeView.prototype.onMessage = function onMessage(callback) {
-    this.port().then(function (port) {
-      port.onMessage(callback);
+  ActivityIframeView.prototype.onMessageDeprecated = function onMessageDeprecated(callback) {
+    this.getPortPromise_().then(function (port) {
+      port.onMessageDeprecated(callback);
+    });
+  };
+
+  /**
+   * @param {!function(new: T)}  message
+   * @param {function(../proto/api_messages.Message)} callback
+   * @template T
+   */
+
+  ActivityIframeView.prototype.on = function on(message, callback) {
+    this.getPortPromise_().then(function (port) {
+      port.on(message, callback);
+    });
+  };
+
+  /**
+   * @param {!../proto/api_messages.Message} request
+   */
+
+  ActivityIframeView.prototype.execute = function execute(request) {
+    this.getPortPromise_().then(function (port) {
+      port.execute(request);
     });
   };
 
@@ -8239,8 +14875,22 @@ var ActivityIframeView = (function (_View) {
    */
 
   ActivityIframeView.prototype.acceptResult = function acceptResult() {
-    return this.port().then(function (port) {
+    return this.getPortPromise_().then(function (port) {
       return port.acceptResult();
+    });
+  };
+
+  /**
+   * Accepts results from the caller and verifies origin.
+   * @param {string} requireOrigin
+   * @param {boolean} requireOriginVerified
+   * @param {boolean} requireSecureChannel
+   * @return {!Promise<!Object>}
+   */
+
+  ActivityIframeView.prototype.acceptResultAndVerify = function acceptResultAndVerify(requireOrigin, requireOriginVerified, requireSecureChannel) {
+    return this.getPortPromise_().then(function (port) {
+      return _utilsActivityUtils.acceptPortResultData(port, requireOrigin, requireOriginVerified, requireSecureChannel);
     });
   };
 
@@ -8279,7 +14929,7 @@ var ActivityIframeView = (function (_View) {
 
 exports.ActivityIframeView = ActivityIframeView;
 
-},{"../components/view":15,"../utils/dom":48,"../utils/errors":49}],42:[function(require,module,exports){
+},{"../components/view":19,"../utils/activity-utils":65,"../utils/dom":69,"../utils/errors":70}],63:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -8306,7 +14956,6 @@ var _utilsDom = require('../utils/dom');
  */
 
 var LoadingView = (function () {
-
   /**
    * @param {!Document} doc
    */
@@ -8317,6 +14966,7 @@ var LoadingView = (function () {
     /** @private @const {!Document} */
     this.doc_ = doc;
 
+    /** @private @const {!Element} */
     this.loadingContainer_ = _utilsDom.createElement(this.doc_, 'swg-loading-container', {});
 
     /** @private @const {!Element} */
@@ -8338,7 +14988,7 @@ var LoadingView = (function () {
     return this.loadingContainer_;
   };
 
-  /*
+  /**
    * Shows the loading indicator within the container element.
    */
 
@@ -8346,7 +14996,7 @@ var LoadingView = (function () {
     this.loadingContainer_.style.removeProperty('display');
   };
 
-  /*
+  /**
    * Hides the loading indicator within the container element.
    */
 
@@ -8354,7 +15004,7 @@ var LoadingView = (function () {
     this.loadingContainer_.style.setProperty('display', 'none', 'important');
   };
 
-  /*
+  /**
    * Populates the loading indivicator. The populated element
    * can be added in any view, when required.
    * @private
@@ -8375,7 +15025,7 @@ var LoadingView = (function () {
 
 exports.LoadingView = LoadingView;
 
-},{"../utils/dom":48}],43:[function(require,module,exports){
+},{"../utils/dom":69}],64:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -8397,14 +15047,11 @@ var _utilsDom = require('../utils/dom');
 
 var _utilsStyle = require('../utils/style');
 
+var _utilsAnimation = require('../utils/animation');
+
 /** @const {!Object<string, string|number>} */
 var toastImportantStyles = {
-  'position': 'fixed',
-  'bottom': 0,
-  'height': 0,
-  'max-height': '46px',
-  'z-index': '2147483647',
-  'border': 'none'
+  'height': 0
 };
 
 exports.toastImportantStyles = toastImportantStyles;
@@ -8428,7 +15075,6 @@ var iframeAttributes = {
  */
 
 var Toast = (function () {
-
   /**
    * @param {!../runtime/deps.DepsDef} deps
    * @param {string} src
@@ -8443,7 +15089,7 @@ var Toast = (function () {
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = deps.doc();
 
-    /** @private @const {!web-activities/activity-ports.ActivityPorts} */
+    /** @private @const {!../components/activities.ActivityPorts} */
     this.activityPorts_ = deps.activities();
 
     /** @private @const {string} */
@@ -8452,9 +15098,11 @@ var Toast = (function () {
     /** @private @const {!Object<string, ?>} */
     this.args_ = args;
 
+    /** @private {?Promise} */
+    this.animating_ = null;
+
     /** @private @const {!HTMLIFrameElement} */
-    this.iframe_ =
-    /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_.getWin().document, 'iframe', iframeAttributes);
+    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_.getWin().document, 'iframe', iframeAttributes);
 
     _utilsStyle.setImportantStyles(this.iframe_, toastImportantStyles);
 
@@ -8495,9 +15143,21 @@ var Toast = (function () {
       return port.whenReady();
     }).then(function () {
       _utilsStyle.resetStyles(_this2.iframe_, ['height']);
-      _utilsStyle.setImportantStyles(_this2.iframe_, {
-        'animation': 'swg-notify .3s ease-out normal backwards, ' + 'swg-notify-hide .3s ease-out ' + toastDurationSeconds + 's normal forwards'
+
+      _this2.animate_(function () {
+        _utilsStyle.setImportantStyles(_this2.iframe_, {
+          'transform': 'translateY(100%)',
+          'opactiy': 1,
+          'visibility': 'visible'
+        });
+        return _utilsAnimation.transition(_this2.iframe_, {
+          'transform': 'translateY(0)',
+          'opacity': 1,
+          'visibility': 'visible'
+        }, 400, 'ease-out');
       });
+
+      // Close the Toast after the specified duration.
       _this2.doc_.getWin().setTimeout(function () {
         _this2.close();
       }, (toastDurationSeconds + 1) * 1000);
@@ -8505,11 +15165,45 @@ var Toast = (function () {
   };
 
   /**
+   * @param {function():!Promise} callback
+   * @return {!Promise}
+   * @private
+   */
+
+  Toast.prototype.animate_ = function animate_(callback) {
+    var _this3 = this;
+
+    var wait = this.animating_ || Promise.resolve();
+    return this.animating_ = wait.then(function () {
+      return callback();
+    }, function () {
+      // Ignore errors to make sure animations don't get stuck.
+    }).then(function () {
+      _this3.animating_ = null;
+    });
+  };
+
+  /**
    * Closes the toast.
+   * @return {!Promise}
    */
 
   Toast.prototype.close = function close() {
-    this.doc_.getBody().removeChild(this.iframe_);
+    var _this4 = this;
+
+    return this.animate_(function () {
+      // Remove the toast from the DOM after animation is complete.
+      _this4.doc_.getWin().setTimeout(function () {
+        _this4.doc_.getBody().removeChild(_this4.iframe_);
+        return Promise.resolve();
+      }, 500);
+
+      return _utilsAnimation.transition(_this4.iframe_, {
+        'transform': 'translateY(100%)',
+        'opacity': 1,
+        'visibility': 'visible'
+      }, 400, 'ease-out');
+    });
   };
 
   return Toast;
@@ -8517,7 +15211,7 @@ var Toast = (function () {
 
 exports.Toast = Toast;
 
-},{"../utils/dom":48,"../utils/style":56}],44:[function(require,module,exports){
+},{"../utils/animation":66,"../utils/dom":69,"../utils/style":79}],65:[function(require,module,exports){
 exports.__esModule = true;
 exports.acceptPortResultData = acceptPortResultData;
 /**
@@ -8537,7 +15231,7 @@ exports.acceptPortResultData = acceptPortResultData;
  */
 
 /**
- * @param {!web-activities/activity-ports.ActivityPort} port
+ * @param {!../components/activities.ActivityPortDef} port
  * @param {string} requireOrigin
  * @param {boolean} requireOriginVerified
  * @param {boolean} requireSecureChannel
@@ -8553,7 +15247,7 @@ function acceptPortResultData(port, requireOrigin, requireOriginVerified, requir
   });
 }
 
-},{}],45:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 exports.__esModule = true;
 exports.transition = transition;
 /**
@@ -8601,7 +15295,7 @@ function transition(el, props, durationMillis, curve) {
   });
 }
 
-},{"./style":56}],46:[function(require,module,exports){
+},{"./style":79}],67:[function(require,module,exports){
 exports.__esModule = true;
 exports.stringToBytes = stringToBytes;
 exports.bytesToString = bytesToString;
@@ -8637,7 +15331,7 @@ var base64UrlDecodeSubs = { '-': '+', '_': '/', '.': '=' };
  * Character mapping from base64 to base64url.
  * @const {!Object<string, string>}
  */
-var base64UrlEncodeSubs = { '+': '-', '/': '_', '=': '.' };
+var base64UrlEncodeSubs = { '+': '-', '/': '_' };
 
 /**
  * Converts a string which holds 8-bit code points, such as the result of atob,
@@ -8723,12 +15417,12 @@ function base64UrlDecodeToBytes(str) {
 
 function base64UrlEncodeFromBytes(bytes) {
   var str = bytesToString(bytes);
-  return btoa(str).replace(/[+/=]/g, function (ch) {
+  return btoa(str).replace(/[+/]/g, function (ch) {
     return base64UrlEncodeSubs[ch];
   });
 }
 
-},{"./log":52}],47:[function(require,module,exports){
+},{"./log":74}],68:[function(require,module,exports){
 exports.__esModule = true;
 exports.isDocumentReady = isDocumentReady;
 exports.onDocumentReady = onDocumentReady;
@@ -8839,7 +15533,7 @@ function whenDocumentComplete(doc) {
   });
 }
 
-},{}],48:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 exports.__esModule = true;
 exports.addAttributesToElement = addAttributesToElement;
 exports.createElement = createElement;
@@ -8847,6 +15541,8 @@ exports.removeElement = removeElement;
 exports.removeChildren = removeChildren;
 exports.injectStyleSheet = injectStyleSheet;
 exports.hasNextNodeInDocumentOrder = hasNextNodeInDocumentOrder;
+exports.isConnected = isConnected;
+exports.isEdgeBrowser = isEdgeBrowser;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -8893,7 +15589,8 @@ function addAttributesToElement(element, attributes) {
   for (var attr in attributes) {
     if (attr == 'style') {
       _style.setStyles(element,
-      /** @type !Object<string, string|boolean|number> */attributes[attr]);
+      /** @type {!Object<string, string|boolean|number>} */
+      attributes[attr]);
     } else {
       element.setAttribute(attr,
       /** @type {string|boolean|number} */attributes[attr]);
@@ -8952,17 +15649,17 @@ function removeChildren(parent) {
 
 /**
  * Injects the provided styles in the HEAD section of the document.
- * @param {!Document} doc The document object.
+ * @param {!../model/doc.Doc} doc The document object.
  * @param {string} styleText The style string.
  * @return {!Element}
  */
 
 function injectStyleSheet(doc, styleText) {
-  var styleElement = createElement(doc, 'style', {
+  var styleElement = createElement(doc.getWin().document, 'style', {
     'type': styleType
   });
   styleElement.textContent = styleText;
-  doc.head.appendChild(styleElement);
+  doc.getHead().appendChild(styleElement);
   return styleElement;
 }
 
@@ -8986,9 +15683,108 @@ function hasNextNodeInDocumentOrder(element, opt_stopNode) {
   return false;
 }
 
-},{"./log":52,"./style":56}],49:[function(require,module,exports){
+/**
+ * Polyfill of the `Node.isConnected` API. See
+ * https://developer.mozilla.org/en-US/docs/Web/API/Node/isConnected.
+ * @param {!Node} node
+ * @return {boolean}
+ */
+
+function isConnected(node) {
+  // Ensure that node is attached if specified. This check uses a new and
+  // fast `isConnected` API and thus only checked on platforms that have it.
+  // See https://www.chromestatus.com/feature/5676110549352448.
+  if ('isConnected' in node) {
+    return node['isConnected'];
+  }
+  // Polyfill.
+  var root = node.ownerDocument && node.ownerDocument.documentElement;
+  return root && root.contains(node) || false;
+}
+
+/**
+ * @param {!Window} win
+ * @return {boolean}
+ */
+
+function isEdgeBrowser(win) {
+  var nav = win.navigator;
+  return (/Edge/i.test(nav && nav.userAgent)
+  );
+}
+
+},{"./log":74,"./style":79}],70:[function(require,module,exports){
 exports.__esModule = true;
 exports.isCancelError = isCancelError;
+exports.createCancelError = createCancelError;
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+
+/**
+ * Whether the specified error is an AbortError type.
+ * See https://heycam.github.io/webidl/#aborterror.
+ * @param {*} error
+ * @return {boolean}
+ */
+
+function isCancelError(error) {
+  return _webActivitiesActivityPorts.isAbortError(error);
+}
+
+/**
+ * Creates or emulates a DOMException of AbortError type.
+ * See https://heycam.github.io/webidl/#aborterror.
+ * @param {!Window} win
+ * @param {string=} opt_message
+ * @return {!DOMException}
+ */
+
+function createCancelError(win, opt_message) {
+  return _webActivitiesActivityPorts.createAbortError(win, opt_message);
+}
+
+/**
+ * A set of error utilities combined in a class to allow easy stubbing in tests.
+ */
+
+var ErrorUtils = (function () {
+  function ErrorUtils() {
+    babelHelpers.classCallCheck(this, ErrorUtils);
+  }
+
+  /**
+   * @param {!Error} error
+   */
+
+  ErrorUtils.throwAsync = function throwAsync(error) {
+    setTimeout(function () {
+      throw error;
+    });
+  };
+
+  return ErrorUtils;
+})();
+
+exports.ErrorUtils = ErrorUtils;
+
+},{"web-activities/activity-ports":4}],71:[function(require,module,exports){
+exports.__esModule = true;
+exports.msg = msg;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -9006,18 +15802,26 @@ exports.isCancelError = isCancelError;
  */
 
 /**
- * @param {*} error
- * @return {boolean}
+ * @param {!Object<string, string>} map
+ * @param {?string|?Element} langOrElement
+ * @return {?string}
  */
 
-function isCancelError(error) {
-  if (!error || typeof error != 'object') {
-    return false;
+function msg(map, langOrElement) {
+  var lang = !langOrElement ? '' : typeof langOrElement == 'string' ? langOrElement : langOrElement.lang || langOrElement.ownerDocument && langOrElement.ownerDocument.documentElement.lang;
+  var search = (lang && lang.toLowerCase() || 'en').replace(/_/g, '-');
+  while (search) {
+    if (search in map) {
+      return map[search];
+    }
+    var dash = search.lastIndexOf('-');
+    search = dash != -1 ? search.substring(0, dash) : '';
   }
-  return error['name'] === 'AbortError';
+  // "en" is always default.
+  return map['en'];
 }
 
-},{}],50:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 exports.__esModule = true;
 exports.recreateNonProtoObject = recreateNonProtoObject;
 exports.getValueForExpr = getValueForExpr;
@@ -9146,7 +15950,7 @@ function hasOwnProperty(obj, key) {
   /** @type {!Object} */obj, key);
 }
 
-},{"./types":57}],51:[function(require,module,exports){
+},{"./types":80}],73:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -9205,6 +16009,9 @@ var JwtHelper = (function () {
 
   JwtHelper.prototype.decodeInternal_ = function decodeInternal_(encodedToken) {
     // See https://jwt.io/introduction/
+    /**
+     * Throws error about invalid token.
+     */
     function invalidToken() {
       throw new Error('Invalid token: "' + encodedToken + '"');
     }
@@ -9231,10 +16038,7 @@ var JwtHelper = (function () {
 
 exports.JwtHelper = JwtHelper;
 
-},{"./bytes":46,"./json":50}],52:[function(require,module,exports){
-exports.__esModule = true;
-exports.log = log;
-exports.assert = assert;
+},{"./bytes":67,"./json":72}],74:[function(require,module,exports){
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -9252,9 +16056,23 @@ exports.assert = assert;
  */
 
 /**
- * @param  {...*} var_args [description]
+ * Debug logger, only log message if #swg.log=1
+ * @param {...*} var_args [decription]
  */
 
+/* eslint-disable */
+
+function debugLog(var_args) {
+  if (/swg.debug=1/.test(self.location.hash)) {
+    var logArgs = Array.prototype.slice.call(arguments, 0);
+    logArgs.unshift('[Subscriptions]');
+    log.apply(log, logArgs);
+  }
+}
+
+/**
+ * @param  {...*} var_args [description]
+ */
 function log(var_args) {
   console.log.apply(console, arguments);
 }
@@ -9278,7 +16096,6 @@ function log(var_args) {
  * @return {T} The value of shouldBeTrueish.
  * @template T
  */
-
 function assert(shouldBeTrueish, opt_message, var_args) {
   var firstElement = undefined;
   if (!shouldBeTrueish) {
@@ -9326,7 +16143,13 @@ function toString(val) {
   );
 }
 
-},{}],53:[function(require,module,exports){
+module.exports = {
+  assert: assert,
+  debugLog: debugLog,
+  log: log
+};
+
+},{}],75:[function(require,module,exports){
 exports.__esModule = true;
 exports.map = map;
 exports.findInArray = findInArray;
@@ -9388,7 +16211,7 @@ function findInArray(array, predicate) {
   return null;
 }
 
-},{}],54:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -9409,7 +16232,6 @@ exports.__esModule = true;
 var _dom = require('./dom');
 
 var Preconnect = (function () {
-
   /**
    * @param {!Document} doc
    */
@@ -9478,7 +16300,52 @@ var Preconnect = (function () {
 
 exports.Preconnect = Preconnect;
 
-},{"./dom":48}],55:[function(require,module,exports){
+},{"./dom":69}],77:[function(require,module,exports){
+exports.__esModule = true;
+exports.getRandomInts = getRandomInts;
+/**
+ * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Returns an array of random values.  The length of the array is numInts.  Each
+ * int will be >= 0 and < maxVal.
+ * @param {!number} numInts
+ * @param {!number} maxVal
+ */
+
+function getRandomInts(numInts, maxVal) {
+  // Ensure array type is appropriate for the max value (performance)
+  var arr = maxVal < 256 ? new Uint8Array(numInts) : maxVal < 32768 ? new Uint16Array(numInts) : new Uint32Array(numInts);
+
+  if (crypto && crypto.getRandomValues) {
+    crypto.getRandomValues(arr);
+    for (var i = arr.length - 1; i > -1; i--) {
+      arr[i] = arr[i] % maxVal;
+    }
+  } else {
+    // For older browsers
+    for (var i = arr.length - 1; i > -1; i--) {
+      arr[i] = Math.floor(Math.random() * maxVal);
+    }
+  }
+
+  return arr;
+}
+
+},{}],78:[function(require,module,exports){
 exports.__esModule = true;
 exports.dashToCamelCase = dashToCamelCase;
 exports.dashToUnderline = dashToUnderline;
@@ -9486,6 +16353,7 @@ exports.endsWith = endsWith;
 exports.startsWith = startsWith;
 exports.expandTemplate = expandTemplate;
 exports.stringHash32 = stringHash32;
+exports.getUuid = getUuid;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -9501,6 +16369,10 @@ exports.stringHash32 = stringHash32;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+var _random = require('./random');
+
+var CHARS = '0123456789ABCDEF';
 
 /**
  * @param {string} _match
@@ -9611,9 +16483,57 @@ function stringHash32(str) {
   return String(hash >>> 0);
 }
 
-;
+/**
+ * Ensures the passed value is safe to use for character 19 per rfc4122,
+ * sec. 4.1.5.  "Sets the high bits of clock sequence".
+ * @param {!number} v
+ */
+function getChar19(v) {
+  return CHARS[v & 0x3 | 0x8];
+}
 
-},{}],56:[function(require,module,exports){
+/**
+ * The returned identifier will always be an 8 digit valid hexidecimal number
+ * and will be unique for each MS within a given month.
+ * @return {string}
+ */
+function getMonthlyTimeIdentifier() {
+  var hexTime = Date.now().toString(16);
+  return hexTime.substring(hexTime.length - 8).toUpperCase();
+}
+
+/**
+ * Generates a RFC 4122 V4 UUID. Ex: "92329D39-6F5C-4520-ABFC-AAB64544E172"
+ * The first 8 digits are unique for the millisecond of the month.  The rest
+ * are randomly generated.
+ */
+
+function getUuid() {
+  var uuid = getMonthlyTimeIdentifier() + '-';
+  var rIndex = 0;
+  var rands = _random.getRandomInts(23, 16);
+  for (var i = 9; i < 36; i++) {
+    switch (i) {
+      case 13:
+      case 18:
+      case 23:
+        uuid += '-';
+        break;
+      case 14:
+        uuid += '4';
+        break;
+      case 19:
+        uuid += getChar19(rands[rIndex++]);
+        break;
+      default:
+        uuid += CHARS[rands[rIndex++]];
+        break;
+    }
+  }
+  return uuid;
+}
+
+},{"./random":77}],79:[function(require,module,exports){
 exports.__esModule = true;
 exports.camelCaseToTitleCase = camelCaseToTitleCase;
 exports.getVendorJsPropertyName = getVendorJsPropertyName;
@@ -9885,8 +16805,7 @@ function setImportantStyles(element, styles) {
 function setStyle(element, property, value, opt_units, opt_bypassCache) {
   var propertyName = getVendorJsPropertyName(element.style, property, opt_bypassCache);
   if (propertyName) {
-    element.style[propertyName] =
-    /** @type {string} */opt_units ? value + opt_units : value;
+    element.style[propertyName] = /** @type {string} */opt_units ? value + opt_units : value;
   }
 }
 
@@ -10029,13 +16948,14 @@ function resetStyles(element, properties) {
 /**
  * Resets all the styles of an element to a given value. Defaults to null.
  * The valid values are 'inherit', 'initial', 'unset' or null.
+ * @param {!Element} element
  */
 
 function resetAllStyles(element) {
   setImportantStyles(element, defaultStyles);
 }
 
-},{"./object.js":53,"./string":55}],57:[function(require,module,exports){
+},{"./object.js":75,"./string":78}],80:[function(require,module,exports){
 exports.__esModule = true;
 exports.isArray = isArray;
 exports.toArray = toArray;
@@ -10043,6 +16963,8 @@ exports.isObject = isObject;
 exports.isFiniteNumber = isFiniteNumber;
 exports.isFormData = isFormData;
 exports.isEnumValue = isEnumValue;
+exports.isFunction = isFunction;
+exports.isBoolean = isBoolean;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -10149,7 +17071,25 @@ function isEnumValue(enumObj, s) {
   return false;
 }
 
-},{}],58:[function(require,module,exports){
+/**
+ * True if the value is a function.
+ * @param {*} value
+ */
+
+function isFunction(value) {
+  return value !== null && typeof value === 'function';
+}
+
+/**
+ * True if the value is either true or false.
+ * @param {?*} value
+ */
+
+function isBoolean(value) {
+  return value === true || value === false;
+}
+
+},{}],81:[function(require,module,exports){
 exports.__esModule = true;
 exports.serializeQueryString = serializeQueryString;
 exports.parseUrl = parseUrl;
@@ -10366,7 +17306,7 @@ function getHostUrl(url) {
   return locationHref.origin + locationHref.pathname + locationHref.search;
 }
 
-},{"./types":57}],59:[function(require,module,exports){
+},{"./types":80}],82:[function(require,module,exports){
 exports.__esModule = true;
 exports.fetchPolyfill = fetchPolyfill;
 exports.assertSuccess = assertSuccess;
@@ -10425,7 +17365,6 @@ var allowedFetchTypes_ = {
  */
 
 var Xhr = (function () {
-
   /**
    * @param {!Window} win
    */
@@ -10483,7 +17422,7 @@ var Xhr = (function () {
       return response;
     }, function (reason) {
       var targetOrigin = _url.parseUrl(input).origin;
-      throw new Error('XHR Failed fetching' + (' (' + targetOrigin + '/...):'), reason && reason.message);
+      throw new Error('XHR Failed fetching (' + targetOrigin + '/...):', reason && reason.message);
     }).then(function (response) {
       return assertSuccess(response);
     });
@@ -10593,8 +17532,6 @@ function fetchPolyfill(input, init) {
  */
 function createXhrRequest(method, url) {
   var xhr = new XMLHttpRequest();
-  // TODO(avimehta): IE 8/9 don't support XHR (with CORS). Use XDR instead
-  // if we plan to support those browsers.
   if ('withCredentials' in xhr) {
     xhr.open(method, url, true);
   } else {
@@ -10780,7 +17717,7 @@ var FetchResponseHeaders = (function () {
 
 exports.FetchResponseHeaders = FetchResponseHeaders;
 
-},{"./bytes":46,"./json":50,"./log":52,"./url":58}],60:[function(require,module,exports){
+},{"./bytes":67,"./json":72,"./log":74,"./url":81}],83:[function(require,module,exports){
 (function (global){
 (function (global) {
   var babelHelpers = global.babelHelpers = {};
@@ -10896,7 +17833,2957 @@ exports.FetchResponseHeaders = FetchResponseHeaders;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}]},{},[16])
+},{}],84:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+var MAX_Z_INDEX = 2147483647;
+
+var Constants = {};
+
+/**
+ * Supported environments.
+ *
+ * @enum {string}
+ */
+Constants.Environment = {
+  LOCAL: 'LOCAL',
+  PREPROD: 'PREPROD',
+  PRODUCTION: 'PRODUCTION',
+  SANDBOX: 'SANDBOX',
+  TEST: 'TEST',
+  TIN: 'TIN'
+};
+
+/**
+ * Supported payment methods.
+ *
+ * @enum {string}
+ */
+Constants.PaymentMethod = {
+  CARD: 'CARD',
+  TOKENIZED_CARD: 'TOKENIZED_CARD',
+  UPI: 'UPI'
+};
+
+/**
+ * Auth methods.
+ *
+ * @enum {string}
+ */
+Constants.AuthMethod = {
+  CRYPTOGRAM_3DS: 'CRYPTOGRAM_3DS',
+  PAN_ONLY: 'PAN_ONLY'
+};
+
+/**
+ * Returned result status.
+ *
+ * @enum {string}
+ */
+Constants.ResponseStatus = {
+  CANCELED: 'CANCELED',
+  DEVELOPER_ERROR: 'DEVELOPER_ERROR'
+};
+
+/**
+ * Supported total price status.
+ *
+ * @enum {string}
+ */
+Constants.TotalPriceStatus = {
+  ESTIMATED: 'ESTIMATED',
+  FINAL: 'FINAL',
+  NOT_CURRENTLY_KNOWN: 'NOT_CURRENTLY_KNOWN'
+};
+
+/**
+ * Supported Google Pay payment button type.
+ *
+ * @enum {string}
+ */
+Constants.ButtonType = {
+  SHORT: 'short',
+  LONG: 'long'
+};
+
+/**
+ * Supported button colors.
+ *
+ * @enum {string}
+ */
+Constants.ButtonColor = {
+  DEFAULT: 'default', // Currently defaults to black.
+  BLACK: 'black',
+  WHITE: 'white'
+};
+
+/**
+ * Id attributes.
+ *
+ * @enum {string}
+ */
+Constants.Id = {
+  POPUP_WINDOW_CONTAINER: 'popup-window-container'
+};
+
+/** @const {string} */
+Constants.STORAGE_KEY_PREFIX = 'google.payments.api.storage';
+
+/** @const {string} */
+Constants.IS_READY_TO_PAY_RESULT_KEY = Constants.STORAGE_KEY_PREFIX + '.isreadytopay.result';
+
+/** @const {string} */
+Constants.UPI_CAN_MAKE_PAYMENT_CACHE_KEY = Constants.STORAGE_KEY_PREFIX + '.upi.canMakePaymentCache';
+
+Constants.CLASS_PREFIX = 'google-payments-';
+Constants.IFRAME_ACTIVE_CONTAINER_CLASS = Constants.CLASS_PREFIX + 'activeContainer';
+Constants.IFRAME_CONTAINER_CLASS = Constants.CLASS_PREFIX + 'dialogContainer';
+Constants.IFRAME_STYLE_CENTER_CLASS = Constants.CLASS_PREFIX + 'dialogCenter';
+Constants.IFRAME_STYLE_CLASS = Constants.CLASS_PREFIX + 'dialog';
+
+Constants.IFRAME_STYLE = '\n.' + Constants.IFRAME_STYLE_CLASS + ' {\n    animation: none 0s ease 0s 1 normal none running;\n    background: none 0 0 / auto repeat scroll padding-box border-box #fff;\n    background-blend-mode: normal;\n    border: 0 none #333;\n    border-radius: 8px 8px 0 0;\n    border-collapse: separate;\n    bottom: 0;\n    box-shadow: #808080 0 3px 0 0, #808080 0 0 22px;\n    box-sizing: border-box;\n    letter-spacing: normal;\n    max-height: 100%;\n    overflow: visible;\n    position: fixed;\n    width: 100%;\n    z-index: ' + MAX_Z_INDEX + ';\n    -webkit-appearance: none;\n    left: 0;\n}\n@media (min-width: 480px) {\n  .' + Constants.IFRAME_STYLE_CLASS + ' {\n    width: 480px !important;\n    left: -240px !important;\n    margin-left: calc(100vw - 100vw / 2) !important;\n  }\n}\n.' + Constants.IFRAME_CONTAINER_CLASS + ' {\n  background-color: rgba(0,0,0,0.26);\n  bottom: 0;\n  height: 100%;\n  left: 0;\n  position: absolute;\n  right: 0;\n}\n.iframeContainer {\n  -webkit-overflow-scrolling: touch;\n}\n';
+
+Constants.IFRAME_STYLE_CENTER = '\n.' + Constants.IFRAME_STYLE_CENTER_CLASS + ' {\n  animation: none 0s ease 0s 1 normal none running;\n  background-blend-mode: normal;\n  background: none 0 0 / auto repeat scroll padding-box border-box #fff;\n  border-collapse: separate;\n  border-radius: 8px;\n  border: 0px none #333;\n  bottom: auto;\n  box-shadow: #808080 0 0 22px;\n  box-sizing: border-box;\n  left: -240px;\n  letter-spacing: normal;\n  margin-left: calc(100vw - 100vw / 2) !important;\n  max-height: 90%;\n  overflow: visible;\n  position: absolute;\n  top: 100%;\n  transform: scale(0.8);\n  width: 480px;\n  z-index: ' + MAX_Z_INDEX + ';\n  -webkit-appearance: none;\n}\n@media (min-height: 667px) {\n  .' + Constants.IFRAME_STYLE_CENTER_CLASS + ' {\n    max-height: 600px;\n  }\n}\n.' + Constants.IFRAME_ACTIVE_CONTAINER_CLASS + ' {\n  top: 50%;\n  transform: scale(1.0) translateY(-50%);\n}\n';
+
+Constants.GPAY_BUTTON_WITH_CARD_INFO_IMAGE = 'background-image: url(https://pay.google.com/gp/p/generate_gpay_btn_img);';
+
+Constants.BUTTON_LOCALE_TO_MIN_WIDTH = {
+  'en': 152,
+  'bg': 163,
+  'cs': 192,
+  'de': 183,
+  'es': 183,
+  'fr': 183,
+  'hr': 157,
+  'id': 186,
+  'ja': 148,
+  'ko': 137,
+  'ms': 186,
+  'nl': 167,
+  'pl': 182,
+  'pt': 193,
+  'ru': 206,
+  'sk': 157,
+  'sl': 211,
+  'sr': 146,
+  'tr': 161,
+  'uk': 207,
+  'zh': 156
+};
+
+/**
+ * Name of the graypane.
+ *
+ * @const {string}
+ */
+Constants.GPAY_GRAYPANE = 'gpay-graypane';
+
+/**
+ * Class used for the gpay button.
+ *
+ * @const {string}
+ */
+Constants.GPAY_BUTTON_CLASS = 'gpay-button';
+
+Constants.BUTTON_STYLE = '\n.' + Constants.GPAY_BUTTON_CLASS + ' {\n  background-origin: content-box;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 0px;\n  border-radius: 4px;\n  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;\n  cursor: pointer;\n  height: 40px;\n  min-height: 40px;\n  padding: 11px 24px;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.black {\n  background-color: #000;\n  box-shadow: none;\n  padding: 12px 24px 10px;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white {\n  background-color: #fff;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.short {\n  min-width: 90px;\n  width: 160px;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.black.short {\n  background-image: url(https://www.gstatic.com/instantbuy/svg/dark_gpay.svg);\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white.short {\n  background-image: url(https://www.gstatic.com/instantbuy/svg/light_gpay.svg);\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.black.active {\n  background-color: #5f6368;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.black.hover {\n  background-color: #3c4043;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white.active {\n  background-color: #fff;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white.focus {\n  box-shadow: #e8e8e8 0 1px 1px 0, #e8e8e8 0 1px 3px;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white.hover {\n  background-color: #f8f8f8;\n}\n';
+
+Constants.GPAY_BUTTON_WITH_OFFER_ICON_ADDITIONAL_STYLE = 'position: relative;';
+
+Constants.GPAY_OFFER_ICON_CLASS = 'gpay-offer-icon';
+
+Constants.GPAY_OFFER_ICON_SVG = "<svg width=\"20px\" height=\"20px\" viewBox=\"0 0 20 20\" " + "version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=" + "\"http://www.w3.org/1999/xlink\" class=\"gpay-offer-icon\"><defs><path d=\"M19.41,9.58 L10.41,0.58 " + "C10.05,0.22 9.55,0 9,0 L2,0 C0.9,0 0,0.9 0,2 L0,9 C0,9.55 0.22,10.05 " + "0.59,10.42 L9.59,19.42 C9.95,19.78 10.45,20 11,20 C11.55,20 12.05,19.78 " + "12.41,19.41 L19.41,12.41 C19.78,12.05 20,11.55 20,11 C20,10.45 19.77," + "9.94 19.41,9.58 Z\" id=\"path-1\"></path></defs><g id=\"buttons_10.05\"" + " stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">" + "<g id=\"Artboard\" transform=\"translate(-40.000000, -43.000000)\">" + "<g id=\"Group-3\" transform=\"translate(40.000000, 43.000000)\">" + "<g id=\"Group-2-Copy-2\"><g id=\"Group-Copy\"><g id=\"ic_loyalty_24px\">" + "<mask id=\"mask-2\" fill=\"white\"><use xlink:href=\"#path-1\"></use>" + "</mask><use id=\"gpay-Shape\" fill=\"#FF6100\" fill-rule=\"nonzero\" " + "xlink:href=\"#path-1\"></use><path d=\"M3.5,5 C2.67,5 2,4.33 2,3.5 C2," + "2.67 2.67,2 3.5,2 C4.33,2 5,2.67 5,3.5 C5,4.33 4.33,5 3.5,5 Z\" " + "id=\"Path\" fill=\"#FFFFFF\" fill-rule=\"nonzero\" mask=\"url(#mask-2)\">" + "</path></g></g></g><g id=\"Group-13-Copy-7\" transform=\"translate" + "(6.000000, 6.000000)\" fill=\"#FFFFFF\" fill-rule=\"nonzero\">" + "<g id=\"Group-13-Copy-2\"><path d=\"M2.15217391,4.55172414 C0.963561082," + "4.55172414 1.99840144e-14,3.53278598 1.99840144e-14,2.27586207 " + "C1.99840144e-14,1.01893816 0.963561082,6.30606678e-14 2.15217391,6." + "30606678e-14 C3.34078674,6.30606678e-14 4.30434783,1.01893816 4.30434783," + "2.27586207 C4.30434783,3.53278598 3.34078674,4.55172414 2.15217391," + "4.55172414 Z M2.15217391,3.31034483 C2.69245247,3.31034483 3.13043478,2." + "84719112 3.13043478,2.27586207 C3.13043478,1.70453302 2.69245247," + "1.24137931 2.15217391,1.24137931 C1.61189535,1.24137931 1.17391304,1" + ".70453302 1.17391304,2.27586207 C1.17391304,2.84719112 1.61189535,3." + "31034483 2.15217391,3.31034483 Z\" id=\"Combined-Shape\"></path>" + "<path d=\"M6.84782609,9 C5.65921326,9 4.69565217,7.98106184 4.69565217," + "6.72413793 C4.69565217,5.46721402 5.65921326,4.44827586 6.84782609," + "4.44827586 C8.03643892,4.44827586 9,5.46721402 9,6.72413793 C9,7.98106184" + " 8.03643892,9 6.84782609,9 Z M6.84782609,7.75862069 C7.38810465," + "7.75862069 7.82608696,7.29546698 7.82608696,6.72413793 C7.82608696" + ",6.15280888 7.38810465,5.68965517 6.84782609,5.68965517 C6.30754753," + "5.68965517 5.86956522,6.15280888 5.86956522,6.72413793 C5.86956522," + "7.29546698 6.30754753,7.75862069 6.84782609,7.75862069 Z\" " + "id=\"Combined-Shape\"></path><polygon id=\"Rectangle\" " + "transform=\"translate(4.497720, 4.541938) rotate(34.000000) " + "translate(-4.497720, -4.541938) \" points=\"3.77901778 -0.202295978 " + "4.9740273 -0.171019161 5.21642263 9.28617278 4.02141311 9.25489596\">" + "</polygon></g></g></g></g></g></svg>";
+
+Constants.GPAY_OFFER_ICON_STYLE = '\n.' + Constants.GPAY_OFFER_ICON_CLASS + ' {\n  position: absolute;\n  right: -5px;\n  top: -5px;\n}\n\n#ic_loyalty_24px use.hover {\n  fill: #FC853B;\n}\n';
+
+Constants.GPAY_OFFER_DESCRIPTION_CLASS = 'gpay-offer-description';
+
+Constants.GPAY_OFFER_DESCRIPTION_STYLE = '\n@import url(//fonts.googleapis.com/css?family=Google+Sans:500);\n.' + Constants.GPAY_OFFER_DESCRIPTION_CLASS + ' {\n  text-align: center;\n  font: 10px \'Google Sans\';\n  margin-top: 2px;\n  margin-bottom: 0px;\n}\n\n.' + Constants.GPAY_OFFER_DESCRIPTION_CLASS + '.gpay-btn-clicked {\n  color: #3C4043;\n}\n\n.' + Constants.GPAY_OFFER_DESCRIPTION_CLASS + '.short {\n  min-width: 90px;\n  width: 160px;\n}\n\n.' + Constants.GPAY_OFFER_DESCRIPTION_CLASS + '.long {\n  min-width: 152px;\n  width: 240px;\n}\n';
+
+/**
+ * Class used for the new gpay button with card info (last 4 digits, card net).
+ *
+ * @const {string}
+ */
+Constants.GPAY_BUTTON_CARD_INFO_CLASS = 'gpay-card-info-btn';
+
+Constants.GPAY_BUTTON_CARD_INFO_BUTTON_STYLE = '\n  .' + Constants.GPAY_BUTTON_CARD_INFO_CLASS + ' {\n    background-origin: content-box;\n    background-position: center center;\n    background-repeat: no-repeat;\n    background-size: contain;\n    border: 0px;\n    border-radius: 4px;\n    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;\n    cursor: pointer;\n    height: 40px;\n    min-height: 40px;\n    padding: 11px 24px;\n    background-color: #000;\n    box-shadow: none;\n    padding: 9px 24px 10px;\n    min-width: 190px;\n    width: 240px;\n  }\n\n  .' + Constants.GPAY_BUTTON_CARD_INFO_CLASS + '.active {\n    background-color: #5f6368;\n  }\n\n  .' + Constants.GPAY_BUTTON_CARD_INFO_CLASS + '.hover {\n    background-color: #3c4043;\n  }\n  ';
+
+/**
+ * Trusted domain for secure context validation
+ *
+ * @const {string}
+ */
+Constants.TRUSTED_DOMAIN = '.google.com';
+
+exports.Constants = Constants;
+
+},{}],85:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _constantsJs = require('./constants.js');
+
+/**
+ * Injects the provided style sheet to the document head.
+ * @param {string} styleText The stylesheet to be injected.
+ * @return {!Element}
+ */
+function injectStyleSheet(styleText) {
+  var styleElement = document.createElement('style');
+  styleElement.type = 'text/css';
+  styleElement.textContent = styleText;
+  document.head.appendChild(styleElement);
+  return styleElement;
+}
+
+/**
+ * Injects the pay with google iframe.
+ * @param {string} iframeClassName The classname of the iFrame wrapper.
+ * @return {!{container: !Element, iframe:!HTMLIFrameElement}}
+ */
+function injectIframe(iframeClassName) {
+  var container = document.createElement('div');
+  container.classList.add(_constantsJs.Constants.IFRAME_CONTAINER_CLASS);
+  var iframeContainer = document.createElement('div');
+  iframeContainer.classList.add('iframeContainer');
+  /** @private @const {!HTMLIFrameElement} */
+  var iframe =
+  /** @type {!HTMLIFrameElement} */document.createElement('iframe');
+  iframe.classList.add(iframeClassName);
+  iframe.setAttribute('frameborder', '0');
+  iframe.setAttribute('scrolling', 'no');
+  iframeContainer.appendChild(iframe);
+  container.appendChild(iframeContainer);
+  document.body.appendChild(container);
+  return { 'container': container, 'iframe': iframe };
+}
+
+exports.injectStyleSheet = injectStyleSheet;
+exports.injectIframe = injectIframe;
+
+},{"./constants.js":84}],86:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _constantsJs = require('./constants.js');
+
+var MAX_Z_INDEX = 2147483647;
+
+var Graypane = (function () {
+
+  /**
+   * @param {!Document} doc
+   */
+
+  function Graypane(doc) {
+    var _this = this;
+
+    babelHelpers.classCallCheck(this, Graypane);
+
+    /** @private @const {!Document} */
+    this.doc_ = doc;
+
+    /** @private @const {!Element} */
+    this.element_ = doc.createElement(_constantsJs.Constants.GPAY_GRAYPANE);
+    setImportantStyles(this.element_, {
+      'z-index': MAX_Z_INDEX,
+      'display': 'none',
+      'position': 'fixed',
+      'top': 0,
+      'right': 0,
+      'bottom': 0,
+      'left': 0,
+      'background-color': 'rgba(32, 33, 36, .6)'
+    });
+
+    /** @private {?Window} */
+    this.popupWindow_ = null;
+
+    this.element_.addEventListener('click', function () {
+      if (_this.popupWindow_) {
+        try {
+          _this.popupWindow_.focus();
+        } catch (e) {
+          // Ignore error.
+        }
+      }
+    });
+  }
+
+  /**
+   * Sets the CSS styles of the specified element with !important. The styles
+   * are specified as a map from CSS property names to their values.
+   *
+   * The `!important` styles are used to avoid accidental specificity overrides
+   * from the 3p page's stylesheet.
+   *
+   * @param {!Element} element
+   * @param {!Object<string, string|number>} styles
+   */
+
+  /**
+   * Shows the graypane.
+   * @param {?Window|undefined} popupWindow
+   * @return {!Promise}
+   */
+
+  Graypane.prototype.show = function show(popupWindow) {
+    this.popupWindow_ = popupWindow || null;
+    this.doc_.body.appendChild(this.element_);
+    setImportantStyles(this.element_, {
+      'display': 'block',
+      'opacity': 0
+    });
+    return transition(this.element_, {
+      'opacity': 1
+    }, 300, 'ease-out');
+  };
+
+  /**
+   * Hides the graypane.
+   * @return {!Promise|undefined}
+   */
+
+  Graypane.prototype.hide = function hide() {
+    var _this2 = this;
+
+    this.popupWindow_ = null;
+    if (!this.element_.parentElement) {
+      // Has already been removed or haven't been even added to DOM.
+      // This could be possible after redirect.
+      return;
+    }
+    return transition(this.element_, {
+      'opacity': 0
+    }, 300, 'ease-out').then(function () {
+      setImportantStyles(_this2.element_, { 'display': 'none' });
+      _this2.doc_.body.removeChild(_this2.element_);
+    });
+  };
+
+  return Graypane;
 })();
-//# sourceMappingURL=subscriptions.max.js.map
+
+function setImportantStyles(element, styles) {
+  for (var k in styles) {
+    element.style.setProperty(k, styles[k].toString(), 'important');
+  }
+}
+
+/**
+ * Returns a promise which is resolved after the given duration of animation
+ * @param {!Element} el - Element to be observed.
+ * @param {!Object<string, string|number>} props - properties to be animated.
+ * @param {number} durationMillis - duration of animation.
+ * @param {string} curve - transition function for the animation.
+ * @return {!Promise} Promise which resolves once the animation is done playing.
+ */
+function transition(el, props, durationMillis, curve) {
+  var win = el.ownerDocument.defaultView;
+  var previousTransitionValue = el.style.transition || '';
+  return new Promise(function (resolve) {
+    win.setTimeout(function () {
+      win.setTimeout(resolve, durationMillis);
+      var tr = durationMillis + 'ms ' + curve;
+      setImportantStyles(el, Object.assign({
+        'transition': 'transform ' + tr + ', opacity ' + tr
+      }, props));
+    });
+  }).then(function () {
+    // Stop transition and make sure that the final properties get set.
+    setImportantStyles(el, Object.assign({
+      'transition': previousTransitionValue
+    }, props));
+  });
+}
+
+exports.Graypane = Graypane;
+
+},{"./constants.js":84}],87:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _constantsJs = require('./constants.js');
+
+var _post_message_serviceJs = require('./post_message_service.js');
+
+/**
+ * Supported interactions between iframe and merchant page.
+ *
+ * @enum {number}
+ */
+// Next Id: 10
+var PostMessageEventType = {
+  IS_READY_TO_PAY: 6,
+  LOG_BUTTON_CLICK: 5,
+  LOG_IS_READY_TO_PAY_API: 0,
+  LOG_LOAD_PAYMENT_DATA_API: 1,
+  LOG_RENDER_BUTTON: 2,
+  LOG_INITIALIZE_PAYMENTS_CLIENT: 9,
+  LOG_PAY_FRAME_REQUESTED: 15,
+  LOG_PAY_FRAME_LOADED: 16,
+  LOG_PAY_FRAME_LOADED_WITH_ALL_JS: 17,
+  LOG_INLINE_PAYMENT_WIDGET_INITIALIZE: 4,
+  LOG_INLINE_PAYMENT_WIDGET_SUBMIT: 3,
+  LOG_INLINE_PAYMENT_WIDGET_DISPLAYED: 7,
+  LOG_INLINE_PAYMENT_WIDGET_HIDDEN: 8
+};
+
+/**
+ * Types of buy flow activity modes.
+ *
+ * @enum {number}
+ */
+var BuyFlowActivityMode = {
+  UNKNOWN_MODE: 0,
+  IFRAME: 1,
+  POPUP: 2,
+  REDIRECT: 3,
+  ANDROID_NATIVE: 4,
+  PAYMENT_HANDLER: 5
+};
+
+/**
+ * Types of buy flow activity modes.
+ *
+ * @enum {number}
+ */
+var PublicErrorCode = {
+  UNKNOWN_ERROR_TYPE: 0,
+  INTERNAL_ERROR: 1,
+  DEVELOPER_ERROR: 2,
+  BUYER_ACCOUNT_ERROR: 3,
+  MERCHANT_ACCOUNT_ERROR: 4,
+  UNSUPPORTED_API_VERSION: 5,
+  BUYER_CANCEL: 6
+};
+
+/**
+ * The presentation mode of the buy flow
+ *
+ * @enum {number}
+ */
+var BuyFlowMode = {
+  PAY_WITH_GOOGLE: 5,
+  SUBSCRIBE_WITH_GOOGLE: 6
+};
+
+/**
+ * Iframe used for logging and prefetching.
+ *
+ * @type {?Element}
+ */
+var iframe = null;
+
+/** @type {?PostMessageService} */
+var postMessageService = null;
+
+/** @type {?string} */
+var environment = null;
+
+/** @type {?string} */
+var googleTransactionId = null;
+
+/** @type {number} */
+var originTimeMs = Date.now();
+
+/** @type {?BuyFlowActivityMode} */
+var buyFlowActivityMode = null;
+
+/** @type {boolean} */
+var _iframeLoaded = false;
+
+/** @type {!Array<!Object>} */
+var buffer = [];
+
+var PayFrameHelper = (function () {
+  function PayFrameHelper() {
+    babelHelpers.classCallCheck(this, PayFrameHelper);
+  }
+
+  // Start loading pay frame early
+
+  /**
+   * Creates a hidden iframe for logging and appends it to the top level
+   * document.
+   */
+
+  PayFrameHelper.load = function load() {
+    if (iframe) {
+      return;
+    }
+    var initOptions =
+    /** @type {!PaymentOptions} */window['gpayInitParams'] || {};
+    environment = initOptions.environment || _constantsJs.Constants.Environment.PRODUCTION;
+    iframe = document.createElement('iframe');
+    // Pass in origin because document.referrer inside iframe is empty in
+    // certain cases
+    // Can be replaced by iframe.src=... in non Google context.
+    iframe.src = PayFrameHelper.getIframeUrl_(window.location.origin, initOptions.merchantInfo && initOptions.merchantInfo.merchantId);
+    PayFrameHelper.postMessage({
+      'eventType': PostMessageEventType.LOG_PAY_FRAME_REQUESTED,
+      'clientLatencyStartMs': Date.now()
+    });
+    iframe.height = '0';
+    iframe.width = '0';
+    iframe.style.display = 'none';
+    iframe.style.visibility = 'hidden';
+    iframe.onload = function () {
+      PayFrameHelper.postMessage({
+        'eventType': PostMessageEventType.LOG_PAY_FRAME_LOADED_WITH_ALL_JS,
+        'clientLatencyStartMs': Date.now()
+      });
+      PayFrameHelper.iframeLoaded();
+    };
+    // If the body is already loaded, just append the iframe. Otherwise, we wait
+    // until the DOM has loaded to append the iframe, otherwise document.body is
+    // null.
+    if (document.body) {
+      PayFrameHelper.initialize_();
+    } else {
+      document.addEventListener('DOMContentLoaded', function () {
+        return PayFrameHelper.initialize_();
+      });
+    }
+  };
+
+  /**
+   * Appends the iframe to the DOM and updates the post message service.
+   * @private
+   */
+
+  PayFrameHelper.initialize_ = function initialize_() {
+    document.body.appendChild(iframe);
+    postMessageService = new _post_message_serviceJs.PostMessageService(iframe.contentWindow);
+  };
+
+  /**
+   * Sends a message to the iframe and wait for a response.
+   * Uses the responseHandler specified only if the responseType is a match.
+   *
+   * @param {!Object} data
+   * @param {!PostMessageEventType} eventType
+   * @param {string} responseType
+   * @param {function(!Event)} responseHandler
+   */
+
+  PayFrameHelper.sendAndWaitForResponse = function sendAndWaitForResponse(data, eventType, responseType, responseHandler) {
+    function callback(event) {
+      if (event.data[responseType]) {
+        responseHandler(event);
+        // We only want to process the response from the payframe once.
+        // so stop listening to the event once processed.
+        PayFrameHelper.removeMessageEventListener_(callback);
+      }
+    }
+
+    PayFrameHelper.addMessageEventListener_(callback);
+
+    var postMessageData = Object.assign({ 'eventType': eventType }, data);
+    PayFrameHelper.postMessage(postMessageData);
+  };
+
+  /**
+   * Add an event listener for listening to messages received.
+   *
+   * @param {function(!Event)} callback
+   * @private
+   */
+
+  PayFrameHelper.addMessageEventListener_ = function addMessageEventListener_(callback) {
+    window.addEventListener('message', callback);
+  };
+
+  /**
+   * Remove the event listener for listening to messages.
+   *
+   * @param {function(!Event)} callback
+   * @private
+   */
+
+  PayFrameHelper.removeMessageEventListener_ = function removeMessageEventListener_(callback) {
+    window.removeEventListener('message', callback);
+  };
+
+  /**
+   * Posts a message to the iframe with the given data.
+   *
+   * @param {!Object} data
+   */
+
+  PayFrameHelper.postMessage = function postMessage(data) {
+    if (!_iframeLoaded) {
+      buffer.push(data);
+      return;
+    }
+    var postMessageData = Object.assign({
+      'buyFlowActivityMode': buyFlowActivityMode,
+      'googleTransactionId': googleTransactionId,
+      'originTimeMs': originTimeMs
+    }, data);
+    postMessageService.postMessage(postMessageData, PayFrameHelper.getIframeOrigin_());
+  };
+
+  /**
+   * Sets the activity mode.
+   *
+   * @param {!BuyFlowActivityMode} mode
+   */
+
+  PayFrameHelper.setBuyFlowActivityMode = function setBuyFlowActivityMode(mode) {
+    buyFlowActivityMode = mode;
+  };
+
+  /**
+   * Sets the google transaction id.
+   *
+   * @param {string} txnId
+   */
+
+  PayFrameHelper.setGoogleTransactionId = function setGoogleTransactionId(txnId) {
+    googleTransactionId = txnId;
+  };
+
+  /**
+   * Sets the originTimeMs. To be used only for tests.
+   *
+   * @param {number} originTimeMsTemp
+   */
+
+  PayFrameHelper.setOriginTimeMs = function setOriginTimeMs(originTimeMsTemp) {
+    originTimeMs = originTimeMsTemp;
+  };
+
+  /**
+   * Override postMessageService for testing.
+   *
+   * @param {!PostMessageService} messageService
+   */
+
+  PayFrameHelper.setPostMessageService = function setPostMessageService(messageService) {
+    postMessageService = messageService;
+  };
+
+  /**
+   * Clears the singleton variables.
+   */
+
+  PayFrameHelper.reset = function reset() {
+    iframe = null;
+    buffer.length = 0;
+    _iframeLoaded = false;
+    buyFlowActivityMode = null;
+  };
+
+  /**
+   * Sets whether the iframe has been loaded or not.
+   *
+   * @param {boolean} loaded
+   */
+
+  PayFrameHelper.setIframeLoaded = function setIframeLoaded(loaded) {
+    _iframeLoaded = loaded;
+  };
+
+  /**
+   * Called whenever the iframe is loaded.
+   */
+
+  PayFrameHelper.iframeLoaded = function iframeLoaded() {
+    _iframeLoaded = true;
+    buffer.forEach(function (data) {
+      PayFrameHelper.postMessage(data);
+    });
+    buffer.length = 0;
+  };
+
+  /**
+   * Returns the events that have been buffered.
+   *
+   * @return {!Array<!Object>}
+   */
+
+  PayFrameHelper.getBuffer = function getBuffer() {
+    return buffer;
+  };
+
+  /**
+   * Mocks the iframe as an arbitrary html element instead of actually injecting
+   * it for testing.
+   */
+
+  PayFrameHelper.injectIframeForTesting = function injectIframeForTesting() {
+    PayFrameHelper.reset();
+    iframe = document.createElement('p');
+    PayFrameHelper.iframeLoaded();
+  };
+
+  /**
+   * Returns the payframe origin based on the environment.
+   *
+   * @return {string}
+   * @private
+   */
+
+  PayFrameHelper.getIframeOrigin_ = function getIframeOrigin_() {
+    var iframeUrl = 'https://pay';
+    if (environment == _constantsJs.Constants.Environment.SANDBOX) {
+      iframeUrl += '.sandbox';
+    } else if (environment == _constantsJs.Constants.Environment.PREPROD) {
+      iframeUrl += '-preprod.sandbox';
+    }
+    return iframeUrl + '.google.com';
+  };
+
+  /**
+   * Returns the payframe URL based on the environment.
+   *
+   * @param {string} origin The origin that is opening the payframe.
+   * @param {string|null=} merchantId The merchant id.
+   * @return {string}
+   * @private
+   */
+
+  PayFrameHelper.getIframeUrl_ = function getIframeUrl_(origin, merchantId) {
+    // TrustedResourceUrl header needs to start with https or '//'.
+    var iframeUrl = 'https://pay' + (environment == _constantsJs.Constants.Environment.PREPROD ? '-preprod.sandbox' : environment == _constantsJs.Constants.Environment.SANDBOX ? '.sandbox' : '') + '.google.com/gp/p/ui/payframe?origin=' + origin + '&mid=%{merchantId}';
+    return iframeUrl;
+  };
+
+  return PayFrameHelper;
+})();
+
+PayFrameHelper.load();
+
+exports.BuyFlowActivityMode = BuyFlowActivityMode;
+exports.BuyFlowMode = BuyFlowMode;
+exports.PayFrameHelper = PayFrameHelper;
+exports.PostMessageEventType = PostMessageEventType;
+exports.PublicErrorCode = PublicErrorCode;
+
+},{"./constants.js":84,"./post_message_service.js":92}],88:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _constantsJs = require('./constants.js');
+
+var _payments_client_delegate_interfaceJs = require('./payments_client_delegate_interface.js');
+
+var _payments_request_delegateJs = require('./payments_request_delegate.js');
+
+var _payments_web_activity_delegateJs = require('./payments_web_activity_delegate.js');
+
+var _upi_handlerJs = require('./upi_handler.js');
+
+var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+
+var _pay_frame_helperJs = require('./pay_frame_helper.js');
+
+var _validatorJs = require('./validator.js');
+
+var _utilsJs = require('./utils.js');
+
+var TRUSTED_DOMAINS = ['actions.google.com', 'amp-actions.sandbox.google.com', 'amp-actions-staging.sandbox.google.com', 'amp-actions-autopush.sandbox.google.com', 'payments.developers.google.com', 'payments.google.com'];
+
+/**
+ * The client for interacting with the Google Payment APIs.
+ * <p>
+ * The async refers to the fact that this client supports redirects
+ * when using webactivties.
+ * <p>
+ * If you are using this be sure that this is what you want.
+ * <p>
+ * In almost all cases PaymentsClient is the better client to use because
+ * it exposes a promises based api which is easier to deal with.
+ * @final
+ */
+
+var PaymentsAsyncClient = (function () {
+  /**
+   * @param {!PaymentOptions} paymentOptions
+   * @param {function(!Promise<!PaymentData>)} onPaymentResponse
+   * @param {boolean=} opt_useIframe
+   * @param {!ActivityPorts=} opt_activities Can be used to provide a shared
+   *   activities manager. By default, the new manager is created.
+   */
+
+  function PaymentsAsyncClient(paymentOptions, onPaymentResponse, opt_useIframe, opt_activities) {
+    var _this = this;
+
+    babelHelpers.classCallCheck(this, PaymentsAsyncClient);
+
+    this.onPaymentResponse_ = onPaymentResponse;
+
+    _validatorJs.validatePaymentOptions(paymentOptions);
+
+    /** @private {?number} */
+    this.loadPaymentDataApiStartTimeMs_ = null;
+
+    /** @private @const {string} */
+    this.environment_ = paymentOptions.environment || _constantsJs.Constants.Environment.TEST;
+    if (!PaymentsAsyncClient.googleTransactionId_) {
+      PaymentsAsyncClient.googleTransactionId_ =
+      /** @type {string} */this.isInTrustedDomain_() && paymentOptions['i'] && paymentOptions['i']['googleTransactionId'] ? paymentOptions['i']['googleTransactionId'] : _utilsJs.createGoogleTransactionId(this.environment_);
+    }
+
+    /** @private @const {!PaymentOptions} */
+    this.paymentOptions_ = paymentOptions;
+
+    /** @private @const {!PaymentsClientDelegateInterface} */
+    this.webActivityDelegate_ = new _payments_web_activity_delegateJs.PaymentsWebActivityDelegate(this.environment_, PaymentsAsyncClient.googleTransactionId_, opt_useIframe, opt_activities, paymentOptions['i'] && paymentOptions['i']['redirectKey']);
+
+    /** @private {number} */
+    this.buyFlowMode_ = _pay_frame_helperJs.BuyFlowMode.PAY_WITH_GOOGLE;
+
+    var paymentRequestSupported = _validatorJs.chromeSupportsPaymentRequest();
+    // TODO: Remove the temporary hack that disable payments
+    // request for inline flow.
+    /** @private @const {?PaymentsClientDelegateInterface} */
+    this.delegate_ = paymentRequestSupported && !opt_useIframe ? new _payments_request_delegateJs.PaymentsRequestDelegate(this.environment_) : this.webActivityDelegate_;
+
+    this.upiHandler_ = new _upi_handlerJs.UpiHandler();
+
+    this.webActivityDelegate_.onResult(this.onResult_.bind(this));
+    this.delegate_.onResult(this.onResult_.bind(this));
+
+    // If web delegate is used anyway then this is overridden in the web
+    // activity delegate when load payment data is called.
+    if (_validatorJs.chromeSupportsPaymentHandler()) {
+      _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helperJs.BuyFlowActivityMode.PAYMENT_HANDLER);
+    } else if (paymentRequestSupported) {
+      _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helperJs.BuyFlowActivityMode.ANDROID_NATIVE);
+    }
+
+    _pay_frame_helperJs.PayFrameHelper.setGoogleTransactionId(PaymentsAsyncClient.googleTransactionId_);
+    _pay_frame_helperJs.PayFrameHelper.postMessage({
+      'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_INITIALIZE_PAYMENTS_CLIENT,
+      'clientLatencyStartMs': Date.now()
+    });
+
+    window.addEventListener('message', function (event) {
+      return _this.handleMessageEvent_(event);
+    });
+  }
+
+  /** @const {?string} */
+
+  /**
+   * Check whether the user can make payments using the Payment API.
+   *
+   * @param {!IsReadyToPayRequest} isReadyToPayRequest
+   * @return {!Promise} The promise will contain the boolean result and error
+   *     message when possible.
+   * @export
+   */
+
+  PaymentsAsyncClient.prototype.isReadyToPay = function isReadyToPay(isReadyToPayRequest) {
+    // Merge with paymentOptions, preferring values from isReadyToPayRequest
+    if (isReadyToPayRequest) {
+      isReadyToPayRequest = Object.assign({}, this.paymentOptions_, isReadyToPayRequest);
+    }
+    var startTimeMs = Date.now();
+    /** @type {?string} */
+    var errorMessage = _validatorJs.validateSecureContext() || _validatorJs.validateIsReadyToPayRequest(isReadyToPayRequest);
+    if (errorMessage) {
+      return new Promise(function (resolve, reject) {
+        PaymentsAsyncClient.logDevErrorToConsole_('isReadyToPay', errorMessage);
+        _pay_frame_helperJs.PayFrameHelper.postMessage({
+          'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_IS_READY_TO_PAY_API,
+          'error': _pay_frame_helperJs.PublicErrorCode.DEVELOPER_ERROR
+        });
+        reject({
+          'statusCode': _constantsJs.Constants.ResponseStatus.DEVELOPER_ERROR,
+          'statusMessage': errorMessage
+        });
+      });
+    }
+
+    var isReadyToPayPromise = this.isReadyToPay_(isReadyToPayRequest);
+
+    isReadyToPayPromise.then(function (response) {
+      _pay_frame_helperJs.PayFrameHelper.postMessage({
+        'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_IS_READY_TO_PAY_API,
+        'clientLatencyStartMs': startTimeMs,
+        'isReadyToPayApiResponse': response
+      });
+      return response;
+    });
+    return isReadyToPayPromise;
+  };
+
+  /**
+   * Actual implementation of isReadyToPay in a private method so that
+   * we can add callbacks to the promise to measure latencies.
+   *
+   * @param {!IsReadyToPayRequest} isReadyToPayRequest
+   * @return {!Promise} The promise will contain the boolean result and error
+   *     message when possible.
+   * @private
+   */
+
+  PaymentsAsyncClient.prototype.isReadyToPay_ = function isReadyToPay_(isReadyToPayRequest) {
+    var _this2 = this;
+
+    if (this.upiHandler_.isUpiRequest(isReadyToPayRequest)) {
+      return this.upiHandler_.isReadyToPay(isReadyToPayRequest);
+    }
+    if (_validatorJs.chromeSupportsPaymentRequest() && !isNativeDisabledInRequest(isReadyToPayRequest)) {
+      if (isReadyToPayRequest.apiVersion >= 2) {
+        return this.isReadyToPayApiV2ForChromePaymentRequest_(isReadyToPayRequest);
+      } else {
+        var _ret = (function () {
+          // This is the apiVersion 1 branch.
+          // If the merchant supports only Tokenized cards then just rely on
+          // delegate to give us the result.
+          // This will need to change once b/78519188 is fixed.
+          var webPromise = _this2.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
+          var nativePromise = _this2.delegate_.isReadyToPay(isReadyToPayRequest);
+          if (_validatorJs.doesMerchantSupportOnlyTokenizedCards(isReadyToPayRequest) && !_validatorJs.chromeSupportsPaymentHandler()) {
+            return {
+              v: nativePromise
+            };
+          }
+          // Return webIsReadyToPay only if delegateIsReadyToPay has been
+          // executed.
+          return {
+            v: nativePromise.then(function () {
+              return webPromise;
+            })
+          };
+        })();
+
+        if (typeof _ret === 'object') return _ret.v;
+      }
+    }
+    var webPromise = this.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
+    return webPromise;
+  };
+
+  /**
+   * Handle is ready to pay for api v2.
+   *
+   * @param {!IsReadyToPayRequest} isReadyToPayRequest
+   * @return {!Promise} The promise will contain the boolean result and error
+   *     message when possible.
+   * @private
+   */
+
+  PaymentsAsyncClient.prototype.isReadyToPayApiV2ForChromePaymentRequest_ = function isReadyToPayApiV2ForChromePaymentRequest_(isReadyToPayRequest) {
+    var defaultPromise = Promise.resolve({ 'result': false });
+    if (isReadyToPayRequest.existingPaymentMethodRequired) {
+      defaultPromise = Promise.resolve({ 'result': false, 'paymentMethodPresent': false });
+    }
+
+    var nativePromise = defaultPromise;
+    if (_validatorJs.apiV2DoesMerchantSupportSpecifiedCardType(isReadyToPayRequest, _constantsJs.Constants.AuthMethod.CRYPTOGRAM_3DS)) {
+      // If the merchant supports tokenized cards.
+      // Make a separate call to gms core to check if the user isReadyToPay
+      // with just tokenized cards. We can't pass in PAN_ONLY here
+      // because gms core always returns true for PAN_ONLY.
+      // Leave other payment methods as is.
+      var nativeRtpRequest = /** @type {!IsReadyToPayRequest} */
+      JSON.parse(JSON.stringify(isReadyToPayRequest));
+      for (var i = 0; i < nativeRtpRequest.allowedPaymentMethods.length; i++) {
+        if (nativeRtpRequest.allowedPaymentMethods[i].type == _constantsJs.Constants.PaymentMethod.CARD) {
+          nativeRtpRequest.allowedPaymentMethods[i].parameters['allowedAuthMethods'] = [_constantsJs.Constants.AuthMethod.CRYPTOGRAM_3DS];
+        }
+      }
+
+      nativePromise = this.delegate_.isReadyToPay(nativeRtpRequest);
+    }
+
+    var webPromise = defaultPromise;
+    if (_validatorJs.apiV2DoesMerchantSupportSpecifiedCardType(isReadyToPayRequest, _constantsJs.Constants.AuthMethod.PAN_ONLY)) {
+      webPromise = this.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
+    }
+
+    // Update session storage with payment handler canMakePayment result but
+    // rely on web delegate for actual response
+    if (_validatorJs.chromeSupportsPaymentHandler()) {
+      return nativePromise.then(function () {
+        return webPromise;
+      });
+    }
+
+    return nativePromise.then(function (nativeResult) {
+      if ((nativeResult && nativeResult['result']) == true) {
+        return nativeResult;
+      }
+      return webPromise;
+    });
+  };
+
+  /**
+   * Prefetch paymentData to speed up loadPaymentData call. Note the provided
+   * paymentDataRequest should exactly be the same as provided in
+   * loadPaymentData to make the loadPaymentData call fast since current
+   * web flow prefetching is based on the full request parameters.
+   *
+   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+   *     information to support a payment.
+   * @export
+   */
+
+  PaymentsAsyncClient.prototype.prefetchPaymentData = function prefetchPaymentData(paymentDataRequest) {
+    /** @type {?string} */
+    var errorMessage = _validatorJs.validateSecureContext() || _validatorJs.validatePaymentDataRequest(paymentDataRequest);
+    if (errorMessage) {
+      PaymentsAsyncClient.logDevErrorToConsole_('prefetchPaymentData', errorMessage);
+      return;
+    }
+    this.assignInternalParams_(paymentDataRequest);
+    if (_validatorJs.chromeSupportsPaymentRequest() && !isNativeDisabledInRequest(paymentDataRequest)) {
+      this.delegate_.prefetchPaymentData(paymentDataRequest);
+    } else {
+      // For non chrome supports always use the hosting page.
+      this.webActivityDelegate_.prefetchPaymentData(paymentDataRequest);
+    }
+  };
+
+  /**
+   * Request PaymentData, which contains necessary infomartion to complete a
+   * payment.
+   *
+   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+   *     information to support a payment.
+   * @export
+   */
+
+  PaymentsAsyncClient.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest) {
+    var _this3 = this;
+
+    _pay_frame_helperJs.PayFrameHelper.postMessage({
+      'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_BUTTON_CLICK
+    });
+    var errorMessage = _validatorJs.validateSecureContext() || _validatorJs.validatePaymentDataRequest(paymentDataRequest);
+    this.buyFlowMode_ = paymentDataRequest && paymentDataRequest.swg ? _pay_frame_helperJs.BuyFlowMode.SUBSCRIBE_WITH_GOOGLE : _pay_frame_helperJs.BuyFlowMode.PAY_WITH_GOOGLE;
+    if (errorMessage) {
+      this.onPaymentResponse_(new Promise(function (resolve, reject) {
+        _pay_frame_helperJs.PayFrameHelper.postMessage({
+          'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
+          'error': _pay_frame_helperJs.PublicErrorCode.DEVELOPER_ERROR,
+          'buyFlowMode': _this3.buyFlowMode_
+        });
+        PaymentsAsyncClient.logDevErrorToConsole_('loadPaymentData', errorMessage);
+        reject({
+          'statusCode': _constantsJs.Constants.ResponseStatus.DEVELOPER_ERROR,
+          'statusMessage': errorMessage
+        });
+      }));
+      return;
+    }
+
+    // Handler for UPI PaymentMethod
+    // Currently we don't support UPI along with other payment methods, if
+    // UPI is in payment methods then we assume it is UPI only.
+    var upiPaymentMethod = _validatorJs.getUpiPaymentMethod(paymentDataRequest);
+    if (upiPaymentMethod) {
+      this.upiHandler_.loadPaymentData(paymentDataRequest, upiPaymentMethod, this.onResult_.bind(this));
+      return;
+    }
+
+    var isReadyToPayResult = window.sessionStorage.getItem(_constantsJs.Constants.IS_READY_TO_PAY_RESULT_KEY);
+    this.loadPaymentDataApiStartTimeMs_ = Date.now();
+    this.assignInternalParams_(paymentDataRequest);
+    // We want to fall back to the web delegate if payment handler is supported
+    // and isReadyToPay bit is not explicitly set to true (fallback to web if
+    // isReadyToPay wasn't called for PH)
+    if (_validatorJs.chromeSupportsPaymentHandler() && isReadyToPayResult !== 'true' || isNativeDisabledInRequest(paymentDataRequest)) {
+      this.webActivityDelegate_.loadPaymentData(paymentDataRequest);
+    } else {
+      this.delegate_.loadPaymentData(paymentDataRequest);
+    }
+  };
+
+  /**
+   * Log developer error to console.
+   *
+   * @param {string} apiName
+   * @param {?string} errorMessage
+   * @private
+   */
+
+  PaymentsAsyncClient.logDevErrorToConsole_ = function logDevErrorToConsole_(apiName, errorMessage) {
+    console.error('DEVELOPER_ERROR in ' + apiName + ' : ' + errorMessage);
+  };
+
+  /**
+   * Return a <div> element containing a Google Pay payment button.
+   *
+   * @param {!ButtonOptions=} options
+   * @return {!Element}
+   * @export
+   */
+
+  PaymentsAsyncClient.prototype.createButton = function createButton() {
+    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    var button = null;
+    // Only log if button was created successfully
+    var startTimeMs = Date.now();
+    _pay_frame_helperJs.PayFrameHelper.postMessage({
+      'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_RENDER_BUTTON,
+      'clientLatencyStartMs': startTimeMs
+    });
+    return button;
+  };
+
+  /**
+   * @param {!Event} e postMessage event from the AMP page.
+   * @private
+   */
+
+  PaymentsAsyncClient.prototype.handleMessageEvent_ = function handleMessageEvent_(e) {
+    if (this.isInTrustedDomain_()) {
+      // Only handles the event right now if loaded in trusted domain.
+      if (e.data['name'] === 'logPaymentData') {
+        _pay_frame_helperJs.PayFrameHelper.postMessage(e.data['data']);
+      }
+    }
+  };
+
+  /**
+   * @private
+   * @return {boolean}
+   */
+
+  PaymentsAsyncClient.prototype.isInTrustedDomain_ = function isInTrustedDomain_() {
+    return TRUSTED_DOMAINS.indexOf(window.location.hostname) != -1;
+  };
+
+  /**
+   * Called when load payment data result is returned. This triggers the payment
+   * response callback passed to the client.
+   *
+   * @private
+   */
+
+  PaymentsAsyncClient.prototype.onResult_ = function onResult_(response) {
+    var _this4 = this;
+
+    response.then(function (result) {
+      _pay_frame_helperJs.PayFrameHelper.postMessage({
+        'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
+        'clientLatencyStartMs': _this4.loadPaymentDataApiStartTimeMs_
+      });
+    })['catch'](function (result) {
+      if (result['errorCode']) {
+        _pay_frame_helperJs.PayFrameHelper.postMessage({
+          'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
+          'error': /** @type {!PublicErrorCode} */result['errorCode'],
+          'buyFlowMode': _this4.buyFlowMode_
+        });
+      } else {
+        // If user closes window we don't get a error code
+        _pay_frame_helperJs.PayFrameHelper.postMessage({
+          'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
+          'error': _pay_frame_helperJs.PublicErrorCode.BUYER_CANCEL,
+          'buyFlowMode': _this4.buyFlowMode_
+        });
+      }
+    });
+    this.onPaymentResponse_(response);
+  };
+
+  /**
+   * @param {!PaymentDataRequest} paymentDataRequest
+   * @return {!PaymentDataRequest}
+   * @private
+   */
+
+  PaymentsAsyncClient.prototype.assignInternalParams_ = function assignInternalParams_(paymentDataRequest) {
+    var internalParam = {
+      'startTimeMs': Date.now(),
+      'googleTransactionId': PaymentsAsyncClient.googleTransactionId_
+    };
+    paymentDataRequest['i'] = paymentDataRequest['i'] ? Object.assign(internalParam, paymentDataRequest['i']) : internalParam;
+    return paymentDataRequest;
+  };
+
+  return PaymentsAsyncClient;
+})();
+
+PaymentsAsyncClient.googleTransactionId_;
+
+/**
+ * Whether the request specifies that the native support has to be disabled.
+ *
+ * @param {!IsReadyToPayRequest|!PaymentDataRequest} request
+ * @return {boolean}
+ */
+function isNativeDisabledInRequest(request) {
+  return (request['i'] && request['i']['disableNative']) === true;
+}
+
+exports.PaymentsAsyncClient = PaymentsAsyncClient;
+
+},{"./constants.js":84,"./pay_frame_helper.js":87,"./payments_client_delegate_interface.js":89,"./payments_request_delegate.js":90,"./payments_web_activity_delegate.js":91,"./upi_handler.js":93,"./utils.js":94,"./validator.js":95,"web-activities/activity-ports":4}],89:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * An interface which captures what we need to start up buyflow across surfaces.
+ * @interface
+ */
+
+var PaymentsClientDelegateInterface = (function () {
+  function PaymentsClientDelegateInterface() {
+    babelHelpers.classCallCheck(this, PaymentsClientDelegateInterface);
+  }
+
+  /**
+   * Check whether the user can make payments using the Payment API.
+   *
+   * @param {!IsReadyToPayRequest} isReadyToPayRequest
+   * @return {!Promise} The promise will contain the boolean result and error
+   *     message when possible.
+   */
+
+  PaymentsClientDelegateInterface.prototype.isReadyToPay = function isReadyToPay(isReadyToPayRequest) {};
+
+  /**
+   * Prefetch paymentData to speed up loadPaymentData call. Note the provided
+   * paymentDataRequest should exactly be the same as provided in
+   * loadPaymentData to make the loadPaymentData call fast.
+   *
+   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+   *     information to support a payment.
+   */
+
+  PaymentsClientDelegateInterface.prototype.prefetchPaymentData = function prefetchPaymentData(paymentDataRequest) {};
+
+  /**
+   * Request PaymentData, which contains necessary infomartion to complete a
+   * payment.
+   *
+   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+   *     information to support a payment.
+   */
+
+  PaymentsClientDelegateInterface.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest) {};
+
+  /**
+   * @param {function(!Promise<!PaymentData>)} callback
+   */
+
+  PaymentsClientDelegateInterface.prototype.onResult = function onResult(callback) {};
+
+  return PaymentsClientDelegateInterface;
+})();
+
+exports.PaymentsClientDelegateInterface = PaymentsClientDelegateInterface;
+
+},{}],90:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @fileoverview Description of this file.
+ */
+
+var _constantsJs = require('./constants.js');
+
+var _payments_client_delegate_interfaceJs = require('./payments_client_delegate_interface.js');
+
+/**
+ * An implementation of PaymentsClientDelegateInterface that leverages payment
+ * request.
+ * @implements {PaymentsClientDelegateInterface}
+ */
+
+var PaymentsRequestDelegate = (function () {
+  /**
+   * @param {string} environment
+   */
+
+  function PaymentsRequestDelegate(environment) {
+    babelHelpers.classCallCheck(this, PaymentsRequestDelegate);
+
+    this.environment_ = environment;
+
+    /** @private {?function(!Promise<!PaymentData>)} */
+    this.callback_ = null;
+  }
+
+  /** @override */
+
+  PaymentsRequestDelegate.prototype.onResult = function onResult(callback) {
+    this.callback_ = callback;
+  };
+
+  /** @override */
+
+  PaymentsRequestDelegate.prototype.isReadyToPay = function isReadyToPay(isReadyToPayRequest) {
+    /** @type{!PaymentRequest} */
+    var paymentRequest = this.createPaymentRequest_(isReadyToPayRequest);
+    return new Promise(function (resolve, reject) {
+      paymentRequest.canMakePayment().then(function (result) {
+        window.sessionStorage.setItem(_constantsJs.Constants.IS_READY_TO_PAY_RESULT_KEY, result.toString());
+        var response = { 'result': result };
+        if (isReadyToPayRequest.apiVersion >= 2 && isReadyToPayRequest.existingPaymentMethodRequired) {
+          // For apiVersion 2, we always use native to only check for
+          // tokenized cards.
+          // For tokenized cards native always does a presence check so
+          // we can say that if canMakePayment is true for native for
+          // tokenizedCards then the user has a payment method which is
+          // present.
+          response['paymentMethodPresent'] = result;
+        }
+        resolve(response);
+      })['catch'](function (err) {
+        if (window.sessionStorage.getItem(_constantsJs.Constants.IS_READY_TO_PAY_RESULT_KEY)) {
+          resolve({
+            'result': window.sessionStorage.getItem(_constantsJs.Constants.IS_READY_TO_PAY_RESULT_KEY) == 'true'
+          });
+        } else {
+          resolve({ 'result': false });
+        }
+      });
+    });
+  };
+
+  /** @override */
+
+  PaymentsRequestDelegate.prototype.prefetchPaymentData = function prefetchPaymentData(paymentDataRequest) {
+    // Creating PaymentRequest instance will call
+    // Gcore isReadyToPay internally which will prefetch tempaltes.
+    this.createPaymentRequest_(paymentDataRequest, this.environment_, paymentDataRequest.transactionInfo.currencyCode, paymentDataRequest.transactionInfo.totalPrice);
+  };
+
+  /** @override */
+
+  PaymentsRequestDelegate.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest) {
+    this.loadPaymentDataThroughPaymentRequest_(paymentDataRequest);
+  };
+
+  /**
+   * Create PaymentRequest instance.
+   *
+   * @param {!IsReadyToPayRequest|!PaymentDataRequest} request The necessary information to check if user is
+   *     ready to pay or to support a payment from merchants.
+   * @param {?string=} environment (optional)
+   * @param {?string=} currencyCode (optional)
+   * @param {?string=} totalPrice (optional)
+   * @return {!PaymentRequest} PaymentRequest instance.
+   * @private
+   */
+
+  PaymentsRequestDelegate.prototype.createPaymentRequest_ = function createPaymentRequest_(request, environment, currencyCode, totalPrice) {
+    var data = {};
+    if (request) {
+      data = JSON.parse(JSON.stringify(request));
+    }
+
+    // Only set the apiVersion if the merchant doesn't set it.
+    if (!data['apiVersion']) {
+      data['apiVersion'] = 1;
+    }
+
+    // Add allowedPaymentMethods for swg to get through gms core validation.
+    if (data['swg']) {
+      data['allowedPaymentMethods'] = [_constantsJs.Constants.PaymentMethod.CARD];
+    }
+
+    if (environment && environment == _constantsJs.Constants.Environment.TEST) {
+      data['environment'] = environment;
+    }
+
+    var supportedInstruments = [{
+      'supportedMethods': ['https://google.com/pay'],
+      'data': data
+    }];
+
+    var details = {
+      'total': {
+        'label': 'Estimated Total Price',
+        'amount': {
+          // currency and value are required fields in PaymentRequest, but these
+          // fields will never be used since PaymentRequest UI is skipped when
+          // we're the only payment method, so default to some value to by pass
+          // this requirement.
+          'currency': currencyCode || 'USD',
+          'value': totalPrice || '0'
+        }
+      }
+    };
+
+    return new PaymentRequest(supportedInstruments, details);
+  };
+
+  /**
+   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+   *     information to support a payment.
+   * @private
+   */
+
+  PaymentsRequestDelegate.prototype.loadPaymentDataThroughPaymentRequest_ = function loadPaymentDataThroughPaymentRequest_(paymentDataRequest) {
+    var currencyCode = paymentDataRequest.transactionInfo && paymentDataRequest.transactionInfo.currencyCode || undefined;
+    var totalPrice = paymentDataRequest.transactionInfo && paymentDataRequest.transactionInfo.totalPrice || undefined;
+    var paymentRequest = this.createPaymentRequest_(paymentDataRequest, this.environment_, currencyCode, totalPrice);
+    this.callback_(
+    /** @type{!Promise<!PaymentData>} */
+    paymentRequest.show().then(
+    /**
+     * @param {!PaymentResponse} paymentResponse
+     * @return {!PaymentData}
+     */
+    function (paymentResponse) {
+      // Should be called to dismiss any remaining UI
+      paymentResponse.complete('success');
+      return paymentResponse.details;
+    })['catch'](function (err) {
+      err['statusCode'] = _constantsJs.Constants.ResponseStatus.CANCELED;
+      throw err;
+    }));
+  };
+
+  return PaymentsRequestDelegate;
+})();
+
+exports.PaymentsRequestDelegate = PaymentsRequestDelegate;
+
+},{"./constants.js":84,"./payments_client_delegate_interface.js":89}],91:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _constantsJs = require('./constants.js');
+
+var _graypaneJs = require('./graypane.js');
+
+var _payments_client_delegate_interfaceJs = require('./payments_client_delegate_interface.js');
+
+var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+
+var _pay_frame_helperJs = require('./pay_frame_helper.js');
+
+var _validatorJs = require('./validator.js');
+
+var _element_injectorJs = require('./element_injector.js');
+
+var GPAY_ACTIVITY_REQUEST = 'GPAY';
+var IFRAME_CLOSE_DURATION_IN_MS = 250;
+var IFRAME_SHOW_UP_DURATION_IN_MS = 250;
+var IFRAME_SMOOTH_HEIGHT_TRANSITION = 'height ' + IFRAME_SHOW_UP_DURATION_IN_MS + 'ms';
+var ERROR_PREFIX = 'Error: ';
+
+/**
+ * Supported browser user agent keys.
+ *
+ * @enum {string}
+ */
+var BrowserUserAgent = {
+  CHROME: 'Chrome',
+  FIREFOX: 'Firefox',
+  SAFARI: 'Safari'
+};
+
+/**
+ * Resizing payload including resize height and transition style.
+ *
+ * @typedef {{
+ *   height: string,
+ *   transition: string,
+ * }}
+ */
+var ResizePayload = undefined;
+
+/**
+ * An implementation of PaymentsClientDelegateInterface that uses the custom
+ * hosting page along with web activities to actually get to the hosting page.
+ * @implements {PaymentsClientDelegateInterface}
+ */
+
+var PaymentsWebActivityDelegate = (function () {
+  /**
+   * @param {string} environment
+   * @param {string} googleTransactionId
+   * @param {boolean=} opt_useIframe
+   * @param {!ActivityPorts=} opt_activities Can be used to provide a shared
+   *   activities manager. By default, the new manager is created.
+   * @param {?string=} opt_redirectKey The redirect key used for redirect mode.
+   */
+
+  function PaymentsWebActivityDelegate(environment, googleTransactionId, opt_useIframe, opt_activities, opt_redirectKey) {
+    babelHelpers.classCallCheck(this, PaymentsWebActivityDelegate);
+
+    this.environment_ = environment;
+    /** @private @const {boolean} */
+
+    /** @const {!ActivityPorts} */
+    this.activities = opt_activities || new _webActivitiesActivityPorts.ActivityPorts(window);
+    /** @const @private {!Graypane} */
+    this.graypane_ = new _graypaneJs.Graypane(window.document);
+    /** @private {?function(!Promise<!PaymentData>)} */
+    this.callback_ = null;
+    /**
+     * @private {?{
+     *             container: !Element,
+     *             iframe:!HTMLIFrameElement,
+     *             request:!PaymentDataRequest,
+     *             dataPromise:?Promise<!PaymentData>}}
+     */
+    this.prefetchedObjects_ = null;
+    /** @private {boolean} */
+    this.shouldHandleResizing_ = false;
+    /** @private {?ActivityIframePort} */
+    this.port_ = null;
+    /** @private {?function(!Promise<void>)} */
+    this.dismissPromiseResolver_ = null;
+    /** @const @private {string} */
+    this.googleTransactionId_ = googleTransactionId;
+    /** @const @private {?string} */
+    this.redirectKey_ = opt_redirectKey || null;
+
+    /**
+     * @private {?ResizePayload}
+     */
+    this.savedResizePayload_ = null;
+
+    // Only install dialog styles when iframing is allowed.
+    if (null) {
+      _element_injectorJs.injectStyleSheet(_constantsJs.Constants.IFRAME_STYLE);
+      if (null) {
+        _element_injectorJs.injectStyleSheet(_constantsJs.Constants.IFRAME_STYLE_CENTER);
+      }
+    }
+  }
+
+  /** @override */
+
+  PaymentsWebActivityDelegate.prototype.onResult = function onResult(callback) {
+    if (this.callback_) {
+      return;
+    }
+    this.callback_ = callback;
+    this.activities.onResult(GPAY_ACTIVITY_REQUEST, this.onActivityResult_.bind(this));
+  };
+
+  /**
+   * @param {!ActivityPort} port
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.onActivityResult_ = function onActivityResult_(port) {
+    var _this = this;
+
+    // Hide the graypane.
+    this.graypane_.hide();
+    // Only verified origins are allowed.
+    this.callback_(port.acceptResult().then(function (result) {
+      // Origin must always match: popup, iframe or redirect.
+      if (result.origin != _this.getOrigin_()) {
+        throw new Error('channel mismatch');
+      }
+      var data = /** @type {!PaymentData} */result.data;
+      if (data['redirectEncryptedCallbackData']) {
+        _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helperJs.BuyFlowActivityMode.REDIRECT);
+        return _this.fetchRedirectResponse_(data['redirectEncryptedCallbackData']).then(function (decrypedJson) {
+          // Merge other non-encrypted fields into the final response.
+          var clone = Object.assign({}, data);
+          delete clone['redirectEncryptedCallbackData'];
+          return Object.assign(clone, decrypedJson);
+        });
+      }
+      // Unencrypted data supplied: must be a verified and secure channel.
+      if (!result.originVerified || !result.secureChannel) {
+        throw new Error('channel mismatch');
+      }
+      return data;
+    }, function (error) {
+      // TODO: Log the original and the inferred error to eye3.
+      var originalError = error['message'];
+      var inferredError = error['message'];
+      try {
+        // Try to parse the error message to a structured error, if it's
+        // not possible, fallback to use the error message string.
+        inferredError = JSON.parse(originalError.substring(ERROR_PREFIX.length));
+      } catch (e) {}
+      if (inferredError['statusCode'] && ['DEVELOPER_ERROR', 'MERCHANT_ACCOUNT_ERROR'].indexOf(inferredError['statusCode']) == -1) {
+        inferredError = {
+          'statusCode': 'CANCELED'
+        };
+      }
+      if (inferredError == 'AbortError') {
+        inferredError = {
+          'statusCode': 'CANCELED'
+        };
+      }
+      return Promise.reject(inferredError);
+    }));
+  };
+
+  /**
+   * @param {string} redirectEncryptedCallbackData
+   * @return {!PaymentData}
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.fetchRedirectResponse_ = function fetchRedirectResponse_(redirectEncryptedCallbackData) {
+    var _this2 = this;
+
+    // This method has to rely on the legacy XHR API because the redirect
+    // functionality is, in part, aimed at older browsers.
+    return new Promise(function (resolve, reject) {
+      var url = _this2.getDecryptionUrl_();
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', url, true);
+      if ('withCredentials' in xhr) {
+        // It's fine to proceed in a non-redirect mode because redirectVerifier
+        // plays the part of CORS propagation.
+        xhr.withCredentials = true;
+      }
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState < /* STATUS_RECEIVED */2) {
+          return;
+        }
+        if (xhr.status < 100 || xhr.status > 599) {
+          xhr.onreadystatechange = null;
+          reject(new Error('Unknown HTTP status ' + xhr.status));
+          return;
+        }
+        if (xhr.readyState == /* COMPLETE */4) {
+          try {
+            resolve(JSON.parse(xhr.responseText));
+          } catch (e) {
+            // JSON parsing error is expected here.
+            reject(e);
+          }
+        }
+      };
+      xhr.onerror = function () {
+        reject(new Error('Network failure'));
+      };
+      xhr.onabort = function () {
+        reject(new Error('Request aborted'));
+      };
+
+      // Send POST.
+      xhr.send(redirectEncryptedCallbackData);
+    });
+  };
+
+  /** @override */
+
+  PaymentsWebActivityDelegate.prototype.isReadyToPay = function isReadyToPay(isReadyToPayRequest) {
+    var _this3 = this;
+
+    return new Promise(function (resolve, reject) {
+      if (_validatorJs.doesMerchantSupportOnlyTokenizedCards(isReadyToPayRequest)) {
+        resolve({ 'result': false });
+        return;
+      }
+      var userAgent = window.navigator.userAgent;
+      var isIosGsa = userAgent.indexOf('GSA/') > 0 && userAgent.indexOf(BrowserUserAgent.SAFARI) > 0;
+      // pop up in IGSA doesn't work.
+      if (isIosGsa && !null) {
+        resolve({ 'result': false });
+        return;
+      }
+      var isFirefoxIos = userAgent.indexOf('FxiOS') > 0;
+      if (isFirefoxIos) {
+        resolve({ 'result': false });
+        return;
+      }
+      var isSupported = userAgent.indexOf(BrowserUserAgent.CHROME) > 0 || userAgent.indexOf(BrowserUserAgent.FIREFOX) > 0 || userAgent.indexOf(BrowserUserAgent.SAFARI) > 0;
+      if (isSupported && isReadyToPayRequest.apiVersion >= 2 && isReadyToPayRequest.existingPaymentMethodRequired) {
+        isReadyToPayRequest.environment = _this3.environment_;
+        _pay_frame_helperJs.PayFrameHelper.sendAndWaitForResponse(isReadyToPayRequest, _pay_frame_helperJs.PostMessageEventType.IS_READY_TO_PAY, 'isReadyToPayResponse', function (event) {
+          var response = {
+            'result': isSupported
+          };
+          if (isReadyToPayRequest.existingPaymentMethodRequired) {
+            response['paymentMethodPresent'] = event.data['isReadyToPayResponse'] == 'READY_TO_PAY';
+          }
+          resolve(response);
+        });
+      } else {
+        resolve({ 'result': isSupported });
+      }
+    });
+  };
+
+  /** @override */
+
+  PaymentsWebActivityDelegate.prototype.prefetchPaymentData = function prefetchPaymentData(paymentDataRequest) {
+    // Only handles prefetch for iframe for now.
+    if (!null) {
+      return;
+    }
+    var containerAndFrame = this.injectIframe_(paymentDataRequest);
+    var paymentDataPromise = this.openIframe_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
+    this.prefetchedObjects_ = {
+      'container': containerAndFrame['container'],
+      'iframe': containerAndFrame['iframe'],
+      'request': paymentDataRequest,
+      'dataPromise': paymentDataPromise
+    };
+  };
+
+  /** @override */
+
+  PaymentsWebActivityDelegate.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest) {
+    var _this4 = this;
+
+    if (!paymentDataRequest.swg) {
+      // Only set the apiVersion if the merchant is not setting it.
+      if (!paymentDataRequest.apiVersion) {
+        paymentDataRequest.apiVersion = 1;
+      }
+    }
+    paymentDataRequest.environment = this.environment_;
+    if (null) {
+      var _ret = (function () {
+        _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helperJs.BuyFlowActivityMode.IFRAME);
+        // TODO: Compare the request with prefetched request.
+        var containerAndFrame = undefined;
+        var paymentDataPromise = undefined;
+        if (_this4.prefetchedObjects_) {
+          // Rendering prefetched frame and container.
+          containerAndFrame = _this4.prefetchedObjects_;
+          paymentDataPromise = _this4.prefetchedObjects_['dataPromise'];
+          _this4.prefetchedObjects_ = null;
+        } else {
+          containerAndFrame = _this4.injectIframe_(paymentDataRequest);
+          paymentDataPromise = _this4.openIframe_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
+        }
+        _this4.showContainerAndIframeWithAnimation_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
+        history.pushState({}, '', '');
+        var onPopState = function (e) {
+          e.preventDefault();
+          _this4.backButtonHandler_(containerAndFrame);
+          window.removeEventListener('popstate', onPopState);
+        };
+        window.addEventListener('popstate', onPopState);
+        var dismissPromise = new Promise(function (resolve) {
+          _this4.dismissPromiseResolver_ = resolve;
+        });
+        _this4.callback_(Promise.race([paymentDataPromise, dismissPromise]));
+        return {
+          v: undefined
+        };
+      })();
+
+      if (typeof _ret === 'object') return _ret.v;
+    }
+    _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(paymentDataRequest['forceRedirect'] ? _pay_frame_helperJs.BuyFlowActivityMode.REDIRECT : _pay_frame_helperJs.BuyFlowActivityMode.POPUP);
+    var opener = this.activities.open(GPAY_ACTIVITY_REQUEST, this.getHostingPageUrl_(), this.getRenderMode_(paymentDataRequest), paymentDataRequest, { 'width': 600, 'height': 600 });
+    this.graypane_.show(opener && opener.targetWin);
+  };
+
+  /**
+   * Returns the render mode whether need to force redirect.
+   *
+   * @param {!PaymentDataRequest} paymentDataRequest
+   * @return {string}
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.getRenderMode_ = function getRenderMode_(paymentDataRequest) {
+    return paymentDataRequest['forceRedirect'] ? '_top' : 'gp-js-popup';
+  };
+
+  /**
+   * Returns the server origin based on the environment.
+   *
+   * @private
+   * @return {string}
+   */
+
+  PaymentsWebActivityDelegate.prototype.getOrigin_ = function getOrigin_() {
+    if (this.environment_ == _constantsJs.Constants.Environment.LOCAL) {
+      return '';
+    }
+
+    var baseDomain;
+    if (this.environment_ == _constantsJs.Constants.Environment.PREPROD) {
+      baseDomain = 'pay-preprod.sandbox';
+    } else if (this.environment_ == _constantsJs.Constants.Environment.SANDBOX) {
+      baseDomain = 'pay.sandbox';
+    } else {
+      baseDomain = 'pay';
+    }
+    return 'https://' + baseDomain + '.google.com';
+  };
+
+  /**
+   * Returns the base path based on the environment.
+   *
+   * @private
+   * @return {string} The base path
+   */
+
+  PaymentsWebActivityDelegate.prototype.getBasePath_ = function getBasePath_() {
+    return this.getOrigin_() + '/gp/p';
+  };
+
+  /**
+   * Returns the decryption url to be used to decrypt the encrypted payload.
+   *
+   * @private
+   * @return {string} The decryption url
+   */
+
+  PaymentsWebActivityDelegate.prototype.getDecryptionUrl_ = function getDecryptionUrl_() {
+    var url = this.getBasePath_() + '/apis/buyflow/process';
+    if (this.redirectKey_) {
+      url += '?rk=' + encodeURIComponent(this.redirectKey_);
+    }
+    return url;
+  };
+
+  /**
+   * Returns the hosting page url.
+   *
+   * @private
+   * @return {string} The hosting page url
+   */
+
+  PaymentsWebActivityDelegate.prototype.getHostingPageUrl_ = function getHostingPageUrl_() {
+    // In Tin tests, the hosting page is requested from
+    // /testing/buyflow/merchantdemo.html and is accessed relatively since the
+    // base path is unknown ahead of time.
+    if (this.environment_ == _constantsJs.Constants.Environment.TIN) {
+      // There is no /gp/p prefix since multilogin prefixes is broken in Tin:
+      // http://yaqs/4912322941550592
+      return '/ui/pay';
+    }
+    return this.getBasePath_() + '/ui/pay';
+  };
+
+  /**
+   * Returns the iframe pwg url to be used to be used for amp.
+   *
+   * @param {string} environment
+   * @param {string} origin
+   * @return {string} The iframe url
+   */
+
+  PaymentsWebActivityDelegate.prototype.getIframeUrl = function getIframeUrl(environment, origin) {
+    // TODO: These should be compile time constants and not dependent
+    // on the environment.
+    var iframeUrl = 'https://pay.google.com/gp/p/ui/pay?origin=' + origin;
+    if (environment == _constantsJs.Constants.Environment.SANDBOX || environment == _constantsJs.Constants.Environment.PREPROD) {
+      iframeUrl = 'https://pay\'+  (environment == Constants.Environment.PREPROD ? \'-preprod\' : \'\')+  \'.sandbox.google.com/gp/p/ui/pay?origin=' + origin;
+    }
+    return iframeUrl;
+  };
+
+  /**
+   * Close iframe with animation.
+   *
+   * @param {!Element} container
+   * @param {!HTMLIFrameElement} iframe
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.removeIframeAndContainer_ = function removeIframeAndContainer_(container, iframe) {
+    var transitionStyle = 'all ' + IFRAME_CLOSE_DURATION_IN_MS + 'ms ease 0s';
+    this.setTransition_(iframe, transitionStyle);
+    iframe.height = '0px';
+    // TODO: This should be replaced by listening to TransitionEnd event
+    setTimeout(function () {
+      if (container.parentNode) {
+        container.parentNode.removeChild(container);
+      }
+    }, IFRAME_CLOSE_DURATION_IN_MS);
+  };
+
+  /**
+   * @param {!PaymentDataRequest} paymentDataRequest
+   * @return {{container: !Element, iframe:!HTMLIFrameElement}}
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.injectIframe_ = function injectIframe_(paymentDataRequest) {
+    var containerAndFrame = _element_injectorJs.injectIframe(this.isVerticalCenterExperimentEnabled_(paymentDataRequest) ? _constantsJs.Constants.IFRAME_STYLE_CENTER_CLASS : _constantsJs.Constants.IFRAME_STYLE_CLASS);
+    var iframe = containerAndFrame['iframe'];
+    var container = containerAndFrame['container'];
+    container.addEventListener('click', this.closeActionHandler_.bind(this, containerAndFrame));
+    // Hide iframe and disable resize at initialize.
+    container.style.display = 'none';
+    iframe.style.display = 'none';
+    iframe.height = '0px';
+    var transitionStyle = 'all ' + IFRAME_SHOW_UP_DURATION_IN_MS + 'ms ease 0s';
+    this.setTransition_(iframe, transitionStyle);
+    this.shouldHandleResizing_ = false;
+    return containerAndFrame;
+  };
+
+  /**
+   * Handler when back button is triggered, should dismiss iframe if present.
+   * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.backButtonHandler_ = function backButtonHandler_(containerAndFrame) {
+    this.dismissIframe_(containerAndFrame);
+  };
+
+  /**
+   * Handler when close action is triggered, will pop history state to close
+   * the iframe.
+   * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.closeActionHandler_ = function closeActionHandler_(containerAndFrame) {
+    if (containerAndFrame['container'].parentNode) {
+      // Close action only when container is still attached to the page.
+      history.back();
+    }
+  };
+
+  /**
+   * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.dismissIframe_ = function dismissIframe_(containerAndFrame) {
+    // Dismiss iframe only when container is still attached in the page.
+    if (containerAndFrame['container'].parentNode) {
+      // TODO: Think about whether this could be just hide instead of
+      // disconnect and remove, the tricky part is how to handle the case where
+      // payment data request is not the same.
+      this.dismissPromiseResolver_(Promise.reject({ 'errorCode': 'CANCELED' }));
+      this.removeIframeAndContainer_(containerAndFrame['container'], containerAndFrame['iframe']);
+      this.port_ && this.port_.disconnect();
+    }
+  };
+
+  /**
+   * @param {!PaymentDataRequest} paymentDataRequest
+   * @return {boolean}
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.isVerticalCenterExperimentEnabled_ = function isVerticalCenterExperimentEnabled_(paymentDataRequest) {
+    return null && paymentDataRequest['i'] && paymentDataRequest['i'].renderContainerCenter;
+  };
+
+  /**
+   * @param {!Element} container
+   * @param {!HTMLIFrameElement} iframe
+   * @param {!PaymentDataRequest} paymentDataRequest
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.showContainerAndIframeWithAnimation_ = function showContainerAndIframeWithAnimation_(container, iframe, paymentDataRequest) {
+    var _this5 = this;
+
+    container.style.display = 'block';
+    iframe.style.display = 'block';
+    setTimeout(function () {
+      // Hard code the apprx height here, it will be resize to expected height
+      // later.
+      iframe.height = '280px';
+      if (_this5.isVerticalCenterExperimentEnabled_(paymentDataRequest)) {
+        iframe.classList.add(_constantsJs.Constants.IFRAME_ACTIVE_CONTAINER_CLASS);
+      }
+      // TODO: This should be handles properly by listening to
+      // TransitionEnd event.
+      setTimeout(function () {
+        _this5.shouldHandleResizing_ = true;
+        // TODO: Add browser test that catches this.
+        if (_this5.savedResizePayload_) {
+          _this5.setTransition_(iframe, _this5.savedResizePayload_['transition']);
+          iframe.height = _this5.savedResizePayload_['height'];
+          _this5.savedResizePayload_ = null;
+        }
+      }, IFRAME_SHOW_UP_DURATION_IN_MS);
+    }, 1);
+  };
+
+  /**
+   * @param {!HTMLIFrameElement} iframe
+   * @param {string} transitionStyle
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.setTransition_ = function setTransition_(iframe, transitionStyle) {
+    iframe.style.setProperty('transition', transitionStyle);
+    // For safari.
+    iframe.style.setProperty('-webkit-transition', transitionStyle);
+  };
+
+  /**
+   * Use WebActivitiy to open iframe that's in given container.
+   *
+   * @param {!Element} container
+   * @param {!HTMLIFrameElement} iframe
+   * @param {!PaymentDataRequest} paymentDataRequest
+   * @return {!Promise<!PaymentData>}
+   * @private
+   */
+
+  PaymentsWebActivityDelegate.prototype.openIframe_ = function openIframe_(container, iframe, paymentDataRequest) {
+    var _this6 = this;
+
+    if (!paymentDataRequest.swg) {
+      if (!paymentDataRequest.apiVersion) {
+        paymentDataRequest.apiVersion = 1;
+      }
+    }
+    paymentDataRequest.environment = this.environment_;
+    var iframeLoadStartTime = undefined;
+    var trustedUrl = this.getIframeUrl(this.environment_, window.location.origin);
+    return this.activities.openIframe(iframe, trustedUrl, paymentDataRequest).then(function (port) {
+      // Handle custom resize message.
+      _this6.port_ = port;
+      port.onMessage(function (payload) {
+        if (payload['type'] !== 'resize' || !_this6.shouldHandleResizing_) {
+          // Save the resize event later after initial animation is finished
+          _this6.savedResizePayload_ = {
+            'height': payload['height'],
+            'transition': payload['transition']
+          };
+          return;
+        }
+        // b/111310899: Smooth out initial iFrame loading
+        if (!iframeLoadStartTime) {
+          iframeLoadStartTime = Date.now();
+        }
+        if (Date.now() < iframeLoadStartTime + IFRAME_SHOW_UP_DURATION_IN_MS) {
+          _this6.setTransition_(iframe, payload['transition'] + ', ' + IFRAME_SMOOTH_HEIGHT_TRANSITION);
+        } else {
+          _this6.setTransition_(iframe, payload['transition']);
+        }
+        iframe.height = payload['height'];
+      });
+      return (/** @type {!Promise<!Object>} */port.acceptResult()
+      );
+    }).then(
+    /**
+     * @param {!Object} result
+     * @return {!PaymentData}
+     */
+    function (result) {
+      _this6.removeIframeAndContainer_(container, iframe);
+      // This is only for popping the state we pushed earlier.
+      history.back();
+      var data = /** @type {!PaymentData} */result['data'];
+      return data;
+    }, function (error) {
+      _this6.removeIframeAndContainer_(container, iframe);
+      // This is only for popping the state we pushed earlier.
+      history.back();
+      return Promise.reject(error);
+    });
+  };
+
+  return PaymentsWebActivityDelegate;
+})();
+
+exports.PaymentsWebActivityDelegate = PaymentsWebActivityDelegate;
+
+},{"./constants.js":84,"./element_injector.js":85,"./graypane.js":86,"./pay_frame_helper.js":87,"./payments_client_delegate_interface.js":89,"./validator.js":95,"web-activities/activity-ports":4}],92:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Service wrapping window.parent.postMessage. This enables
+ * window.postMessage to be swapped out in unit tests.
+ */
+
+var PostMessageService = (function () {
+  function PostMessageService(window) {
+    babelHelpers.classCallCheck(this, PostMessageService);
+
+    /** @private @const {!Window} */
+    this.window_ = window;
+  }
+
+  /**
+   * Passthrough to Window#postMessage. See Window#postMessage DOM API
+   * documentation for more information about arguments.
+   *
+   * @param {!Object} message
+   * @param {string} targetOrigin
+   */
+
+  PostMessageService.prototype.postMessage = function postMessage(message, targetOrigin) {
+    this.window_.postMessage(message, targetOrigin);
+  };
+
+  return PostMessageService;
+})();
+
+exports.PostMessageService = PostMessageService;
+
+},{}],93:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _constantsJs = require('./constants.js');
+
+var _pay_frame_helperJs = require('./pay_frame_helper.js');
+
+var _validatorJs = require('./validator.js');
+
+var UpiHandler = (function () {
+  function UpiHandler() {
+    babelHelpers.classCallCheck(this, UpiHandler);
+  }
+
+  /**
+   * Returns upi payment method object if it exists in allowed payment methods
+   * or null if it doesn't
+   *
+   * @param {!IsReadyToPayRequest|!PaymentDataRequest} request
+   * @return {boolean}
+   */
+
+  UpiHandler.prototype.isUpiRequest = function isUpiRequest(request) {
+    return !!_validatorJs.getUpiPaymentMethod(request);
+  };
+
+  /**
+   * Returns upi payment method object if it exists in allowed payment methods
+   * or null if it doesn't
+   *
+   * @param {!IsReadyToPayRequest|!PaymentDataRequest} request
+   * @return {!Promise} The promise will contain the boolean result and error
+   *     message when possible.
+   */
+
+  UpiHandler.prototype.isReadyToPay = function isReadyToPay(request) {
+    // Always return true for UPI if api version is 2 and chrome supports
+    // payment request
+    if (_validatorJs.getUpiPaymentMethod(request)) {
+      if (request.existingPaymentMethodRequired) {
+        return Promise.resolve({ 'result': true, 'paymentMethodPresent': true });
+      } else {
+        return Promise.resolve({ 'result': true });
+      }
+    }
+    throw new Error('No Upi payment method found in handler');
+  };
+
+  /**
+   * Request payment data when payment method is UPI
+   *
+   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+   *     information to support a payment.
+   * @param {!Object} upiPaymentMethod UPI paymentmethod in
+   *     allowedPaymentMethods array.
+   * @param {!Function} onResultCallback Function to call when everything is
+   *     done.
+   */
+
+  UpiHandler.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest, upiPaymentMethod, onResultCallback) {
+    var _this = this;
+
+    var parameters = upiPaymentMethod['parameters'];
+    var transactionInfo = paymentDataRequest['transactionInfo'];
+    var supportedInstruments = null ? [{
+      // This is the url for Tez teamfood release.
+      'supportedMethods': ['https://pwp-server.appspot.com/pay-teamfood'],
+      'data': {
+        'pa': 'redbus@axisbank',
+        'pn': parameters['payeeName'],
+        'tr': parameters['transactionReferenceId'],
+        'url': parameters['referenceUrl'],
+        'mc': '4131',
+        'tn': 'Purchase in Merchant'
+      }
+    }] : [{
+      'supportedMethods': ['https://tez.google.com/pay'],
+      'data': {
+        'pa': parameters['payeeVpa'],
+        'pn': parameters['payeeName'],
+        'tr': parameters['transactionReferenceId'],
+        'url': parameters['referenceUrl'],
+        'mc': parameters['mcc'],
+        'tn': transactionInfo['transactionNote']
+      }
+    }];
+
+    if (parameters['transactionId']) {
+      supportedInstruments[0]['data']['tid'] = parameters['transactionId'];
+    }
+
+    var details = {
+      'total': {
+        'label': 'Total',
+        'amount': {
+          'currency': transactionInfo['currencyCode'],
+          'value': transactionInfo['totalPrice']
+        }
+      },
+      'displayItems': [{
+        'label': 'Original Amount',
+        'amount': {
+          'currency': transactionInfo['currencyCode'],
+          'value': transactionInfo['totalPrice']
+        }
+      }]
+    };
+
+    var request = new PaymentRequest(supportedInstruments, details);
+
+    onResultCallback(this.checkCanMakePayment_(request).then(function (result) {
+      if (result) {
+        return _this.showUi_(request);
+      } else {
+        return _this.redirectToGooglePlay_();
+      }
+    }).then(function (paymentData) {
+      return _this.processData_(paymentData, paymentDataRequest, upiPaymentMethod);
+    })['catch'](function (error) {
+      error['statusCode'] = _constantsJs.Constants.ResponseStatus.CANCELED;
+      return Promise.reject(error);
+    }));
+  };
+
+  /**
+   * Show the Tez payment request UI.
+   *
+   * @private
+   * @param {!PaymentRequest} request The payment request object.
+   * @return {!Promise<!PaymentData>} A promise containing payment response.
+   */
+
+  UpiHandler.prototype.showUi_ = function showUi_(request) {
+    return request.show().then(function (paymentResponse) {
+      paymentResponse.complete('success');
+      return paymentResponse.details;
+    });
+  };
+
+  /**
+   * Checks whether can make a payment with Tez on this device.
+   *
+   * @private
+   * @param {!PaymentRequest} request The payment request object.
+   * @return {!Promise<boolean>} a promise containing the result of whether can
+   *     make payment.
+   */
+
+  UpiHandler.prototype.checkCanMakePayment_ = function checkCanMakePayment_(request) {
+    // Checks canMakePayment cache, and use the cache result if it exists.
+    var cacheResult = window.sessionStorage.getItem(_constantsJs.Constants.UPI_CAN_MAKE_PAYMENT_CACHE_KEY);
+    if (cacheResult) {
+      return Promise.resolve(cacheResult === 'true');
+    }
+
+    // Feature detect canMakePayment().
+    if (!request.canMakePayment) {
+      return Promise.resolve(true);
+    }
+
+    var canMakePaymentPromise = request.canMakePayment();
+
+    return canMakePaymentPromise.then(function (result) {
+      // Store the result in cache if the result is true to avoid quota error
+      // caused by querying multiple times with different data.
+      // Doesn't store false because if we do so, user will be redirected to
+      // Google Play again after installing Google Pay if Chrome is not closed.
+      if (result) {
+        window.sessionStorage.setItem(_constantsJs.Constants.UPI_CAN_MAKE_PAYMENT_CACHE_KEY, result.toString());
+      }
+      return result;
+    });
+  };
+
+  /**
+   * Redirect user to Google Pay app in Google Play store
+   *
+   * @private
+   * @returns {!Promise<!Object>} Rejected promise with error message
+   */
+
+  UpiHandler.prototype.redirectToGooglePlay_ = function redirectToGooglePlay_() {
+    window.location.replace(null ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user.teamfood ' : // NOLINT
+    'https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user'); // NOLINT
+    return Promise.reject({ 'errorMessage': 'Cannot redirect to Tez page in Google Play.' });
+  };
+
+  /**
+   * Convert Tez payment data to GPay payment data if payment succeeded, or
+   * reject if payment failed
+   *
+   * @private
+   * @param {!PaymentData} tezPaymentData The payment data object from Tez.
+   * @param {!PaymentDataRequest} paymentDataRequest The payment data request.
+   * @param {!Object} upiPaymentMethod UPI paymentmethod in
+   * allowedPaymentMethods array
+   * @returns {!Promise<PaymentData>} A promise containing payment data or
+   *     error message.
+   */
+
+  UpiHandler.prototype.processData_ = function processData_(tezPaymentData, paymentDataRequest, upiPaymentMethod) {
+    var tezResponse = JSON.parse(tezPaymentData['tezResponse']);
+    if (tezResponse['Status'] === 'FAILURE') {
+      var error = undefined;
+      switch (tezResponse['responseCode']) {
+        case 'ZM':
+          // payment failure due to invalid MPIN
+          error = {
+            'errorCode': _pay_frame_helperJs.PublicErrorCode.BUYER_ACCOUNT_ERROR,
+            'errorMessage': 'Payment failure due to invalid MPIN.'
+          };
+          break;
+        case 'Z9':
+          // payment failure due to insufficient funds
+          error = {
+            'errorCode': _pay_frame_helperJs.PublicErrorCode.BUYER_ACCOUNT_ERROR,
+            'errorMessage': 'Payment failure due to insufficient funds.'
+          };
+          break;
+        case '91':
+          // payment failure due to transaction timeout or connection issue
+          error = {
+            'errorCode': _pay_frame_helperJs.PublicErrorCode.INTERNAL_ERROR,
+            'errorMessage': 'Payment failure due to transaction timeout or connection' + ' issue.'
+          };
+          break;
+        default:
+          // payment failure due to user cancel or other issues
+          error = { 'errorMessage': 'Payment cancelled.' };
+      }
+      return Promise.reject(error);
+    }
+
+    var signedMessage = {
+      'paymentMethodType': 'UPI',
+      'payeeVpa': upiPaymentMethod['parameters']['payeeVpa'],
+      'status': tezResponse['Status'],
+      'transactionReferenceId': upiPaymentMethod['parameters']['transactionReferenceId'],
+      'transactionId': upiPaymentMethod['parameters']['transactionId'] ? upiPaymentMethod['parameters']['transactionId'] : tezResponse['txnId'],
+      'transactionInfo': paymentDataRequest['transactionInfo']
+    };
+
+    var paymentData = {
+      'apiVersion': paymentDataRequest['apiVersion'],
+      'apiVersionMinor': paymentDataRequest['apiVersionMinor'],
+      'paymentMethodData': {
+        'type': upiPaymentMethod['type'],
+        'tokenizationData': {
+          'type': 'DIRECT',
+          'token': {
+            'protocolVersion': 'ECv1',
+            // TODO: Verify that response comes from tez and
+            // add signature and encrypt signed message here
+            'signature': '',
+            'signedMessage': signedMessage
+          }
+        }
+      }
+    };
+    return Promise.resolve(paymentData);
+  };
+
+  return UpiHandler;
+})();
+
+exports.UpiHandler = UpiHandler;
+
+},{"./constants.js":84,"./pay_frame_helper.js":87,"./validator.js":95}],94:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _third_partyRandom_uuidRandomUuidJs = require('../third_party/random_uuid/Random.uuid.js');
+
+var _third_partyRandom_uuidRandomUuidJs2 = babelHelpers.interopRequireDefault(_third_partyRandom_uuidRandomUuidJs);
+
+/**
+ * Returns a google transaction id.
+ *
+ * @param {string} environment
+ * @return {string}
+ */
+function createGoogleTransactionId(environment) {
+  return _third_partyRandom_uuidRandomUuidJs2['default'].uuidFast() + '.' + environment;
+}
+
+exports.createGoogleTransactionId = createGoogleTransactionId;
+
+},{"../third_party/random_uuid/Random.uuid.js":96}],95:[function(require,module,exports){
+exports.__esModule = true;
+/**
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var _constantsJs = require('./constants.js');
+
+/**
+ * @return {boolean} true if this version of Chrome supports PaymentHandler.
+ */
+function chromeSupportsPaymentHandler() {
+  // Check if feature is enabled for user
+  if (typeof google == 'undefined' || !null) {
+    return false;
+  }
+
+  // Payment handler isn't supported on mobile
+  var mobilePlatform = window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|BlackBerry|IEMobile/i);
+  if (mobilePlatform != null) {
+    return false;
+  }
+
+  var chromeVersion = window.navigator.userAgent.match(/Chrome\/([0-9]+)\./i);
+  return 'PaymentRequest' in window && chromeVersion != null && Number(chromeVersion[1]) >= 68 && window.navigator.vendor == 'Google Inc.';
+}
+
+/**
+ * @return {boolean} true if this version of Chrome supports PaymentRequest.
+ */
+function chromeSupportsPaymentRequest() {
+  // Opera uses chrome as rendering engine and sends almost the exact same
+  // user agent as chrome thereby fooling us on android.
+  var isOpera = window.navigator.userAgent.indexOf('OPR/') != -1;
+  if (isOpera) {
+    return false;
+  }
+  if (chromeSupportsPaymentHandler()) {
+    return true;
+  }
+
+  var androidPlatform = window.navigator.userAgent.match(/Android/i);
+  var chromeVersion = window.navigator.userAgent.match(/Chrome\/([0-9]+)\./i);
+  return androidPlatform != null && 'PaymentRequest' in window &&
+  // Make sure skipping PaymentRequest UI when only one PaymentMethod is
+  // supported (starts on Google Chrome 59).
+  window.navigator.vendor == 'Google Inc.' && chromeVersion != null && Number(chromeVersion[1]) >= 59;
+}
+
+/**
+ * @param {!IsReadyToPayRequest} isReadyToPayRequest
+ *
+ * @return {boolean} true if the merchant only supports tokenized cards.
+ */
+function doesMerchantSupportOnlyTokenizedCards(isReadyToPayRequest) {
+  if (isReadyToPayRequest.apiVersion >= 2) {
+    var allowedAuthMethods = extractAllowedAuthMethodsForCards_(isReadyToPayRequest);
+    if (allowedAuthMethods && allowedAuthMethods.length == 1 && allowedAuthMethods[0] == _constantsJs.Constants.AuthMethod.CRYPTOGRAM_3DS) {
+      return true;
+    }
+  }
+  return isReadyToPayRequest.allowedPaymentMethods.length == 1 && isReadyToPayRequest.allowedPaymentMethods[0] == _constantsJs.Constants.PaymentMethod.TOKENIZED_CARD;
+}
+
+/**
+ * @param {!IsReadyToPayRequest} isReadyToPayRequest
+ * @param {Constants.AuthMethod} apiV2AuthMethod
+ *
+ * @return {boolean} true if the merchant supports pan cards.
+ */
+function apiV2DoesMerchantSupportSpecifiedCardType(isReadyToPayRequest, apiV2AuthMethod) {
+  if (isReadyToPayRequest.apiVersion >= 2) {
+    var allowedAuthMethods = extractAllowedAuthMethodsForCards_(isReadyToPayRequest);
+    if (allowedAuthMethods && allowedAuthMethods.includes(apiV2AuthMethod)) {
+      return true;
+    }
+    return false;
+  }
+  return false;
+}
+
+/**
+ * Validate if is secure context. Returns null if context is secure, otherwise
+ * return error message.
+ *
+ * See https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts
+ *
+ * @return {?string} null if current context is secure, otherwise return error
+ * message.
+ */
+function validateSecureContext() {
+  if (window.location.hostname.endsWith(_constantsJs.Constants.TRUSTED_DOMAIN)) {
+    // This is for local development.
+    return null;
+  }
+  if (window.isSecureContext === undefined) {
+    // Browser not support isSecureContext, figure out a way to validate this
+    // for the unsupported browser.
+    return null;
+  }
+  return window.isSecureContext ? null : 'Google Pay APIs should be called in secure context!';
+}
+
+/**
+ * Validate PaymentOptions.
+ *
+ * @param {!PaymentOptions} paymentOptions
+ */
+function validatePaymentOptions(paymentOptions) {
+  if (paymentOptions.environment && !Object.values(_constantsJs.Constants.Environment).includes(paymentOptions.environment)) {
+    throw new Error('Parameter environment in PaymentOptions can optionally be set to ' + 'PRODUCTION, otherwise it defaults to TEST.');
+  }
+}
+
+/**
+ * Validate IsReadyToPayRequest.
+ *
+ * @param {!IsReadyToPayRequest} isReadyToPayRequest
+ * @return {?string} errorMessage if the request is invalid.
+ */
+function validateIsReadyToPayRequest(isReadyToPayRequest) {
+  if (!isReadyToPayRequest) {
+    return 'isReadyToPayRequest must be set!';
+  } else if (isReadyToPayRequest.apiVersion >= 2) {
+    if (!('apiVersionMinor' in isReadyToPayRequest)) {
+      return 'apiVersionMinor must be set!';
+    }
+    if (!isReadyToPayRequest.allowedPaymentMethods || !Array.isArray(isReadyToPayRequest.allowedPaymentMethods) || isReadyToPayRequest.allowedPaymentMethods.length == 0) {
+      return 'for v2 allowedPaymentMethods must be set to an array containing a list of accepted payment methods';
+    }
+    for (var i = 0; i < isReadyToPayRequest.allowedPaymentMethods.length; i++) {
+      var allowedPaymentMethod = isReadyToPayRequest.allowedPaymentMethods[i];
+      if (allowedPaymentMethod['type'] == _constantsJs.Constants.PaymentMethod.CARD) {
+        if (!allowedPaymentMethod['parameters']) {
+          return 'Field parameters must be setup in each allowedPaymentMethod';
+        }
+        var allowedCardNetworks = allowedPaymentMethod['parameters']['allowedCardNetworks'];
+        if (!allowedCardNetworks || !Array.isArray(allowedCardNetworks) || allowedCardNetworks.length == 0) {
+          return 'allowedCardNetworks must be setup in parameters for type CARD';
+        }
+        var allowedAuthMethods = allowedPaymentMethod['parameters']['allowedAuthMethods'];
+        if (!allowedAuthMethods || !Array.isArray(allowedAuthMethods) || allowedAuthMethods.length == 0 || !allowedAuthMethods.every(isAuthMethodValid)) {
+          return 'allowedAuthMethods must be setup in parameters for type \'CARD\' ' + ' and must contain \'CRYPTOGRAM_3DS\' and/or \'PAN_ONLY\'';
+        }
+      }
+    }
+    return null;
+  } else if (!isReadyToPayRequest.allowedPaymentMethods || !Array.isArray(isReadyToPayRequest.allowedPaymentMethods) || isReadyToPayRequest.allowedPaymentMethods.length == 0 || !isReadyToPayRequest.allowedPaymentMethods.every(isPaymentMethodValid)) {
+    return 'allowedPaymentMethods must be set to an array containing \'CARD\' ' + 'and/or \'TOKENIZED_CARD\'!';
+  }
+  return null;
+}
+
+/**
+ * Validate the payment method.
+ *
+ * @param {string} paymentMethod
+ * @return {boolean} if the current payment method is valid.
+ */
+function isPaymentMethodValid(paymentMethod) {
+  return Object.values(_constantsJs.Constants.PaymentMethod).includes(paymentMethod);
+}
+
+/**
+ * Validate the auth method.
+ *
+ * @param {string} authMethod
+ * @return {boolean} if the current auth method is valid.
+ */
+function isAuthMethodValid(authMethod) {
+  return Object.values(_constantsJs.Constants.AuthMethod).includes(authMethod);
+}
+
+/**
+ * Validate PaymentDataRequest.
+ *
+ * @param {!PaymentDataRequest} paymentDataRequest
+ * @return {?string} errorMessage if the request is invalid.
+ */
+function validatePaymentDataRequest(paymentDataRequest) {
+  if (!paymentDataRequest) {
+    return 'paymentDataRequest must be set!';
+  }
+  if (paymentDataRequest.swg) {
+    return validatePaymentDataRequestForSwg(paymentDataRequest.swg);
+  } else if (!paymentDataRequest.transactionInfo) {
+    return 'transactionInfo must be set!';
+  } else if (!paymentDataRequest.transactionInfo.currencyCode) {
+    return 'currencyCode in transactionInfo must be set!';
+  } else if (!paymentDataRequest.transactionInfo.totalPriceStatus || !Object.values(_constantsJs.Constants.TotalPriceStatus).includes(paymentDataRequest.transactionInfo.totalPriceStatus)) {
+    return 'totalPriceStatus in transactionInfo must be set to one of' + ' NOT_CURRENTLY_KNOWN, ESTIMATED or FINAL!';
+  } else if (paymentDataRequest.transactionInfo.totalPriceStatus !== 'NOT_CURRENTLY_KNOWN' && !paymentDataRequest.transactionInfo.totalPrice) {
+    return 'totalPrice in transactionInfo must be set when' + ' totalPriceStatus is ESTIMATED or FINAL!';
+  }
+
+  // Validate payment data request for UPI payment method
+  var allowedPaymentMethod = getUpiPaymentMethod(paymentDataRequest);
+  if (allowedPaymentMethod) {
+    if (!allowedPaymentMethod['parameters']) {
+      return 'parameters must be set in allowedPaymentMethod!';
+    }
+
+    var parameters = allowedPaymentMethod['parameters'];
+    if (!parameters['payeeVpa']) {
+      return 'payeeVpa in allowedPaymentMethod parameters must be set!';
+    } else if (!parameters['payeeName']) {
+      return 'payeeName in allowedPaymentMethod parameters must be set!';
+    } else if (!parameters['referenceUrl']) {
+      return 'referenceUrl in allowedPaymentMethod parameters must be set!';
+    } else if (!parameters['mcc']) {
+      return 'mcc in allowedPaymentMethod parameters must be set!';
+    } else if (!parameters['transactionReferenceId']) {
+      return 'transactionReferenceId in allowedPaymentMethod parameters' + ' must be set!';
+    }
+
+    if (paymentDataRequest['transactionInfo']['currencyCode'] !== 'INR') {
+      return 'currencyCode in transactionInfo must be set to INR!';
+    } else if (paymentDataRequest['transactionInfo']['totalPriceStatus'] !== 'FINAL') {
+      return 'totalPriceStatus in transactionInfo must be set to FINAL!';
+    } else if (!paymentDataRequest['transactionInfo']['transactionNote']) {
+      return 'transactionNote in transactionInfo must be set!';
+    }
+  }
+  return null;
+}
+
+/**
+ * Returns upi payment method object if it exists in allowed payment methods
+ * or null if it doesn't
+ *
+ * @param {!IsReadyToPayRequest|!PaymentDataRequest} request
+ * @return {?Object}
+ */
+function getUpiPaymentMethod(request) {
+  if (!chromeSupportsPaymentRequest() || request.apiVersion < 2 || !request.allowedPaymentMethods) {
+    return null;
+  }
+  return getAllowedPaymentMethodForType_(request, _constantsJs.Constants.PaymentMethod.UPI);
+}
+
+/**
+ * Validate parameters for swg.
+ *
+ * @param {?SwgParameters} swgParameters
+ * @return {?string} errorMessage if the request is invalid.
+ */
+function validatePaymentDataRequestForSwg(swgParameters) {
+  if (!swgParameters) {
+    return 'Swg parameters must be provided';
+  }
+  if (!swgParameters.skuId || !swgParameters.publicationId) {
+    return 'Both skuId and publicationId must be provided';
+  }
+  return null;
+}
+
+/**
+ * Returns the allowedAuthMethods for a card from the request.
+ *
+ * @param {!IsReadyToPayRequest} isReadyToPayRequest
+ * @return {?Array<string>}
+ * @private
+ */
+function extractAllowedAuthMethodsForCards_(isReadyToPayRequest) {
+  if (isReadyToPayRequest.allowedPaymentMethods) {
+    var allowedPaymentMethod = getAllowedPaymentMethodForType_(isReadyToPayRequest, _constantsJs.Constants.PaymentMethod.CARD);
+    if (allowedPaymentMethod && allowedPaymentMethod.parameters) {
+      return allowedPaymentMethod.parameters['allowedAuthMethods'];
+    }
+  }
+  return null;
+}
+
+/**
+ * @param {!IsReadyToPayRequest} isReadyToPayRequest
+ * @param {string} paymentMethodType
+ * @return {?PaymentMethod} Return first payment method for the given type,
+ *     return null if not found.
+ * @private
+ */
+function getAllowedPaymentMethodForType_(isReadyToPayRequest, paymentMethodType) {
+  for (var i = 0; i < isReadyToPayRequest.allowedPaymentMethods.length; i++) {
+    var allowedPaymentMethod = isReadyToPayRequest.allowedPaymentMethods[i];
+    if (allowedPaymentMethod.type == paymentMethodType) {
+      return allowedPaymentMethod;
+    }
+  }
+  return null;
+}
+
+exports.apiV2DoesMerchantSupportSpecifiedCardType = apiV2DoesMerchantSupportSpecifiedCardType;
+exports.chromeSupportsPaymentHandler = chromeSupportsPaymentHandler;
+exports.chromeSupportsPaymentRequest = chromeSupportsPaymentRequest;
+exports.doesMerchantSupportOnlyTokenizedCards = doesMerchantSupportOnlyTokenizedCards;
+exports.getUpiPaymentMethod = getUpiPaymentMethod;
+exports.isPaymentMethodValid = isPaymentMethodValid;
+exports.validateIsReadyToPayRequest = validateIsReadyToPayRequest;
+exports.validatePaymentOptions = validatePaymentOptions;
+exports.validatePaymentDataRequest = validatePaymentDataRequest;
+exports.validateSecureContext = validateSecureContext;
+
+},{"./constants.js":84}],96:[function(require,module,exports){
+exports.__esModule = true;
+/** @license
+Math.uuid.js (v1.4)
+http://www.broofa.com
+mailto:robert@broofa.com
+Copyright (c) 2010 Robert Kieffer
+Dual licensed under the MIT and GPL licenses.
+*/
+
+/*
+ * Generate a random uuid.
+ *
+ * USAGE: Math.uuid(length, radix)
+ *   length - the desired number of characters
+ *   radix  - the number of allowable values for each character.
+ *
+ * EXAMPLES:
+ *   // No arguments  - returns RFC4122, version 4 ID
+ *   >>> Math.uuid()
+ *   "92329D39-6F5C-4520-ABFC-AAB64544E172"
+ *
+ *   // One argument - returns ID of the specified length
+ *   >>> Math.uuid(15)     // 15 character ID (default base=62)
+ *   "VcydxgltxrVZSTV"
+ *
+ *   // Two arguments - returns ID of the specified length, and radix. (Radix must be <= 62)
+ *   >>> Math.uuid(8, 2)  // 8 character ID (base=2)
+ *   "01001010"
+ *   >>> Math.uuid(8, 10) // 8 character ID (base=10)
+ *   "47473046"
+ *   >>> Math.uuid(8, 16) // 8 character ID (base=16)
+ *   "098F4D35"
+ */
+
+var Random_uuid = function Random_uuid() {
+  babelHelpers.classCallCheck(this, Random_uuid);
+};
+
+exports['default'] = Random_uuid;
+;
+// Private array of chars to use
+var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+
+Random_uuid.uuid = function (len, radix) {
+  var chars = CHARS,
+      uuid = [],
+      i;
+  radix = radix || chars.length;
+
+  if (len) {
+    // Compact form
+    for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+  } else {
+    // rfc4122, version 4 form
+    var r;
+
+    // rfc4122 requires these characters
+    uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+    uuid[14] = '4';
+
+    // Fill in random data.  At i==19 set the high bits of clock sequence as
+    // per rfc4122, sec. 4.1.5
+    for (i = 0; i < 36; i++) {
+      if (!uuid[i]) {
+        r = 0 | Math.random() * 16;
+        uuid[i] = chars[i == 19 ? r & 0x3 | 0x8 : r];
+      }
+    }
+  }
+
+  return uuid.join('');
+};
+
+// A more performant, but slightly bulkier, RFC4122v4 solution.  We boost performance
+// by minimizing calls to random()
+Random_uuid.uuidFast = function () {
+  var chars = CHARS,
+      uuid = new Array(36),
+      rnd = 0,
+      r;
+  for (var i = 0; i < 36; i++) {
+    if (i == 8 || i == 13 || i == 18 || i == 23) {
+      uuid[i] = '-';
+    } else if (i == 14) {
+      uuid[i] = '4';
+    } else {
+      if (rnd <= 0x02) rnd = 0x2000000 + Math.random() * 0x1000000 | 0;
+      r = rnd & 0xf;
+      rnd = rnd >> 4;
+      uuid[i] = chars[i == 19 ? r & 0x3 | 0x8 : r];
+    }
+  }
+  return uuid.join('');
+};
+
+// A more compact, but less performant, RFC4122v4 solution:
+Random_uuid.uuidCompact = function () {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : r & 0x3 | 0x8;
+    return v.toString(16);
+  });
+};
+module.exports = exports['default'];
+
+},{}]},{},[20])
+
+})();//# sourceMappingURL=subscriptions.max.js.map
