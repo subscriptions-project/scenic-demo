@@ -56,7 +56,7 @@
     "gulp-wrap": "0.15.0",
     "hogan-express": "0.5.2",
     "is-running": "2.1.0",
-    "jsonwebtoken": "8.1.0",
+    "jsonwebtoken": "8.5.1",
     "lazypipe": "1.0.1",
     "minimist": "1.2.0",
     "nodemon": "1.11.0",
