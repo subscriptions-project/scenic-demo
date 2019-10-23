@@ -57,7 +57,7 @@
     "hogan-express": "0.5.2",
     "is-running": "2.1.0",
     "jsonwebtoken": "8.5.1",
-    "lazypipe": "1.0.1",
+    "lazypipe": "1.0.2",
     "minimist": "1.2.0",
     "nodemon": "1.19.4",
     "plugin-error": "1.0.1",
