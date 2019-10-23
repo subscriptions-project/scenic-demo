@@ -29,7 +29,7 @@
     "babel-eslint": "6.1.2",
     "babelify": "6.4.0",
     "body-parser": "1.14.2",
-    "browserify": "14.0.0",
+    "browserify": "14.5.0",
     "cookie-parser": "1.4.3",
     "del": "2.2.0",
     "eslint-ast-utils": "1.1.0",
