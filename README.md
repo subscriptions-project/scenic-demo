@@ -25,6 +25,26 @@ Then start the server with gulp.
 gulp
 ```
 
+## How to update swg.js for local mode
+
+After the server starts to run in localhost, you can select local mode to
+inspect swg.js served from ./swgjs directory. The way to update ./swgjs is
+
+- In your swg-js local repo, run `gulp build`
+- In dist directory, you should be able to see 4 files:
+  - subscriptions.js
+  - subscriptions.js.map
+  - subscriptions.max.js
+  - subscriptions.max.js.map
+- Sets `$SWG_HOME` to be the path to swg-js repo
+- In your scenic-demo local repo, run
+
+  ```
+  cp $SWG_HOME/dist/subscriptions.js swgjs/swg.js &
+  cp $SWG_HOME/dist/subscriptions.js.map swgjs/swg.js.map &
+  cp $SWG_HOME/dist/subscriptions.max.js swgjs/swg.max.js &
+  cp $SWG_HOME/dist/subscriptions.max.js.map swgjs/swg.max.js.map
+  ```
 
 ## How to deploy the demo
 
