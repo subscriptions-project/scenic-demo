@@ -39,7 +39,7 @@
     "fancy-log": "1.3.3",
     "fs-extra": "8.1.0",
     "gulp": "4.0.2",
-    "gulp-eslint": "3.0.1",
+    "gulp-eslint": "6.0.0",
     "gulp-exec": "2.1.3",
     "gulp-file": "0.4.0",
     "gulp-git": "2.9.0",
