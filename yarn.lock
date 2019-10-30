@@ -2051,7 +2051,7 @@ escape-string-regexp@^1.0.0, escape-string-regexp@^1.0.2, escape-string-regexp@^
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-escope@^3.6.0:
+escope@3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/escope/-/escope-3.6.0.tgz#e01975e812781a163a6dadfdd80398dc64c889c3"
   integrity sha1-4Bl16BJ4GhY6ba392AOY3GTIicM=
@@ -5343,10 +5343,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-promise-pjs@1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/promise-pjs/-/promise-pjs-1.1.4.tgz#69a69cb43fb2e58811a53a43e3eff8a216b5eabc"
-  integrity sha512-OyH4v6sheTi8DPVixLuV2oSpXjiY89pbhRLVJIs1xotO4iWnADX4xxMdqWzIUba4WJ71AnOMmb0WpLbu0lX4bA==
+promise-pjs@1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/promise-pjs/-/promise-pjs-1.1.5.tgz#4f8b0a8c6eac18951a5d796ee6302224ce237303"
+  integrity sha512-TaRXEbkLsIk+ni1w8qxbL/BJpdsjeMJqKnV5NtKjAKSa0czLiihdx+20fDxBJaznGvoMXerJ5+giwN2jNCZO1A==
 
 proxy-addr@~2.0.5:
   version "2.0.5"
