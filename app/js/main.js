@@ -37,12 +37,12 @@ whenReady(function(subscriptions) {
     return function(value) {
       const promise = Promise.resolve(value);
       promise.then(
-        function(response) {
-          log(eventName, response);
-        },
-        function(reason) {
-          log(eventName + 'failed', reason);
-        }
+          function(response) {
+            log(eventName, response);
+          },
+          function(reason) {
+            log(eventName + 'failed', reason);
+          }
       );
     };
   }
@@ -69,7 +69,7 @@ function startFlow(flow, var_args) {
     const flows = Object.keys(subscriptions);
     if (!(typeof flowFunc == 'function')) {
       throw new Error(
-        'Flow "' + flow + '" not found: Available flows: "' + flows + '"'
+          'Flow "' + flow + '" not found: Available flows: "' + flows + '"'
       );
     }
     log('starting flow', flow, '(', var_args, ')', ' {' + flows + '}');
@@ -130,15 +130,15 @@ function startFlowAuto() {
         container.insertBefore(smartButton, firstParagraph);
       }
       subscriptions.attachSmartButton(
-        smartButton,
-        {
-          theme: 'light',
-          lang: 'en',
-          messageTextColor: 'rgba(66, 133, 244, 0.95)',
-        },
-        () => {
-          subscriptions.showOffers({isClosable: true});
-        }
+          smartButton,
+          {
+            theme: 'light',
+            lang: 'en',
+            messageTextColor: 'rgba(66, 133, 244, 0.95)',
+          },
+          () => {
+            subscriptions.showOffers({isClosable: true});
+          }
       );
     });
     return;
@@ -155,30 +155,30 @@ function startFlowAuto() {
         container.insertBefore(smartButton, firstParagraph);
       }
       subscriptions.attachButton(
-        smartButton,
-        {
-          theme: 'light',
-          lang: 'en',
-          messageTextColor: 'rgba(66, 133, 244, 0.95)',
-        },
-        () => {
-          subscriptions.setOnEntitlementsResponse(entitlementsPromise => {
-            entitlementsPromise.then(entitlements => {
-              if (entitlements.entitlements.length) {
-                subscriptions.showUpdateOffers({
-                  isClosable: true,
-                  oldSku: JSON.parse(
-                    entitlements.entitlements[0].subscriptionToken
-                  ).productId,
-                  skus: ['basic_trial', 'basic_1', 'basic_monthly', 'annual_1'],
-                });
-              } else {
-                log(flow + ' failed:', "user doesn't have entitlements yet");
-              }
+          smartButton,
+          {
+            theme: 'light',
+            lang: 'en',
+            messageTextColor: 'rgba(66, 133, 244, 0.95)',
+          },
+          () => {
+            subscriptions.setOnEntitlementsResponse(entitlementsPromise => {
+              entitlementsPromise.then(entitlements => {
+                if (entitlements.entitlements.length) {
+                  subscriptions.showUpdateOffers({
+                    isClosable: true,
+                    oldSku: JSON.parse(
+                      entitlements.entitlements[0].subscriptionToken
+                    ).productId,
+                    skus: ['basic_trial', 'basic_1', 'basic_monthly', 'annual_1'],
+                  });
+                } else {
+                  log(flow + ' failed:', "user doesn't have entitlements yet");
+                }
+              });
             });
-          });
-          subscriptions.getEntitlements();
-        }
+            subscriptions.getEntitlements();
+          }
       );
     });
     return;
