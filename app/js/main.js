@@ -160,11 +160,20 @@ function startFlowAuto() {
             messageTextColor: 'rgba(66, 133, 244, 0.95)',
           },
           () => {
-            subscriptions.showUpdateOffers({
-              isClosable: true,
-              oldSku: 'oldSku',
-              skus: ['basic_trial', 'basic_1', 'basic_monthly', 'annual_1'],
+            subscriptions.setOnEntitlementsResponse(function(entitlementsPromise) {
+              entitlementsPromise.then(entitlements => {
+                if (entitlements.entitlements.length) {
+                    subscriptions.showUpdateOffers({
+                      isClosable: true,
+                      oldSku: JSON.parse(entitlements.entitlements[0].subscriptionToken).productId,
+                      skus: ['basic_trial', 'basic_1', 'basic_monthly', 'annual_1'],
+                    });
+                } else {
+                  log(flow + ' failed:', 'user doesn\'t have entitlements yet');
+                }
+              });
             });
+            subscriptions.getEntitlements();
           });
     });
     return;
