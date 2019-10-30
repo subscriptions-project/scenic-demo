@@ -32,6 +32,7 @@
     "browserify": "16.5.0",
     "cookie-parser": "1.4.4",
     "del": "5.1.0",
+    "escope": "3.6.0",
     "eslint-ast-utils": "1.1.0",
     "eslint-plugin-google-camelcase": "0.0.2",
     "eslint-plugin-swg-internal": "file:build-system/eslint-rules",
