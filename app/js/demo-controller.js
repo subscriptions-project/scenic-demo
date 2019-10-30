@@ -51,11 +51,11 @@ export class DemoPaywallController {
 
     /** @private {boolean} */
     this.unknownSubscription_ =
-        opt_options && opt_options.unknownSubscription || false;
+      opt_options && opt_options.unknownSubscription || false;
 
     /** @private @const {boolean} */
     this.consentRequired_ = (opt_options &&
-        opt_options['consentRequired'] == 'true') ? true : false;
+      opt_options['consentRequired'] == 'true') ? true : false;
   }
 
   start() {
@@ -142,11 +142,11 @@ export class DemoPaywallController {
                 if (account) {
                   this.showLoginPromptOrNotification_(this.subscriptions,
                       this.consentRequired_).then(result => {
-                        if (result) {
-                          this.openPaywall_();
-                          entitlements.ack();
-                        }
-                      });
+                    if (result) {
+                      this.openPaywall_();
+                      entitlements.ack();
+                    }
+                  });
                 }
               }, reason => {
                 log('subscription look up failed: ', reason);
@@ -228,7 +228,7 @@ export class DemoPaywallController {
           this.subscriptions.getPropensityModule().then(module => {
             const jsonResponse = response && response.json();
             const entitlementsJson =
-                jsonResponse && jsonResponse['entitlements'];
+              jsonResponse && jsonResponse['entitlements'];
             const products = this.getProductList_(entitlementsJson);
             module.sendEvent(
                 {
