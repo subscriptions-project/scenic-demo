@@ -107,23 +107,20 @@ function compile(opt_opts) {
       .pipe($$.sourcemaps.write.bind($$.sourcemaps), './')
       .pipe(gulp.dest.bind(gulp), destDir);
 
-  function rebundle() {
+  async function rebundle() {
     const startTime = Date.now();
-    return toPromise(bundler.bundle()
-        .on('error', function(err) {
-          if (err instanceof SyntaxError) {
-            console.error(colors.red('Syntax error:', err.message));
-          } else {
-            console.error(colors.red(err.message));
-          }
+    await toPromise(
+      bundler
+        .bundle()
+        .on('error', err => {
+          console.error(colors.red(err));
         })
         .pipe(lazybuild())
         .pipe($$.rename(destFilename))
         .pipe(lazywrite())
-        .on('end', function() {
-        })).then(() => {
-          endBuildStep('Compiled', srcFilename, startTime);
-        });
+    );
+
+    endBuildStep('Compiled', srcFilename, startTime);
   }
 
   if (options.watch) {
