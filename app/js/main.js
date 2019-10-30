@@ -19,8 +19,6 @@ import {log} from './log';
 
 log('started');
 
-const AVAILABLE_SKUS = ['basic_trial', 'basic_1', 'basic_monthly', 'annual_1'];
-
 /**
  * Add subsciptions when ready.
  * @param {function()} callback
@@ -172,7 +170,8 @@ function startFlowAuto() {
                     oldSku: JSON.parse(
                         entitlements.entitlements[0].subscriptionToken
                     ).productId,
-                    skus: AVAILABLE_SKUS,
+                    skus:
+                      ['basic_trial', 'basic_1', 'basic_monthly', 'annual_1'],
                   });
                 } else {
                   log(flow + ' failed:', "user doesn't have entitlements yet");
