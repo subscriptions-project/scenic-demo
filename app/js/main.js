@@ -163,10 +163,7 @@ function startFlowAuto() {
             subscriptions.showUpdateOffers({
               isClosable: true,
               oldSku: 'oldSku',
-              skus: [
-                'basic_1', 'instant_1', 'premium_1', 
-                'basic_trial', 'basic', 'instant', 'premium',
-              ],
+              skus: ['basic_trial', 'basic_1', 'basic_monthly', 'annual_1'],
             });
           });
     });
