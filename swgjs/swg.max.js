@@ -4062,8 +4062,6 @@ var _protoApi_messages = require('../proto/api_messages');
 
 var _webActivitiesActivityPorts = require('web-activities/activity-ports');
 
-var _utilsLog = require('../utils/log');
-
 /**
  * @interface
  */
@@ -4150,20 +4148,6 @@ var ActivityPort = (function (_ActivityPortDef) {
    */
 
   ActivityPort.prototype.onResizeRequest = function onResizeRequest(unusedCallback) {};
-
-  /**
-   * Sends a message to the host.
-   * @param {!Object} unusedPayload
-   */
-
-  ActivityPort.prototype.messageDeprecated = function messageDeprecated(unusedPayload) {};
-
-  /**
-   * Registers a callback to receive messages from the host.
-   * @param {function(!Object)} unusedCallback
-   */
-
-  ActivityPort.prototype.onMessageDeprecated = function onMessageDeprecated(unusedCallback) {};
 
   /**
    * @param {!../proto/api_messages.Message} unusedRequest
@@ -4313,26 +4297,6 @@ var ActivityIframePort = (function () {
 
   ActivityIframePort.prototype.onResizeRequest = function onResizeRequest(callback) {
     return this.iframePort_.onResizeRequest(callback);
-  };
-
-  /**
-   * Sends a message to the host.
-   * @param {!Object} payload
-   */
-
-  ActivityIframePort.prototype.messageDeprecated = function messageDeprecated(payload) {
-    this.iframePort_.message(payload);
-    _utilsLog.debugLog('WARNING: messageDeprecated() is deprecated');
-  };
-
-  /**
-   * Registers a callback to receive messages from the host.
-   * @param {function(!Object)} callback
-   */
-
-  ActivityIframePort.prototype.onMessageDeprecated = function onMessageDeprecated(callback) {
-    this.callbackOriginal_ = callback;
-    _utilsLog.debugLog('WARNING: use of deprecated API onMessageDeprecated()');
   };
 
   /**
@@ -4489,7 +4453,7 @@ var ActivityPorts = (function () {
 
 exports.ActivityPorts = ActivityPorts;
 
-},{"../proto/api_messages":33,"../utils/log":74,"web-activities/activity-ports":4}],15:[function(require,module,exports){
+},{"../proto/api_messages":33,"web-activities/activity-ports":4}],15:[function(require,module,exports){
 exports.__esModule = true;
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -5581,7 +5545,7 @@ var _runtimeRuntime = require('./runtime/runtime');
 
 var _utilsLog = require('./utils/log');
 
-_utilsLog.log('Subscriptions Runtime: 0.1.22-1571092749932');
+_utilsLog.log('Subscriptions Runtime: 0.1.22-1571866632912');
 
 _runtimeRuntime.installRuntime(self);
 
@@ -6938,6 +6902,7 @@ var AnalyticsEvent = {
   IMPRESSION_CLICK_TO_SHOW_OFFERS_OR_ALREADY_SUBSCRIBED: 8,
   IMPRESSION_SUBSCRIPTION_COMPLETE: 9,
   IMPRESSION_ACCOUNT_CHANGED: 10,
+  IMPRESSION_PAGE_LOAD: 11,
   ACTION_SUBSCRIBE: 1000,
   ACTION_PAYMENT_COMPLETE: 1001,
   ACTION_ACCOUNT_CREATED: 1002,
@@ -8361,17 +8326,6 @@ var AnalyticsService = (function () {
       request.setParams(event.additionalParameters);
     } // Ignore event.additionalParameters.  It may have data we shouldn't log.
     return request;
-  };
-
-  /**
-   * Handles the message received by the port.
-   * @param {function(!Object<string, string|boolean>)} callback
-   */
-
-  AnalyticsService.prototype.onMessage = function onMessage(callback) {
-    this.lastAction_ = this.start_().then(function (port) {
-      port.onMessageDeprecated(callback);
-    });
   };
 
   /**
@@ -14290,7 +14244,7 @@ function feCached(url) {
 
 function feArgs(args) {
   return Object.assign(args, {
-    '_client': 'SwG 0.1.22-1571092749932'
+    '_client': 'SwG 0.1.22-1571866632912'
   });
 }
 
@@ -14824,27 +14778,6 @@ var ActivityIframeView = (function (_View) {
 
   ActivityIframeView.prototype.getPortPromise_ = function getPortPromise_() {
     return this.portPromise_;
-  };
-
-  /**
-   * @param {!Object} data
-   */
-
-  ActivityIframeView.prototype.messageDeprecated = function messageDeprecated(data) {
-    this.getPortPromise_().then(function (port) {
-      port.messageDeprecated(data);
-    });
-  };
-
-  /**
-   * Handles the message received by the port.
-   * @param {function(!Object<string, string|boolean>)} callback
-   */
-
-  ActivityIframeView.prototype.onMessageDeprecated = function onMessageDeprecated(callback) {
-    this.getPortPromise_().then(function (port) {
-      port.onMessageDeprecated(callback);
-    });
   };
 
   /**
@@ -19040,7 +18973,8 @@ var PaymentsAsyncClient = (function () {
     response.then(function (result) {
       _pay_frame_helperJs.PayFrameHelper.postMessage({
         'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
-        'clientLatencyStartMs': _this4.loadPaymentDataApiStartTimeMs_
+        'clientLatencyStartMs': _this4.loadPaymentDataApiStartTimeMs_,
+        'buyFlowMode': _this4.buyFlowMode_
       });
     })['catch'](function (result) {
       if (result['errorCode']) {
