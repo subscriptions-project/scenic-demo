@@ -171,7 +171,9 @@ function startFlowAuto() {
                         entitlements.entitlements[0].subscriptionToken
                     ).productId,
                     skus:
-                      ['basic_trial', 'basic_1', 'basic_monthly', 'annual_1'],
+                      [
+                      'basic_1', 'instant_1', 'premium_1',
+                      'basic', 'basic_monthly', 'instant', 'premium' ],
                   });
                 } else {
                   log(flow + ' failed:', "user doesn't have entitlements yet");
