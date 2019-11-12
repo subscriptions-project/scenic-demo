@@ -162,8 +162,7 @@ function startFlowAuto() {
             messageTextColor: 'rgba(66, 133, 244, 0.95)',
           },
           () => {
-            subscriptions.setOnEntitlementsResponse(entitlementsPromise => {
-              entitlementsPromise.then(entitlements => {
+            subscriptions.getEntitlements().then(entitlements => {
                 if (entitlements.entitlements.length) {
                   subscriptions.showUpdateOffers({
                     isClosable: true,
@@ -179,9 +178,7 @@ function startFlowAuto() {
                 } else {
                   log(flow + ' failed:', "user doesn't have entitlements yet");
                 }
-              });
             });
-            subscriptions.getEntitlements();
           }
       );
     });
