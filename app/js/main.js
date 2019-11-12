@@ -172,8 +172,8 @@ function startFlowAuto() {
                     ).productId,
                     skus:
                       [
-                        'basic_1', 'instant_1', 'premium_1',
-                        'basic', 'basic_monthly', 'instant', 'premium',
+                        'basic_1', 'premium_1', 'quarterly_offer_1', 'annual_1' //qual skus
+                        'basic', 'basic_monthly', 'premium', 'premium_monthly', //prod skus
                       ],
                   });
                 } else {
