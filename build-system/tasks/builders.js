@@ -86,8 +86,8 @@ function compile(opt_opts) {
   const destFilename = srcFilename + '.max.js';
   mkdirSync('build');
 
-  let bundler = browserify(srcDir + srcFilename + '-babel.js', {debug: true})
-      .transform(babel, {loose: true});
+  let bundler = browserify(srcDir + srcFilename + '.js', {debug: true})
+      .transform(babel, {presets: ["@babel/preset-env"]});
   if (options.watch) {
     bundler = watchify(bundler);
   }
@@ -95,7 +95,7 @@ function compile(opt_opts) {
   const wrapper = options.wrapper || '<%= contents %>';
 
   let lazybuild = lazypipe()
-      .pipe(source, srcFilename + '-babel.js')
+      .pipe(source, srcFilename + '.js')
       .pipe(buffer);
 
   // Complete build with wrapper and sourcemaps.

@@ -3799,7 +3799,7 @@ exports.SubscriptionFlows = SubscriptionFlows;
  *   both PropensityApi and LoggerApi.
  * - enablePropensity - If true events from the logger api are sent to the
  *   propensity server.  Note events from the legacy propensity endpoint are
- *   always sent. 
+ *   always sent.
  * @typedef {{
  *   experiments: (!Array<string>|undefined),
  *   windowOpenMode: (!WindowOpenMode|undefined),
@@ -5512,8 +5512,6 @@ exports.View = View;
 
 // Entry point into library for compilation with babel. Just loads main.js
 // and Babel's helpers.
-
-require('../third_party/babel/custom-babel-helpers');
 
 require('./main');
 
