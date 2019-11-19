@@ -15,7 +15,6 @@
  */
 'use strict';
 
-require('./babel-helpers');
 require('./builders');
 require('./lint');
 require('./serve');
