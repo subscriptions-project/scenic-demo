@@ -24,14 +24,14 @@ const {
 } = require('./crypto');
 
 const app = module.exports = require('express').Router();
-app.use(require('cookie-parser')())
+app.use(require('cookie-parser')());
 app.use('/', require('./oauth-app'));
 
 const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
 
 const BASE_URL = process.env.NODE_ENV == 'production' ?
-    'https://scenic-2017.appspot.com' :
-    '//localhost:8000';
+  'https://scenic-2017.appspot.com' :
+  '//localhost:8000';
 
 const SWG_JS_URLS = {
   local: '/swgjs/swg.max.js',
@@ -95,7 +95,7 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   const setup = getSetup(req);
   res.render('../app/views/article', {
     swgJsUrl: SWG_JS_URLS[setup.script],
-    setup: setup,
+    setup,
     config: getConfig(req.params.configId),
     id,
     article,
@@ -233,6 +233,7 @@ app.get('/amp-entitlements', (req, res) => {
     res.json({
       'products': [pubId + ':news'],
       'subscriptionToken': 'subtok-' + pubId + '-' + toBase64(encrypt(email)),
+      'decryptedDocumentKey': 'yNzyxzN9YCREJtkrCtY0Zg==',
     });
   } else if (req.query.meter == '1') {
     const meter = getMeterFromCookies(req);
@@ -243,6 +244,7 @@ app.get('/amp-entitlements', (req, res) => {
           'left': meter,
           'total': MAX_METER,
         },
+        'decryptedDocumentKey': 'yNzyxzN9YCREJtkrCtY0Zg==',
       });
     } else {
       res.json({});
@@ -400,14 +402,14 @@ function decMeterInCookies(req, res) {
  */
 function ampJsUrl(name, rtv) {
   const cdnBase = rtv ?
-      'https://cdn.ampproject.org/rtv/' + rtv :
-      'https://cdn.ampproject.org';
+    'https://cdn.ampproject.org/rtv/' + rtv :
+    'https://cdn.ampproject.org';
   if (name == 'amp') {
     return AMP_LOCAL ?
-        'http://localhost:8001/dist/amp.js' :
-        cdnBase + '/v0.js';
+      'http://localhost:8001/dist/amp.js' :
+      cdnBase + '/v0.js';
   }
   return AMP_LOCAL ?
-      'http://localhost:8001/dist/v0/' + name + '-0.1.max.js' :
-      cdnBase + '/v0/' + name + '-0.1.js';
+    'http://localhost:8001/dist/v0/' + name + '-0.1.max.js' :
+    cdnBase + '/v0/' + name + '-0.1.js';
 }
