@@ -62,7 +62,7 @@
     "jsonwebtoken": "8.5.1",
     "lazypipe": "1.0.2",
     "minimist": "1.2.0",
-    "nodemon": "2.0.1",
+    "nodemon": "2.0.2",
     "plugin-error": "1.0.1",
     "promise-pjs": "1.1.5",
     "through2": "3.0.1",
