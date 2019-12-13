@@ -1,10 +1,20 @@
 (function(){(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-exports.__esModule = true;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CSS = void 0;
 var CSS = ".swg-dialog,.swg-toast{box-sizing:border-box;background-color:#fff!important}.swg-toast{position:fixed!important;bottom:0!important;max-height:46px!important;z-index:2147483647!important;border:none!important}@media (max-height:640px), (max-width:640px){.swg-dialog,.swg-toast{width:480px!important;left:-240px!important;margin-left:50vw!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}@media (min-width:640px) and (min-height:640px){.swg-dialog{width:630px!important;left:-315px!important;margin-left:50vw!important;background-color:transparent!important;border:none!important}.swg-toast{left:0!important}}@media (max-width:480px){.swg-dialog,.swg-toast{width:100%!important;left:0!important;right:0!important;margin-left:0!important}}\n/*# sourceURL=/./src/components/dialog.css*/";
 exports.CSS = CSS;
 
 },{}],2:[function(require,module,exports){
-exports.__esModule = true;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CSS = void 0;
 var CSS = "body{padding:0;margin:0}swg-container,swg-loading,swg-loading-animate,swg-loading-image{display:block}swg-loading-container{width:100%!important;display:-ms-flexbox!important;display:flex!important;-ms-flex-align:center!important;align-items:center!important;-ms-flex-pack:center!important;justify-content:center!important;min-height:148px!important;height:100%!important;bottom:0!important;margin-top:5px!important;z-index:2147483647!important}@media (min-height:630px), (min-width:630px){swg-loading-container{width:560px!important;margin-left:35px!important;border-top-left-radius:8px!important;border-top-right-radius:8px!important;background-color:#fff!important;box-shadow:0 1px 1px rgba(60,64,67,.3),0 1px 4px 1px rgba(60,64,67,.15)!important}}swg-loading{z-index:2147483647!important;width:36px;height:36px;overflow:hidden;animation:mspin-rotate 1568.63ms linear infinite}swg-loading-animate{animation:mspin-revrot 5332ms steps(4) infinite}swg-loading-image{background-image:url(/assets/loader.svg);background-size:100%;width:11664px;height:36px;animation:swg-loading-film 5332ms steps(324) infinite}@keyframes swg-loading-film{0%{transform:translateX(0)}to{transform:translateX(-11664px)}}@keyframes mspin-rotate{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}@keyframes mspin-revrot{0%{transform:rotate(0deg)}to{transform:rotate(-1turn)}}\n/*# sourceURL=/./src/ui/ui.css*/";
 exports.CSS = CSS;
 
@@ -200,7 +210,7 @@ Promise._overrideUnhandledExceptionHandler = function(handler) {
  * The Fulfilled Promise state. Calls onFulfilled with the resolved value of
  * this promise, creating a new promise.
  *
- * If there is no onFulfilled, returns the current promise to avoid an promise
+ * If there is no onFulfilled, returns the current promise to avoid a promise
  * instance.
  *
  * @this {!Promise} The current promise
@@ -230,7 +240,7 @@ function FulfilledPromise(value, onFulfilled, unused, deferred) {
  * The Rejected Promise state. Calls onRejected with the resolved value of
  * this promise, creating a new promise.
  *
- * If there is no onRejected, returns the current promise to avoid an promise
+ * If there is no onRejected, returns the current promise to avoid a promise
  * instance.
  *
  * @this {!Promise} The current promise
@@ -261,7 +271,7 @@ function RejectedPromise(reason, unused, onRejected, deferred) {
  * resolved, or onRejected once the promise rejects.
  *
  * If there is no onFulfilled and no onRejected, returns the current promise to
- * avoid an promise instance.
+ * avoid a promise instance.
  *
  * @this {!Promise} The current promise
  * @param {*=} queue The current promise's pending promises queue.
@@ -337,6 +347,12 @@ function adopt(promise, state, value, adoptee) {
     );
   }
   queue.length = 0;
+
+  // If we're adopting another promise, it's not the end of the promise chain,
+  // the new promise is.
+  if (adoptee) {
+    adoptee._isChainEnd = false;
+  }
 
   // Determine if this rejected promise will be "handled".
   if (state === RejectedPromise && promise._isChainEnd) {
@@ -2350,34 +2366,29 @@ module.exports = {
 };
 
 },{}],5:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+"use strict";
 
-var _protoApi_messages = require('../proto/api_messages');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ClientEventManagerApi = exports.ClientEvent = exports.FilterResult = void 0;
+
+var _api_messages = require("../proto/api_messages");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /** @enum {number}  */
 var FilterResult = {
   /** The event is allowed to proceed to the listeners. */
   PROCESS_EVENT: 0,
+
   /** The event is canceled and the listeners are not informed about it. */
   CANCEL_EVENT: 1
 };
-
-exports.FilterResult = FilterResult;
 /**
  * Defines a client event in SwG
  * Properties:
@@ -2394,74 +2405,79 @@ exports.FilterResult = FilterResult;
  *    additionalParameters: ?Object,
  * }}
  */
-var ClientEvent = undefined;
 
-exports.ClientEvent = ClientEvent;
+exports.FilterResult = FilterResult;
+var ClientEvent;
 /**
  * @interface
  */
 
-var ClientEventManagerApi = (function () {
+exports.ClientEvent = ClientEvent;
+
+var ClientEventManagerApi =
+/*#__PURE__*/
+function () {
   function ClientEventManagerApi() {
-    babelHelpers.classCallCheck(this, ClientEventManagerApi);
+    _classCallCheck(this, ClientEventManagerApi);
   }
 
-  /**
-   * Call this function to log an event. The registered listeners will be
-   * invoked unless the event is filtered.
-   * @param {!function(!ClientEvent)} listener
-   */
+  _createClass(ClientEventManagerApi, [{
+    key: "registerEventListener",
 
-  ClientEventManagerApi.prototype.registerEventListener = function registerEventListener(listener) {};
+    /**
+     * Call this function to log an event. The registered listeners will be
+     * invoked unless the event is filtered.
+     * @param {!function(!ClientEvent)} listener
+     */
+    value: function registerEventListener(listener) {}
+    /**
+     * Register a filterer for events if you need to potentially prevent the
+     * listeners from hearing about it.  A filterer should return
+     * FilterResult.CANCEL_EVENT to prevent listeners from hearing about the
+     * event.
+     * @param {!function(!ClientEvent):FilterResult} filterer
+     */
 
-  /**
-   * Register a filterer for events if you need to potentially prevent the
-   * listeners from hearing about it.  A filterer should return
-   * FilterResult.CANCEL_EVENT to prevent listeners from hearing about the
-   * event.
-   * @param {!function(!ClientEvent):FilterResult} filterer
-   */
+  }, {
+    key: "registerEventFilterer",
+    value: function registerEventFilterer(filterer) {}
+    /**
+     * Call this function to log an event.  It will immediately throw an error if
+     * the event is invalid.  It will then asynchronously call the filterers and
+     * stop the event if a filterer cancels it.  After that, it will call each
+     * listener asynchronously.
+     * @param {!ClientEvent} event
+     */
 
-  ClientEventManagerApi.prototype.registerEventFilterer = function registerEventFilterer(filterer) {};
-
-  /**
-   * Call this function to log an event.  It will immediately throw an error if
-   * the event is invalid.  It will then asynchronously call the filterers and
-   * stop the event if a filterer cancels it.  After that, it will call each
-   * listener asynchronously.
-   * @param {!ClientEvent} event
-   */
-
-  ClientEventManagerApi.prototype.logEvent = function logEvent(event) {};
+  }, {
+    key: "logEvent",
+    value: function logEvent(event) {}
+  }]);
 
   return ClientEventManagerApi;
-})();
+}();
 
 exports.ClientEventManagerApi = ClientEventManagerApi;
 
-},{"../proto/api_messages":33}],6:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../proto/api_messages":32}],6:[function(require,module,exports){
+"use strict";
 
-var _entitlements = require('./entitlements');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DeferredAccountCreationResponse = exports.DeferredAccountCreationRequest = void 0;
 
-var _subscribeResponse = require('./subscribe-response');
+var _entitlements = require("./entitlements");
 
-var _userData = require('./user-data');
+var _subscribeResponse = require("./subscribe-response");
+
+var _userData = require("./user-data");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * Properties:
@@ -2474,108 +2490,115 @@ var _userData = require('./user-data');
  *   consent: (boolean|undefined),
  * }}
  */
-var DeferredAccountCreationRequest = undefined;
-
-exports.DeferredAccountCreationRequest = DeferredAccountCreationRequest;
+var DeferredAccountCreationRequest;
 /**
  */
 
-var DeferredAccountCreationResponse = (function () {
+exports.DeferredAccountCreationRequest = DeferredAccountCreationRequest;
 
+var DeferredAccountCreationResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Entitlements} entitlements
    * @param {!UserData} userData
    * @param {!Array<!PurchaseData>} purchaseDataList
    * @param {function():!Promise} completeHandler
    */
-
   function DeferredAccountCreationResponse(entitlements, userData, purchaseDataList, completeHandler) {
-    babelHelpers.classCallCheck(this, DeferredAccountCreationResponse);
+    _classCallCheck(this, DeferredAccountCreationResponse);
 
     /** @const {!Entitlements} */
     this.entitlements = entitlements;
     /** @const {!UserData} */
+
     this.userData = userData;
     /** @const {!Array<!PurchaseData>} */
-    this.purchaseDataList = purchaseDataList;
-    // TODO(dvoytenko): deprecate.
+
+    this.purchaseDataList = purchaseDataList; // TODO(dvoytenko): deprecate.
+
     /** @const {!PurchaseData} */
+
     this.purchaseData = purchaseDataList[0];
     /** @private @const {function():!Promise} */
+
     this.completeHandler_ = completeHandler;
   }
-
   /**
    * @return {!DeferredAccountCreationResponse}
    */
 
-  DeferredAccountCreationResponse.prototype.clone = function clone() {
-    return new DeferredAccountCreationResponse(this.entitlements, this.userData, this.purchaseDataList, this.completeHandler_);
-  };
 
-  /**
-   * @return {!Object}
-   */
+  _createClass(DeferredAccountCreationResponse, [{
+    key: "clone",
+    value: function clone() {
+      return new DeferredAccountCreationResponse(this.entitlements, this.userData, this.purchaseDataList, this.completeHandler_);
+    }
+    /**
+     * @return {!Object}
+     */
 
-  DeferredAccountCreationResponse.prototype.json = function json() {
-    return {
-      'entitlements': this.entitlements.json(),
-      'userData': this.userData.json(),
-      'purchaseDataList': this.purchaseDataList.map(function (pd) {
-        return pd.json();
-      }),
-      // TODO(dvoytenko): deprecate.
-      'purchaseData': this.purchaseData.json()
-    };
-  };
+  }, {
+    key: "json",
+    value: function json() {
+      return {
+        'entitlements': this.entitlements.json(),
+        'userData': this.userData.json(),
+        'purchaseDataList': this.purchaseDataList.map(function (pd) {
+          return pd.json();
+        }),
+        // TODO(dvoytenko): deprecate.
+        'purchaseData': this.purchaseData.json()
+      };
+    }
+    /**
+     * Allows the receiving site to complete/acknowledge that it registered
+     * the subscription info. The typical action would be to create an
+     * account (or match an existing one) and associated the subscription with
+     * that account.
+     *
+     * SwG will display progress indicator until this method is called and
+     * upon receiving this call will show the confirmation to the user.
+     * The promise returned by this method will yield once the user closes
+     * the confirmation.
+     *
+     * @return {!Promise}
+     */
 
-  /**
-   * Allows the receiving site to complete/acknowledge that it registered
-   * the subscription info. The typical action would be to create an
-   * account (or match an existing one) and associated the subscription with
-   * that account.
-   *
-   * SwG will display progress indicator until this method is called and
-   * upon receiving this call will show the confirmation to the user.
-   * The promise returned by this method will yield once the user closes
-   * the confirmation.
-   *
-   * @return {!Promise}
-   */
-
-  DeferredAccountCreationResponse.prototype.complete = function complete() {
-    return this.completeHandler_();
-  };
+  }, {
+    key: "complete",
+    value: function complete() {
+      return this.completeHandler_();
+    }
+  }]);
 
   return DeferredAccountCreationResponse;
-})();
+}();
 
 exports.DeferredAccountCreationResponse = DeferredAccountCreationResponse;
 
 },{"./entitlements":7,"./subscribe-response":11,"./user-data":13}],7:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Entitlement = exports.Entitlements = void 0;
+
+var _json = require("../utils/json");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * The holder of the entitlements for a service.
  */
-
-var Entitlements = (function () {
-
+var Entitlements =
+/*#__PURE__*/
+function () {
   /**
    * @param {string} service
    * @param {string} raw
@@ -2585,249 +2608,307 @@ var Entitlements = (function () {
    * @param {?boolean|undefined} isReadyToPay
    * @param {?string|undefined} decryptedDocumentKey
    */
-
   function Entitlements(service, raw, entitlements, currentProduct, ackHandler, isReadyToPay, decryptedDocumentKey) {
-    babelHelpers.classCallCheck(this, Entitlements);
+    _classCallCheck(this, Entitlements);
 
     /** @const {string} */
     this.service = service;
     /** @const {string} */
+
     this.raw = raw;
     /** @const {!Array<!Entitlement>} */
+
     this.entitlements = entitlements;
     /** @const {boolean} */
+
     this.isReadyToPay = isReadyToPay || false;
     /** @const {?string} */
-    this.decryptedDocumentKey = decryptedDocumentKey || null;
 
+    this.decryptedDocumentKey = decryptedDocumentKey || null;
     /** @private @const {?string} */
+
     this.product_ = currentProduct;
     /** @private @const {function(!Entitlements)} */
+
     this.ackHandler_ = ackHandler;
   }
-
-  /**
-   * The single entitlement object.
-   */
-
   /**
    * @return {!Entitlements}
    */
 
-  Entitlements.prototype.clone = function clone() {
-    return new Entitlements(this.service, this.raw, this.entitlements.map(function (ent) {
-      return ent.clone();
-    }), this.product_, this.ackHandler_, this.isReadyToPay, this.decryptedDocumentKey);
-  };
 
-  /**
-   * @return {!Object}
-   */
-
-  Entitlements.prototype.json = function json() {
-    return {
-      'service': this.service,
-      'entitlements': this.entitlements.map(function (item) {
-        return item.json();
-      }),
-      'isReadyToPay': this.isReadyToPay
-    };
-  };
-
-  /**
-   * @param {string=} opt_source
-   * @return {boolean}
-   */
-
-  Entitlements.prototype.enablesThis = function enablesThis(opt_source) {
-    return this.enables(this.product_, opt_source);
-  };
-
-  /**
-   * @param {string=} opt_source
-   * @return {boolean}
-   */
-
-  Entitlements.prototype.enablesAny = function enablesAny(opt_source) {
-    for (var i = 0; i < this.entitlements.length; i++) {
-      if (this.entitlements[i].products.length > 0 && (!opt_source || opt_source == this.entitlements[i].source)) {
-        return true;
-      }
+  _createClass(Entitlements, [{
+    key: "clone",
+    value: function clone() {
+      return new Entitlements(this.service, this.raw, this.entitlements.map(function (ent) {
+        return ent.clone();
+      }), this.product_, this.ackHandler_, this.isReadyToPay, this.decryptedDocumentKey);
     }
-    return false;
-  };
+    /**
+     * @return {!Object}
+     */
 
-  /**
-   * Whether these entitlements enable the specified product, optionally also
-   * restricting the source.
-   * @param {?string} product
-   * @param {string=} opt_source
-   * @return {boolean}
-   */
+  }, {
+    key: "json",
+    value: function json() {
+      return {
+        'service': this.service,
+        'entitlements': this.entitlements.map(function (item) {
+          return item.json();
+        }),
+        'isReadyToPay': this.isReadyToPay
+      };
+    }
+    /**
+     * @param {string=} source
+     * @return {boolean}
+     */
 
-  Entitlements.prototype.enables = function enables(product, opt_source) {
-    if (!product) {
+  }, {
+    key: "enablesThis",
+    value: function enablesThis(source) {
+      return this.enables(this.product_, source);
+    }
+    /**
+     * @param {string=} source
+     * @return {boolean}
+     */
+
+  }, {
+    key: "enablesAny",
+    value: function enablesAny(source) {
+      for (var i = 0; i < this.entitlements.length; i++) {
+        if (this.entitlements[i].products.length > 0 && (!source || source == this.entitlements[i].source)) {
+          return true;
+        }
+      }
+
       return false;
     }
-    return !!this.getEntitlementFor(product, opt_source);
-  };
+    /**
+     * Whether these entitlements enable the specified product, optionally also
+     * restricting the source.
+     * @param {?string} product
+     * @param {string=} source
+     * @return {boolean}
+     */
 
-  /**
-   * Returns the first matching entitlement for the current product,
-   * optionally also matching the specified source.
-   * @param {string=} opt_source
-   * @return {?Entitlement}
-   */
+  }, {
+    key: "enables",
+    value: function enables(product, source) {
+      if (!product) {
+        return false;
+      }
 
-  Entitlements.prototype.getEntitlementForThis = function getEntitlementForThis(opt_source) {
-    return this.getEntitlementFor(this.product_, opt_source);
-  };
+      return !!this.getEntitlementFor(product, source);
+    }
+    /**
+     * Returns the first matching entitlement for the current product,
+     * optionally also matching the specified source.
+     * @param {string=} source
+     * @return {?Entitlement}
+     */
 
-  /**
-   * Returns the first matching entitlement for the specified product,
-   * optionally also matching the specified source.
-   * @param {?string} product
-   * @param {string=} opt_source
-   * @return {?Entitlement}
-   */
+  }, {
+    key: "getEntitlementForThis",
+    value: function getEntitlementForThis(source) {
+      return this.getEntitlementFor(this.product_, source);
+    }
+    /**
+     * Returns the first matching entitlement for the specified product,
+     * optionally also matching the specified source.
+     * @param {?string} product
+     * @param {string=} source
+     * @return {?Entitlement}
+     */
 
-  Entitlements.prototype.getEntitlementFor = function getEntitlementFor(product, opt_source) {
-    if (product && this.entitlements.length > 0) {
-      for (var i = 0; i < this.entitlements.length; i++) {
-        if (this.entitlements[i].enables(product) && (!opt_source || opt_source == this.entitlements[i].source)) {
-          return this.entitlements[i];
+  }, {
+    key: "getEntitlementFor",
+    value: function getEntitlementFor(product, source) {
+      if (product && this.entitlements.length > 0) {
+        for (var i = 0; i < this.entitlements.length; i++) {
+          if (this.entitlements[i].enables(product) && (!source || source == this.entitlements[i].source)) {
+            return this.entitlements[i];
+          }
         }
       }
+
+      return null;
     }
-    return null;
-  };
+    /**
+     * Returns the first matching entitlement for the specified source w/o
+     * matching any specific products.
+     * @param {string} source
+     * @return {?Entitlement}
+     */
 
-  /**
-   * Returns the first matching entitlement for the specified source w/o
-   * matching any specific products.
-   * @param {string} source
-   * @return {?Entitlement}
-   */
-
-  Entitlements.prototype.getEntitlementForSource = function getEntitlementForSource(source) {
-    if (this.entitlements.length > 0) {
-      for (var i = 0; i < this.entitlements.length; i++) {
-        if (this.entitlements[i].subscriptionToken && source == this.entitlements[i].source) {
-          return this.entitlements[i];
+  }, {
+    key: "getEntitlementForSource",
+    value: function getEntitlementForSource(source) {
+      if (this.entitlements.length > 0) {
+        for (var i = 0; i < this.entitlements.length; i++) {
+          if (this.entitlements[i].subscriptionToken && source == this.entitlements[i].source) {
+            return this.entitlements[i];
+          }
         }
       }
+
+      return null;
     }
-    return null;
-  };
+    /**
+     * A 3p site should call this method to acknowledge that it "saw" and
+     * "understood" entitlements.
+     */
 
-  /**
-   * A 3p site should call this method to acknowledge that it "saw" and
-   * "understood" entitlements.
-   */
-
-  Entitlements.prototype.ack = function ack() {
-    this.ackHandler_(this);
-  };
+  }, {
+    key: "ack",
+    value: function ack() {
+      this.ackHandler_(this);
+    }
+  }]);
 
   return Entitlements;
-})();
+}();
+/**
+ * The single entitlement object.
+ */
+
 
 exports.Entitlements = Entitlements;
 
-var Entitlement = (function () {
-
+var Entitlement =
+/*#__PURE__*/
+function () {
   /**
    * @param {string} source
    * @param {!Array<string>} products
    * @param {string} subscriptionToken
    */
-
   function Entitlement(source, products, subscriptionToken) {
-    babelHelpers.classCallCheck(this, Entitlement);
+    _classCallCheck(this, Entitlement);
 
     /** @const {string} */
     this.source = source;
     /** @const {!Array<string>} */
+
     this.products = products;
     /** @const {string} */
+
     this.subscriptionToken = subscriptionToken;
   }
-
   /**
    * @return {!Entitlement}
    */
 
-  Entitlement.prototype.clone = function clone() {
-    return new Entitlement(this.source, this.products.slice(0), this.subscriptionToken);
-  };
 
-  /**
-   * @return {!Object}
-   */
-
-  Entitlement.prototype.json = function json() {
-    return {
-      'source': this.source,
-      'products': this.products,
-      'subscriptionToken': this.subscriptionToken
-    };
-  };
-
-  /**
-   * @param {?string} product
-   * @return {boolean}
-   */
-
-  Entitlement.prototype.enables = function enables(product) {
-    if (!product) {
-      return false;
+  _createClass(Entitlement, [{
+    key: "clone",
+    value: function clone() {
+      return new Entitlement(this.source, this.products.slice(0), this.subscriptionToken);
     }
-    // Wildcard allows this product.
-    var eq = product.indexOf(':');
-    if (eq != -1 && this.products.includes(product.substring(0, eq + 1) + '*')) {
-      return true;
+    /**
+     * @return {!Object}
+     */
+
+  }, {
+    key: "json",
+    value: function json() {
+      return {
+        'source': this.source,
+        'products': this.products,
+        'subscriptionToken': this.subscriptionToken
+      };
     }
-    return this.products.includes(product);
-  };
+    /**
+     * @param {?string} product
+     * @return {boolean}
+     */
 
-  /**
-   * @param {?Object} json
-   * @return {!Entitlement}
-   */
+  }, {
+    key: "enables",
+    value: function enables(product) {
+      if (!product) {
+        return false;
+      } // Wildcard allows this product.
 
-  Entitlement.parseFromJson = function parseFromJson(json) {
-    if (!json) {
-      json = {};
+
+      var eq = product.indexOf(':');
+
+      if (eq != -1 && this.products.includes(product.substring(0, eq + 1) + '*')) {
+        return true;
+      }
+
+      return this.products.includes(product);
     }
-    var source = json['source'] || '';
-    var products = json['products'] || [];
-    var subscriptionToken = json['subscriptionToken'];
-    return new Entitlement(source, products, subscriptionToken);
-  };
+    /**
+     * @param {?Object} json
+     * @return {!Entitlement}
+     */
 
-  /**
-   * The JSON is expected in one of the forms:
-   * - Single entitlement: `{products: [], ...}`.
-   * - A list of entitlements: `[{products: [], ...}, {...}]`.
-   * @param {!Object|!Array<!Object>} json
-   * @return {!Array<!Entitlement>}
-   */
+  }, {
+    key: "getSku",
 
-  Entitlement.parseListFromJson = function parseListFromJson(json) {
-    var jsonList = Array.isArray(json) ?
-    /** @type {!Array<Object>} */json : [json];
-    return jsonList.map(function (json) {
-      return Entitlement.parseFromJson(json);
-    });
-  };
+    /**
+     * Returns the SKU associated with this entitlement.
+     * @return {?string}
+     */
+    value: function getSku() {
+      return (
+        /** @type {?string} */
+        (0, _json.getPropertyFromJsonString)(this.subscriptionToken, 'productId') || null
+      );
+    }
+  }], [{
+    key: "parseFromJson",
+    value: function parseFromJson(json) {
+      if (!json) {
+        json = {};
+      }
+
+      var source = json['source'] || '';
+      var products = json['products'] || [];
+      var subscriptionToken = json['subscriptionToken'];
+      return new Entitlement(source, products, subscriptionToken);
+    }
+    /**
+     * The JSON is expected in one of the forms:
+     * - Single entitlement: `{products: [], ...}`.
+     * - A list of entitlements: `[{products: [], ...}, {...}]`.
+     * @param {!Object|!Array<!Object>} json
+     * @return {!Array<!Entitlement>}
+     */
+
+  }, {
+    key: "parseListFromJson",
+    value: function parseListFromJson(json) {
+      var jsonList = Array.isArray(json) ?
+      /** @type {!Array<Object>} */
+      json : [json];
+      return jsonList.map(function (json) {
+        return Entitlement.parseFromJson(json);
+      });
+    }
+  }]);
 
   return Entitlement;
-})();
+}();
 
 exports.Entitlement = Entitlement;
 
-},{}],8:[function(require,module,exports){
-exports.__esModule = true;
+},{"../utils/json":71}],8:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LoggerApi = exports.PublisherEvent = exports.Event = exports.SubscriptionState = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -2857,8 +2938,6 @@ var SubscriptionState = {
   // user's subscription has expired.
   PAST_SUBSCRIBER: 'past_subscriber'
 };
-
-exports.SubscriptionState = SubscriptionState;
 /**
  * Subscription related events. Listed below are enum strings that
  * represent events related to Subscription flow. Event parameters
@@ -2866,6 +2945,8 @@ exports.SubscriptionState = SubscriptionState;
  * block of depth 1 in the sendEvent() API call.
  * @enum {string}
  */
+
+exports.SubscriptionState = SubscriptionState;
 var Event = {
   /**
    * IMPRESSION_PAYWALL event.
@@ -2882,6 +2963,7 @@ var Event = {
    * }
    */
   IMPRESSION_PAYWALL: 'paywall',
+
   /**
    * IMPRESSION_AD event.
    * User has been shown a subscription ad.
@@ -2897,6 +2979,7 @@ var Event = {
    * }
    */
   IMPRESSION_AD: 'ad_shown',
+
   /**
    * IMPRESSION_OFFERS event.
    * User has been shown a list of available offers for subscription.
@@ -2933,6 +3016,7 @@ var Event = {
    * }
    */
   IMPRESSION_OFFERS: 'offers_shown',
+
   /**
    * ACTION_SUBSCRIPTIONS_LANDING_PAGE event.
    * User has taken the action to arrive at a landing page of the
@@ -2964,6 +3048,7 @@ var Event = {
    * }
    */
   ACTION_SUBSCRIPTIONS_LANDING_PAGE: 'subscriptions_landing_page',
+
   /**
    * ACTION_OFFER_SELECTED event.
    * User has selected an offer.
@@ -2979,6 +3064,7 @@ var Event = {
    * use the next event ACTION_PAYMENT_FLOW_STARTED instead.
    */
   ACTION_OFFER_SELECTED: 'offer_selected',
+
   /**
    * ACTION_PAYMENT_FLOW_STARTED event.
    * User has started payment flow.
@@ -2993,6 +3079,7 @@ var Event = {
    * }
    */
   ACTION_PAYMENT_FLOW_STARTED: 'payment_flow_start',
+
   /**
    * ACTION_PAYMENT_COMPLETED.
    * User has made the payment for a subscription.
@@ -3007,6 +3094,7 @@ var Event = {
    * }
    */
   ACTION_PAYMENT_COMPLETED: 'payment_complete',
+
   /**
    * EVENT_CUSTOM: custom publisher event.
    * The field 'active' of PropensityEvent, which carries this
@@ -3025,8 +3113,6 @@ var Event = {
    */
   EVENT_CUSTOM: 'custom'
 };
-
-exports.Event = Event;
 /**
  * Propensity Event
  * Properties:
@@ -3046,56 +3132,74 @@ exports.Event = Event;
  *         enum listed in the Event enum above.
  *
  *  @typedef {{
-  *    name: string,
-  *    active: boolean,
-  *    data: ?JsonObject,
-  * }}
-  */
-var PublisherEvent = undefined;
+ *    name: string,
+ *    active: boolean,
+ *    data: ?JsonObject,
+ * }}
+ */
 
-exports.PublisherEvent = PublisherEvent;
+exports.Event = Event;
+var PublisherEvent;
 /**
  * @interface
  */
 
-var LoggerApi = (function () {
+exports.PublisherEvent = PublisherEvent;
+
+var LoggerApi =
+/*#__PURE__*/
+function () {
   function LoggerApi() {
-    babelHelpers.classCallCheck(this, LoggerApi);
+    _classCallCheck(this, LoggerApi);
   }
 
-  /**
-   * Send a buy-flow event that occurred on the publisher's site to Google.  The
-   * ultimate destination is controlled by configuration settings.  Data is
-   * sent to Propensity if the Propensity module is fetched from runtime and to
-   * Google's analytics service if you activate buy-flow comparative analysis.
-   * @param {!PublisherEvent} userEvent
-   */
+  _createClass(LoggerApi, [{
+    key: "sendEvent",
 
-  LoggerApi.prototype.sendEvent = function sendEvent(userEvent) {};
+    /**
+     * Send a buy-flow event that occurred on the publisher's site to Google.  The
+     * ultimate destination is controlled by configuration settings.  Publisher
+     * configuration available:
+     *   enablePropensity - Sends data to the Propensity to Subscribe ads server.
+     *   enableSwgAnalytics - Sends data to Google's analytics server for buy-flow
+     *     comparison purposes.
+     * @param {!PublisherEvent} userEvent
+     */
+    value: function sendEvent(userEvent) {}
+    /**
+     * Send user subscription state upon initial discovery.
+     * A user may have active subscriptions to some products
+     * and expired subscriptions to others. Make one API call
+     * per subscription state and provide a corresponding
+     * list of products with a json object of depth 1.
+     * For example:
+     *     {'product': ['product1', 'product2']}
+     * Each call to this API should have the first argument
+     * as a valid string from the enum SubscriptionState.
+     * @param {SubscriptionState} state
+     * @param {?JsonObject} jsonProducts
+     */
 
-  /**
-   * Send user subscription state upon initial discovery.
-   * A user may have active subscriptions to some products
-   * and expired subscriptions to others. Make one API call
-   * per subscription state and provide a corresponding
-   * list of products with a json object of depth 1.
-   * For example:
-   *     {'product': ['product1', 'product2']}
-   * Each call to this API should have the first argument
-   * as a valid string from the enum SubscriptionState.
-   * @param {SubscriptionState} state
-   * @param {?JsonObject} jsonProducts
-   */
-
-  LoggerApi.prototype.sendSubscriptionState = function sendSubscriptionState(state, jsonProducts) {};
+  }, {
+    key: "sendSubscriptionState",
+    value: function sendSubscriptionState(state, jsonProducts) {}
+  }]);
 
   return LoggerApi;
-})();
+}();
 
 exports.LoggerApi = LoggerApi;
 
 },{}],9:[function(require,module,exports){
-exports.__esModule = true;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Offer = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -3114,9 +3218,7 @@ exports.__esModule = true;
 
 /**
  */
-
 var Offer =
-
 /**
  * @param {string} skuId
  * @param {string} title
@@ -3124,41 +3226,54 @@ var Offer =
  * @param {string} price
  */
 function Offer(skuId, title, description, price) {
-  babelHelpers.classCallCheck(this, Offer);
+  _classCallCheck(this, Offer);
 
   /** @const {string} */
   this.skuId = skuId;
   /** @const {string} */
+
   this.title = title;
   /** @const {string} */
+
   this.description = description;
   /** @const {string} */
+
   this.price = price;
 };
 
 exports.Offer = Offer;
 
 },{}],10:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+"use strict";
 
-var _loggerApi = require('./logger-api');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PropensityApi = exports.SubscriptionState = exports.Event = exports.PropensityEvent = exports.PropensityScore = exports.Header = exports.Body = exports.ScoreDetail = exports.Score = exports.PropensityType = void 0;
 
-var LoggerApi = babelHelpers.interopRequireWildcard(_loggerApi);
+var LoggerApi = _interopRequireWildcard(require("./logger-api"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * @enum {string}
@@ -3169,8 +3284,6 @@ var PropensityType = {
   // Propensity score when blocked access to content by paywall.
   PAYWALL: 'paywall'
 };
-
-exports.PropensityType = PropensityType;
 /**
  * The Propensity Score
  * - value: Required. A number that indicates the propensity to subscribe.
@@ -3181,9 +3294,9 @@ exports.PropensityType = PropensityType;
  *   bucketed: boolean,
  * }}
  */
-var Score = undefined;
 
-exports.Score = Score;
+exports.PropensityType = PropensityType;
+var Score;
 /**
  * Propensity Score Detail
  * Properties:
@@ -3197,9 +3310,9 @@ exports.Score = Score;
  *   error: ?string,
  * }}
  */
-var ScoreDetail = undefined;
 
-exports.ScoreDetail = ScoreDetail;
+exports.Score = Score;
+var ScoreDetail;
 /**
  * The Body field of the Propensity Score.
  * Properties:
@@ -3211,9 +3324,9 @@ exports.ScoreDetail = ScoreDetail;
  *    error: ?string,
  * }}
  */
-var Body = undefined;
 
-exports.Body = Body;
+exports.ScoreDetail = ScoreDetail;
+var Body;
 /**
  * The Header of the Propensity Score.
  * Properties:
@@ -3223,9 +3336,9 @@ exports.Body = Body;
  *    ok: boolean,
  * }}
  */
-var Header = undefined;
 
-exports.Header = Header;
+exports.Body = Body;
+var Header;
 /**
  * The Propensity Score.
  * Properties:
@@ -3237,9 +3350,9 @@ exports.Header = Header;
  *    body: Body,
  * }}
  */
-var PropensityScore = undefined;
 
-exports.PropensityScore = PropensityScore;
+exports.Header = Header;
+var PropensityScore;
 /**
  * Propensity Event
  *   Please note that the primary defition of this object has changed to
@@ -3267,9 +3380,9 @@ exports.PropensityScore = PropensityScore;
  *    data: ?JsonObject,
  * }}
  */
-var PropensityEvent = undefined;
 
-exports.PropensityEvent = PropensityEvent;
+exports.PropensityScore = PropensityScore;
+var PropensityEvent;
 /*
  * Please note that the definitions of Event and SubscriptionState have moved
  * to logger-api.js.  This is now the preferred interface to use for logging
@@ -3277,67 +3390,70 @@ exports.PropensityEvent = PropensityEvent;
  * Propensity will continue to function as an event logger until we are certain
  * no publishers are actively using it to log events.
  */
+
+exports.PropensityEvent = PropensityEvent;
 var Event = LoggerApi.Event;
 exports.Event = Event;
 var SubscriptionState = LoggerApi.SubscriptionState;
-
-exports.SubscriptionState = SubscriptionState;
 /**
  * @extends {LoggerApi.LoggerApi}
  * @interface
  */
 
-var PropensityApi = (function (_LoggerApi$LoggerApi) {
-  babelHelpers.inherits(PropensityApi, _LoggerApi$LoggerApi);
+exports.SubscriptionState = SubscriptionState;
+
+var PropensityApi =
+/*#__PURE__*/
+function (_LoggerApi$LoggerApi) {
+  _inherits(PropensityApi, _LoggerApi$LoggerApi);
 
   function PropensityApi() {
-    babelHelpers.classCallCheck(this, PropensityApi);
+    _classCallCheck(this, PropensityApi);
 
-    _LoggerApi$LoggerApi.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(PropensityApi).apply(this, arguments));
   }
 
-  /**
-   * Get the propensity of a user to subscribe based on the type.
-   * The argument should be a valid string from PropensityType.
-   * If no type is provided, GENERAL score is returned.
-   * @param {PropensityType=} type
-   * @return {?Promise<!PropensityScore>}
-   */
+  _createClass(PropensityApi, [{
+    key: "getPropensity",
 
-  PropensityApi.prototype.getPropensity = function getPropensity(type) {};
+    /**
+     * Get the propensity of a user to subscribe based on the type.
+     * The argument should be a valid string from PropensityType.
+     * If no type is provided, GENERAL score is returned.
+     * @param {PropensityType=} type
+     * @return {?Promise<!PropensityScore>}
+     */
+    value: function getPropensity(type) {}
+  }]);
 
   return PropensityApi;
-})(LoggerApi.LoggerApi);
+}(LoggerApi.LoggerApi);
 
 exports.PropensityApi = PropensityApi;
 
 },{"./logger-api":8}],11:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+"use strict";
 
-var _entitlements = require('./entitlements');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PurchaseData = exports.SubscribeResponse = void 0;
 
-var _userData = require('./user-data');
+var _entitlements = require("./entitlements");
+
+var _userData = require("./user-data");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  */
-
-var SubscribeResponse = (function () {
-
+var SubscribeResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {string} raw
    * @param {!PurchaseData} purchaseData
@@ -3345,431 +3461,495 @@ var SubscribeResponse = (function () {
    * @param {?Entitlements} entitlements
    * @param {!string} productType
    * @param {function():!Promise} completeHandler
+   * @param {?string=} oldSku
    */
-
   function SubscribeResponse(raw, purchaseData, userData, entitlements, productType, completeHandler) {
-    babelHelpers.classCallCheck(this, SubscribeResponse);
+    var oldSku = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
+
+    _classCallCheck(this, SubscribeResponse);
 
     /** @const {string} */
     this.raw = raw;
     /** @const {!PurchaseData} */
+
     this.purchaseData = purchaseData;
     /** @const {?UserData} */
+
     this.userData = userData;
     /** @const {?Entitlements} */
+
     this.entitlements = entitlements;
     /** @const {string} */
+
     this.productType = productType;
     /** @private @const {function():!Promise} */
+
     this.completeHandler_ = completeHandler;
+    /** @const {?string} */
+
+    this.oldSku = oldSku;
   }
-
-  /**
-   */
-
   /**
    * @return {!SubscribeResponse}
    */
 
-  SubscribeResponse.prototype.clone = function clone() {
-    return new SubscribeResponse(this.raw, this.purchaseData, this.userData, this.entitlements, this.productType, this.completeHandler_);
-  };
 
-  /**
-   * @return {!Object}
-   */
+  _createClass(SubscribeResponse, [{
+    key: "clone",
+    value: function clone() {
+      return new SubscribeResponse(this.raw, this.purchaseData, this.userData, this.entitlements, this.productType, this.completeHandler_, this.oldSku);
+    }
+    /**
+     * @return {!Object}
+     */
 
-  SubscribeResponse.prototype.json = function json() {
-    return {
-      'purchaseData': this.purchaseData.json(),
-      'userData': this.userData ? this.userData.json() : null,
-      'entitlements': this.entitlements ? this.entitlements.json() : null,
-      'productType': this.productType
-    };
-  };
+  }, {
+    key: "json",
+    value: function json() {
+      return {
+        'purchaseData': this.purchaseData.json(),
+        'userData': this.userData ? this.userData.json() : null,
+        'entitlements': this.entitlements ? this.entitlements.json() : null,
+        'oldSku': this.oldSku,
+        'productType': this.productType
+      };
+    }
+    /**
+     * Allows the receiving site to complete/acknowledge that it registered
+     * the subscription purchase. The typical action would be to create an
+     * account (or match an existing one) and associated the purchase with
+     * that account.
+     *
+     * SwG will display progress indicator until this method is called and
+     * upon receiving this call will show the confirmation to the user.
+     * The promise returned by this method will yield once the user closes
+     * the confirmation.
+     *
+     * @return {!Promise}
+     */
 
-  /**
-   * Allows the receiving site to complete/acknowledge that it registered
-   * the subscription purchase. The typical action would be to create an
-   * account (or match an existing one) and associated the purchase with
-   * that account.
-   *
-   * SwG will display progress indicator until this method is called and
-   * upon receiving this call will show the confirmation to the user.
-   * The promise returned by this method will yield once the user closes
-   * the confirmation.
-   *
-   * @return {!Promise}
-   */
-
-  SubscribeResponse.prototype.complete = function complete() {
-    return this.completeHandler_();
-  };
+  }, {
+    key: "complete",
+    value: function complete() {
+      return this.completeHandler_();
+    }
+  }]);
 
   return SubscribeResponse;
-})();
+}();
+/**
+ */
+
 
 exports.SubscribeResponse = SubscribeResponse;
 
-var PurchaseData = (function () {
-
+var PurchaseData =
+/*#__PURE__*/
+function () {
   /**
    * @param {string} raw
    * @param {string} signature
    */
-
   function PurchaseData(raw, signature) {
-    babelHelpers.classCallCheck(this, PurchaseData);
+    _classCallCheck(this, PurchaseData);
 
     /** @const {string} */
     this.raw = raw;
     /** @const {string} */
+
     this.data = raw;
     /** @const {string} */
+
     this.signature = signature;
   }
-
   /**
    * @return {!PurchaseData}
    */
 
-  PurchaseData.prototype.clone = function clone() {
-    return new PurchaseData(this.raw, this.signature);
-  };
 
-  /**
-   * @return {!Object}
-   */
+  _createClass(PurchaseData, [{
+    key: "clone",
+    value: function clone() {
+      return new PurchaseData(this.raw, this.signature);
+    }
+    /**
+     * @return {!Object}
+     */
 
-  PurchaseData.prototype.json = function json() {
-    return {
-      'data': this.raw,
-      'signature': this.signature
-    };
-  };
+  }, {
+    key: "json",
+    value: function json() {
+      return {
+        'data': this.raw,
+        'signature': this.signature
+      };
+    }
+  }]);
 
   return PurchaseData;
-})();
+}();
 
 exports.PurchaseData = PurchaseData;
 
 },{"./entitlements":7,"./user-data":13}],12:[function(require,module,exports){
-exports.__esModule = true;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.defaultConfig = defaultConfig;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+exports.SubscriptionRequest = exports.SmartButtonOptions = exports.ButtonOptions = exports.SaveSubscriptionRequestCallback = exports.SaveSubscriptionRequest = exports.LoginRequest = exports.OffersRequest = exports.ProductType = exports.ReplaceSkuProrationMode = exports.WindowOpenMode = exports.AnalyticsMode = exports.Config = exports.SubscriptionFlows = exports.Subscriptions = void 0;
 
-var _entitlements = require('./entitlements');
+var _entitlements = require("./entitlements");
 
-var _offer = require('./offer');
+var _offer = require("./offer");
 
-var _deferredAccountCreation = require('./deferred-account-creation');
+var _deferredAccountCreation = require("./deferred-account-creation");
 
-var _subscribeResponse = require('./subscribe-response');
+var _subscribeResponse = require("./subscribe-response");
 
-var _propensityApi = require('./propensity-api');
+var _propensityApi = require("./propensity-api");
 
-var _loggerApi = require('./logger-api');
+var _loggerApi = require("./logger-api");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * @interface
  */
-
-var Subscriptions = (function () {
+var Subscriptions =
+/*#__PURE__*/
+function () {
   function Subscriptions() {
-    babelHelpers.classCallCheck(this, Subscriptions);
+    _classCallCheck(this, Subscriptions);
   }
 
-  /** @enum {string} */
-
-  /**
-   * Optionally initializes the subscriptions runtime with publication or
-   * product ID. If not called, the runtime will look for the initialization
-   * parameters in the page's markup.
-   * @param {string} productOrPublicationId
-   */
-
-  Subscriptions.prototype.init = function init(productOrPublicationId) {};
-
-  /**
-   * Optionally configures the runtime with non-default properties. See
-   * `Config` definition for details.
-   * @param {!Config} config
-   */
-
-  Subscriptions.prototype.configure = function configure(config) {};
-
-  /**
-   * Starts the entitlement flow.
-   */
-
-  Subscriptions.prototype.start = function start() {};
-
-  /**
-   * Resets the entitlements that can be fetched again.
-   */
-
-  Subscriptions.prototype.reset = function reset() {};
-
-  /**
-   * Resets the entitlements and clears all of the caches.
-   */
-
-  Subscriptions.prototype.clear = function clear() {};
-
-  /**
-   * @param {?string=} opt_encryptedDocumentKey
-   * @return {!Promise<!Entitlements>}
-   */
-
-  Subscriptions.prototype.getEntitlements = function getEntitlements(opt_encryptedDocumentKey) {};
-
-  /**
-   * Set the subscribe callback.
-   * @param {function(!Promise<!Entitlements>)} callback
-   */
-
-  Subscriptions.prototype.setOnEntitlementsResponse = function setOnEntitlementsResponse(callback) {};
-
-  /**
-   * Returns a set of offers.
-   * @param {{
-   *   productId: (string|undefined),
-   * }=} opt_options
-   * @return {!Promise<!Array<!Offer>>}
-   */
-
-  Subscriptions.prototype.getOffers = function getOffers(opt_options) {};
-
-  /**
-   * Starts the Offers flow.
-   * @param {!OffersRequest=} opt_options
-   */
-
-  Subscriptions.prototype.showOffers = function showOffers(opt_options) {};
-
-  /**
-   * Starts the Offers flow for a subscription update.
-   * @param {!OffersRequest=} opt_options
-   */
-
-  Subscriptions.prototype.showUpdateOffers = function showUpdateOffers(opt_options) {};
-
-  /**
-   * Show subscription option.
-   * @param {!OffersRequest=} opt_options
-   */
-
-  Subscriptions.prototype.showSubscribeOption = function showSubscribeOption(opt_options) {};
-
-  /**
-   * Show abbreviated offers.
-   * @param {!OffersRequest=} opt_options
-   */
-
-  Subscriptions.prototype.showAbbrvOffer = function showAbbrvOffer(opt_options) {};
-
-  /**
-   * Show contribution options for the users to select from.
-   * The options are grouped together by periods (Weekly, Monthly, etc.).
-   * User can select the amount to contribute to from available options
-   * to the publisher. These options are based on the SKUs defined in the Play
-   * console for a given publication.
-   * Each SKU has Amount, Period, SKUId and other attributes.
-   * @param {!OffersRequest=} opt_options
-   */
-
-  Subscriptions.prototype.showContributionOptions = function showContributionOptions(opt_options) {};
-
-  /**
-   * Set the callback for the native subscribe request. Setting this callback
-   * triggers the "native" option in the offers flow.
-   * @param {function()} callback
-   */
-
-  Subscriptions.prototype.setOnNativeSubscribeRequest = function setOnNativeSubscribeRequest(callback) {};
-
-  /**
-   * Set the subscribe complete callback.
-   * @param {function(!Promise<!SubscribeResponse>)} callback
-   */
-
-  Subscriptions.prototype.setOnSubscribeResponse = function setOnSubscribeResponse(callback) {};
-
-  /**
-   * Starts subscription purchase flow.
-   * @param {string} sku
-   */
-
-  Subscriptions.prototype.subscribe = function subscribe(sku) {};
-
-  /**
-   * Starts subscription purchase flow.
-   * @param {SubscriptionRequest} subscriptionRequest
-   */
-
-  Subscriptions.prototype.updateSubscription = function updateSubscription(subscriptionRequest) {};
-
-  /**
-   * Set the contribution complete callback.
-   * @param {function(!Promise<!SubscribeResponse>)} callback
-   */
-
-  Subscriptions.prototype.setOnContributionResponse = function setOnContributionResponse(callback) {};
-
-  /**
-  * Starts contributions purchase flow.
-  * @param {string|SubscriptionRequest} skuOrSubscriptionRequest
-  */
-
-  Subscriptions.prototype.contribute = function contribute(skuOrSubscriptionRequest) {};
-
-  /**
-   * Starts the deferred account creation flow.
-   * See `DeferredAccountCreationRequest` for more details.
-   * @param {?DeferredAccountCreationRequest=} opt_options
-   * @return {!Promise<!DeferredAccountCreationResponse>}
-   */
-
-  Subscriptions.prototype.completeDeferredAccountCreation = function completeDeferredAccountCreation(opt_options) {};
-
-  /**
-   * @param {function(!LoginRequest)} callback
-   */
-
-  Subscriptions.prototype.setOnLoginRequest = function setOnLoginRequest(callback) {};
-
-  /**
-   * Starts the login prompt flow.
-   * @return {!Promise}
-   */
-
-  Subscriptions.prototype.showLoginPrompt = function showLoginPrompt() {};
-
-  /**
-   * Starts the login notification flow.
-   * @return {!Promise}
-   */
-
-  Subscriptions.prototype.showLoginNotification = function showLoginNotification() {};
-
-  /**
-   * @param {function()} callback
-   */
-
-  Subscriptions.prototype.setOnLinkComplete = function setOnLinkComplete(callback) {};
-
-  /**
-   * @param {!Promise} accountPromise Publisher's promise to lookup account.
-   * @return {!Promise}
-   */
-
-  Subscriptions.prototype.waitForSubscriptionLookup = function waitForSubscriptionLookup(accountPromise) {};
-
-  /**
-   * Starts the Account linking flow.
-   * TODO(dparikh): decide if it's only exposed for testing or PROD purposes.
-   */
-
-  Subscriptions.prototype.linkAccount = function linkAccount() {};
-
-  /**
-   * Notifies the client that a flow has been started. The name of the flow
-   * is passed as the callback argument. The flow name corresponds to the
-   * method name in this interface, such as "showOffers", or "subscribe".
-   * See `SubscriptionFlows` for the full list.
-   *
-   * Also see `setOnFlowCanceled` method.
-   *
-   * @param {function({flow: string, data: !Object})} callback
-   */
-
-  Subscriptions.prototype.setOnFlowStarted = function setOnFlowStarted(callback) {};
-
-  /**
-   * Notifies the client that a flow has been canceled. The name of the flow
-   * is passed as the callback argument. The flow name corresponds to the
-   * method name in this interface, such as "showOffers", or "subscribe".
-   * See `SubscriptionFlows` for the full list.
-   *
-   * Notice that some of the flows, such as "subscribe", could additionally
-   * have their own "cancel" events.
-   *
-   * Also see `setOnFlowStarted` method.
-   *
-   * @param {function({flow: string, data: !Object})} callback
-   */
-
-  Subscriptions.prototype.setOnFlowCanceled = function setOnFlowCanceled(callback) {};
-
-  /**
-   * Starts the save subscriptions flow.
-   * @param {!SaveSubscriptionRequestCallback} requestCallback
-   * @return {!Promise} a promise indicating flow is started
-   */
-
-  Subscriptions.prototype.saveSubscription = function saveSubscription(requestCallback) {};
-
-  /**
-   * Creates an element with the SwG button style and the provided callback.
-   * The default theme is "light".
-   *
-   * @param {!ButtonOptions|function()} optionsOrCallback
-   * @param {function()=} opt_callback
-   * @return {!Element}
-   */
-
-  Subscriptions.prototype.createButton = function createButton(optionsOrCallback, opt_callback) {};
-
-  /**
-   * Attaches the SwG button style and the provided callback to an existing
-   * DOM element. The default theme is "light".
-   *
-   * @param {!Element} button
-   * @param {!ButtonOptions|function()} optionsOrCallback
-   * @param {function()=} opt_callback
-   */
-
-  Subscriptions.prototype.attachButton = function attachButton(button, optionsOrCallback, opt_callback) {};
-
-  /**
-   * Attaches smartButton element and the provided callback.
-   * The default theme is "light".
-   *
-   * @param {!Element} button
-   * @param {!SmartButtonOptions|function()} optionsOrCallback
-   * @param {function()=} opt_callback
-   */
-
-  Subscriptions.prototype.attachSmartButton = function attachSmartButton(button, optionsOrCallback, opt_callback) {};
-
-  /**
-   * Retrieves the propensity module that provides APIs to
-   * get propensity scores based on user state and events
-   * @return {!Promise<PropensityApi>}
-   */
-
-  Subscriptions.prototype.getPropensityModule = function getPropensityModule() {};
-
-  /** @return {!Promise<LoggerApi>} */
-
-  Subscriptions.prototype.getLogger = function getLogger() {};
+  _createClass(Subscriptions, [{
+    key: "init",
+
+    /**
+     * Optionally initializes the subscriptions runtime with publication or
+     * product ID. If not called, the runtime will look for the initialization
+     * parameters in the page's markup.
+     * @param {string} productOrPublicationId
+     */
+    value: function init(productOrPublicationId) {}
+    /**
+     * Optionally configures the runtime with non-default properties. See
+     * `Config` definition for details.
+     * @param {!Config} config
+     */
+
+  }, {
+    key: "configure",
+    value: function configure(config) {}
+    /**
+     * Starts the entitlement flow.
+     */
+
+  }, {
+    key: "start",
+    value: function start() {}
+    /**
+     * Resets the entitlements that can be fetched again.
+     */
+
+  }, {
+    key: "reset",
+    value: function reset() {}
+    /**
+     * Resets the entitlements and clears all of the caches.
+     */
+
+  }, {
+    key: "clear",
+    value: function clear() {}
+    /**
+     * @param {?string=} encryptedDocumentKey
+     * @return {!Promise<!Entitlements>}
+     */
+
+  }, {
+    key: "getEntitlements",
+    value: function getEntitlements(encryptedDocumentKey) {}
+    /**
+     * Set the subscribe callback.
+     * @param {function(!Promise<!Entitlements>)} callback
+     */
+
+  }, {
+    key: "setOnEntitlementsResponse",
+    value: function setOnEntitlementsResponse(callback) {}
+    /**
+     * Returns a set of offers.
+     * @param {{
+     *   productId: (string|undefined),
+     * }=} options
+     * @return {!Promise<!Array<!Offer>>}
+     */
+
+  }, {
+    key: "getOffers",
+    value: function getOffers(options) {}
+    /**
+     * Starts the Offers flow.
+     * @param {!OffersRequest=} options
+     */
+
+  }, {
+    key: "showOffers",
+    value: function showOffers(options) {}
+    /**
+     * Starts the Offers flow for a subscription update.
+     * @param {!OffersRequest=} options
+     */
+
+  }, {
+    key: "showUpdateOffers",
+    value: function showUpdateOffers(options) {}
+    /**
+     * Show subscription option.
+     * @param {!OffersRequest=} options
+     */
+
+  }, {
+    key: "showSubscribeOption",
+    value: function showSubscribeOption(options) {}
+    /**
+     * Show abbreviated offers.
+     * @param {!OffersRequest=} options
+     */
+
+  }, {
+    key: "showAbbrvOffer",
+    value: function showAbbrvOffer(options) {}
+    /**
+     * Show contribution options for the users to select from.
+     * The options are grouped together by periods (Weekly, Monthly, etc.).
+     * User can select the amount to contribute to from available options
+     * to the publisher. These options are based on the SKUs defined in the Play
+     * console for a given publication.
+     * Each SKU has Amount, Period, SKUId and other attributes.
+     * @param {!OffersRequest=} options
+     */
+
+  }, {
+    key: "showContributionOptions",
+    value: function showContributionOptions(options) {}
+    /**
+     * Set the callback for the native subscribe request. Setting this callback
+     * triggers the "native" option in the offers flow.
+     * @param {function()} callback
+     */
+
+  }, {
+    key: "setOnNativeSubscribeRequest",
+    value: function setOnNativeSubscribeRequest(callback) {}
+    /**
+     * Set the subscribe complete callback.
+     * @param {function(!Promise<!SubscribeResponse>)} callback
+     */
+
+  }, {
+    key: "setOnSubscribeResponse",
+    value: function setOnSubscribeResponse(callback) {}
+    /**
+     * Starts subscription purchase flow.
+     * @param {string} sku
+     */
+
+  }, {
+    key: "subscribe",
+    value: function subscribe(sku) {}
+    /**
+     * Starts subscription purchase flow.
+     * @param {SubscriptionRequest} subscriptionRequest
+     */
+
+  }, {
+    key: "updateSubscription",
+    value: function updateSubscription(subscriptionRequest) {}
+    /**
+     * Set the contribution complete callback.
+     * @param {function(!Promise<!SubscribeResponse>)} callback
+     */
+
+  }, {
+    key: "setOnContributionResponse",
+    value: function setOnContributionResponse(callback) {}
+    /**
+     * Set the payment complete callback.
+     * @param {function(!Promise<!SubscribeResponse>)} callback
+     */
+
+  }, {
+    key: "setOnPaymentResponse",
+    value: function setOnPaymentResponse(callback) {}
+    /**
+     * Starts contributions purchase flow.
+     * @param {string|SubscriptionRequest} skuOrSubscriptionRequest
+     */
+
+  }, {
+    key: "contribute",
+    value: function contribute(skuOrSubscriptionRequest) {}
+    /**
+     * Starts the deferred account creation flow.
+     * See `DeferredAccountCreationRequest` for more details.
+     * @param {?DeferredAccountCreationRequest=} options
+     * @return {!Promise<!DeferredAccountCreationResponse>}
+     */
+
+  }, {
+    key: "completeDeferredAccountCreation",
+    value: function completeDeferredAccountCreation(options) {}
+    /**
+     * @param {function(!LoginRequest)} callback
+     */
+
+  }, {
+    key: "setOnLoginRequest",
+    value: function setOnLoginRequest(callback) {}
+    /**
+     * Starts the login prompt flow.
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "showLoginPrompt",
+    value: function showLoginPrompt() {}
+    /**
+     * Starts the login notification flow.
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "showLoginNotification",
+    value: function showLoginNotification() {}
+    /**
+     * @param {function()} callback
+     */
+
+  }, {
+    key: "setOnLinkComplete",
+    value: function setOnLinkComplete(callback) {}
+    /**
+     * @param {!Promise} accountPromise Publisher's promise to lookup account.
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "waitForSubscriptionLookup",
+    value: function waitForSubscriptionLookup(accountPromise) {}
+    /**
+     * Starts the Account linking flow.
+     * TODO(dparikh): decide if it's only exposed for testing or PROD purposes.
+     * @param {{ampReaderId: (string|undefined)}=} params
+     */
+
+  }, {
+    key: "linkAccount",
+    value: function linkAccount(params) {}
+    /**
+     * Notifies the client that a flow has been started. The name of the flow
+     * is passed as the callback argument. The flow name corresponds to the
+     * method name in this interface, such as "showOffers", or "subscribe".
+     * See `SubscriptionFlows` for the full list.
+     *
+     * Also see `setOnFlowCanceled` method.
+     *
+     * @param {function({flow: string, data: !Object})} callback
+     */
+
+  }, {
+    key: "setOnFlowStarted",
+    value: function setOnFlowStarted(callback) {}
+    /**
+     * Notifies the client that a flow has been canceled. The name of the flow
+     * is passed as the callback argument. The flow name corresponds to the
+     * method name in this interface, such as "showOffers", or "subscribe".
+     * See `SubscriptionFlows` for the full list.
+     *
+     * Notice that some of the flows, such as "subscribe", could additionally
+     * have their own "cancel" events.
+     *
+     * Also see `setOnFlowStarted` method.
+     *
+     * @param {function({flow: string, data: !Object})} callback
+     */
+
+  }, {
+    key: "setOnFlowCanceled",
+    value: function setOnFlowCanceled(callback) {}
+    /**
+     * Starts the save subscriptions flow.
+     * @param {!SaveSubscriptionRequestCallback} requestCallback
+     * @return {!Promise} a promise indicating flow is started
+     */
+
+  }, {
+    key: "saveSubscription",
+    value: function saveSubscription(requestCallback) {}
+    /**
+     * Creates an element with the SwG button style and the provided callback.
+     * The default theme is "light".
+     *
+     * @param {!ButtonOptions|function()} optionsOrCallback
+     * @param {function()=} callback
+     * @return {!Element}
+     */
+
+  }, {
+    key: "createButton",
+    value: function createButton(optionsOrCallback, callback) {}
+    /**
+     * Attaches the SwG button style and the provided callback to an existing
+     * DOM element. The default theme is "light".
+     *
+     * @param {!Element} button
+     * @param {!ButtonOptions|function()} optionsOrCallback
+     * @param {function()=} callback
+     */
+
+  }, {
+    key: "attachButton",
+    value: function attachButton(button, optionsOrCallback, callback) {}
+    /**
+     * Attaches smartButton element and the provided callback.
+     * The default theme is "light".
+     *
+     * @param {!Element} button
+     * @param {!SmartButtonOptions|function()} optionsOrCallback
+     * @param {function()=} callback
+     */
+
+  }, {
+    key: "attachSmartButton",
+    value: function attachSmartButton(button, optionsOrCallback, callback) {}
+    /**
+     * Retrieves the propensity module that provides APIs to
+     * get propensity scores based on user state and events
+     * @return {!Promise<PropensityApi>}
+     */
+
+  }, {
+    key: "getPropensityModule",
+    value: function getPropensityModule() {}
+    /** @return {!Promise<LoggerApi>} */
+
+  }, {
+    key: "getLogger",
+    value: function getLogger() {}
+  }]);
 
   return Subscriptions;
-})();
+}();
+/** @enum {string} */
+
 
 exports.Subscriptions = Subscriptions;
 var SubscriptionFlows = {
@@ -3784,8 +3964,6 @@ var SubscriptionFlows = {
   SHOW_LOGIN_PROMPT: 'showLoginPrompt',
   SHOW_LOGIN_NOTIFICATION: 'showLoginNotification'
 };
-
-exports.SubscriptionFlows = SubscriptionFlows;
 /**
  * Configuration properties:
  * - windowOpenMode - either "auto" or "redirect". The "redirect" value will
@@ -3808,38 +3986,38 @@ exports.SubscriptionFlows = SubscriptionFlows;
  *   enablePropensity: (boolean|undefined),
  * }}
  */
-var Config = undefined;
 
-exports.Config = Config;
+exports.SubscriptionFlows = SubscriptionFlows;
+var Config;
 /**
  * @enum {number}
  */
+
+exports.Config = Config;
 var AnalyticsMode = {
   DEFAULT: 0,
   IMPRESSIONS: 1
 };
-
-exports.AnalyticsMode = AnalyticsMode;
 /**
  * @enum {string}
  */
+
+exports.AnalyticsMode = AnalyticsMode;
 var WindowOpenMode = {
   AUTO: 'auto',
   REDIRECT: 'redirect'
 };
-
-exports.WindowOpenMode = WindowOpenMode;
 /**
  * @enum {string}
  */
+
+exports.WindowOpenMode = WindowOpenMode;
 var ReplaceSkuProrationMode = {
   // The replacement takes effect immediately, and the remaining time will
   // be prorated and credited to the user. This is the current default
   // behavior.
   IMMEDIATE_WITH_TIME_PRORATION: 'IMMEDIATE_WITH_TIME_PRORATION'
 };
-
-exports.ReplaceSkuProrationMode = ReplaceSkuProrationMode;
 /**
  * The Offers/Contributions UI is rendered differently based on the
  * ProductType. The ProductType parameter is passed to the Payments flow, and
@@ -3847,15 +4025,17 @@ exports.ReplaceSkuProrationMode = ReplaceSkuProrationMode;
  * based on the ProductType.
  * @enum {string}
  */
+
+exports.ReplaceSkuProrationMode = ReplaceSkuProrationMode;
 var ProductType = {
   SUBSCRIPTION: 'SUBSCRIPTION',
   UI_CONTRIBUTION: 'UI_CONTRIBUTION'
 };
-
-exports.ProductType = ProductType;
 /**
  * @return {!Config}
  */
+
+exports.ProductType = ProductType;
 
 function defaultConfig() {
   return {
@@ -3865,7 +4045,6 @@ function defaultConfig() {
     enablePropensity: false
   };
 }
-
 /**
  * Properties:
  * - skus - a list of SKUs to return from the defined or default list. The
@@ -3880,17 +4059,17 @@ function defaultConfig() {
  *   isClosable: (boolean|undefined),
  * }}
  */
-var OffersRequest = undefined;
 
-exports.OffersRequest = OffersRequest;
+
+var OffersRequest;
 /**
  * @typedef {{
  *   linkRequested: boolean,
  * }}
  */
-var LoginRequest = undefined;
 
-exports.LoginRequest = LoginRequest;
+exports.OffersRequest = OffersRequest;
+var LoginRequest;
 /**
  * Properties:
  * - one and only one of "token" or "authCode"
@@ -3901,18 +4080,18 @@ exports.LoginRequest = LoginRequest;
  *   authCode: (string|undefined),
  * }}
  */
-var SaveSubscriptionRequest = undefined;
 
-exports.SaveSubscriptionRequest = SaveSubscriptionRequest;
+exports.LoginRequest = LoginRequest;
+var SaveSubscriptionRequest;
 /**
  * Callback for retrieving subscription request
  *
  * @callback SaveSubscriptionRequestCallback
  * @return {!Promise<SaveSubscriptionRequest> | !SaveSubscriptionRequest} request
  */
-var SaveSubscriptionRequestCallback = undefined;
 
-exports.SaveSubscriptionRequestCallback = SaveSubscriptionRequestCallback;
+exports.SaveSubscriptionRequest = SaveSubscriptionRequest;
+var SaveSubscriptionRequestCallback;
 /**
  * Properties:
  * - lang: Sets the button SVG and title. Default is "en".
@@ -3923,9 +4102,9 @@ exports.SaveSubscriptionRequestCallback = SaveSubscriptionRequestCallback;
  *   lang: (string|undefined),
  * }}
  */
-var ButtonOptions = undefined;
 
-exports.ButtonOptions = ButtonOptions;
+exports.SaveSubscriptionRequestCallback = SaveSubscriptionRequestCallback;
+var ButtonOptions;
 /**
  * Properties:
  * - lang: Sets the button SVG and title. Default is "en".
@@ -3938,9 +4117,9 @@ exports.ButtonOptions = ButtonOptions;
  *   messageTextColor: (string|undefined),
  * }}
  */
-var SmartButtonOptions = undefined;
 
-exports.SmartButtonOptions = SmartButtonOptions;
+exports.ButtonOptions = ButtonOptions;
+var SmartButtonOptions;
 /**
  * Properties:
  * - sku: Required. Sku to add to the user's subscriptions.
@@ -3949,18 +4128,35 @@ exports.SmartButtonOptions = SmartButtonOptions;
  * - prorationMode: Optional. When replacing a subscription you can decide on a
  *  specific proration mode to charge the user.
  *  The default is IMMEDIATE_WITH_TIME_PRORATION.
+ * - oneTime: Optional. When a user chooses a contribution, they have the option
+ *  to make it non-recurring.
  *
  *  @typedef {{
  *    skuId: string,
  *    oldSku: (string|undefined),
  *    replaceSkuProrationMode: (ReplaceSkuProrationMode|undefined),
+ *    oneTime: (boolean|undefined),
  * }}
  */
-var SubscriptionRequest = undefined;
+
+exports.SmartButtonOptions = SmartButtonOptions;
+var SubscriptionRequest;
 exports.SubscriptionRequest = SubscriptionRequest;
 
 },{"./deferred-account-creation":6,"./entitlements":7,"./logger-api":8,"./offer":9,"./propensity-api":10,"./subscribe-response":11}],13:[function(require,module,exports){
-exports.__esModule = true;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.UserData = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -3979,690 +4175,811 @@ exports.__esModule = true;
 
 /**
  */
-
-var UserData = (function () {
-
+var UserData =
+/*#__PURE__*/
+function () {
   /**
    * @param {string} idToken
    * @param {!Object} data
    */
-
   function UserData(idToken, data) {
-    babelHelpers.classCallCheck(this, UserData);
+    _classCallCheck(this, UserData);
 
     /** @const {string} */
     this.idToken = idToken;
     /** @const {!Object} */
-    this.data = data;
 
+    this.data = data;
     /** @const {string} */
+
     this.id = data['sub'];
     /** @const {string} */
+
     this.email = data['email'];
     /** @const {boolean} */
+
     this.emailVerified = data['email_verified'];
     /** @const {string} */
+
     this.name = data['name'];
     /** @const {string} */
+
     this.givenName = data['given_name'];
     /** @const {string} */
+
     this.familyName = data['family_name'];
     /** @const {string} */
+
     this.pictureUrl = data['picture'];
   }
-
   /**
    * @return {!UserData}
    */
 
-  UserData.prototype.clone = function clone() {
-    return new UserData(this.idToken, this.data);
-  };
 
-  /**
-   * @return {!Object}
-   */
+  _createClass(UserData, [{
+    key: "clone",
+    value: function clone() {
+      return new UserData(this.idToken, this.data);
+    }
+    /**
+     * @return {!Object}
+     */
 
-  UserData.prototype.json = function json() {
-    return {
-      'id': this.id,
-      'email': this.email,
-      'emailVerified': this.emailVerified,
-      'name': this.name,
-      'givenName': this.givenName,
-      'familyName': this.familyName,
-      'pictureUrl': this.pictureUrl
-    };
-  };
+  }, {
+    key: "json",
+    value: function json() {
+      return {
+        'id': this.id,
+        'email': this.email,
+        'emailVerified': this.emailVerified,
+        'name': this.name,
+        'givenName': this.givenName,
+        'familyName': this.familyName,
+        'pictureUrl': this.pictureUrl
+      };
+    }
+  }]);
 
   return UserData;
-})();
+}();
 
 exports.UserData = UserData;
 
 },{}],14:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+"use strict";
 
-var _protoApi_messages = require('../proto/api_messages');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ActivityPorts = exports.ActivityIframePort = exports.ActivityPort = exports.ActivityPortDef = void 0;
 
-var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+var _activityPorts = require("web-activities/activity-ports");
+
+var _api_messages = require("../proto/api_messages");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * @interface
  */
-
-var ActivityPortDef = (function () {
+var ActivityPortDef =
+/*#__PURE__*/
+function () {
   function ActivityPortDef() {
-    babelHelpers.classCallCheck(this, ActivityPortDef);
+    _classCallCheck(this, ActivityPortDef);
   }
 
-  /**
-   * @interface
-   */
+  _createClass(ActivityPortDef, [{
+    key: "acceptResult",
 
-  /**
-   * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
-   */
-
-  ActivityPortDef.prototype.acceptResult = function acceptResult() {};
+    /**
+     * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
+     */
+    value: function acceptResult() {}
+  }]);
 
   return ActivityPortDef;
-})();
+}();
+/**
+ * @interface
+ */
+
 
 exports.ActivityPortDef = ActivityPortDef;
 
-var ActivityPort = (function (_ActivityPortDef) {
-  babelHelpers.inherits(ActivityPort, _ActivityPortDef);
+var ActivityPort =
+/*#__PURE__*/
+function (_ActivityPortDef) {
+  _inherits(ActivityPort, _ActivityPortDef);
 
   function ActivityPort() {
-    babelHelpers.classCallCheck(this, ActivityPort);
+    _classCallCheck(this, ActivityPort);
 
-    _ActivityPortDef.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(ActivityPort).apply(this, arguments));
   }
 
-  /**
-   * @implements {ActivityPortDef}
-   */
+  _createClass(ActivityPort, [{
+    key: "getMode",
 
-  /**
-   * Returns the mode of the activity: iframe, popup or redirect.
-   * @return {!web-activities/activity-ports.ActivityMode}
-   */
+    /**
+     * Returns the mode of the activity: iframe, popup or redirect.
+     * @return {!web-activities/activity-ports.ActivityMode}
+     */
+    value: function getMode() {}
+    /**
+     * Accepts the result when ready. The client should verify the activity's
+     * mode, origin, verification and secure channel flags before deciding
+     * whether or not to trust the result.
+     *
+     * Returns the promise that yields when the activity has been completed and
+     * either a result, a cancelation or a failure has been returned.
+     *
+     * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
+     * @override
+     */
 
-  ActivityPort.prototype.getMode = function getMode() {};
+  }, {
+    key: "acceptResult",
+    value: function acceptResult() {}
+    /**
+     * Returns a promise that yields when the iframe is ready to be interacted
+     * with.
+     * @return {!Promise}
+     */
 
-  /**
-   * Accepts the result when ready. The client should verify the activity's
-   * mode, origin, verification and secure channel flags before deciding
-   * whether or not to trust the result.
-   *
-   * Returns the promise that yields when the activity has been completed and
-   * either a result, a cancelation or a failure has been returned.
-   *
-   * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
-   * @override
-   */
+  }, {
+    key: "whenReady",
+    value: function whenReady() {}
+    /**
+     * Waits until the activity port is connected to the host.
+     * @return {!Promise}
+     */
 
-  ActivityPort.prototype.acceptResult = function acceptResult() {};
+  }, {
+    key: "connect",
+    value: function connect() {}
+    /**
+     * Disconnect the activity binding and cleanup listeners.
+     */
 
-  /**
-   * Returns a promise that yields when the iframe is ready to be interacted
-   * with.
-   * @return {!Promise}
-   */
+  }, {
+    key: "disconnect",
+    value: function disconnect() {}
+    /**
+     * Register a callback to handle resize requests. Once successfully resized,
+     * ensure to call `resized()` method.
+     * @param {function(number)} unusedCallback
+     */
 
-  ActivityPort.prototype.whenReady = function whenReady() {};
+  }, {
+    key: "onResizeRequest",
+    value: function onResizeRequest(unusedCallback) {}
+    /**
+     * @param {!../proto/api_messages.Message} unusedRequest
+     */
 
-  /**
-   * Waits until the activity port is connected to the host.
-   * @return {!Promise}
-   */
+  }, {
+    key: "execute",
+    value: function execute(unusedRequest) {}
+    /**
+     * @param {!function(new: T)} unusedMessage
+     * @param {function(Object)} unusedCallback
+     * @template T
+     */
 
-  ActivityPort.prototype.connect = function connect() {};
+  }, {
+    key: "on",
+    value: function on(unusedMessage, unusedCallback) {}
+    /**
+     * Signals back to the activity implementation that the client has updated
+     * the activity's size.
+     */
 
-  /**
-   * Disconnect the activity binding and cleanup listeners.
-   */
-
-  ActivityPort.prototype.disconnect = function disconnect() {};
-
-  /**
-   * Register a callback to handle resize requests. Once successfully resized,
-   * ensure to call `resized()` method.
-   * @param {function(number)} unusedCallback
-   */
-
-  ActivityPort.prototype.onResizeRequest = function onResizeRequest(unusedCallback) {};
-
-  /**
-   * @param {!../proto/api_messages.Message} unusedRequest
-   */
-
-  ActivityPort.prototype.execute = function execute(unusedRequest) {};
-
-  /**
-   * @param {!function(new: T)} unusedMessage
-   * @param {function(Object)} unusedCallback
-   * @template T
-   */
-
-  ActivityPort.prototype.on = function on(unusedMessage, unusedCallback) {};
-
-  /**
-   * Signals back to the activity implementation that the client has updated
-   * the activity's size.
-   */
-
-  ActivityPort.prototype.resized = function resized() {};
+  }, {
+    key: "resized",
+    value: function resized() {}
+  }]);
 
   return ActivityPort;
-})(ActivityPortDef);
+}(ActivityPortDef);
+/**
+ * @implements {ActivityPortDef}
+ */
+
 
 exports.ActivityPort = ActivityPort;
 
-var ActivityPortDeprecated = (function () {
+var ActivityPortDeprecated =
+/*#__PURE__*/
+function () {
   /**
    * @param {!web-activities/activity-ports.ActivityPort} port
    */
-
   function ActivityPortDeprecated(port) {
-    babelHelpers.classCallCheck(this, ActivityPortDeprecated);
+    _classCallCheck(this, ActivityPortDeprecated);
 
     /** @private @const {!web-activities/activity-ports.ActivityPort} */
     this.port_ = port;
   }
-
-  /**
-   * @implements {ActivityPortDef}
-   */
-
   /**
    * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
    */
 
-  ActivityPortDeprecated.prototype.acceptResult = function acceptResult() {
-    return this.port_.acceptResult();
-  };
+
+  _createClass(ActivityPortDeprecated, [{
+    key: "acceptResult",
+    value: function acceptResult() {
+      return this.port_.acceptResult();
+    }
+  }]);
 
   return ActivityPortDeprecated;
-})();
+}();
+/**
+ * @implements {ActivityPortDef}
+ */
 
-var ActivityIframePort = (function () {
+
+var ActivityIframePort =
+/*#__PURE__*/
+function () {
   /**
    * @param {!HTMLIFrameElement} iframe
    * @param {string} url
-   * @param {?Object=} opt_args
+   * @param {?Object=} args
    */
-
-  function ActivityIframePort(iframe, url, opt_args) {
-    babelHelpers.classCallCheck(this, ActivityIframePort);
+  function ActivityIframePort(iframe, url, args) {
+    _classCallCheck(this, ActivityIframePort);
 
     /** @private @const {!web-activities/activity-ports.ActivityIframePort} */
-    this.iframePort_ = new _webActivitiesActivityPorts.ActivityIframePort(iframe, url, opt_args);
+    this.iframePort_ = new _activityPorts.ActivityIframePort(iframe, url, args);
     /** @private @const {!Object<string, function(!Object)>} */
+
     this.callbackMap_ = {};
     /** @private {?function(!../proto/api_messages.Message)} */
+
     this.callbackOriginal_ = null;
   }
-
   /**
    * Returns a promise that yields when the iframe is ready to be interacted
    * with.
    * @return {!Promise}
    */
 
-  ActivityIframePort.prototype.whenReady = function whenReady() {
-    return this.iframePort_.whenReady();
-  };
 
-  /**
-   * Waits until the activity port is connected to the host.
-   * @return {!Promise}
-   */
-
-  ActivityIframePort.prototype.connect = function connect() {
-    var _this = this;
-
-    return this.iframePort_.connect().then(function () {
-      // Attach a callback to receive messages after connection complete
-      _this.iframePort_.onMessage(function (data) {
-        if (_this.callbackOriginal_) {
-          _this.callbackOriginal_(data);
-        }
-        var response = data && data['RESPONSE'];
-        if (!response) {
-          return;
-        }
-        var cb = _this.callbackMap_[response[0]];
-        if (cb) {
-          cb(_protoApi_messages.deserialize(response));
-        }
-      });
-    });
-  };
-
-  /**
-   * Disconnect the activity binding and cleanup listeners.
-   */
-
-  ActivityIframePort.prototype.disconnect = function disconnect() {
-    this.iframePort_.disconnect();
-  };
-
-  /**
-   * Returns the mode of the activity: iframe, popup or redirect.
-   * @return {!web-activities/activity-ports.ActivityMode}
-   */
-
-  ActivityIframePort.prototype.getMode = function getMode() {
-    return this.iframePort_.getMode();
-  };
-
-  /**
-   * Accepts the result when ready. The client should verify the activity's
-   * mode, origin, verification and secure channel flags before deciding
-   * whether or not to trust the result.
-   *
-   * Returns the promise that yields when the activity has been completed and
-   * either a result, a cancelation or a failure has been returned.
-   *
-   * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
-   * @override
-   */
-
-  ActivityIframePort.prototype.acceptResult = function acceptResult() {
-    return this.iframePort_.acceptResult();
-  };
-
-  /**
-   * Register a callback to handle resize requests. Once successfully resized,
-   * ensure to call `resized()` method.
-   * @param {function(number)} callback
-   */
-
-  ActivityIframePort.prototype.onResizeRequest = function onResizeRequest(callback) {
-    return this.iframePort_.onResizeRequest(callback);
-  };
-
-  /**
-   * @param {!../proto/api_messages.Message} request
-   */
-
-  ActivityIframePort.prototype.execute = function execute(request) {
-    this.iframePort_.message({ 'REQUEST': request.toArray() });
-  };
-
-  /**
-   * @param {!function(new: T)} message
-   * @param {function(!../proto/api_messages.Message)} callback
-   * @template T
-   */
-
-  ActivityIframePort.prototype.on = function on(message, callback) {
-    var label = _protoApi_messages.getLabel(message);
-    if (!label) {
-      throw new Error('Invalid data type');
-    } else if (this.callbackMap_[label]) {
-      throw new Error('Invalid type or duplicate callback for ', label);
+  _createClass(ActivityIframePort, [{
+    key: "whenReady",
+    value: function whenReady() {
+      return this.iframePort_.whenReady();
     }
-    this.callbackMap_[label] = callback;
-  };
+    /**
+     * Waits until the activity port is connected to the host.
+     * @return {!Promise}
+     */
 
-  /**
-   * Signals back to the activity implementation that the client has updated
-   * the activity's size.
-   */
+  }, {
+    key: "connect",
+    value: function connect() {
+      var _this = this;
 
-  ActivityIframePort.prototype.resized = function resized() {
-    this.iframePort_.resized();
-  };
+      return this.iframePort_.connect().then(function () {
+        // Attach a callback to receive messages after connection complete
+        _this.iframePort_.onMessage(function (data) {
+          if (_this.callbackOriginal_) {
+            _this.callbackOriginal_(data);
+          }
+
+          var response = data && data['RESPONSE'];
+
+          if (!response) {
+            return;
+          }
+
+          var cb = _this.callbackMap_[response[0]];
+
+          if (cb) {
+            cb((0, _api_messages.deserialize)(response));
+          }
+        });
+      });
+    }
+    /**
+     * Disconnect the activity binding and cleanup listeners.
+     */
+
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      this.iframePort_.disconnect();
+    }
+    /**
+     * Returns the mode of the activity: iframe, popup or redirect.
+     * @return {!web-activities/activity-ports.ActivityMode}
+     */
+
+  }, {
+    key: "getMode",
+    value: function getMode() {
+      return this.iframePort_.getMode();
+    }
+    /**
+     * Accepts the result when ready. The client should verify the activity's
+     * mode, origin, verification and secure channel flags before deciding
+     * whether or not to trust the result.
+     *
+     * Returns the promise that yields when the activity has been completed and
+     * either a result, a cancelation or a failure has been returned.
+     *
+     * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
+     * @override
+     */
+
+  }, {
+    key: "acceptResult",
+    value: function acceptResult() {
+      return this.iframePort_.acceptResult();
+    }
+    /**
+     * Register a callback to handle resize requests. Once successfully resized,
+     * ensure to call `resized()` method.
+     * @param {function(number)} callback
+     */
+
+  }, {
+    key: "onResizeRequest",
+    value: function onResizeRequest(callback) {
+      return this.iframePort_.onResizeRequest(callback);
+    }
+    /**
+     * @param {!../proto/api_messages.Message} request
+     */
+
+  }, {
+    key: "execute",
+    value: function execute(request) {
+      this.iframePort_.message({
+        'REQUEST': request.toArray()
+      });
+    }
+    /**
+     * @param {!function(new: T)} message
+     * @param {function(!../proto/api_messages.Message)} callback
+     * @template T
+     */
+
+  }, {
+    key: "on",
+    value: function on(message, callback) {
+      var label = (0, _api_messages.getLabel)(message);
+
+      if (!label) {
+        throw new Error('Invalid data type');
+      } else if (this.callbackMap_[label]) {
+        throw new Error('Invalid type or duplicate callback for ', label);
+      }
+
+      this.callbackMap_[label] = callback;
+    }
+    /**
+     * Signals back to the activity implementation that the client has updated
+     * the activity's size.
+     */
+
+  }, {
+    key: "resized",
+    value: function resized() {
+      this.iframePort_.resized();
+    }
+  }]);
 
   return ActivityIframePort;
-})();
+}();
 
 exports.ActivityIframePort = ActivityIframePort;
 
-var ActivityPorts = (function () {
+var ActivityPorts =
+/*#__PURE__*/
+function () {
   /**
-   * @param {!Window} win
+   * @param {!../runtime/deps.DepsDef} deps
    */
+  function ActivityPorts(deps) {
+    _classCallCheck(this, ActivityPorts);
 
-  function ActivityPorts(win) {
-    babelHelpers.classCallCheck(this, ActivityPorts);
-
+    /** @private @const {!../runtime/deps.DepsDef} */
+    this.deps_ = deps;
     /** @private @const {!web-activities/activity-ports.ActivityPorts} */
-    this.activityPorts_ = new _webActivitiesActivityPorts.ActivityPorts(win);
+
+    this.activityPorts_ = new _activityPorts.ActivityPorts(deps.win());
   }
-
   /**
-   * Start an activity within the specified iframe.
-   * @param {!HTMLIFrameElement} iframe
-   * @param {string} url
-   * @param {?Object=} opt_args
-   * @return {!Promise<!ActivityIframePort>}
+   * Adds client version, publication, product and logging context information.
+   * @param {?Object=} args
+   * @return {!Object}
    */
 
-  ActivityPorts.prototype.openIframe = function openIframe(iframe, url, opt_args) {
-    var activityPort = new ActivityIframePort(iframe, url, opt_args);
-    return activityPort.connect().then(function () {
-      return activityPort;
-    });
-  };
 
-  /**
-   * Start an activity in a separate window. The result will be delivered
-   * to the `onResult` callback.
-   *
-   * The activity can be opened in two modes: "popup" and "redirect". This
-   * depends on the `target` value, but also on the browser/environment.
-   *
-   * The allowed `target` values are `_blank`, `_top` and name targets. The
-   * `_self`, `_parent` and similar targets are not allowed.
-   *
-   * The `_top` target indicates that the activity should be opened as a
-   * "redirect", while other targets indicate that the activity should be
-   * opened as a popup. The activity client will try to honor the requested
-   * target. However, it's not always possible. Some environments do not
-   * allow popups and they either force redirect or fail the window open
-   * request. In this case, the activity will try to fallback to the "redirect"
-   * mode.
-   *
-   * @param {string} requestId
-   * @param {string} url
-   * @param {string} target
-   * @param {?Object=} opt_args
-   * @param {?web-activities/activity-ports.ActivityOpenOptions=} opt_options
-   * @return {{targetWin: ?Window}}
-   */
+  _createClass(ActivityPorts, [{
+    key: "addDefaultArguments",
+    value: function addDefaultArguments(args) {
+      var deps = this.deps_;
+      var pageConfig = deps.pageConfig();
+      var context = deps.analytics().getContext();
+      return Object.assign({
+        'analyticsContext': context.toArray(),
+        'publicationId': pageConfig.getPublicationId(),
+        'productId': pageConfig.getProductId(),
+        '_client': 'SwG 0.1.22-1576261074655'
+      }, args || {});
+    }
+    /*
+     * Start an activity within the specified iframe.
+     * @param {!HTMLIFrameElement} iframe
+     * @param {string} url
+     * @param {?Object=} args
+     * @return {!Promise<!ActivityIframePort>}
+     */
 
-  ActivityPorts.prototype.open = function open(requestId, url, target, opt_args, opt_options) {
-    return this.activityPorts_.open(requestId, url, target, opt_args, opt_options);
-  };
+  }, {
+    key: "openActivityIframePort_",
+    value: function openActivityIframePort_(iframe, url, args) {
+      var activityPort = new ActivityIframePort(iframe, url, args);
+      return activityPort.connect().then(function () {
+        return activityPort;
+      });
+    }
+    /**
+     * Start an activity within the specified iframe.
+     * @param {!HTMLIFrameElement} iframe
+     * @param {string} url
+     * @param {?Object=} args
+     * @param {boolean=} addDefaultArguments
+     * @return {!Promise<!ActivityIframePort>}
+     */
 
-  /**
-   * Registers the callback for the result of the activity opened with the
-   * specified `requestId` (see the `open()` method). The callback is a
-   * function that takes a single `ActivityPort` argument. The client
-   * can use this object to verify the port using it's origin, verified and
-   * secure channel flags. Then the client can call
-   * `ActivityPort.acceptResult()` method to accept the result.
-   *
-   * The activity result is handled via a separate callback because of a
-   * possible redirect. So use of direct callbacks and/or promises is not
-   * possible in that case.
-   *
-   * A typical implementation would look like:
-   * ```
-   * ports.onResult('request1', function(port) {
-   *   port.acceptResult().then(function(result) {
-   *     // Only verified origins are allowed.
-   *     if (result.origin == expectedOrigin &&
-   *         result.originVerified &&
-   *         result.secureChannel) {
-   *       handleResultForRequest1(result);
-   *     }
-   *   });
-   * })
-   *
-   * ports.open('request1', request1Url, '_blank');
-   * ```
-   *
-   * @param {string} requestId
-   * @param {function(!ActivityPortDef)} callback
-   */
+  }, {
+    key: "openIframe",
+    value: function openIframe(iframe, url, args) {
+      var addDefaultArguments = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
-  ActivityPorts.prototype.onResult = function onResult(requestId, callback) {
-    this.activityPorts_.onResult(requestId, function (port) {
-      callback(new ActivityPortDeprecated(port));
-    });
-  };
+      if (addDefaultArguments) {
+        args = this.addDefaultArguments(args);
+      }
 
-  /**
-   * @param {function(!Error)} handler
-   */
+      return this.openActivityIframePort_(iframe, url, args);
+    }
+    /**
+     * Start an activity in a separate window. The result will be delivered
+     * to the `onResult` callback.
+     *
+     * The activity can be opened in two modes: "popup" and "redirect". This
+     * depends on the `target` value, but also on the browser/environment.
+     *
+     * The allowed `target` values are `_blank`, `_top` and name targets. The
+     * `_self`, `_parent` and similar targets are not allowed.
+     *
+     * The `_top` target indicates that the activity should be opened as a
+     * "redirect", while other targets indicate that the activity should be
+     * opened as a popup. The activity client will try to honor the requested
+     * target. However, it's not always possible. Some environments do not
+     * allow popups and they either force redirect or fail the window open
+     * request. In this case, the activity will try to fallback to the "redirect"
+     * mode.
+     *
+     * @param {string} requestId
+     * @param {string} url
+     * @param {string} target
+     * @param {?Object=} args
+     * @param {?web-activities/activity-ports.ActivityOpenOptions=} options
+     * @param {boolean=} addDefaultArguments
+     * @return {{targetWin: ?Window}}
+     */
 
-  ActivityPorts.prototype.onRedirectError = function onRedirectError(handler) {
-    this.activityPorts_.onRedirectError(handler);
-  };
+  }, {
+    key: "open",
+    value: function open(requestId, url, target, args, options) {
+      var addDefaultArguments = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
 
-  /**
-   * @return {!web-activities/activity-ports.ActivityPorts}
-   */
+      if (addDefaultArguments) {
+        args = this.addDefaultArguments(args);
+      }
 
-  ActivityPorts.prototype.getOriginalWebActivityPorts = function getOriginalWebActivityPorts() {
-    return this.activityPorts_;
-  };
+      return this.activityPorts_.open(requestId, url, target, args, options);
+    }
+    /**
+     * Registers the callback for the result of the activity opened with the
+     * specified `requestId` (see the `open()` method). The callback is a
+     * function that takes a single `ActivityPort` argument. The client
+     * can use this object to verify the port using it's origin, verified and
+     * secure channel flags. Then the client can call
+     * `ActivityPort.acceptResult()` method to accept the result.
+     *
+     * The activity result is handled via a separate callback because of a
+     * possible redirect. So use of direct callbacks and/or promises is not
+     * possible in that case.
+     *
+     * A typical implementation would look like:
+     * ```
+     * ports.onResult('request1', function(port) {
+     *   port.acceptResult().then(function(result) {
+     *     // Only verified origins are allowed.
+     *     if (result.origin == expectedOrigin &&
+     *         result.originVerified &&
+     *         result.secureChannel) {
+     *       handleResultForRequest1(result);
+     *     }
+     *   });
+     * })
+     *
+     * ports.open('request1', request1Url, '_blank');
+     * ```
+     *
+     * @param {string} requestId
+     * @param {function(!ActivityPortDef)} callback
+     */
+
+  }, {
+    key: "onResult",
+    value: function onResult(requestId, callback) {
+      this.activityPorts_.onResult(requestId, function (port) {
+        callback(new ActivityPortDeprecated(port));
+      });
+    }
+    /**
+     * @param {function(!Error)} handler
+     */
+
+  }, {
+    key: "onRedirectError",
+    value: function onRedirectError(handler) {
+      this.activityPorts_.onRedirectError(handler);
+    }
+    /**
+     * @return {!web-activities/activity-ports.ActivityPorts}
+     */
+
+  }, {
+    key: "getOriginalWebActivityPorts",
+    value: function getOriginalWebActivityPorts() {
+      return this.activityPorts_;
+    }
+  }]);
 
   return ActivityPorts;
-})();
+}();
 
 exports.ActivityPorts = ActivityPorts;
 
-},{"../proto/api_messages":33,"web-activities/activity-ports":4}],15:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../proto/api_messages":32,"web-activities/activity-ports":4}],15:[function(require,module,exports){
+"use strict";
 
-var _dialog = require('./dialog');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DialogManager = void 0;
 
-var _graypane = require('./graypane');
+var _dialog = require("./dialog");
 
-var _utilsErrors = require('../utils/errors');
+var _graypane = require("./graypane");
+
+var _errors = require("../utils/errors");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var POPUP_Z_INDEX = 2147483647;
-
 /**
  * The class for the top level dialog.
  * @final
  */
 
-var DialogManager = (function () {
+var DialogManager =
+/*#__PURE__*/
+function () {
   /**
    * @param {!../model/doc.Doc} doc
    */
-
   function DialogManager(doc) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, DialogManager);
+    _classCallCheck(this, DialogManager);
 
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = doc;
-
     /** @private {?Dialog} */
+
     this.dialog_ = null;
-
     /** @private {?Promise<!Dialog>} */
+
     this.openPromise_ = null;
-
     /** @private @const {!Graypane} */
+
     this.popupGraypane_ = new _graypane.Graypane(doc, POPUP_Z_INDEX);
-
     /** @private {?Window} */
-    this.popupWin_ = null;
 
+    this.popupWin_ = null;
     this.popupGraypane_.getElement().addEventListener('click', function () {
       if (_this.popupWin_) {
         try {
           _this.popupWin_.focus();
-        } catch (e) {
-          // Ignore error.
+        } catch (e) {// Ignore error.
         }
       }
     });
   }
-
   /**
    * @param {boolean=} hidden
    * @return {!Promise<!Dialog>}
    */
 
-  DialogManager.prototype.openDialog = function openDialog() {
-    var hidden = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
-    if (!this.openPromise_) {
-      this.dialog_ = new _dialog.Dialog(this.doc_);
-      this.openPromise_ = this.dialog_.open(hidden);
-    }
-    return this.openPromise_;
-  };
+  _createClass(DialogManager, [{
+    key: "openDialog",
+    value: function openDialog() {
+      var hidden = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-  /**
-   * @param {!./view.View} view
-   * @param {boolean=} hidden
-   * @return {!Promise}
-   */
-
-  DialogManager.prototype.openView = function openView(view) {
-    var _this2 = this;
-
-    var hidden = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-
-    view.whenComplete()['catch'](function (reason) {
-      if (_utilsErrors.isCancelError(reason)) {
-        _this2.completeView(view);
+      if (!this.openPromise_) {
+        this.dialog_ = new _dialog.Dialog(this.doc_);
+        this.openPromise_ = this.dialog_.open(hidden);
       }
-      throw reason;
-    });
-    return this.openDialog(hidden).then(function (dialog) {
-      return dialog.openView(view);
-    });
-  };
 
-  /**
-   * @param {?./view.View} view
-   */
+      return this.openPromise_;
+    }
+    /**
+     * @param {!./view.View} view
+     * @param {boolean=} hidden
+     * @return {!Promise}
+     */
 
-  DialogManager.prototype.completeView = function completeView(view) {
-    var _this3 = this;
+  }, {
+    key: "openView",
+    value: function openView(view) {
+      var _this2 = this;
 
-    // Give a small amount of time for another view to take over the dialog.
-    setTimeout(function () {
-      if (_this3.dialog_ && _this3.dialog_.getCurrentView() == view) {
-        _this3.close_();
+      var hidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      view.whenComplete()["catch"](function (reason) {
+        if ((0, _errors.isCancelError)(reason)) {
+          _this2.completeView(view);
+        }
+
+        throw reason;
+      });
+      return this.openDialog(hidden).then(function (dialog) {
+        return dialog.openView(view);
+      });
+    }
+    /**
+     * @param {?./view.View} view
+     */
+
+  }, {
+    key: "completeView",
+    value: function completeView(view) {
+      var _this3 = this;
+
+      // Give a small amount of time for another view to take over the dialog.
+      setTimeout(function () {
+        if (_this3.dialog_ && _this3.dialog_.getCurrentView() == view) {
+          _this3.close_();
+        }
+      }, 100);
+    }
+    /**
+     */
+
+  }, {
+    key: "completeAll",
+    value: function completeAll() {
+      if (this.dialog_) {
+        this.close_();
       }
-    }, 100);
-  };
 
-  /**
-   */
-
-  DialogManager.prototype.completeAll = function completeAll() {
-    if (this.dialog_) {
-      this.close_();
+      if (this.popupGraypane_.isAttached()) {
+        this.popupGraypane_.destroy();
+      }
     }
-    if (this.popupGraypane_.isAttached()) {
-      this.popupGraypane_.destroy();
+    /** @private */
+
+  }, {
+    key: "close_",
+    value: function close_() {
+      this.dialog_.close();
+      this.dialog_ = null;
+      this.openPromise_ = null;
     }
-  };
+    /**
+     * @param {?Window|undefined} targetWin
+     */
 
-  /** @private */
+  }, {
+    key: "popupOpened",
+    value: function popupOpened(targetWin) {
+      this.popupWin_ = targetWin || null;
 
-  DialogManager.prototype.close_ = function close_() {
-    this.dialog_.close();
-    this.dialog_ = null;
-    this.openPromise_ = null;
-  };
+      if (!this.popupGraypane_.isAttached()) {
+        this.popupGraypane_.attach();
+      }
 
-  /**
-   * @param {?Window|undefined} targetWin
-   */
-
-  DialogManager.prototype.popupOpened = function popupOpened(targetWin) {
-    this.popupWin_ = targetWin || null;
-    if (!this.popupGraypane_.isAttached()) {
-      this.popupGraypane_.attach();
+      this.popupGraypane_.show();
     }
-    this.popupGraypane_.show();
-  };
+    /**
+     */
 
-  /**
-   */
+  }, {
+    key: "popupClosed",
+    value: function popupClosed() {
+      this.popupWin_ = null;
 
-  DialogManager.prototype.popupClosed = function popupClosed() {
-    this.popupWin_ = null;
-    try {
-      this.popupGraypane_.hide();
-    } catch (e) {
-      // Ignore.
+      try {
+        this.popupGraypane_.hide();
+      } catch (e) {// Ignore.
+      }
     }
-  };
+  }]);
 
   return DialogManager;
-})();
+}();
 
 exports.DialogManager = DialogManager;
 
-},{"../utils/errors":70,"./dialog":16,"./graypane":18}],16:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../utils/errors":69,"./dialog":16,"./graypane":18}],16:[function(require,module,exports){
+"use strict";
 
-var _buildCssUiUiCss = require('../../build/css/ui/ui.css');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Dialog = void 0;
 
-var _modelDoc = require('../model/doc');
+var _ui = require("../../build/css/ui/ui.css");
 
-var _graypane = require('./graypane');
+var _friendlyIframe = require("./friendly-iframe");
 
-var _uiLoadingView = require('../ui/loading-view');
+var _graypane = require("./graypane");
 
-var _utilsDom = require('../utils/dom');
+var _loadingView = require("../ui/loading-view");
 
-var _utilsStyle = require('../utils/style');
+var _dom = require("../utils/dom");
 
-var _utilsAnimation = require('../utils/animation');
+var _doc = require("../model/doc");
 
-var _friendlyIframe = require('./friendly-iframe');
+var _style = require("../utils/style");
+
+var _animation = require("../utils/animation");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Z_INDEX = 2147483647;
-
 /**
  * Default iframe important styles.
  * Note: The iframe responsiveness media query style is injected in the
  * publisher's page since style attribute can not include media query.
  * @const {!Object<string, string|number>}
  */
+
 var rootElementImportantStyles = {
   'min-height': '50px',
   'border': 'none',
@@ -4671,11 +4988,11 @@ var rootElementImportantStyles = {
   'z-index': Z_INDEX,
   'box-sizing': 'border-box'
 };
-
 /**
  * Reset view styles.
  * @const {!Object<string, string|number>}
  */
+
 var resetViewStyles = {
   'position': 'absolute',
   'top': '0',
@@ -4683,7 +5000,9 @@ var resetViewStyles = {
   'right': '0',
   'bottom': '0',
   'opacity': 0,
+
   /* These lines are a work around to this issue in iOS:     */
+
   /* https://bugs.webkit.org/show_bug.cgi?id=155198          */
   'height': 0,
   'max-height': '100%',
@@ -4692,503 +5011,549 @@ var resetViewStyles = {
   'min-width': '100%',
   'width': 0
 };
-
 /**
  * Position of the dialog.
  * @const @enum {string}
  */
+
 var PositionAt = {
   BOTTOM: 'BOTTOM',
   TOP: 'TOP',
   FLOAT: 'FLOAT',
   FULL: 'FULL'
 };
-
 /**
  * The class for the top level dialog.
  * @final
  */
 
-var Dialog = (function () {
+var Dialog =
+/*#__PURE__*/
+function () {
   /**
    * Create a dialog for the provided doc.
    * @param {!../model/doc.Doc} doc
    * @param {!Object<string, string|number>=} importantStyles
    * @param {!Object<string, string|number>=} styles
    */
-
   function Dialog(doc) {
-    var importantStyles = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-    var styles = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-    babelHelpers.classCallCheck(this, Dialog);
+    var importantStyles = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var styles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    _classCallCheck(this, Dialog);
 
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = doc;
-
     /** @private @const {!FriendlyIframe} */
+
     this.iframe_ = new _friendlyIframe.FriendlyIframe(doc.getWin().document, {
       'class': 'swg-dialog'
     });
-
     /** @private @const {!Graypane} */
+
     this.graypane_ = new _graypane.Graypane(doc, Z_INDEX - 1);
-
     var modifiedImportantStyles = Object.assign({}, rootElementImportantStyles, importantStyles);
-    _utilsStyle.setImportantStyles(this.iframe_.getElement(), modifiedImportantStyles);
-
-    _utilsStyle.setStyles(this.iframe_.getElement(), styles);
-
+    (0, _style.setImportantStyles)(this.iframe_.getElement(), modifiedImportantStyles);
+    (0, _style.setStyles)(this.iframe_.getElement(), styles);
     /** @private {LoadingView} */
-    this.loadingView_ = null;
 
+    this.loadingView_ = null;
     /** @private {?Element} */
+
     this.container_ = null; // Depends on constructed document inside iframe.
 
     /** @private {?./view.View} */
+
     this.view_ = null;
-
     /** @private {?Promise} */
+
     this.animating_ = null;
-
     /** @private {boolean} */
+
     this.hidden_ = false;
-
     /** @private {?./view.View} */
-    this.previousProgressView_ = null;
 
+    this.previousProgressView_ = null;
     /** @private {boolean} */
+
     this.useFixedLayer_ = false;
   }
-
   /**
    * Opens the dialog and builds the iframe container.
    * @param {boolean=} hidden
    * @return {!Promise<!Dialog>}
    */
 
-  Dialog.prototype.open = function open() {
-    var _this = this;
 
-    var hidden = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+  _createClass(Dialog, [{
+    key: "open",
+    value: function open() {
+      var _this = this;
 
-    var iframe = this.iframe_;
-    if (iframe.isConnected()) {
-      throw new Error('already opened');
+      var hidden = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var iframe = this.iframe_;
+
+      if (iframe.isConnected()) {
+        throw new Error('already opened');
+      } // Attach.
+
+
+      this.doc_.getBody().appendChild(iframe.getElement()); // Fires onload.
+
+      this.graypane_.attach();
+
+      if (hidden) {
+        (0, _style.setImportantStyles)(iframe.getElement(), {
+          'visibility': 'hidden',
+          'opacity': 0
+        });
+        this.hidden_ = hidden;
+      } else {
+        this.show_();
+      }
+
+      if (this.useFixedLayer_) {
+        return this.doc_.addToFixedLayer(iframe.getElement()).then(function () {
+          return iframe.whenReady();
+        }).then(function () {
+          _this.buildIframe_();
+
+          return _this;
+        });
+      } else {
+        return iframe.whenReady().then(function () {
+          _this.buildIframe_();
+
+          return _this;
+        });
+      }
     }
+    /**
+     * Build the iframe with the styling after iframe is loaded.
+     * @private
+     */
 
-    // Attach.
-    this.doc_.getBody().appendChild(iframe.getElement()); // Fires onload.
+  }, {
+    key: "buildIframe_",
+    value: function buildIframe_() {
+      var iframe = this.iframe_;
+      var iframeBody = iframe.getBody();
+      var iframeDoc =
+      /** @type {!HTMLDocument} */
+      this.iframe_.getDocument(); // Inject Google fonts in <HEAD> section of the iframe.
 
-    this.graypane_.attach();
+      (0, _dom.injectStyleSheet)((0, _doc.resolveDoc)(iframeDoc), _ui.CSS); // Add Loading indicator.
 
-    if (hidden) {
-      _utilsStyle.setImportantStyles(iframe.getElement(), {
-        'visibility': 'hidden',
-        'opacity': 0
-      });
-      this.hidden_ = hidden;
-    } else {
-      this.show_();
+      this.loadingView_ = new _loadingView.LoadingView(iframeDoc);
+      iframeBody.appendChild(this.loadingView_.getElement()); // Container for all dynamic content, including 3P iframe.
+
+      this.container_ = (0, _dom.createElement)(iframeDoc, 'swg-container', {});
+      iframeBody.appendChild(this.container_);
+      this.setPosition_();
     }
+    /**
+     * Closes the dialog.
+     * @param {boolean=} animated
+     * @return {!Promise}
+     */
 
-    if (this.useFixedLayer_) {
-      return this.doc_.addToFixedLayer(iframe.getElement()).then(function () {
-        return iframe.whenReady();
-      }).then(function () {
-        _this.buildIframe_();
-        return _this;
-      });
-    } else {
-      return iframe.whenReady().then(function () {
-        _this.buildIframe_();
-        return _this;
+  }, {
+    key: "close",
+    value: function close() {
+      var _this2 = this;
+
+      var animated = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var animating;
+
+      if (animated) {
+        animating = this.animate_(function () {
+          _this2.graypane_.hide(
+          /* animate */
+          true);
+
+          return (0, _animation.transition)(_this2.getElement(), {
+            'transform': 'translateY(100%)'
+          }, 300, 'ease-out');
+        });
+      } else {
+        animating = Promise.resolve();
+      }
+
+      return animating.then(function () {
+        var iframeEl = _this2.iframe_.getElement();
+
+        iframeEl.parentNode.removeChild(iframeEl);
+
+        _this2.removePaddingToHtml_();
+
+        _this2.graypane_.destroy();
       });
     }
-  };
+    /**
+     * Gets the container within the dialog.
+     * @return {!Element}
+     */
 
-  /**
-   * Build the iframe with the styling after iframe is loaded.
-   * @private
-   */
+  }, {
+    key: "getContainer",
+    value: function getContainer() {
+      if (!this.container_) {
+        throw new Error('not opened yet');
+      }
 
-  Dialog.prototype.buildIframe_ = function buildIframe_() {
-    var iframe = this.iframe_;
-    var iframeBody = iframe.getBody();
-    var iframeDoc = /** @type {!HTMLDocument} */this.iframe_.getDocument();
+      return this.container_;
+    }
+    /**
+     * Gets the attached iframe instance.
+     * @return {!FriendlyIframe}
+     */
 
-    // Inject Google fonts in <HEAD> section of the iframe.
-    _utilsDom.injectStyleSheet(_modelDoc.resolveDoc(iframeDoc), _buildCssUiUiCss.CSS);
+  }, {
+    key: "getIframe",
+    value: function getIframe() {
+      return this.iframe_;
+    }
+    /**
+     * Gets the Iframe element.
+     * @return {!HTMLIFrameElement}
+     */
 
-    // Add Loading indicator.
-    this.loadingView_ = new _uiLoadingView.LoadingView(iframeDoc);
-    iframeBody.appendChild(this.loadingView_.getElement());
+  }, {
+    key: "getElement",
+    value: function getElement() {
+      return this.iframe_.getElement();
+    }
+    /**
+     * Transitions to the next view.
+     * @private
+     */
 
-    // Container for all dynamic content, including 3P iframe.
-    this.container_ = _utilsDom.createElement(iframeDoc, 'swg-container', {});
-    iframeBody.appendChild(this.container_);
-    this.setPosition_();
-  };
+  }, {
+    key: "entryTransitionToNextView_",
+    value: function entryTransitionToNextView_() {
+      if (this.view_ && this.view_.hasLoadingIndicator()) {
+        // Temporarily cache the old view.
+        this.previousProgressView_ = this.view_;
+      } else {
+        // Since loading indicator will be shown, remove contents of old view.
+        (0, _dom.removeChildren)(this.getContainer()); // When loading indicator was not displayed in the previous view,
+        // loading indicator must be displayed while transitioning to new view.
 
-  /**
-   * Closes the dialog.
-   * @param {boolean=} animated
-   * @return {!Promise}
-   */
+        this.loadingView_.show();
+      }
+    }
+    /**
+     * Transition out of an old view.
+     * @private
+     */
 
-  Dialog.prototype.close = function close() {
-    var _this2 = this;
+  }, {
+    key: "exitTransitionFromOldView_",
+    value: function exitTransitionFromOldView_() {
+      // If previous view is still around, remove it.
+      if (this.previousProgressView_) {
+        (0, _dom.removeElement)(this.previousProgressView_.getElement());
+        this.previousProgressView_ = null;
+      } else {
+        this.loadingView_.hide();
+      }
+    }
+    /** @return {?./view.View} */
 
-    var animated = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+  }, {
+    key: "getCurrentView",
+    value: function getCurrentView() {
+      return this.view_;
+    }
+    /**
+     * Opens the given view and removes existing view from the DOM if any.
+     * @param {!./view.View} view
+     * @return {!Promise}
+     */
 
-    var animating = undefined;
-    if (animated) {
-      animating = this.animate_(function () {
-        _this2.graypane_.hide( /* animate */true);
-        return _utilsAnimation.transition(_this2.getElement(), {
-          'transform': 'translateY(100%)'
+  }, {
+    key: "openView",
+    value: function openView(view) {
+      var _this3 = this;
+
+      (0, _style.setImportantStyles)(view.getElement(), resetViewStyles);
+      this.entryTransitionToNextView_();
+      this.view_ = view;
+      this.getContainer().appendChild(view.getElement()); // If the current view should fade the parent document.
+
+      if (view.shouldFadeBody() && !this.hidden_) {
+        this.graypane_.show(
+        /* animate */
+        true);
+      }
+
+      return view.init(this).then(function () {
+        (0, _style.setImportantStyles)(view.getElement(), {
+          'opacity': 1
+        });
+
+        if (_this3.hidden_) {
+          if (view.shouldFadeBody()) {
+            _this3.graypane_.show(
+            /* animated */
+            true);
+          }
+
+          _this3.show_();
+        }
+
+        _this3.exitTransitionFromOldView_();
+      });
+    }
+    /**
+     * Show the iframe.
+     * @private
+     */
+
+  }, {
+    key: "show_",
+    value: function show_() {
+      var _this4 = this;
+
+      this.animate_(function () {
+        (0, _style.setImportantStyles)(_this4.getElement(), {
+          'transform': 'translateY(100%)',
+          'opactiy': 1,
+          'visibility': 'visible'
+        });
+        return (0, _animation.transition)(_this4.getElement(), {
+          'transform': 'translateY(0)',
+          'opacity': 1,
+          'visibility': 'visible'
         }, 300, 'ease-out');
       });
-    } else {
-      animating = Promise.resolve();
+      this.hidden_ = false;
     }
-    return animating.then(function () {
-      var iframeEl = _this2.iframe_.getElement();
-      iframeEl.parentNode.removeChild(iframeEl);
+    /**
+     * Resizes the dialog container.
+     * @param {!./view.View} view
+     * @param {number} height
+     * @param {boolean=} animated
+     * @return {?Promise}
+     */
 
-      _this2.removePaddingToHtml_();
-      _this2.graypane_.destroy();
-    });
-  };
+  }, {
+    key: "resizeView",
+    value: function resizeView(view, height) {
+      var _this5 = this;
 
-  /**
-   * Gets the container within the dialog.
-   * @return {!Element}
-   */
+      var animated = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-  Dialog.prototype.getContainer = function getContainer() {
-    if (!this.container_) {
-      throw new Error('not opened yet');
-    }
-    return this.container_;
-  };
-
-  /**
-   * Gets the attached iframe instance.
-   * @return {!FriendlyIframe}
-   */
-
-  Dialog.prototype.getIframe = function getIframe() {
-    return this.iframe_;
-  };
-
-  /**
-   * Gets the Iframe element.
-   * @return {!HTMLIFrameElement}
-   */
-
-  Dialog.prototype.getElement = function getElement() {
-    return this.iframe_.getElement();
-  };
-
-  /**
-   * Transitions to the next view.
-   * @private
-   */
-
-  Dialog.prototype.entryTransitionToNextView_ = function entryTransitionToNextView_() {
-    if (this.view_ && this.view_.hasLoadingIndicator()) {
-      // Temporarily cache the old view.
-      this.previousProgressView_ = this.view_;
-    } else {
-      // Since loading indicator will be shown, remove contents of old view.
-      _utilsDom.removeChildren(this.getContainer());
-      // When loading indicator was not displayed in the previous view,
-      // loading indicator must be displayed while transitioning to new view.
-      this.loadingView_.show();
-    }
-  };
-
-  /**
-   * Transition out of an old view.
-   * @private
-   */
-
-  Dialog.prototype.exitTransitionFromOldView_ = function exitTransitionFromOldView_() {
-    // If previous view is still around, remove it.
-    if (this.previousProgressView_) {
-      _utilsDom.removeElement(this.previousProgressView_.getElement());
-      this.previousProgressView_ = null;
-    } else {
-      this.loadingView_.hide();
-    }
-  };
-
-  /** @return {?./view.View} */
-
-  Dialog.prototype.getCurrentView = function getCurrentView() {
-    return this.view_;
-  };
-
-  /**
-   * Opens the given view and removes existing view from the DOM if any.
-   * @param {!./view.View} view
-   * @return {!Promise}
-   */
-
-  Dialog.prototype.openView = function openView(view) {
-    var _this3 = this;
-
-    _utilsStyle.setImportantStyles(view.getElement(), resetViewStyles);
-    this.entryTransitionToNextView_();
-
-    this.view_ = view;
-    this.getContainer().appendChild(view.getElement());
-
-    // If the current view should fade the parent document.
-    if (view.shouldFadeBody() && !this.hidden_) {
-      this.graypane_.show( /* animate */true);
-    }
-
-    return view.init(this).then(function () {
-      _utilsStyle.setImportantStyles(view.getElement(), {
-        'opacity': 1
-      });
-      if (_this3.hidden_) {
-        if (view.shouldFadeBody()) {
-          _this3.graypane_.show( /* animated */true);
-        }
-        _this3.show_();
+      if (this.view_ != view) {
+        return null;
       }
-      _this3.exitTransitionFromOldView_();
-    });
-  };
 
-  /**
-   * Show the iframe.
-   * @private
-   */
+      var newHeight = this.getMaxAllowedHeight_(height);
+      var animating;
 
-  Dialog.prototype.show_ = function show_() {
-    var _this4 = this;
+      if (animated) {
+        var oldHeight = this.getElement().offsetHeight;
 
-    this.animate_(function () {
-      _utilsStyle.setImportantStyles(_this4.getElement(), {
-        'transform': 'translateY(100%)',
-        'opactiy': 1,
-        'visibility': 'visible'
-      });
-      return _utilsAnimation.transition(_this4.getElement(), {
-        'transform': 'translateY(0)',
-        'opacity': 1,
-        'visibility': 'visible'
-      }, 300, 'ease-out');
-    });
-    this.hidden_ = false;
-  };
-
-  /**
-   * Resizes the dialog container.
-   * @param {!./view.View} view
-   * @param {number} height
-   * @param {boolean=} animated
-   * @return {?Promise}
-   */
-
-  Dialog.prototype.resizeView = function resizeView(view, height) {
-    var _this5 = this;
-
-    var animated = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
-
-    if (this.view_ != view) {
-      return null;
-    }
-    var newHeight = this.getMaxAllowedHeight_(height);
-
-    var animating = undefined;
-    if (animated) {
-      (function () {
-        var oldHeight = _this5.getElement().offsetHeight;
         if (newHeight >= oldHeight) {
           // Expand.
-          animating = _this5.animate_(function () {
-            _utilsStyle.setImportantStyles(_this5.getElement(), {
-              'height': newHeight + 'px',
-              'transform': 'translateY(' + (newHeight - oldHeight) + 'px)'
+          animating = this.animate_(function () {
+            (0, _style.setImportantStyles)(_this5.getElement(), {
+              'height': "".concat(newHeight, "px"),
+              'transform': "translateY(".concat(newHeight - oldHeight, "px)")
             });
-            return _utilsAnimation.transition(_this5.getElement(), {
+            return (0, _animation.transition)(_this5.getElement(), {
               'transform': 'translateY(0)'
             }, 300, 'ease-out');
           });
         } else {
           // Collapse.
-          animating = _this5.animate_(function () {
-            return _utilsAnimation.transition(_this5.getElement(), {
-              'transform': 'translateY(' + (oldHeight - newHeight) + 'px)'
+          animating = this.animate_(function () {
+            return (0, _animation.transition)(_this5.getElement(), {
+              'transform': "translateY(".concat(oldHeight - newHeight, "px)")
             }, 300, 'ease-out').then(function () {
-              _utilsStyle.setImportantStyles(_this5.getElement(), {
-                'height': newHeight + 'px',
+              (0, _style.setImportantStyles)(_this5.getElement(), {
+                'height': "".concat(newHeight, "px"),
                 'transform': 'translateY(0)'
               });
             });
           });
         }
-      })();
-    } else {
-      _utilsStyle.setImportantStyles(this.getElement(), {
-        'height': newHeight + 'px'
-      });
-      animating = Promise.resolve();
-    }
-    return animating.then(function () {
-      _this5.updatePaddingToHtml_(height);
-      view.resized();
-    });
-  };
+      } else {
+        (0, _style.setImportantStyles)(this.getElement(), {
+          'height': "".concat(newHeight, "px")
+        });
+        animating = Promise.resolve();
+      }
 
-  /**
-   * @param {function():!Promise} callback
-   * @return {!Promise}
-   * @private
-   */
+      return animating.then(function () {
+        _this5.updatePaddingToHtml_(height);
 
-  Dialog.prototype.animate_ = function animate_(callback) {
-    var _this6 = this;
-
-    var wait = this.animating_ || Promise.resolve();
-    return this.animating_ = wait.then(function () {
-      return callback();
-    }, function () {
-      // Ignore errors to make sure animations don't get stuck.
-    }).then(function () {
-      _this6.animating_ = null;
-    });
-  };
-
-  /**
-   * Returns maximum allowed height for current viewport.
-   * @param {number} height
-   * @return {number}
-   * @private
-   */
-
-  Dialog.prototype.getMaxAllowedHeight_ = function getMaxAllowedHeight_(height) {
-    return Math.min(height, this.doc_.getWin(). /*OK*/innerHeight * 0.9);
-  };
-
-  /**
-   * Gets the element's height.
-   * @return {number}
-   * @private
-   */
-
-  Dialog.prototype.getHeight_ = function getHeight_() {
-    return this.getElement().offsetHeight;
-  };
-
-  /**
-   * Sets the position of the dialog. Currently 'BOTTOM' is set by default.
-   */
-
-  Dialog.prototype.setPosition_ = function setPosition_() {
-    _utilsStyle.setImportantStyles(this.getElement(), this.getPositionStyle_());
-  };
-
-  /**
-   * Add the padding to the containing page so as to not hide the content
-   * behind the popup, if rendered at the bottom.
-   * @param {number} newHeight
-   * @private
-   */
-
-  Dialog.prototype.updatePaddingToHtml_ = function updatePaddingToHtml_(newHeight) {
-    if (this.inferPosition_() == PositionAt.BOTTOM) {
-      var bottomPadding = newHeight + 20; // Add some extra padding.
-      var htmlElement = this.doc_.getRootElement();
-      _utilsStyle.setImportantStyles(htmlElement, {
-        'padding-bottom': bottomPadding + 'px'
+        view.resized();
       });
     }
-  };
+    /**
+     * @param {function():!Promise} callback
+     * @return {!Promise}
+     * @private
+     */
 
-  /**
-   * Removes previouly added bottom padding from the document.
-   * @private
-   */
+  }, {
+    key: "animate_",
+    value: function animate_(callback) {
+      var _this6 = this;
 
-  Dialog.prototype.removePaddingToHtml_ = function removePaddingToHtml_() {
-    this.doc_.getRootElement().style.removeProperty('padding-bottom');
-  };
-
-  /**
-   * Calculates the position of the dialog. Currently dialog is positioned at
-   * the bottom only. This could change in future to adjust the dialog position
-   * based on the screen size.
-   * @return {string}
-   * @private
-   */
-
-  Dialog.prototype.inferPosition_ = function inferPosition_() {
-    return PositionAt.BOTTOM;
-  };
-
-  /**
-   * Returns the styles required to postion the dialog.
-   * @return {!Object<string, string|number>}
-   * @private
-   */
-
-  Dialog.prototype.getPositionStyle_ = function getPositionStyle_() {
-    var dialogPosition = this.inferPosition_();
-    switch (dialogPosition) {
-      case PositionAt.BOTTOM:
-        return { 'bottom': 0 };
-      case PositionAt.TOP:
-        return { 'top': 0 };
-      case PositionAt.FLOAT:
-        return {
-          'position': 'fixed',
-          'top': '50%',
-          'left': '50%',
-          'transform': 'translate(-50%, -50%)'
-        };
-      case PositionAt.FULL:
-        return {
-          'position': 'fixed',
-          'height': '100%',
-          'top': 0,
-          'bottom': 0
-        };
-      default:
-        return { 'bottom': 0 };
+      var wait = this.animating_ || Promise.resolve();
+      return this.animating_ = wait.then(function () {
+        return callback();
+      }, function () {// Ignore errors to make sure animations don't get stuck.
+      }).then(function () {
+        _this6.animating_ = null;
+      });
     }
-  };
+    /**
+     * Returns maximum allowed height for current viewport.
+     * @param {number} height
+     * @return {number}
+     * @private
+     */
+
+  }, {
+    key: "getMaxAllowedHeight_",
+    value: function getMaxAllowedHeight_(height) {
+      return Math.min(height, this.doc_.getWin().
+      /*OK*/
+      innerHeight * 0.9);
+    }
+    /**
+     * Gets the element's height.
+     * @return {number}
+     * @private
+     */
+
+  }, {
+    key: "getHeight_",
+    value: function getHeight_() {
+      return this.getElement().offsetHeight;
+    }
+    /**
+     * Sets the position of the dialog. Currently 'BOTTOM' is set by default.
+     */
+
+  }, {
+    key: "setPosition_",
+    value: function setPosition_() {
+      (0, _style.setImportantStyles)(this.getElement(), this.getPositionStyle_());
+    }
+    /**
+     * Add the padding to the containing page so as to not hide the content
+     * behind the popup, if rendered at the bottom.
+     * @param {number} newHeight
+     * @private
+     */
+
+  }, {
+    key: "updatePaddingToHtml_",
+    value: function updatePaddingToHtml_(newHeight) {
+      if (this.inferPosition_() == PositionAt.BOTTOM) {
+        var bottomPadding = newHeight + 20; // Add some extra padding.
+
+        var htmlElement = this.doc_.getRootElement();
+        (0, _style.setImportantStyles)(htmlElement, {
+          'padding-bottom': "".concat(bottomPadding, "px")
+        });
+      }
+    }
+    /**
+     * Removes previouly added bottom padding from the document.
+     * @private
+     */
+
+  }, {
+    key: "removePaddingToHtml_",
+    value: function removePaddingToHtml_() {
+      this.doc_.getRootElement().style.removeProperty('padding-bottom');
+    }
+    /**
+     * Calculates the position of the dialog. Currently dialog is positioned at
+     * the bottom only. This could change in future to adjust the dialog position
+     * based on the screen size.
+     * @return {string}
+     * @private
+     */
+
+  }, {
+    key: "inferPosition_",
+    value: function inferPosition_() {
+      return PositionAt.BOTTOM;
+    }
+    /**
+     * Returns the styles required to postion the dialog.
+     * @return {!Object<string, string|number>}
+     * @private
+     */
+
+  }, {
+    key: "getPositionStyle_",
+    value: function getPositionStyle_() {
+      var dialogPosition = this.inferPosition_();
+
+      switch (dialogPosition) {
+        case PositionAt.BOTTOM:
+          return {
+            'bottom': 0
+          };
+
+        case PositionAt.TOP:
+          return {
+            'top': 0
+          };
+
+        case PositionAt.FLOAT:
+          return {
+            'position': 'fixed',
+            'top': '50%',
+            'left': '50%',
+            'transform': 'translate(-50%, -50%)'
+          };
+
+        case PositionAt.FULL:
+          return {
+            'position': 'fixed',
+            'height': '100%',
+            'top': 0,
+            'bottom': 0
+          };
+
+        default:
+          return {
+            'bottom': 0
+          };
+      }
+    }
+  }]);
 
   return Dialog;
-})();
+}();
 
 exports.Dialog = Dialog;
 
-},{"../../build/css/ui/ui.css":2,"../model/doc":22,"../ui/loading-view":63,"../utils/animation":66,"../utils/dom":69,"../utils/style":79,"./friendly-iframe":17,"./graypane":18}],17:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../../build/css/ui/ui.css":2,"../model/doc":21,"../ui/loading-view":62,"../utils/animation":65,"../utils/dom":68,"../utils/style":78,"./friendly-iframe":17,"./graypane":18}],17:[function(require,module,exports){
+"use strict";
 
-var _utilsDom = require('../utils/dom');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FriendlyIframe = void 0;
 
-var _utilsStyle = require('../utils/style');
+var _dom = require("../utils/dom");
+
+var _style = require("../utils/style");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /** @const {!Object<string|number>} */
 var friendlyIframeAttributes = {
@@ -5196,130 +5561,139 @@ var friendlyIframeAttributes = {
   'scrolling': 'no',
   'src': 'about:blank'
 };
-
 /**
  * The class for building friendly iframe.
  */
 
-var FriendlyIframe = (function () {
+var FriendlyIframe =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Document} doc
    * @param {!Object<string, string|number>=} attrs
    */
-
   function FriendlyIframe(doc) {
     var _this = this;
 
-    var attrs = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-    babelHelpers.classCallCheck(this, FriendlyIframe);
+    var attrs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, FriendlyIframe);
 
     var mergedAttrs = Object.assign({}, friendlyIframeAttributes, attrs);
-
     /** @private @const {!HTMLIFrameElement} */
-    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(doc, 'iframe', mergedAttrs);
 
-    // Ensure that the new iframe does not inherit any CSS styles.
-    _utilsStyle.resetAllStyles(this.iframe_);
+    this.iframe_ =
+    /** @type {!HTMLIFrameElement} */
+    (0, _dom.createElement)(doc, 'iframe', mergedAttrs); // Ensure that the new iframe does not inherit any CSS styles.
 
+    (0, _style.resetAllStyles)(this.iframe_);
     /** @private @const {!Promise} */
+
     this.ready_ = new Promise(function (resolve) {
       _this.iframe_.onload = resolve;
     });
   }
-
   /**
    * When promise is resolved.
    * @return {!Promise}
    */
 
-  FriendlyIframe.prototype.whenReady = function whenReady() {
-    return this.ready_;
-  };
 
-  /**
-   * Gets the iframe element.
-   * @return {!HTMLIFrameElement}
-   */
-
-  FriendlyIframe.prototype.getElement = function getElement() {
-    return this.iframe_;
-  };
-
-  /**
-   * Gets the document object of the iframe element.
-   * @return {!Document}
-   */
-
-  FriendlyIframe.prototype.getDocument = function getDocument() {
-    var doc = this.getElement().contentDocument || this.getElement().contentWindow && this.getElement().contentWindow.document;
-
-    if (!doc) {
-      throw new Error('not loaded');
+  _createClass(FriendlyIframe, [{
+    key: "whenReady",
+    value: function whenReady() {
+      return this.ready_;
     }
-    return doc;
-  };
+    /**
+     * Gets the iframe element.
+     * @return {!HTMLIFrameElement}
+     */
 
-  /**
-   * Gets the body of the iframe.
-   * @return {!Element}
-   */
+  }, {
+    key: "getElement",
+    value: function getElement() {
+      return this.iframe_;
+    }
+    /**
+     * Gets the document object of the iframe element.
+     * @return {!Document}
+     */
 
-  FriendlyIframe.prototype.getBody = function getBody() {
-    return (/** @type {!Element} */this.getDocument().body
-    );
-  };
+  }, {
+    key: "getDocument",
+    value: function getDocument() {
+      var doc = this.getElement().contentDocument || this.getElement().contentWindow && this.getElement().contentWindow.document;
 
-  /**
-   * Whether the iframe is connected.
-   * @return {boolean}
-   */
+      if (!doc) {
+        throw new Error('not loaded');
+      }
 
-  FriendlyIframe.prototype.isConnected = function isConnected() {
-    return _utilsDom.isConnected(this.getElement());
-  };
+      return doc;
+    }
+    /**
+     * Gets the body of the iframe.
+     * @return {!Element}
+     */
+
+  }, {
+    key: "getBody",
+    value: function getBody() {
+      return (
+        /** @type {!Element} */
+        this.getDocument().body
+      );
+    }
+    /**
+     * Whether the iframe is connected.
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isConnected",
+    value: function isConnected() {
+      return (0, _dom.isConnected)(this.getElement());
+    }
+  }]);
 
   return FriendlyIframe;
-})();
+}();
 
 exports.FriendlyIframe = FriendlyIframe;
 
-},{"../utils/dom":69,"../utils/style":79}],18:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../utils/dom":68,"../utils/style":78}],18:[function(require,module,exports){
+"use strict";
 
-var _utilsStyle = require('../utils/style');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Graypane = void 0;
 
-var _utilsAnimation = require('../utils/animation');
+var _style = require("../utils/style");
 
-var Graypane = (function () {
+var _animation = require("../utils/animation");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Graypane =
+/*#__PURE__*/
+function () {
   /**
    * @param {!../model/doc.Doc} doc
    * @param {number} zIndex
    */
-
   function Graypane(doc, zIndex) {
-    babelHelpers.classCallCheck(this, Graypane);
+    _classCallCheck(this, Graypane);
 
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = doc;
-
     /** @private @const {!Element} */
+
     this.fadeBackground_ = this.doc_.getWin().document.createElement('swg-popup-background');
-    _utilsStyle.setImportantStyles(this.fadeBackground_, {
+    (0, _style.setImportantStyles)(this.fadeBackground_, {
       'z-index': zIndex,
       'display': 'none',
       'position': 'fixed',
@@ -5330,87 +5704,112 @@ var Graypane = (function () {
       'background-color': 'rgba(32, 33, 36, .6)'
     });
   }
-
   /**
    * @return {!Element}
    */
 
-  Graypane.prototype.getElement = function getElement() {
-    return this.fadeBackground_;
-  };
 
-  /**
-   * @return {boolean}
-   */
-
-  Graypane.prototype.isAttached = function isAttached() {
-    return !!this.fadeBackground_.parentNode;
-  };
-
-  /**
-   * Attaches the graypane to the document.
-   */
-
-  Graypane.prototype.attach = function attach() {
-    this.doc_.getBody().appendChild(this.fadeBackground_);
-  };
-
-  /**
-   * Detaches the graypane to the document.
-   */
-
-  Graypane.prototype.destroy = function destroy() {
-    this.doc_.getBody().removeChild(this.fadeBackground_);
-  };
-
-  /**
-   * Shows the graypane.
-   * @param {boolean=} animated
-   * @return {!Promise|undefined}
-   */
-
-  Graypane.prototype.show = function show() {
-    var animated = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
-
-    _utilsStyle.setImportantStyles(this.fadeBackground_, {
-      'display': 'block',
-      'opacity': animated ? 0 : 1
-    });
-    if (animated) {
-      return _utilsAnimation.transition(this.fadeBackground_, {
-        'opacity': 1
-      }, 300, 'ease-out');
+  _createClass(Graypane, [{
+    key: "getElement",
+    value: function getElement() {
+      return this.fadeBackground_;
     }
-  };
+    /**
+     * @return {boolean}
+     */
 
-  /**
-   * Hides the graypane.
-   * @param {boolean=} animated
-   * @return {!Promise|undefined}
-   */
+  }, {
+    key: "isAttached",
+    value: function isAttached() {
+      return !!this.fadeBackground_.parentNode;
+    }
+    /**
+     * Attaches the graypane to the document.
+     */
 
-  Graypane.prototype.hide = function hide() {
-    var _this = this;
+  }, {
+    key: "attach",
+    value: function attach() {
+      this.doc_.getBody().appendChild(this.fadeBackground_);
+    }
+    /**
+     * Detaches the graypane to the document.
+     */
 
-    var animated = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.doc_.getBody().removeChild(this.fadeBackground_);
+    }
+    /**
+     * Shows the graypane.
+     * @param {boolean=} animated
+     * @return {!Promise|undefined}
+     */
 
-    if (animated) {
-      return _utilsAnimation.transition(this.fadeBackground_, {
-        'opacity': 0
-      }, 300, 'ease-out').then(function () {
-        _utilsStyle.setImportantStyles(_this.fadeBackground_, { 'display': 'none' });
+  }, {
+    key: "show",
+    value: function show() {
+      var animated = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      (0, _style.setImportantStyles)(this.fadeBackground_, {
+        'display': 'block',
+        'opacity': animated ? 0 : 1
+      });
+
+      if (animated) {
+        return (0, _animation.transition)(this.fadeBackground_, {
+          'opacity': 1
+        }, 300, 'ease-out');
+      }
+    }
+    /**
+     * Hides the graypane.
+     * @param {boolean=} animated
+     * @return {!Promise|undefined}
+     */
+
+  }, {
+    key: "hide",
+    value: function hide() {
+      var _this = this;
+
+      var animated = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+      if (animated) {
+        return (0, _animation.transition)(this.fadeBackground_, {
+          'opacity': 0
+        }, 300, 'ease-out').then(function () {
+          (0, _style.setImportantStyles)(_this.fadeBackground_, {
+            'display': 'none'
+          });
+        });
+      }
+
+      (0, _style.setImportantStyles)(this.fadeBackground_, {
+        'display': 'none'
       });
     }
-    _utilsStyle.setImportantStyles(this.fadeBackground_, { 'display': 'none' });
-  };
+  }]);
 
   return Graypane;
-})();
+}();
 
 exports.Graypane = Graypane;
 
-},{"../utils/animation":66,"../utils/style":79}],19:[function(require,module,exports){
-exports.__esModule = true;
+},{"../utils/animation":65,"../utils/style":78}],19:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.View = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -5432,90 +5831,83 @@ exports.__esModule = true;
  * extended class has actual content.
  * @abstract
  */
-
-var View = (function () {
+var View =
+/*#__PURE__*/
+function () {
   /**
    * Empty constructor.
    */
-
   function View() {
-    babelHelpers.classCallCheck(this, View);
+    _classCallCheck(this, View);
   }
-
   /**
    * Gets the iframe element.
    * @return {!Element}
    * @abstract
    */
 
-  View.prototype.getElement = function getElement() {};
 
-  /**
-   * @param {!./dialog.Dialog} unusedDialog
-   * @return {!Promise}
-   * @abstract
-   */
+  _createClass(View, [{
+    key: "getElement",
+    value: function getElement() {}
+    /**
+     * @param {!./dialog.Dialog} unusedDialog
+     * @return {!Promise}
+     * @abstract
+     */
 
-  View.prototype.init = function init(unusedDialog) {};
+  }, {
+    key: "init",
+    value: function init(unusedDialog) {}
+    /**
+     * Resizes the content.
+     */
 
-  /**
-   * Resizes the content.
-   */
+  }, {
+    key: "resized",
+    value: function resized() {} // Do nothing by default. Override if needed.
 
-  View.prototype.resized = function resized() {}
-  // Do nothing by default. Override if needed.
+    /**
+     * Accept the result.
+     * @return {!Promise}
+     * @abstract
+     */
 
-  /**
-   * Accept the result.
-   * @return {!Promise}
-   * @abstract
-   */
-  ;
+  }, {
+    key: "whenComplete",
+    value: function whenComplete() {}
+    /**
+     * @return {boolean}
+     * @abstract
+     */
 
-  View.prototype.whenComplete = function whenComplete() {};
+  }, {
+    key: "shouldFadeBody",
+    value: function shouldFadeBody() {}
+    /**
+     * @return {boolean}
+     * @abstract
+     */
 
-  /**
-   * @return {boolean}
-   * @abstract
-   */
-
-  View.prototype.shouldFadeBody = function shouldFadeBody() {};
-
-  /**
-   * @return {boolean}
-   * @abstract
-   */
-
-  View.prototype.hasLoadingIndicator = function hasLoadingIndicator() {};
+  }, {
+    key: "hasLoadingIndicator",
+    value: function hasLoadingIndicator() {}
+  }]);
 
   return View;
-})();
+}();
 
 exports.View = View;
 
 },{}],20:[function(require,module,exports){
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+"use strict";
 
-// Entry point into library for compilation with babel. Just loads main.js
-// and Babel's helpers.
+require("./polyfills");
 
-require('./main');
+var _runtime = require("./runtime/runtime");
 
-},{"../third_party/babel/custom-babel-helpers":83,"./main":21}],21:[function(require,module,exports){
+var _log = require("./utils/log");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -5536,323 +5928,367 @@ require('./main');
  * @fileoverview
  * The entry point for runtime (swg.js).
  */
+(0, _log.log)('Subscriptions Runtime: 0.1.22-1576261074655');
+(0, _runtime.installRuntime)(self);
 
-require('./polyfills');
+},{"./polyfills":24,"./runtime/runtime":56,"./utils/log":73}],21:[function(require,module,exports){
+"use strict";
 
-var _runtimeRuntime = require('./runtime/runtime');
-
-var _utilsLog = require('./utils/log');
-
-_utilsLog.log('Subscriptions Runtime: 0.1.22-1571866632912');
-
-_runtimeRuntime.installRuntime(self);
-
-},{"./polyfills":25,"./runtime/runtime":57,"./utils/log":74}],22:[function(require,module,exports){
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.resolveDoc = resolveDoc;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+exports.GlobalDoc = exports.Doc = void 0;
 
-var _utilsDocumentReady = require('../utils/document-ready');
+var _documentReady = require("../utils/document-ready");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * @interface
  */
-
-var Doc = (function () {
+var Doc =
+/*#__PURE__*/
+function () {
   function Doc() {
-    babelHelpers.classCallCheck(this, Doc);
+    _classCallCheck(this, Doc);
   }
 
-  /** @implements {Doc} */
+  _createClass(Doc, [{
+    key: "getWin",
 
-  /**
-   * @return {!Window}
-   */
+    /**
+     * @return {!Window}
+     */
+    value: function getWin() {}
+    /**
+     * The `Document` node or analog.
+     * @return {!Node}
+     */
 
-  Doc.prototype.getWin = function getWin() {};
+  }, {
+    key: "getRootNode",
+    value: function getRootNode() {}
+    /**
+     * The `Document.documentElement` element or analog.
+     * @return {!Element}
+     */
 
-  /**
-   * The `Document` node or analog.
-   * @return {!Node}
-   */
+  }, {
+    key: "getRootElement",
+    value: function getRootElement() {}
+    /**
+     * The `Document.head` element or analog. Returns `null` if not available
+     * yet.
+     * @return {!Element}
+     */
 
-  Doc.prototype.getRootNode = function getRootNode() {};
+  }, {
+    key: "getHead",
+    value: function getHead() {}
+    /**
+     * The `Document.body` element or analog. Returns `null` if not available
+     * yet.
+     * @return {?Element}
+     */
 
-  /**
-   * The `Document.documentElement` element or analog.
-   * @return {!Element}
-   */
+  }, {
+    key: "getBody",
+    value: function getBody() {}
+    /**
+     * Whether the document has been fully constructed.
+     * @return {boolean}
+     */
 
-  Doc.prototype.getRootElement = function getRootElement() {};
+  }, {
+    key: "isReady",
+    value: function isReady() {}
+    /**
+     * Resolved when document has been fully constructed.
+     * @return {!Promise}
+     */
 
-  /**
-   * The `Document.head` element or analog. Returns `null` if not available
-   * yet.
-   * @return {!Element}
-   */
+  }, {
+    key: "whenReady",
+    value: function whenReady() {}
+    /**
+     * Adds the element to the fixed layer.
+     * @param {!Element} unusedElement
+     * @return {!Promise}
+     *
+     * This is a no-op for except in AMP on iOS < 13.0.
+     */
 
-  Doc.prototype.getHead = function getHead() {};
-
-  /**
-   * The `Document.body` element or analog. Returns `null` if not available
-   * yet.
-   * @return {?Element}
-   */
-
-  Doc.prototype.getBody = function getBody() {};
-
-  /**
-   * Whether the document has been fully constructed.
-   * @return {boolean}
-   */
-
-  Doc.prototype.isReady = function isReady() {};
-
-  /**
-   * Resolved when document has been fully constructed.
-   * @return {!Promise}
-   */
-
-  Doc.prototype.whenReady = function whenReady() {};
-
-  /**
-   * Adds the element to the fixed layer.
-   * @param {!Element} unusedElement
-   * @return {!Promise}
-   *
-   * This is a no-op for except in AMP on iOS < 13.0.
-   */
-
-  Doc.prototype.addToFixedLayer = function addToFixedLayer(unusedElement) {};
+  }, {
+    key: "addToFixedLayer",
+    value: function addToFixedLayer(unusedElement) {}
+  }]);
 
   return Doc;
-})();
+}();
+/** @implements {Doc} */
+
 
 exports.Doc = Doc;
 
-var GlobalDoc = (function () {
+var GlobalDoc =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window|!Document} winOrDoc
    */
-
   function GlobalDoc(winOrDoc) {
-    babelHelpers.classCallCheck(this, GlobalDoc);
+    _classCallCheck(this, GlobalDoc);
 
     var isWin = !!winOrDoc.document;
     /** @private @const {!Window} */
-    this.win_ = /** @type {!Window} */isWin ? /** @type {!Window} */winOrDoc : /** @type {!Document} */winOrDoc.defaultView;
+
+    this.win_ =
+    /** @type {!Window} */
+    isWin ?
+    /** @type {!Window} */
+    winOrDoc :
+    /** @type {!Document} */
+    winOrDoc.defaultView;
     /** @private @const {!Document} */
-    this.doc_ = isWin ? /** @type {!Window} */winOrDoc.document : /** @type {!Document} */winOrDoc;
+
+    this.doc_ = isWin ?
+    /** @type {!Window} */
+    winOrDoc.document :
+    /** @type {!Document} */
+    winOrDoc;
   }
-
-  /**
-   * @param {!Document|!Window|!Doc} input
-   * @return {!Doc}
-   */
-
   /** @override */
 
-  GlobalDoc.prototype.getWin = function getWin() {
-    return this.win_;
-  };
 
-  /** @override */
+  _createClass(GlobalDoc, [{
+    key: "getWin",
+    value: function getWin() {
+      return this.win_;
+    }
+    /** @override */
 
-  GlobalDoc.prototype.getRootNode = function getRootNode() {
-    return this.doc_;
-  };
+  }, {
+    key: "getRootNode",
+    value: function getRootNode() {
+      return this.doc_;
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "getRootElement",
+    value: function getRootElement() {
+      return this.doc_.documentElement;
+    }
+    /** @override */
 
-  GlobalDoc.prototype.getRootElement = function getRootElement() {
-    return this.doc_.documentElement;
-  };
+  }, {
+    key: "getHead",
+    value: function getHead() {
+      // `document.head` always has a chance to be parsed, at least partially.
+      return (
+        /** @type {!Element} */
+        this.doc_.head
+      );
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "getBody",
+    value: function getBody() {
+      return this.doc_.body;
+    }
+    /** @override */
 
-  GlobalDoc.prototype.getHead = function getHead() {
-    // `document.head` always has a chance to be parsed, at least partially.
-    return (/** @type {!Element} */this.doc_.head
-    );
-  };
+  }, {
+    key: "isReady",
+    value: function isReady() {
+      return (0, _documentReady.isDocumentReady)(this.doc_);
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "whenReady",
+    value: function whenReady() {
+      return (0, _documentReady.whenDocumentReady)(this.doc_);
+    }
+    /** @override */
 
-  GlobalDoc.prototype.getBody = function getBody() {
-    return this.doc_.body;
-  };
-
-  /** @override */
-
-  GlobalDoc.prototype.isReady = function isReady() {
-    return _utilsDocumentReady.isDocumentReady(this.doc_);
-  };
-
-  /** @override */
-
-  GlobalDoc.prototype.whenReady = function whenReady() {
-    return _utilsDocumentReady.whenDocumentReady(this.doc_);
-  };
-
-  /** @override */
-
-  GlobalDoc.prototype.addToFixedLayer = function addToFixedLayer(unusedElement) {
-    return Promise.resolve();
-  };
+  }, {
+    key: "addToFixedLayer",
+    value: function addToFixedLayer(unusedElement) {
+      return Promise.resolve();
+    }
+  }]);
 
   return GlobalDoc;
-})();
+}();
+/**
+ * @param {!Document|!Window|!Doc} input
+ * @return {!Doc}
+ */
+
 
 exports.GlobalDoc = GlobalDoc;
 
 function resolveDoc(input) {
   // Is it a `Document`
-  if ( /** @type {!Document} */input.nodeType === /* DOCUMENT */9) {
-    return new GlobalDoc( /** @type {!Document} */input);
+  if (
+  /** @type {!Document} */
+  input.nodeType ===
+  /* DOCUMENT */
+  9) {
+    return new GlobalDoc(
+    /** @type {!Document} */
+    input);
+  } // Is it a `Window`?
+
+
+  if (
+  /** @type {!Window} */
+  input.document) {
+    return new GlobalDoc(
+    /** @type {!Window} */
+    input);
   }
-  // Is it a `Window`?
-  if ( /** @type {!Window} */input.document) {
-    return new GlobalDoc( /** @type {!Window} */input);
-  }
-  return (/** @type {!Doc} */input
+
+  return (
+    /** @type {!Doc} */
+    input
   );
 }
 
-},{"../utils/document-ready":68}],23:[function(require,module,exports){
-exports.__esModule = true;
+},{"../utils/document-ready":67}],22:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.getControlFlag = getControlFlag;
 exports.getDocClassForTesting = getDocClassForTesting;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+exports.PageConfigResolver = void 0;
 
-var _doc = require('./doc');
+var _doc = require("./doc");
 
-var _pageConfig = require('./page-config');
+var _pageConfig = require("./page-config");
 
-var _utilsLog = require('../utils/log');
+var _log = require("../utils/log");
 
-var _utilsDom = require('../utils/dom');
+var _dom = require("../utils/dom");
 
-var _utilsTypes = require('../utils/types');
+var _types = require("../utils/types");
 
-var _utilsJson = require('../utils/json');
+var _json = require("../utils/json");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var ALREADY_SEEN = '__SWG-SEEN__';
 var CONTROL_FLAG = 'subscriptions-control';
+var ALLOWED_TYPES = ['CreativeWork', 'Article', 'NewsArticle', 'Blog', 'Comment', 'Course', 'HowTo', 'Message', 'Review', 'WebPage']; // RegExp for quickly scanning LD+JSON for allowed types
 
-var ALLOWED_TYPES = ['CreativeWork', 'Article', 'NewsArticle', 'Blog', 'Comment', 'Course', 'HowTo', 'Message', 'Review', 'WebPage'];
-
-// RegExp for quickly scanning LD+JSON for allowed types
 var RE_ALLOWED_TYPES = new RegExp(ALLOWED_TYPES.join('|'));
-
 /**
  */
 
-var PageConfigResolver = (function () {
+var PageConfigResolver =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window|!Document|!Doc} winOrDoc
    */
-
   function PageConfigResolver(winOrDoc) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, PageConfigResolver);
+    _classCallCheck(this, PageConfigResolver);
 
     /** @private @const {!Doc} */
-    this.doc_ = _doc.resolveDoc(winOrDoc);
-
+    this.doc_ = (0, _doc.resolveDoc)(winOrDoc);
     /** @private {?function((!PageConfig|!Promise))} */
-    this.configResolver_ = null;
 
+    this.configResolver_ = null;
     /** @private @const {!Promise<!PageConfig>} */
+
     this.configPromise_ = new Promise(function (resolve) {
       _this.configResolver_ = resolve;
     });
-
     /** @private @const {!MetaParser} */
+
     this.metaParser_ = new MetaParser(this.doc_);
     /** @private @const {!JsonLdParser} */
+
     this.ldParser_ = new JsonLdParser(this.doc_);
     /** @private @const {!MicrodataParser} */
+
     this.microdataParser_ = new MicrodataParser(this.doc_);
   }
-
   /**
    * @return {!Promise<!PageConfig>}
    */
 
-  PageConfigResolver.prototype.resolveConfig = function resolveConfig() {
-    // Try resolve the config at different times.
-    Promise.resolve().then(this.check.bind(this));
-    this.doc_.whenReady().then(this.check.bind(this));
-    return this.configPromise_;
-  };
 
-  /**
-   * @return {?PageConfig}
-   */
+  _createClass(PageConfigResolver, [{
+    key: "resolveConfig",
+    value: function resolveConfig() {
+      // Try resolve the config at different times.
+      Promise.resolve().then(this.check.bind(this));
+      this.doc_.whenReady().then(this.check.bind(this));
+      return this.configPromise_;
+    }
+    /**
+     * @return {?PageConfig}
+     */
 
-  PageConfigResolver.prototype.check = function check() {
-    // Already resolved.
-    if (!this.configResolver_) {
-      return null;
+  }, {
+    key: "check",
+    value: function check() {
+      // Already resolved.
+      if (!this.configResolver_) {
+        return null;
+      }
+
+      var config = this.metaParser_.check();
+
+      if (!config) {
+        config = this.ldParser_.check();
+      }
+
+      if (!config) {
+        config = this.microdataParser_.check();
+      }
+
+      if (config) {
+        // Product ID has been found: initialize the rest of the config.
+        this.configResolver_(config);
+        this.configResolver_ = null;
+      } else if (this.doc_.isReady()) {
+        this.configResolver_(Promise.reject(new Error('No config could be discovered in the page')));
+        this.configResolver_ = null;
+      }
+
+      (0, _log.debugLog)(config);
+      return config;
     }
-    var config = this.metaParser_.check();
-    if (!config) {
-      config = this.ldParser_.check();
-    }
-    if (!config) {
-      config = this.microdataParser_.check();
-    }
-    if (config) {
-      // Product ID has been found: initialize the rest of the config.
-      this.configResolver_(config);
-      this.configResolver_ = null;
-    } else if (this.doc_.isReady()) {
-      this.configResolver_(Promise.reject(new Error('No config could be discovered in the page')));
-      this.configResolver_ = null;
-    }
-    _utilsLog.debugLog(config);
-    return config;
-  };
+  }]);
 
   return PageConfigResolver;
-})();
+}();
 
 exports.PageConfigResolver = PageConfigResolver;
 
-var TypeChecker = (function () {
+var TypeChecker =
+/*#__PURE__*/
+function () {
   function TypeChecker() {
-    babelHelpers.classCallCheck(this, TypeChecker);
+    _classCallCheck(this, TypeChecker);
   }
-
   /**
    * Check value from json
    * @param {?Array|string} value
@@ -5860,266 +6296,307 @@ var TypeChecker = (function () {
    * @return {boolean}
    */
 
-  TypeChecker.prototype.checkValue = function checkValue(value, expectedTypes) {
-    if (!value) {
-      return false;
+
+  _createClass(TypeChecker, [{
+    key: "checkValue",
+    value: function checkValue(value, expectedTypes) {
+      if (!value) {
+        return false;
+      }
+
+      return this.checkArray(this.toArray_(value), expectedTypes);
     }
-    return this.checkArray(this.toArray_(value), expectedTypes);
-  };
+    /**
+     * Checks space delimited list of types
+     * @param {?string} itemtype
+     * @param {Array<string>} expectedTypes
+     * @return {boolean}
+     */
 
-  /**
-   * Checks space delimited list of types
-   * @param {?string} itemtype
-   * @param {Array<string>} expectedTypes
-   * @return {boolean}
-   */
+  }, {
+    key: "checkString",
+    value: function checkString(itemtype, expectedTypes) {
+      if (!itemtype) {
+        return false;
+      }
 
-  TypeChecker.prototype.checkString = function checkString(itemtype, expectedTypes) {
-    if (!itemtype) {
-      return false;
+      return this.checkArray(itemtype.split(/\s+/), expectedTypes);
     }
-    return this.checkArray(itemtype.split(/\s+/), expectedTypes);
-  };
+    /**
+     * @param {Array<?string>} typeArray
+     * @param {Array<string>} expectedTypes
+     * @return {boolean}
+     */
 
-  /**
-   * @param {Array<?string>} typeArray
-   * @param {Array<string>} expectedTypes
-   * @return {boolean}
-   */
+  }, {
+    key: "checkArray",
+    value: function checkArray(typeArray, expectedTypes) {
+      var found = false;
+      typeArray.forEach(function (candidateType) {
+        found = found || expectedTypes.includes(candidateType.replace(/^http:\/\/schema.org\//i, ''));
+      });
+      return found;
+    }
+    /*
+     * @param {?Array|string} value
+     * @return {Array}
+     * @private
+     */
 
-  TypeChecker.prototype.checkArray = function checkArray(typeArray, expectedTypes) {
-    var found = false;
-    typeArray.forEach(function (candidateType) {
-      found = found || expectedTypes.includes(candidateType.replace(/^http:\/\/schema.org\//i, ''));
-    });
-    return found;
-  };
-
-  /*
-   * @param {?Array|string} value
-   * @return {Array}
-   * @private
-   */
-
-  TypeChecker.prototype.toArray_ = function toArray_(value) {
-    return _utilsTypes.isArray(value) ? value : [value];
-  };
+  }, {
+    key: "toArray_",
+    value: function toArray_(value) {
+      return (0, _types.isArray)(value) ? value : [value];
+    }
+  }]);
 
   return TypeChecker;
-})();
+}();
 
-var MetaParser = (function () {
+var MetaParser =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Doc} doc
    */
-
   function MetaParser(doc) {
-    babelHelpers.classCallCheck(this, MetaParser);
+    _classCallCheck(this, MetaParser);
 
     /** @private @const {!Doc} */
     this.doc_ = doc;
   }
-
   /**
    * @return {?PageConfig}
    */
 
-  MetaParser.prototype.check = function check() {
-    if (!this.doc_.getBody()) {
-      // Wait until the whole `<head>` is parsed.
-      return null;
+
+  _createClass(MetaParser, [{
+    key: "check",
+    value: function check() {
+      if (!this.doc_.getBody()) {
+        // Wait until the whole `<head>` is parsed.
+        return null;
+      } // Try to find product id.
+
+
+      var productId = getMetaTag(this.doc_.getRootNode(), 'subscriptions-product-id');
+
+      if (!productId) {
+        return null;
+      } // Is locked?
+
+
+      var accessibleForFree = getMetaTag(this.doc_.getRootNode(), 'subscriptions-accessible-for-free');
+      var locked = accessibleForFree && accessibleForFree.toLowerCase() == 'false' || false;
+      return new _pageConfig.PageConfig(productId, locked);
     }
-
-    // Try to find product id.
-    var productId = getMetaTag(this.doc_.getRootNode(), 'subscriptions-product-id');
-    if (!productId) {
-      return null;
-    }
-
-    // Is locked?
-    var accessibleForFree = getMetaTag(this.doc_.getRootNode(), 'subscriptions-accessible-for-free');
-    var locked = accessibleForFree && accessibleForFree.toLowerCase() == 'false' || false;
-
-    return new _pageConfig.PageConfig(productId, locked);
-  };
+  }]);
 
   return MetaParser;
-})();
+}();
 
-var JsonLdParser = (function () {
+var JsonLdParser =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Doc} doc
    */
-
   function JsonLdParser(doc) {
-    babelHelpers.classCallCheck(this, JsonLdParser);
+    _classCallCheck(this, JsonLdParser);
 
     /** @private @const {!Doc} */
     this.doc_ = doc;
     /** @private @const @function */
+
     this.checkType_ = new TypeChecker();
   }
-
   /**
    * @return {?PageConfig}
    */
 
-  JsonLdParser.prototype.check = function check() {
-    if (!this.doc_.getBody()) {
-      // Wait until the whole `<head>` is parsed.
-      return null;
-    }
 
-    var domReady = this.doc_.isReady();
-
-    // type: 'application/ld+json'
-    var elements = this.doc_.getRootNode().querySelectorAll('script[type="application/ld+json"]');
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i];
-      if (element[ALREADY_SEEN] || !element.textContent || !domReady && !_utilsDom.hasNextNodeInDocumentOrder(element)) {
-        continue;
+  _createClass(JsonLdParser, [{
+    key: "check",
+    value: function check() {
+      if (!this.doc_.getBody()) {
+        // Wait until the whole `<head>` is parsed.
+        return null;
       }
-      element[ALREADY_SEEN] = true;
-      if (!RE_ALLOWED_TYPES.test(element.textContent)) {
-        continue;
-      }
-      var possibleConfig = this.tryExtractConfig_(element);
-      if (possibleConfig) {
-        return possibleConfig;
-      }
-    }
-    return null;
-  };
 
-  /**
-   * @param {!Element} element
-   * @return {?PageConfig}
-   */
+      var domReady = this.doc_.isReady(); // type: 'application/ld+json'
 
-  JsonLdParser.prototype.tryExtractConfig_ = function tryExtractConfig_(element) {
-    var json = _utilsJson.tryParseJson(element.textContent);
-    if (!json) {
-      return null;
-    }
+      var elements = this.doc_.getRootNode().querySelectorAll('script[type="application/ld+json"]');
 
-    // Must be an ALLOWED_TYPE
-    if (!this.checkType_.checkValue(json['@type'], ALLOWED_TYPES)) {
-      return null;
-    }
+      for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
 
-    // Must have a isPartOf[@type=Product].
-    var productId = null;
-    var partOfArray = this.valueArray_(json, 'isPartOf');
-    if (partOfArray) {
-      for (var i = 0; i < partOfArray.length; i++) {
-        productId = this.discoverProductId_(partOfArray[i]);
-        if (productId) {
-          break;
+        if (element[ALREADY_SEEN] || !element.textContent || !domReady && !(0, _dom.hasNextNodeInDocumentOrder)(element)) {
+          continue;
+        }
+
+        element[ALREADY_SEEN] = true;
+
+        if (!RE_ALLOWED_TYPES.test(element.textContent)) {
+          continue;
+        }
+
+        var possibleConfig = this.tryExtractConfig_(element);
+
+        if (possibleConfig) {
+          return possibleConfig;
         }
       }
-    }
-    if (!productId) {
+
       return null;
     }
+    /**
+     * @param {!Element} element
+     * @return {?PageConfig}
+     */
 
-    // Found product id, just check for the access flag.
-    var isAccessibleForFree = this.bool_(this.singleValue_(json, 'isAccessibleForFree'),
-    /* default */true);
+  }, {
+    key: "tryExtractConfig_",
+    value: function tryExtractConfig_(element) {
+      var json = (0, _json.tryParseJson)(element.textContent);
 
-    return new _pageConfig.PageConfig(productId, !isAccessibleForFree);
-  };
+      if (!json) {
+        return null;
+      } // Must be an ALLOWED_TYPE
 
-  /**
-   * @param {*} value
-   * @param {boolean} def
-   * @return {boolean}
-   */
 
-  JsonLdParser.prototype.bool_ = function bool_(value, def) {
-    if (value == null || value === '') {
+      if (!this.checkType_.checkValue(json['@type'], ALLOWED_TYPES)) {
+        return null;
+      } // Must have a isPartOf[@type=Product].
+
+
+      var productId = null;
+      var partOfArray = this.valueArray_(json, 'isPartOf');
+
+      if (partOfArray) {
+        for (var i = 0; i < partOfArray.length; i++) {
+          productId = this.discoverProductId_(partOfArray[i]);
+
+          if (productId) {
+            break;
+          }
+        }
+      }
+
+      if (!productId) {
+        return null;
+      } // Found product id, just check for the access flag.
+
+
+      var isAccessibleForFree = this.bool_(this.singleValue_(json, 'isAccessibleForFree'),
+      /* default */
+      true);
+      return new _pageConfig.PageConfig(productId, !isAccessibleForFree);
+    }
+    /**
+     * @param {*} value
+     * @param {boolean} def
+     * @return {boolean}
+     */
+
+  }, {
+    key: "bool_",
+    value: function bool_(value, def) {
+      if (value == null || value === '') {
+        return def;
+      }
+
+      if (typeof value == 'boolean') {
+        return value;
+      }
+
+      if (typeof value == 'string') {
+        var lowercase = value.toLowerCase();
+
+        if (lowercase == 'false') {
+          return false;
+        }
+
+        if (lowercase == 'true') {
+          return true;
+        }
+      }
+
       return def;
     }
-    if (typeof value == 'boolean') {
-      return value;
-    }
-    if (typeof value == 'string') {
-      var lowercase = value.toLowerCase();
-      if (lowercase == 'false') {
-        return false;
+    /**
+     * @param {!Object} json
+     * @return {?string}
+     */
+
+  }, {
+    key: "discoverProductId_",
+    value: function discoverProductId_(json) {
+      // Must have type `Product`.
+      if (!this.checkType_.checkValue(json['@type'], ['Product'])) {
+        return null;
       }
-      if (lowercase == 'true') {
-        return true;
+
+      return (
+        /** @type {?string} */
+        this.singleValue_(json, 'productID')
+      );
+    }
+    /**
+     * @param {!Object} json
+     * @param {string} name
+     * @return {?Array}
+     */
+
+  }, {
+    key: "valueArray_",
+    value: function valueArray_(json, name) {
+      var value = json[name];
+
+      if (value == null || value === '') {
+        return null;
       }
+
+      return (0, _types.isArray)(value) ? value : [value];
     }
-    return def;
-  };
+    /**
+     * @param {!Object} json
+     * @param {string} name
+     * @return {*}
+     */
 
-  /**
-   * @param {!Object} json
-   * @return {?string}
-   */
-
-  JsonLdParser.prototype.discoverProductId_ = function discoverProductId_(json) {
-    // Must have type `Product`.
-    if (!this.checkType_.checkValue(json['@type'], ['Product'])) {
-      return null;
+  }, {
+    key: "singleValue_",
+    value: function singleValue_(json, name) {
+      var valueArray = this.valueArray_(json, name);
+      var value = valueArray && valueArray[0];
+      return value == null || value === '' ? null : value;
     }
-    return (/** @type {?string} */this.singleValue_(json, 'productID')
-    );
-  };
-
-  /**
-   * @param {!Object} json
-   * @param {string} name
-   * @return {?Array}
-   */
-
-  JsonLdParser.prototype.valueArray_ = function valueArray_(json, name) {
-    var value = json[name];
-    if (value == null || value === '') {
-      return null;
-    }
-    return _utilsTypes.isArray(value) ? value : [value];
-  };
-
-  /**
-   * @param {!Object} json
-   * @param {string} name
-   * @return {*}
-   */
-
-  JsonLdParser.prototype.singleValue_ = function singleValue_(json, name) {
-    var valueArray = this.valueArray_(json, name);
-    var value = valueArray && valueArray[0];
-    return value == null || value === '' ? null : value;
-  };
+  }]);
 
   return JsonLdParser;
-})();
+}();
 
-var MicrodataParser = (function () {
+var MicrodataParser =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Doc} doc
    */
-
   function MicrodataParser(doc) {
-    babelHelpers.classCallCheck(this, MicrodataParser);
+    _classCallCheck(this, MicrodataParser);
 
     /** @private @const {!Doc} */
     this.doc_ = doc;
     /** @private {?boolean} */
+
     this.access_ = null;
     /** @private {?string} */
+
     this.productId_ = null;
     /** @private @const @function */
+
     this.checkType_ = new TypeChecker();
   }
-
-  /**
-   * @param {!Node} rootNode
-   * @return {?string}
-   */
-
   /**
    * Returns false if access is restricted, otherwise true
    * @param {!Element} root An element that is an item of type in ALLOWED_TYPES list
@@ -6127,160 +6604,197 @@ var MicrodataParser = (function () {
    * @private
    */
 
-  MicrodataParser.prototype.discoverAccess_ = function discoverAccess_(root) {
-    var ALREADY_SEEN = 'alreadySeenForAccessInfo';
-    var nodeList = root.querySelectorAll("[itemprop='isAccessibleForFree']");
-    for (var i = 0; nodeList[i]; i++) {
-      var element = nodeList[i];
-      var content = element.getAttribute('content') || element.textContent;
-      if (!content) {
-        continue;
-      }
-      if (this.isValidElement_(element, root, ALREADY_SEEN)) {
-        var accessForFree = null;
-        if (content.toLowerCase() == 'true') {
-          accessForFree = true;
-        } else if (content.toLowerCase() == 'false') {
-          accessForFree = false;
+
+  _createClass(MicrodataParser, [{
+    key: "discoverAccess_",
+    value: function discoverAccess_(root) {
+      var ALREADY_SEEN = 'alreadySeenForAccessInfo';
+      var nodeList = root.querySelectorAll("[itemprop='isAccessibleForFree']");
+
+      for (var i = 0; nodeList[i]; i++) {
+        var element = nodeList[i];
+        var content = element.getAttribute('content') || element.textContent;
+
+        if (!content) {
+          continue;
         }
-        return accessForFree;
+
+        if (this.isValidElement_(element, root, ALREADY_SEEN)) {
+          var accessForFree = null;
+
+          if (content.toLowerCase() == 'true') {
+            accessForFree = true;
+          } else if (content.toLowerCase() == 'false') {
+            accessForFree = false;
+          }
+
+          return accessForFree;
+        }
       }
-    }
-    return null;
-  };
 
-  /**
-   * Verifies if an element is valid based on the following
-   * - child of an item of one the the ALLOWED_TYPES
-   * - not a child of an item of any other type
-   * - not seen before, marked using the alreadySeen tag
-   * @param {?Element} current the element to be verified
-   * @param {!Element} root the parent to track up to
-   * @param {!string} alreadySeen used to tag already visited nodes
-   * @return {!boolean} valid node
-   * @private
-   */
-
-  MicrodataParser.prototype.isValidElement_ = function isValidElement_(current, root, alreadySeen) {
-    for (var node = current; node && !node[alreadySeen]; node = node.parentNode) {
-      node[alreadySeen] = true;
-      // document nodes don't have hasAttribute
-      if (node.hasAttribute && node.hasAttribute('itemscope')) {
-        /**{?string} */
-        var type = node.getAttribute('itemtype');
-        return this.checkType_.checkString(type, ALLOWED_TYPES);
-      }
-    }
-    return false;
-  };
-
-  /**
-   * Obtains the product ID that meets the requirements
-   * - child of an item of one of ALLOWED_TYPES
-   * - Not a child of an item of type 'Section'
-   * - child of an item of type 'productID'
-   * @param {!Element} root An element that is an item of an ALLOWED_TYPES
-   * @return {?string} product ID, if found
-   * @private
-   */
-
-  MicrodataParser.prototype.discoverProductId_ = function discoverProductId_(root) {
-    var ALREADY_SEEN = 'alreadySeenForProductInfo';
-    var nodeList = root.querySelectorAll('[itemprop="productID"]');
-    for (var i = 0; nodeList[i]; i++) {
-      var element = nodeList[i];
-      var content = element.getAttribute('content') || element.textContent;
-      var item = element.closest('[itemtype][itemscope]');
-      var type = item.getAttribute('itemtype');
-      if (type.indexOf('http://schema.org/Product') <= -1) {
-        continue;
-      }
-      if (this.isValidElement_(item.parentElement, root, ALREADY_SEEN)) {
-        return content;
-      }
-    }
-    return null;
-  };
-
-  /**
-   * Returns PageConfig if available
-   * @return {?PageConfig} PageConfig found so far
-   */
-
-  MicrodataParser.prototype.getPageConfig_ = function getPageConfig_() {
-    var locked = null;
-    if (this.access_ != null) {
-      locked = !this.access_;
-    } else if (this.doc_.isReady()) {
-      // Default to unlocked
-      locked = false;
-    }
-    if (this.productId_ != null && locked != null) {
-      return new _pageConfig.PageConfig(this.productId_, locked);
-    }
-    return null;
-  };
-
-  /**
-   * Extracts page config from Microdata in the DOM
-   * @return {?PageConfig} PageConfig found
-   */
-
-  MicrodataParser.prototype.tryExtractConfig_ = function tryExtractConfig_() {
-    var _this2 = this;
-
-    var config = this.getPageConfig_();
-    if (config) {
-      return config;
-    }
-
-    // Grab all the nodes with an itemtype and filter for our allowed types
-    var nodeList = Array.prototype.slice.call(this.doc_.getRootNode().querySelectorAll('[itemscope][itemtype]')).filter(function (node) {
-      return _this2.checkType_.checkString(node.getAttribute('itemtype'), ALLOWED_TYPES);
-    });
-
-    for (var i = 0; nodeList[i] && config == null; i++) {
-      var element = nodeList[i];
-      if (this.access_ == null) {
-        this.access_ = this.discoverAccess_(element);
-      }
-      if (!this.productId_) {
-        this.productId_ = this.discoverProductId_(element);
-      }
-      config = this.getPageConfig_();
-    }
-    return config;
-  };
-
-  /**
-   * @return {?PageConfig}
-   */
-
-  MicrodataParser.prototype.check = function check() {
-    if (!this.doc_.getBody()) {
-      // Wait until the whole `<head>` is parsed.
       return null;
     }
-    return this.tryExtractConfig_();
-  };
+    /**
+     * Verifies if an element is valid based on the following
+     * - child of an item of one the the ALLOWED_TYPES
+     * - not a child of an item of any other type
+     * - not seen before, marked using the alreadySeen tag
+     * @param {?Element} current the element to be verified
+     * @param {!Element} root the parent to track up to
+     * @param {!string} alreadySeen used to tag already visited nodes
+     * @return {!boolean} valid node
+     * @private
+     */
+
+  }, {
+    key: "isValidElement_",
+    value: function isValidElement_(current, root, alreadySeen) {
+      for (var node = current; node && !node[alreadySeen]; node = node.parentNode) {
+        node[alreadySeen] = true; // document nodes don't have hasAttribute
+
+        if (node.hasAttribute && node.hasAttribute('itemscope')) {
+          /**{?string} */
+          var type = node.getAttribute('itemtype');
+          return this.checkType_.checkString(type, ALLOWED_TYPES);
+        }
+      }
+
+      return false;
+    }
+    /**
+     * Obtains the product ID that meets the requirements
+     * - child of an item of one of ALLOWED_TYPES
+     * - Not a child of an item of type 'Section'
+     * - child of an item of type 'productID'
+     * @param {!Element} root An element that is an item of an ALLOWED_TYPES
+     * @return {?string} product ID, if found
+     * @private
+     */
+
+  }, {
+    key: "discoverProductId_",
+    value: function discoverProductId_(root) {
+      var ALREADY_SEEN = 'alreadySeenForProductInfo';
+      var nodeList = root.querySelectorAll('[itemprop="productID"]');
+
+      for (var i = 0; nodeList[i]; i++) {
+        var element = nodeList[i];
+        var content = element.getAttribute('content') || element.textContent;
+        var item = element.closest('[itemtype][itemscope]');
+        var type = item.getAttribute('itemtype');
+
+        if (type.indexOf('http://schema.org/Product') <= -1) {
+          continue;
+        }
+
+        if (this.isValidElement_(item.parentElement, root, ALREADY_SEEN)) {
+          return content;
+        }
+      }
+
+      return null;
+    }
+    /**
+     * Returns PageConfig if available
+     * @return {?PageConfig} PageConfig found so far
+     */
+
+  }, {
+    key: "getPageConfig_",
+    value: function getPageConfig_() {
+      var locked = null;
+
+      if (this.access_ != null) {
+        locked = !this.access_;
+      } else if (this.doc_.isReady()) {
+        // Default to unlocked
+        locked = false;
+      }
+
+      if (this.productId_ != null && locked != null) {
+        return new _pageConfig.PageConfig(this.productId_, locked);
+      }
+
+      return null;
+    }
+    /**
+     * Extracts page config from Microdata in the DOM
+     * @return {?PageConfig} PageConfig found
+     */
+
+  }, {
+    key: "tryExtractConfig_",
+    value: function tryExtractConfig_() {
+      var _this2 = this;
+
+      var config = this.getPageConfig_();
+
+      if (config) {
+        return config;
+      } // Grab all the nodes with an itemtype and filter for our allowed types
+
+
+      var nodeList = Array.prototype.slice.call(this.doc_.getRootNode().querySelectorAll('[itemscope][itemtype]')).filter(function (node) {
+        return _this2.checkType_.checkString(node.getAttribute('itemtype'), ALLOWED_TYPES);
+      });
+
+      for (var i = 0; nodeList[i] && config == null; i++) {
+        var element = nodeList[i];
+
+        if (this.access_ == null) {
+          this.access_ = this.discoverAccess_(element);
+        }
+
+        if (!this.productId_) {
+          this.productId_ = this.discoverProductId_(element);
+        }
+
+        config = this.getPageConfig_();
+      }
+
+      return config;
+    }
+    /**
+     * @return {?PageConfig}
+     */
+
+  }, {
+    key: "check",
+    value: function check() {
+      if (!this.doc_.getBody()) {
+        // Wait until the whole `<head>` is parsed.
+        return null;
+      }
+
+      return this.tryExtractConfig_();
+    }
+  }]);
 
   return MicrodataParser;
-})();
+}();
+/**
+ * @param {!Node} rootNode
+ * @return {?string}
+ */
+
 
 function getControlFlag(rootNode) {
   // Look for the flag in `meta`.
   var flag = getMetaTag(rootNode, CONTROL_FLAG);
+
   if (flag) {
     return flag;
-  }
-  // Look for the flag in `script`.
-  var el = rootNode.querySelector('script[' + CONTROL_FLAG + ']');
+  } // Look for the flag in `script`.
+
+
+  var el = rootNode.querySelector("script[".concat(CONTROL_FLAG, "]"));
+
   if (el) {
     return el.getAttribute(CONTROL_FLAG);
   }
+
   return null;
 }
-
 /**
  * Returns the value from content attribute of a meta tag with given name.
  *
@@ -6291,22 +6805,38 @@ function getControlFlag(rootNode) {
  * @return {?string} attribute value or empty string.
  * @private
  */
+
+
 function getMetaTag(rootNode, name) {
-  var el = rootNode.querySelector('meta[name="' + name + '"]');
+  var el = rootNode.querySelector("meta[name=\"".concat(name, "\"]"));
+
   if (el) {
     return el.getAttribute('content');
   }
+
   return null;
 }
-
 /** @package Visible for testing only. */
+
 
 function getDocClassForTesting() {
   return _doc.Doc;
 }
 
-},{"../utils/dom":69,"../utils/json":72,"../utils/log":74,"../utils/types":80,"./doc":22,"./page-config":24}],24:[function(require,module,exports){
-exports.__esModule = true;
+},{"../utils/dom":68,"../utils/json":71,"../utils/log":73,"../utils/types":79,"./doc":21,"./page-config":23}],23:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PageConfig = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6325,25 +6855,25 @@ exports.__esModule = true;
 
 /**
  */
-
-var PageConfig = (function () {
+var PageConfig =
+/*#__PURE__*/
+function () {
   /**
    * @param {string} productOrPublicationId
    * @param {boolean} locked
    */
-
   function PageConfig(productOrPublicationId, locked) {
-    babelHelpers.classCallCheck(this, PageConfig);
+    _classCallCheck(this, PageConfig);
 
-    var publicationId = undefined,
-        productId = undefined,
-        label = undefined;
+    var publicationId, productId, label;
     var div = productOrPublicationId.indexOf(':');
+
     if (div != -1) {
       // The argument is a product id.
       productId = productOrPublicationId;
       publicationId = productId.substring(0, div);
       label = productId.substring(div + 1);
+
       if (label == '*') {
         throw new Error('wildcard disallowed');
       }
@@ -6353,55 +6883,81 @@ var PageConfig = (function () {
       productId = null;
       label = null;
     }
-
     /** @private @const {string} */
+
+
     this.publicationId_ = publicationId;
     /** @private @const {?string} */
+
     this.productId_ = productId;
     /** @private @const {?string} */
+
     this.label_ = label;
     /** @private @const {boolean} */
+
     this.locked_ = locked;
   }
-
   /**
    * @return {string}
    */
 
-  PageConfig.prototype.getPublicationId = function getPublicationId() {
-    return this.publicationId_;
-  };
 
-  /**
-   * @return {?string}
-   */
+  _createClass(PageConfig, [{
+    key: "getPublicationId",
+    value: function getPublicationId() {
+      return this.publicationId_;
+    }
+    /**
+     * @return {?string}
+     */
 
-  PageConfig.prototype.getProductId = function getProductId() {
-    return this.productId_;
-  };
+  }, {
+    key: "getProductId",
+    value: function getProductId() {
+      return this.productId_;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getLabel",
+    value: function getLabel() {
+      return this.label_;
+    }
+    /**
+     * @return {boolean}
+     */
 
-  PageConfig.prototype.getLabel = function getLabel() {
-    return this.label_;
-  };
-
-  /**
-   * @return {boolean}
-   */
-
-  PageConfig.prototype.isLocked = function isLocked() {
-    return this.locked_;
-  };
+  }, {
+    key: "isLocked",
+    value: function isLocked() {
+      return this.locked_;
+    }
+  }]);
 
   return PageConfig;
-})();
+}();
 
 exports.PageConfig = PageConfig;
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
+"use strict";
+
+var _arrayIncludes = require("./polyfills/array-includes");
+
+var _domtokenlistToggle = require("./polyfills/domtokenlist-toggle");
+
+var _documentContains = require("./polyfills/document-contains");
+
+var _mathSign = require("./polyfills/math-sign");
+
+var _objectAssign = require("./polyfills/object-assign");
+
+var _objectValues = require("./polyfills/object-values");
+
+var _promise = require("./polyfills/promise");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6422,32 +6978,22 @@ exports.PageConfig = PageConfig;
  * @fileoverview Loads all polyfills needed by the project.
  * This list should not get longer without a very good reason.
  */
+(0, _domtokenlistToggle.install)(self);
+(0, _mathSign.install)(self);
+(0, _objectAssign.install)(self);
+(0, _objectValues.install)(self);
+(0, _promise.install)(self);
+(0, _documentContains.install)(self);
+(0, _arrayIncludes.install)(self);
 
-var _polyfillsDomtokenlistToggle = require('./polyfills/domtokenlist-toggle');
+},{"./polyfills/array-includes":25,"./polyfills/document-contains":26,"./polyfills/domtokenlist-toggle":27,"./polyfills/math-sign":28,"./polyfills/object-assign":29,"./polyfills/object-values":30,"./polyfills/promise":31}],25:[function(require,module,exports){
+"use strict";
 
-var _polyfillsDocumentContains = require('./polyfills/document-contains');
-
-var _polyfillsMathSign = require('./polyfills/math-sign');
-
-var _polyfillsObjectAssign = require('./polyfills/object-assign');
-
-var _polyfillsObjectValues = require('./polyfills/object-values');
-
-var _polyfillsPromise = require('./polyfills/promise');
-
-var _polyfillsArrayIncludes = require('./polyfills/array-includes');
-
-_polyfillsDomtokenlistToggle.install(self);
-_polyfillsMathSign.install(self);
-_polyfillsObjectAssign.install(self);
-_polyfillsObjectValues.install(self);
-_polyfillsPromise.install(self);
-_polyfillsDocumentContains.install(self);
-_polyfillsArrayIncludes.install(self);
-
-},{"./polyfills/array-includes":26,"./polyfills/document-contains":27,"./polyfills/domtokenlist-toggle":28,"./polyfills/math-sign":29,"./polyfills/object-assign":30,"./polyfills/object-values":31,"./polyfills/promise":32}],26:[function(require,module,exports){
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.install = install;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6468,29 +7014,32 @@ exports.install = install;
  * Returns true if the element is in the array and false otherwise.
  *
  * @param {*} value
- * @param {number=} opt_fromIndex
+ * @param {number=} fromIndex
  * @return {boolean}
  * @this {Array}
  */
-function includes(value, opt_fromIndex) {
-  var fromIndex = opt_fromIndex || 0;
+function includes(value) {
+  var fromIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   var len = this.length;
   var i = fromIndex >= 0 ? fromIndex : Math.max(len + fromIndex, 0);
+
   for (; i < len; i++) {
-    var other = this[i];
-    // If value has been found OR (value is NaN AND other is NaN)
+    var other = this[i]; // If value has been found OR (value is NaN AND other is NaN)
+
     /*eslint "no-self-compare": 0*/
+
     if (other === value || value !== value && other !== other) {
       return true;
     }
   }
+
   return false;
 }
-
 /**
  * Sets the Array.contains polyfill if it does not exist.
  * @param {!Window} win
  */
+
 
 function install(win) {
   if (!win.Array.prototype.includes) {
@@ -6503,9 +7052,14 @@ function install(win) {
   }
 }
 
-},{}],27:[function(require,module,exports){
-exports.__esModule = true;
+},{}],26:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.install = install;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6536,11 +7090,11 @@ function documentContainsPolyfill(node) {
   // equality to the document itself.
   return node == this || this.documentElement.contains(node);
 }
-
 /**
  * Polyfills `HTMLDocument.contains` API.
  * @param {!Window} win
  */
+
 
 function install(win) {
   if (!win.HTMLDocument.prototype.contains) {
@@ -6553,9 +7107,14 @@ function install(win) {
   }
 }
 
-},{}],28:[function(require,module,exports){
-exports.__esModule = true;
+},{}],27:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.install = install;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6573,16 +7132,17 @@ exports.install = install;
  */
 
 /**
- * Polyfill for `DOMTokenList.prototype.toggle(token, opt_force)` method.
- * This is specially important because IE does not support `opt_force` attribute.
+ * Polyfill for `DOMTokenList.prototype.toggle(token, force)` method.
+ * This is specially important because IE does not support `force` attribute.
  * See https://goo.gl/hgKNYY for details.
  * @param {string} token
- * @param {boolean=} opt_force
+ * @param {boolean=} force
  * @this {DOMTokenList}
  * @return {boolean}
  */
-function domTokenListTogglePolyfill(token, opt_force) {
-  var remove = opt_force === undefined ? this.contains(token) : !opt_force;
+function domTokenListTogglePolyfill(token, force) {
+  var remove = force === undefined ? this.contains(token) : !force;
+
   if (remove) {
     this.remove(token);
     return false;
@@ -6591,11 +7151,11 @@ function domTokenListTogglePolyfill(token, opt_force) {
     return true;
   }
 }
-
 /**
  * Polyfills `DOMTokenList.prototype.toggle` API in IE.
  * @param {!Window} win
  */
+
 
 function install(win) {
   if (isIe(win) && win.DOMTokenList) {
@@ -6607,21 +7167,26 @@ function install(win) {
     });
   }
 }
-
 /**
  * Whether the current browser is a IE browser.
  * @param {!Window} win
  * @return {boolean}
  */
+
+
 function isIe(win) {
-  return (/Trident|MSIE|IEMobile/i.test(win.navigator.userAgent)
-  );
+  return /Trident|MSIE|IEMobile/i.test(win.navigator.userAgent);
 }
 
-},{}],29:[function(require,module,exports){
-exports.__esModule = true;
+},{}],28:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.sign = sign;
 exports.install = install;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6646,22 +7211,20 @@ exports.install = install;
  * @param {number} x
  * @returns {number}
  */
-
 function sign(x) {
-  x = Number(x);
+  x = Number(x); // If x is 0, -0, or NaN, return it.
 
-  // If x is 0, -0, or NaN, return it.
   if (!x) {
     return x;
   }
 
   return x > 0 ? 1 : -1;
 }
-
 /**
  * Sets the Math.sign polyfill if it does not exist.
  * @param {!Window} win
  */
+
 
 function install(win) {
   if (!win.Math.sign) {
@@ -6674,10 +7237,15 @@ function install(win) {
   }
 }
 
-},{}],30:[function(require,module,exports){
-exports.__esModule = true;
+},{}],29:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.assign = assign;
 exports.install = install;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6693,9 +7261,7 @@ exports.install = install;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 var hasOwnProperty = Object.prototype.hasOwnProperty;
-
 /**
  * Copies values of all enumerable own properties from one or more source
  * objects (provided as extended arguments to the function) to a target object.
@@ -6711,8 +7277,10 @@ function assign(target, var_args) {
   }
 
   var output = Object(target);
+
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
+
     if (source != null) {
       for (var key in source) {
         if (hasOwnProperty.call(source, key)) {
@@ -6721,13 +7289,14 @@ function assign(target, var_args) {
       }
     }
   }
+
   return output;
 }
-
 /**
  * Sets the Object.assign polyfill if it does not exist.
  * @param {!Window} win
  */
+
 
 function install(win) {
   if (!win.Object.assign) {
@@ -6740,10 +7309,15 @@ function install(win) {
   }
 }
 
-},{}],31:[function(require,module,exports){
-exports.__esModule = true;
+},{}],30:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.values = values;
 exports.install = install;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6759,9 +7333,7 @@ exports.install = install;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 var hasOwnProperty = Object.prototype.hasOwnProperty;
-
 /**
  * Implements `Object.values` API.
  * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Object/values.
@@ -6776,18 +7348,20 @@ function values(target) {
   }
 
   var output = [];
+
   for (var key in target) {
     if (hasOwnProperty.call(target, key)) {
       output.push(target[key]);
     }
   }
+
   return output;
 }
-
 /**
  * Sets the Object.values polyfill if it does not exist.
  * @param {!Window} win
  */
+
 
 function install(win) {
   if (!win.Object.values) {
@@ -6800,9 +7374,22 @@ function install(win) {
   }
 }
 
-},{}],32:[function(require,module,exports){
-exports.__esModule = true;
+},{}],31:[function(require,module,exports){
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.install = install;
+
+var Promise = _interopRequireWildcard(require("promise-pjs/promise"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6819,25 +7406,23 @@ exports.install = install;
  * limitations under the License.
  */
 
-var _promisePjsPromise = require('promise-pjs/promise');
-
-var Promise = babelHelpers.interopRequireWildcard(_promisePjsPromise);
-
 /**
  * Sets the Promise polyfill if it does not exist.
  * @param {!Window} win
  */
-
 function install(win) {
   if (!win.Promise) {
-    win.Promise = /** @type {?} */Promise;
-    // In babel the * export is an Object with a default property.
+    win.Promise =
+    /** @type {?} */
+    Promise; // In babel the * export is an Object with a default property.
     // In closure compiler it is the Promise function itself.
-    if (Promise['default']) {
-      win.Promise = Promise['default'];
-    }
-    // We copy the individual static methods, because closure
+
+    if (Promise["default"]) {
+      win.Promise = Promise["default"];
+    } // We copy the individual static methods, because closure
     // compiler flattens the polyfill namespace.
+
+
     win.Promise.resolve = Promise.resolve;
     win.Promise.reject = Promise.reject;
     win.Promise.all = Promise.all;
@@ -6845,8 +7430,22 @@ function install(win) {
   }
 }
 
-},{"promise-pjs/promise":3}],33:[function(require,module,exports){
-exports.__esModule = true;
+},{"promise-pjs/promise":3}],32:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deserialize = deserialize;
+exports.getLabel = getLabel;
+exports.ViewSubscriptionsResponse = exports.SubscribeResponse = exports.SmartBoxMessage = exports.SkuSelectedResponse = exports.Message = exports.LinkingInfoResponse = exports.LinkSaveTokenRequest = exports.EventParams = exports.EventOriginator = exports.EntitlementsResponse = exports.AnalyticsRequest = exports.AnalyticsEventMeta = exports.AnalyticsEvent = exports.AnalyticsContext = exports.AlreadySubscribedResponse = exports.AccountCreationRequest = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -6862,32 +7461,39 @@ exports.__esModule = true;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @interface
  */
-
-var Message = (function () {
+var Message =
+/*#__PURE__*/
+function () {
   function Message() {
-    babelHelpers.classCallCheck(this, Message);
+    _classCallCheck(this, Message);
   }
 
-  /** @enum {number} */
+  _createClass(Message, [{
+    key: "label",
 
-  /**
-   * @return {string}
-   */
+    /**
+     * @return {string}
+     */
+    value: function label() {}
+    /**
+     * @return {!Array}
+     */
 
-  Message.prototype.label = function label() {};
-
-  /**
-   * @return {!Array}
-   */
-
-  Message.prototype.toArray = function toArray() {};
+  }, {
+    key: "toArray",
+    value: function toArray() {}
+  }]);
 
   return Message;
-})();
+}();
+/** @enum {number} */
 
+
+exports.Message = Message;
 var AnalyticsEvent = {
   UNKNOWN: 0,
   IMPRESSION_PAYWALL: 1,
@@ -6901,6 +7507,13 @@ var AnalyticsEvent = {
   IMPRESSION_SUBSCRIPTION_COMPLETE: 9,
   IMPRESSION_ACCOUNT_CHANGED: 10,
   IMPRESSION_PAGE_LOAD: 11,
+  IMPRESSION_LINK: 12,
+  IMPRESSION_SAVE_SUBSCR_TO_GOOGLE: 13,
+  IMPRESSION_GOOGLE_UPDATED: 14,
+  IMPRESSION_SHOW_OFFERS_SMARTBOX: 15,
+  IMPRESSION_SHOW_OFFERS_SWG_BUTTON: 16,
+  IMPRESSION_SELECT_OFFER_SMARTBOX: 17,
+  IMPRESSION_SELECT_OFFER_SWG_BUTTON: 18,
   ACTION_SUBSCRIBE: 1000,
   ACTION_PAYMENT_COMPLETE: 1001,
   ACTION_ACCOUNT_CREATED: 1002,
@@ -6912,15 +7525,26 @@ var AnalyticsEvent = {
   ACTION_VIEW_OFFERS: 1008,
   ACTION_ALREADY_SUBSCRIBED: 1009,
   ACTION_NEW_DEFERRED_ACCOUNT: 1010,
+  ACTION_LINK_CONTINUE: 1011,
+  ACTION_LINK_CANCEL: 1012,
+  ACTION_GOOGLE_UPDATED_CLOSE: 1013,
+  ACTION_USER_CANCELED_PAYFLOW: 1014,
+  ACTION_SAVE_SUBSCR_TO_GOOGLE_CONTINUE: 1015,
+  ACTION_SAVE_SUBSCR_TO_GOOGLE_CANCEL: 1016,
+  ACTION_SWG_BUTTON_SHOW_OFFERS_CLICK: 1017,
+  ACTION_SWG_BUTTON_SELECT_OFFER_CLICK: 1018,
   EVENT_PAYMENT_FAILED: 2000,
   EVENT_CUSTOM: 3000,
   EVENT_CONFIRM_TX_ID: 3001,
   EVENT_CHANGED_TX_ID: 3002,
   EVENT_GPAY_NO_TX_ID: 3003,
   EVENT_GPAY_CANNOT_CONFIRM_TX_ID: 3004,
+  EVENT_GOOGLE_UPDATED: 3005,
   EVENT_SUBSCRIPTION_STATE: 4000
 };
 /** @enum {number} */
+
+exports.AnalyticsEvent = AnalyticsEvent;
 var EventOriginator = {
   UNKNOWN_CLIENT: 0,
   SWG_CLIENT: 1,
@@ -6929,1075 +7553,1349 @@ var EventOriginator = {
   SWG_SERVER: 4,
   PUBLISHER_CLIENT: 5
 };
-
 /**
  * @implements {Message}
  */
 
-var AccountCreationRequest = (function () {
+exports.EventOriginator = EventOriginator;
+
+var AccountCreationRequest =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function AccountCreationRequest() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, AccountCreationRequest);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, AccountCreationRequest);
 
     /** @private {?boolean} */
     this.complete_ = data[1] == null ? null : data[1];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?boolean}
    */
 
-  AccountCreationRequest.prototype.getComplete = function getComplete() {
-    return this.complete_;
-  };
 
-  /**
-   * @param {boolean} value
-   */
+  _createClass(AccountCreationRequest, [{
+    key: "getComplete",
+    value: function getComplete() {
+      return this.complete_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  AccountCreationRequest.prototype.setComplete = function setComplete(value) {
-    this.complete_ = value;
-  };
+  }, {
+    key: "setComplete",
+    value: function setComplete(value) {
+      this.complete_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @return {!Array}
-   * @override
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.complete_ // field 1 - complete
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  AccountCreationRequest.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.complete_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 1 - complete
-
-  AccountCreationRequest.prototype.label = function label() {
-    return 'AccountCreationRequest';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'AccountCreationRequest';
+    }
+  }]);
 
   return AccountCreationRequest;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var AlreadySubscribedResponse = (function () {
+
+exports.AccountCreationRequest = AccountCreationRequest;
+
+var AlreadySubscribedResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function AlreadySubscribedResponse() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, AlreadySubscribedResponse);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, AlreadySubscribedResponse);
 
     /** @private {?boolean} */
     this.subscriberOrMember_ = data[1] == null ? null : data[1];
-
     /** @private {?boolean} */
+
     this.linkRequested_ = data[2] == null ? null : data[2];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?boolean}
    */
 
-  AlreadySubscribedResponse.prototype.getSubscriberOrMember = function getSubscriberOrMember() {
-    return this.subscriberOrMember_;
-  };
 
-  /**
-   * @param {boolean} value
-   */
+  _createClass(AlreadySubscribedResponse, [{
+    key: "getSubscriberOrMember",
+    value: function getSubscriberOrMember() {
+      return this.subscriberOrMember_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  AlreadySubscribedResponse.prototype.setSubscriberOrMember = function setSubscriberOrMember(value) {
-    this.subscriberOrMember_ = value;
-  };
+  }, {
+    key: "setSubscriberOrMember",
+    value: function setSubscriberOrMember(value) {
+      this.subscriberOrMember_ = value;
+    }
+    /**
+     * @return {?boolean}
+     */
 
-  /**
-   * @return {?boolean}
-   */
+  }, {
+    key: "getLinkRequested",
+    value: function getLinkRequested() {
+      return this.linkRequested_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  AlreadySubscribedResponse.prototype.getLinkRequested = function getLinkRequested() {
-    return this.linkRequested_;
-  };
+  }, {
+    key: "setLinkRequested",
+    value: function setLinkRequested(value) {
+      this.linkRequested_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @param {boolean} value
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.subscriberOrMember_, // field 1 - subscriber_or_member
+      this.linkRequested_ // field 2 - link_requested
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  AlreadySubscribedResponse.prototype.setLinkRequested = function setLinkRequested(value) {
-    this.linkRequested_ = value;
-  };
-
-  /**
-   * @return {!Array}
-   * @override
-   */
-
-  AlreadySubscribedResponse.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.subscriberOrMember_, // field 1 - subscriber_or_member
-    this.linkRequested_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 2 - link_requested
-
-  AlreadySubscribedResponse.prototype.label = function label() {
-    return 'AlreadySubscribedResponse';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'AlreadySubscribedResponse';
+    }
+  }]);
 
   return AlreadySubscribedResponse;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var AnalyticsContext = (function () {
+
+exports.AlreadySubscribedResponse = AlreadySubscribedResponse;
+
+var AnalyticsContext =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function AnalyticsContext() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, AnalyticsContext);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, AnalyticsContext);
 
     /** @private {?string} */
     this.embedderOrigin_ = data[1] == null ? null : data[1];
-
     /** @private {?string} */
+
     this.transactionId_ = data[2] == null ? null : data[2];
-
     /** @private {?string} */
+
     this.referringOrigin_ = data[3] == null ? null : data[3];
-
     /** @private {?string} */
+
     this.utmSource_ = data[4] == null ? null : data[4];
-
     /** @private {?string} */
+
     this.utmCampaign_ = data[5] == null ? null : data[5];
-
     /** @private {?string} */
+
     this.utmMedium_ = data[6] == null ? null : data[6];
-
     /** @private {?string} */
+
     this.sku_ = data[7] == null ? null : data[7];
-
     /** @private {?boolean} */
+
     this.readyToPay_ = data[8] == null ? null : data[8];
-
     /** @private {!Array<string>} */
+
     this.label_ = data[9] || [];
+    /** @private {?string} */
+
+    this.clientVersion_ = data[10] == null ? null : data[10];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?string}
    */
 
-  AnalyticsContext.prototype.getEmbedderOrigin = function getEmbedderOrigin() {
-    return this.embedderOrigin_;
-  };
 
-  /**
-   * @param {string} value
-   */
+  _createClass(AnalyticsContext, [{
+    key: "getEmbedderOrigin",
+    value: function getEmbedderOrigin() {
+      return this.embedderOrigin_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  AnalyticsContext.prototype.setEmbedderOrigin = function setEmbedderOrigin(value) {
-    this.embedderOrigin_ = value;
-  };
+  }, {
+    key: "setEmbedderOrigin",
+    value: function setEmbedderOrigin(value) {
+      this.embedderOrigin_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getTransactionId",
+    value: function getTransactionId() {
+      return this.transactionId_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  AnalyticsContext.prototype.getTransactionId = function getTransactionId() {
-    return this.transactionId_;
-  };
+  }, {
+    key: "setTransactionId",
+    value: function setTransactionId(value) {
+      this.transactionId_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @param {string} value
-   */
+  }, {
+    key: "getReferringOrigin",
+    value: function getReferringOrigin() {
+      return this.referringOrigin_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  AnalyticsContext.prototype.setTransactionId = function setTransactionId(value) {
-    this.transactionId_ = value;
-  };
+  }, {
+    key: "setReferringOrigin",
+    value: function setReferringOrigin(value) {
+      this.referringOrigin_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getUtmSource",
+    value: function getUtmSource() {
+      return this.utmSource_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  AnalyticsContext.prototype.getReferringOrigin = function getReferringOrigin() {
-    return this.referringOrigin_;
-  };
+  }, {
+    key: "setUtmSource",
+    value: function setUtmSource(value) {
+      this.utmSource_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @param {string} value
-   */
+  }, {
+    key: "getUtmCampaign",
+    value: function getUtmCampaign() {
+      return this.utmCampaign_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  AnalyticsContext.prototype.setReferringOrigin = function setReferringOrigin(value) {
-    this.referringOrigin_ = value;
-  };
+  }, {
+    key: "setUtmCampaign",
+    value: function setUtmCampaign(value) {
+      this.utmCampaign_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getUtmMedium",
+    value: function getUtmMedium() {
+      return this.utmMedium_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  AnalyticsContext.prototype.getUtmSource = function getUtmSource() {
-    return this.utmSource_;
-  };
+  }, {
+    key: "setUtmMedium",
+    value: function setUtmMedium(value) {
+      this.utmMedium_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @param {string} value
-   */
+  }, {
+    key: "getSku",
+    value: function getSku() {
+      return this.sku_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  AnalyticsContext.prototype.setUtmSource = function setUtmSource(value) {
-    this.utmSource_ = value;
-  };
+  }, {
+    key: "setSku",
+    value: function setSku(value) {
+      this.sku_ = value;
+    }
+    /**
+     * @return {?boolean}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getReadyToPay",
+    value: function getReadyToPay() {
+      return this.readyToPay_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  AnalyticsContext.prototype.getUtmCampaign = function getUtmCampaign() {
-    return this.utmCampaign_;
-  };
+  }, {
+    key: "setReadyToPay",
+    value: function setReadyToPay(value) {
+      this.readyToPay_ = value;
+    }
+    /**
+     * @return {!Array<string>}
+     */
 
-  /**
-   * @param {string} value
-   */
+  }, {
+    key: "getLabelList",
+    value: function getLabelList() {
+      return this.label_;
+    }
+    /**
+     * @param {!Array<string>} value
+     */
 
-  AnalyticsContext.prototype.setUtmCampaign = function setUtmCampaign(value) {
-    this.utmCampaign_ = value;
-  };
+  }, {
+    key: "setLabelList",
+    value: function setLabelList(value) {
+      this.label_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getClientVersion",
+    value: function getClientVersion() {
+      return this.clientVersion_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  AnalyticsContext.prototype.getUtmMedium = function getUtmMedium() {
-    return this.utmMedium_;
-  };
+  }, {
+    key: "setClientVersion",
+    value: function setClientVersion(value) {
+      this.clientVersion_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @param {string} value
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.embedderOrigin_, // field 1 - embedder_origin
+      this.transactionId_, // field 2 - transaction_id
+      this.referringOrigin_, // field 3 - referring_origin
+      this.utmSource_, // field 4 - utm_source
+      this.utmCampaign_, // field 5 - utm_campaign
+      this.utmMedium_, // field 6 - utm_medium
+      this.sku_, // field 7 - sku
+      this.readyToPay_, // field 8 - ready_to_pay
+      this.label_, // field 9 - label
+      this.clientVersion_ // field 10 - client_version
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  AnalyticsContext.prototype.setUtmMedium = function setUtmMedium(value) {
-    this.utmMedium_ = value;
-  };
-
-  /**
-   * @return {?string}
-   */
-
-  AnalyticsContext.prototype.getSku = function getSku() {
-    return this.sku_;
-  };
-
-  /**
-   * @param {string} value
-   */
-
-  AnalyticsContext.prototype.setSku = function setSku(value) {
-    this.sku_ = value;
-  };
-
-  /**
-   * @return {?boolean}
-   */
-
-  AnalyticsContext.prototype.getReadyToPay = function getReadyToPay() {
-    return this.readyToPay_;
-  };
-
-  /**
-   * @param {boolean} value
-   */
-
-  AnalyticsContext.prototype.setReadyToPay = function setReadyToPay(value) {
-    this.readyToPay_ = value;
-  };
-
-  /**
-   * @return {!Array<string>}
-   */
-
-  AnalyticsContext.prototype.getLabelList = function getLabelList() {
-    return this.label_;
-  };
-
-  /**
-   * @param {!Array<string>} value
-   */
-
-  AnalyticsContext.prototype.setLabelList = function setLabelList(value) {
-    this.label_ = value;
-  };
-
-  /**
-   * @return {!Array}
-   * @override
-   */
-
-  AnalyticsContext.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.embedderOrigin_, // field 1 - embedder_origin
-    this.transactionId_, // field 2 - transaction_id
-    this.referringOrigin_, // field 3 - referring_origin
-    this.utmSource_, // field 4 - utm_source
-    this.utmCampaign_, // field 5 - utm_campaign
-    this.utmMedium_, // field 6 - utm_medium
-    this.sku_, // field 7 - sku
-    this.readyToPay_, // field 8 - ready_to_pay
-    this.label_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 9 - label
-
-  AnalyticsContext.prototype.label = function label() {
-    return 'AnalyticsContext';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'AnalyticsContext';
+    }
+  }]);
 
   return AnalyticsContext;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var AnalyticsEventMeta = (function () {
+
+exports.AnalyticsContext = AnalyticsContext;
+
+var AnalyticsEventMeta =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function AnalyticsEventMeta() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, AnalyticsEventMeta);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, AnalyticsEventMeta);
 
     /** @private {?EventOriginator} */
     this.eventOriginator_ = data[1] == null ? null : data[1];
-
     /** @private {?boolean} */
+
     this.isFromUserAction_ = data[2] == null ? null : data[2];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?EventOriginator}
    */
 
-  AnalyticsEventMeta.prototype.getEventOriginator = function getEventOriginator() {
-    return this.eventOriginator_;
-  };
 
-  /**
-   * @param {!EventOriginator} value
-   */
+  _createClass(AnalyticsEventMeta, [{
+    key: "getEventOriginator",
+    value: function getEventOriginator() {
+      return this.eventOriginator_;
+    }
+    /**
+     * @param {!EventOriginator} value
+     */
 
-  AnalyticsEventMeta.prototype.setEventOriginator = function setEventOriginator(value) {
-    this.eventOriginator_ = value;
-  };
+  }, {
+    key: "setEventOriginator",
+    value: function setEventOriginator(value) {
+      this.eventOriginator_ = value;
+    }
+    /**
+     * @return {?boolean}
+     */
 
-  /**
-   * @return {?boolean}
-   */
+  }, {
+    key: "getIsFromUserAction",
+    value: function getIsFromUserAction() {
+      return this.isFromUserAction_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  AnalyticsEventMeta.prototype.getIsFromUserAction = function getIsFromUserAction() {
-    return this.isFromUserAction_;
-  };
+  }, {
+    key: "setIsFromUserAction",
+    value: function setIsFromUserAction(value) {
+      this.isFromUserAction_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @param {boolean} value
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.eventOriginator_, // field 1 - event_originator
+      this.isFromUserAction_ // field 2 - is_from_user_action
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  AnalyticsEventMeta.prototype.setIsFromUserAction = function setIsFromUserAction(value) {
-    this.isFromUserAction_ = value;
-  };
-
-  /**
-   * @return {!Array}
-   * @override
-   */
-
-  AnalyticsEventMeta.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.eventOriginator_, // field 1 - event_originator
-    this.isFromUserAction_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 2 - is_from_user_action
-
-  AnalyticsEventMeta.prototype.label = function label() {
-    return 'AnalyticsEventMeta';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'AnalyticsEventMeta';
+    }
+  }]);
 
   return AnalyticsEventMeta;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var AnalyticsRequest = (function () {
+
+exports.AnalyticsEventMeta = AnalyticsEventMeta;
+
+var AnalyticsRequest =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function AnalyticsRequest() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, AnalyticsRequest);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, AnalyticsRequest);
 
     /** @private {?AnalyticsContext} */
     this.context_ = data[1] == null || data[1] == undefined ? null : new AnalyticsContext(data[1]);
-
     /** @private {?AnalyticsEvent} */
+
     this.event_ = data[2] == null ? null : data[2];
-
     /** @private {?AnalyticsEventMeta} */
-    this.meta_ = data[3] == null || data[3] == undefined ? null : new AnalyticsEventMeta(data[3]);
 
+    this.meta_ = data[3] == null || data[3] == undefined ? null : new AnalyticsEventMeta(data[3]);
     /** @private {?EventParams} */
+
     this.params_ = data[4] == null || data[4] == undefined ? null : new EventParams(data[4]);
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?AnalyticsContext}
    */
 
-  AnalyticsRequest.prototype.getContext = function getContext() {
-    return this.context_;
-  };
 
-  /**
-   * @param {!AnalyticsContext} value
-   */
+  _createClass(AnalyticsRequest, [{
+    key: "getContext",
+    value: function getContext() {
+      return this.context_;
+    }
+    /**
+     * @param {!AnalyticsContext} value
+     */
 
-  AnalyticsRequest.prototype.setContext = function setContext(value) {
-    this.context_ = value;
-  };
+  }, {
+    key: "setContext",
+    value: function setContext(value) {
+      this.context_ = value;
+    }
+    /**
+     * @return {?AnalyticsEvent}
+     */
 
-  /**
-   * @return {?AnalyticsEvent}
-   */
+  }, {
+    key: "getEvent",
+    value: function getEvent() {
+      return this.event_;
+    }
+    /**
+     * @param {!AnalyticsEvent} value
+     */
 
-  AnalyticsRequest.prototype.getEvent = function getEvent() {
-    return this.event_;
-  };
+  }, {
+    key: "setEvent",
+    value: function setEvent(value) {
+      this.event_ = value;
+    }
+    /**
+     * @return {?AnalyticsEventMeta}
+     */
 
-  /**
-   * @param {!AnalyticsEvent} value
-   */
+  }, {
+    key: "getMeta",
+    value: function getMeta() {
+      return this.meta_;
+    }
+    /**
+     * @param {!AnalyticsEventMeta} value
+     */
 
-  AnalyticsRequest.prototype.setEvent = function setEvent(value) {
-    this.event_ = value;
-  };
+  }, {
+    key: "setMeta",
+    value: function setMeta(value) {
+      this.meta_ = value;
+    }
+    /**
+     * @return {?EventParams}
+     */
 
-  /**
-   * @return {?AnalyticsEventMeta}
-   */
+  }, {
+    key: "getParams",
+    value: function getParams() {
+      return this.params_;
+    }
+    /**
+     * @param {!EventParams} value
+     */
 
-  AnalyticsRequest.prototype.getMeta = function getMeta() {
-    return this.meta_;
-  };
+  }, {
+    key: "setParams",
+    value: function setParams(value) {
+      this.params_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @param {!AnalyticsEventMeta} value
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.context_ ? this.context_.toArray() : [], // field 1 - context
+      this.event_, // field 2 - event
+      this.meta_ ? this.meta_.toArray() : [], // field 3 - meta
+      this.params_ ? this.params_.toArray() : [] // field 4 - params
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  AnalyticsRequest.prototype.setMeta = function setMeta(value) {
-    this.meta_ = value;
-  };
-
-  /**
-   * @return {?EventParams}
-   */
-
-  AnalyticsRequest.prototype.getParams = function getParams() {
-    return this.params_;
-  };
-
-  /**
-   * @param {!EventParams} value
-   */
-
-  AnalyticsRequest.prototype.setParams = function setParams(value) {
-    this.params_ = value;
-  };
-
-  /**
-   * @return {!Array}
-   * @override
-   */
-
-  AnalyticsRequest.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.context_ ? this.context_.toArray() : [], // field 1 - context
-    this.event_, // field 2 - event
-    this.meta_ ? this.meta_.toArray() : [], // field 3 - meta
-    this.params_ ? this.params_.toArray() : []];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 4 - params
-
-  AnalyticsRequest.prototype.label = function label() {
-    return 'AnalyticsRequest';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'AnalyticsRequest';
+    }
+  }]);
 
   return AnalyticsRequest;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var EntitlementsResponse = (function () {
+
+exports.AnalyticsRequest = AnalyticsRequest;
+
+var EntitlementsResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function EntitlementsResponse() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, EntitlementsResponse);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, EntitlementsResponse);
 
     /** @private {?string} */
     this.jwt_ = data[1] == null ? null : data[1];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?string}
    */
 
-  EntitlementsResponse.prototype.getJwt = function getJwt() {
-    return this.jwt_;
-  };
 
-  /**
-   * @param {string} value
-   */
+  _createClass(EntitlementsResponse, [{
+    key: "getJwt",
+    value: function getJwt() {
+      return this.jwt_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  EntitlementsResponse.prototype.setJwt = function setJwt(value) {
-    this.jwt_ = value;
-  };
+  }, {
+    key: "setJwt",
+    value: function setJwt(value) {
+      this.jwt_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @return {!Array}
-   * @override
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.jwt_ // field 1 - jwt
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  EntitlementsResponse.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.jwt_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 1 - jwt
-
-  EntitlementsResponse.prototype.label = function label() {
-    return 'EntitlementsResponse';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'EntitlementsResponse';
+    }
+  }]);
 
   return EntitlementsResponse;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var EventParams = (function () {
+
+exports.EntitlementsResponse = EntitlementsResponse;
+
+var EventParams =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function EventParams() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, EventParams);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, EventParams);
 
     /** @private {?string} */
     this.smartboxMessage_ = data[1] == null ? null : data[1];
-
     /** @private {?string} */
+
     this.gpayTransactionId_ = data[2] == null ? null : data[2];
-
     /** @private {?boolean} */
+
     this.hadLogged_ = data[3] == null ? null : data[3];
+    /** @private {?string} */
+
+    this.sku_ = data[4] == null ? null : data[4];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?string}
    */
 
-  EventParams.prototype.getSmartboxMessage = function getSmartboxMessage() {
-    return this.smartboxMessage_;
-  };
 
-  /**
-   * @param {string} value
-   */
+  _createClass(EventParams, [{
+    key: "getSmartboxMessage",
+    value: function getSmartboxMessage() {
+      return this.smartboxMessage_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  EventParams.prototype.setSmartboxMessage = function setSmartboxMessage(value) {
-    this.smartboxMessage_ = value;
-  };
+  }, {
+    key: "setSmartboxMessage",
+    value: function setSmartboxMessage(value) {
+      this.smartboxMessage_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getGpayTransactionId",
+    value: function getGpayTransactionId() {
+      return this.gpayTransactionId_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  EventParams.prototype.getGpayTransactionId = function getGpayTransactionId() {
-    return this.gpayTransactionId_;
-  };
+  }, {
+    key: "setGpayTransactionId",
+    value: function setGpayTransactionId(value) {
+      this.gpayTransactionId_ = value;
+    }
+    /**
+     * @return {?boolean}
+     */
 
-  /**
-   * @param {string} value
-   */
+  }, {
+    key: "getHadLogged",
+    value: function getHadLogged() {
+      return this.hadLogged_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  EventParams.prototype.setGpayTransactionId = function setGpayTransactionId(value) {
-    this.gpayTransactionId_ = value;
-  };
+  }, {
+    key: "setHadLogged",
+    value: function setHadLogged(value) {
+      this.hadLogged_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?boolean}
-   */
+  }, {
+    key: "getSku",
+    value: function getSku() {
+      return this.sku_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  EventParams.prototype.getHadLogged = function getHadLogged() {
-    return this.hadLogged_;
-  };
+  }, {
+    key: "setSku",
+    value: function setSku(value) {
+      this.sku_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @param {boolean} value
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.smartboxMessage_, // field 1 - smartbox_message
+      this.gpayTransactionId_, // field 2 - gpay_transaction_id
+      this.hadLogged_, // field 3 - had_logged
+      this.sku_ // field 4 - sku
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  EventParams.prototype.setHadLogged = function setHadLogged(value) {
-    this.hadLogged_ = value;
-  };
-
-  /**
-   * @return {!Array}
-   * @override
-   */
-
-  EventParams.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.smartboxMessage_, // field 1 - smartbox_message
-    this.gpayTransactionId_, // field 2 - gpay_transaction_id
-    this.hadLogged_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 3 - had_logged
-
-  EventParams.prototype.label = function label() {
-    return 'EventParams';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'EventParams';
+    }
+  }]);
 
   return EventParams;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var LinkSaveTokenRequest = (function () {
+
+exports.EventParams = EventParams;
+
+var LinkSaveTokenRequest =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function LinkSaveTokenRequest() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, LinkSaveTokenRequest);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, LinkSaveTokenRequest);
 
     /** @private {?string} */
     this.authCode_ = data[1] == null ? null : data[1];
-
     /** @private {?string} */
+
     this.token_ = data[2] == null ? null : data[2];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?string}
    */
 
-  LinkSaveTokenRequest.prototype.getAuthCode = function getAuthCode() {
-    return this.authCode_;
-  };
 
-  /**
-   * @param {string} value
-   */
+  _createClass(LinkSaveTokenRequest, [{
+    key: "getAuthCode",
+    value: function getAuthCode() {
+      return this.authCode_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  LinkSaveTokenRequest.prototype.setAuthCode = function setAuthCode(value) {
-    this.authCode_ = value;
-  };
+  }, {
+    key: "setAuthCode",
+    value: function setAuthCode(value) {
+      this.authCode_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getToken",
+    value: function getToken() {
+      return this.token_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  LinkSaveTokenRequest.prototype.getToken = function getToken() {
-    return this.token_;
-  };
+  }, {
+    key: "setToken",
+    value: function setToken(value) {
+      this.token_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @param {string} value
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.authCode_, // field 1 - auth_code
+      this.token_ // field 2 - token
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  LinkSaveTokenRequest.prototype.setToken = function setToken(value) {
-    this.token_ = value;
-  };
-
-  /**
-   * @return {!Array}
-   * @override
-   */
-
-  LinkSaveTokenRequest.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.authCode_, // field 1 - auth_code
-    this.token_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 2 - token
-
-  LinkSaveTokenRequest.prototype.label = function label() {
-    return 'LinkSaveTokenRequest';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'LinkSaveTokenRequest';
+    }
+  }]);
 
   return LinkSaveTokenRequest;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var LinkingInfoResponse = (function () {
+
+exports.LinkSaveTokenRequest = LinkSaveTokenRequest;
+
+var LinkingInfoResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function LinkingInfoResponse() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, LinkingInfoResponse);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, LinkingInfoResponse);
 
     /** @private {?boolean} */
     this.requested_ = data[1] == null ? null : data[1];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?boolean}
    */
 
-  LinkingInfoResponse.prototype.getRequested = function getRequested() {
-    return this.requested_;
-  };
 
-  /**
-   * @param {boolean} value
-   */
+  _createClass(LinkingInfoResponse, [{
+    key: "getRequested",
+    value: function getRequested() {
+      return this.requested_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  LinkingInfoResponse.prototype.setRequested = function setRequested(value) {
-    this.requested_ = value;
-  };
+  }, {
+    key: "setRequested",
+    value: function setRequested(value) {
+      this.requested_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @return {!Array}
-   * @override
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.requested_ // field 1 - requested
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  LinkingInfoResponse.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.requested_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 1 - requested
-
-  LinkingInfoResponse.prototype.label = function label() {
-    return 'LinkingInfoResponse';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'LinkingInfoResponse';
+    }
+  }]);
 
   return LinkingInfoResponse;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var SkuSelectedResponse = (function () {
+
+exports.LinkingInfoResponse = LinkingInfoResponse;
+
+var SkuSelectedResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function SkuSelectedResponse() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, SkuSelectedResponse);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, SkuSelectedResponse);
 
     /** @private {?string} */
     this.sku_ = data[1] == null ? null : data[1];
-
     /** @private {?string} */
+
     this.oldSku_ = data[2] == null ? null : data[2];
+    /** @private {?boolean} */
+
+    this.oneTime_ = data[3] == null ? null : data[3];
+    /** @private {?string} */
+
+    this.playOffer_ = data[4] == null ? null : data[4];
+    /** @private {?string} */
+
+    this.oldPlayOffer_ = data[5] == null ? null : data[5];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?string}
    */
 
-  SkuSelectedResponse.prototype.getSku = function getSku() {
-    return this.sku_;
-  };
 
-  /**
-   * @param {string} value
-   */
+  _createClass(SkuSelectedResponse, [{
+    key: "getSku",
+    value: function getSku() {
+      return this.sku_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  SkuSelectedResponse.prototype.setSku = function setSku(value) {
-    this.sku_ = value;
-  };
+  }, {
+    key: "setSku",
+    value: function setSku(value) {
+      this.sku_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getOldSku",
+    value: function getOldSku() {
+      return this.oldSku_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  SkuSelectedResponse.prototype.getOldSku = function getOldSku() {
-    return this.oldSku_;
-  };
+  }, {
+    key: "setOldSku",
+    value: function setOldSku(value) {
+      this.oldSku_ = value;
+    }
+    /**
+     * @return {?boolean}
+     */
 
-  /**
-   * @param {string} value
-   */
+  }, {
+    key: "getOneTime",
+    value: function getOneTime() {
+      return this.oneTime_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  SkuSelectedResponse.prototype.setOldSku = function setOldSku(value) {
-    this.oldSku_ = value;
-  };
+  }, {
+    key: "setOneTime",
+    value: function setOneTime(value) {
+      this.oneTime_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {!Array}
-   * @override
-   */
+  }, {
+    key: "getPlayOffer",
+    value: function getPlayOffer() {
+      return this.playOffer_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  SkuSelectedResponse.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.sku_, // field 1 - sku
-    this.oldSku_];
-  };
+  }, {
+    key: "setPlayOffer",
+    value: function setPlayOffer(value) {
+      this.playOffer_ = value;
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 2 - old_sku
+  }, {
+    key: "getOldPlayOffer",
+    value: function getOldPlayOffer() {
+      return this.oldPlayOffer_;
+    }
+    /**
+     * @param {string} value
+     */
 
-  SkuSelectedResponse.prototype.label = function label() {
-    return 'SkuSelectedResponse';
-  };
+  }, {
+    key: "setOldPlayOffer",
+    value: function setOldPlayOffer(value) {
+      this.oldPlayOffer_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
+
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.sku_, // field 1 - sku
+      this.oldSku_, // field 2 - old_sku
+      this.oneTime_, // field 3 - one_time
+      this.playOffer_, // field 4 - play_offer
+      this.oldPlayOffer_ // field 5 - old_play_offer
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
+
+  }, {
+    key: "label",
+    value: function label() {
+      return 'SkuSelectedResponse';
+    }
+  }]);
 
   return SkuSelectedResponse;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var SmartBoxMessage = (function () {
+
+exports.SkuSelectedResponse = SkuSelectedResponse;
+
+var SmartBoxMessage =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function SmartBoxMessage() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, SmartBoxMessage);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, SmartBoxMessage);
 
     /** @private {?boolean} */
     this.isClicked_ = data[1] == null ? null : data[1];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?boolean}
    */
 
-  SmartBoxMessage.prototype.getIsClicked = function getIsClicked() {
-    return this.isClicked_;
-  };
 
-  /**
-   * @param {boolean} value
-   */
+  _createClass(SmartBoxMessage, [{
+    key: "getIsClicked",
+    value: function getIsClicked() {
+      return this.isClicked_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  SmartBoxMessage.prototype.setIsClicked = function setIsClicked(value) {
-    this.isClicked_ = value;
-  };
+  }, {
+    key: "setIsClicked",
+    value: function setIsClicked(value) {
+      this.isClicked_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @return {!Array}
-   * @override
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.isClicked_ // field 1 - is_clicked
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  SmartBoxMessage.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.isClicked_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 1 - is_clicked
-
-  SmartBoxMessage.prototype.label = function label() {
-    return 'SmartBoxMessage';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'SmartBoxMessage';
+    }
+  }]);
 
   return SmartBoxMessage;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var SubscribeResponse = (function () {
+
+exports.SmartBoxMessage = SmartBoxMessage;
+
+var SubscribeResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function SubscribeResponse() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, SubscribeResponse);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, SubscribeResponse);
 
     /** @private {?boolean} */
     this.subscribe_ = data[1] == null ? null : data[1];
   }
-
-  /**
-   * @implements {Message}
-   */
-
   /**
    * @return {?boolean}
    */
 
-  SubscribeResponse.prototype.getSubscribe = function getSubscribe() {
-    return this.subscribe_;
-  };
 
-  /**
-   * @param {boolean} value
-   */
+  _createClass(SubscribeResponse, [{
+    key: "getSubscribe",
+    value: function getSubscribe() {
+      return this.subscribe_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  SubscribeResponse.prototype.setSubscribe = function setSubscribe(value) {
-    this.subscribe_ = value;
-  };
+  }, {
+    key: "setSubscribe",
+    value: function setSubscribe(value) {
+      this.subscribe_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @return {!Array}
-   * @override
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.subscribe_ // field 1 - subscribe
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  SubscribeResponse.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.subscribe_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 1 - subscribe
-
-  SubscribeResponse.prototype.label = function label() {
-    return 'SubscribeResponse';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'SubscribeResponse';
+    }
+  }]);
 
   return SubscribeResponse;
-})();
+}();
+/**
+ * @implements {Message}
+ */
 
-var ViewSubscriptionsResponse = (function () {
+
+exports.SubscribeResponse = SubscribeResponse;
+
+var ViewSubscriptionsResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Array=} data
    */
-
   function ViewSubscriptionsResponse() {
-    var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-    babelHelpers.classCallCheck(this, ViewSubscriptionsResponse);
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, ViewSubscriptionsResponse);
 
     /** @private {?boolean} */
     this.native_ = data[1] == null ? null : data[1];
   }
-
   /**
    * @return {?boolean}
    */
 
-  ViewSubscriptionsResponse.prototype.getNative = function getNative() {
-    return this.native_;
-  };
 
-  /**
-   * @param {boolean} value
-   */
+  _createClass(ViewSubscriptionsResponse, [{
+    key: "getNative",
+    value: function getNative() {
+      return this.native_;
+    }
+    /**
+     * @param {boolean} value
+     */
 
-  ViewSubscriptionsResponse.prototype.setNative = function setNative(value) {
-    this.native_ = value;
-  };
+  }, {
+    key: "setNative",
+    value: function setNative(value) {
+      this.native_ = value;
+    }
+    /**
+     * @return {!Array}
+     * @override
+     */
 
-  /**
-   * @return {!Array}
-   * @override
-   */
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      return [this.label(), // message label
+      this.native_ // field 1 - native
+      ];
+    }
+    /**
+     * @return {string}
+     * @override
+     */
 
-  ViewSubscriptionsResponse.prototype.toArray = function toArray() {
-    return [this.label(), // message label
-    this.native_];
-  };
-
-  /**
-   * @return {string}
-   * @override
-   */
-  // field 1 - native
-
-  ViewSubscriptionsResponse.prototype.label = function label() {
-    return 'ViewSubscriptionsResponse';
-  };
+  }, {
+    key: "label",
+    value: function label() {
+      return 'ViewSubscriptionsResponse';
+    }
+  }]);
 
   return ViewSubscriptionsResponse;
-})();
+}();
 
+exports.ViewSubscriptionsResponse = ViewSubscriptionsResponse;
 var PROTO_MAP = {
   'AccountCreationRequest': AccountCreationRequest,
   'AlreadySubscribedResponse': AlreadySubscribedResponse,
@@ -8013,385 +8911,408 @@ var PROTO_MAP = {
   'SubscribeResponse': SubscribeResponse,
   'ViewSubscriptionsResponse': ViewSubscriptionsResponse
 };
-
 /**
  * Utility to deserialize a buffer
  * @param {!Array} data
  * @return {!Message}
  */
+
 function deserialize(data) {
   /** {?string} */
   var key = data ? data[0] : null;
+
   if (key) {
     var ctor = PROTO_MAP[key];
+
     if (ctor) {
       return new ctor(data);
     }
   }
+
   throw new Error('Deserialization failed for ' + data);
 }
-
 /**
  * @param {function(new: T)} messageType
  * @return {string}
  * @template T
  */
+
+
 function getLabel(messageType) {
-  var message = /** @type {!Message} */new messageType();
+  var message =
+  /** @type {!Message} */
+  new messageType();
   return message.label();
 }
 
-exports.AccountCreationRequest = AccountCreationRequest;
-exports.AlreadySubscribedResponse = AlreadySubscribedResponse;
-exports.AnalyticsContext = AnalyticsContext;
-exports.AnalyticsEvent = AnalyticsEvent;
-exports.AnalyticsEventMeta = AnalyticsEventMeta;
-exports.AnalyticsRequest = AnalyticsRequest;
-exports.EntitlementsResponse = EntitlementsResponse;
-exports.EventOriginator = EventOriginator;
-exports.EventParams = EventParams;
-exports.LinkSaveTokenRequest = LinkSaveTokenRequest;
-exports.LinkingInfoResponse = LinkingInfoResponse;
-exports.Message = Message;
-exports.SkuSelectedResponse = SkuSelectedResponse;
-exports.SmartBoxMessage = SmartBoxMessage;
-exports.SubscribeResponse = SubscribeResponse;
-exports.ViewSubscriptionsResponse = ViewSubscriptionsResponse;
-exports.deserialize = deserialize;
-exports.getLabel = getLabel;
+},{}],33:[function(require,module,exports){
+"use strict";
 
-},{}],34:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.AnalyticsService = void 0;
 
-var _protoApi_messages = require('../proto/api_messages');
+var _api_messages = require("../proto/api_messages");
 
-var _utilsDom = require('../utils/dom');
+var _clientEventManager = require("./client-event-manager");
 
-var _services = require('./services');
+var _dom = require("../utils/dom");
 
-var _experiments = require('./experiments');
+var _services = require("./services");
 
-var _utilsUrl = require('../utils/url');
+var _experiments = require("./experiments");
 
-var _utilsStyle = require('../utils/style');
+var _string = require("../utils/string");
 
-var _utilsString = require('../utils/string');
+var _url = require("../utils/url");
 
-var _clientEventManager = require('./client-event-manager');
+var _style = require("../utils/style");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /** @const {!Object<string, string>} */
 var iframeStyles = {
   display: 'none'
 };
 
-var AnalyticsService = (function () {
+var AnalyticsService =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
-
   function AnalyticsService(deps) {
-    babelHelpers.classCallCheck(this, AnalyticsService);
+    _classCallCheck(this, AnalyticsService);
 
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = deps.doc();
-
     /** @private @const {!./deps.DepsDef} */
+
     this.deps_ = deps;
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!HTMLIFrameElement} */
-    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_.getWin().document, 'iframe', {});
 
-    _utilsStyle.setImportantStyles(this.iframe_, iframeStyles);
-
+    this.iframe_ =
+    /** @type {!HTMLIFrameElement} */
+    (0, _dom.createElement)(this.doc_.getWin().document, 'iframe', {});
+    (0, _style.setImportantStyles)(this.iframe_, iframeStyles);
     /** @private @const {string} */
-    this.src_ = _services.feUrl('/serviceiframe');
 
+    this.src_ = (0, _services.feUrl)('/serviceiframe');
     /** @private @const {string} */
+
     this.publicationId_ = deps.pageConfig().getPublicationId();
-
-    this.args_ = _services.feArgs({
+    this.args_ = (0, _services.feArgs)({
       publicationId: this.publicationId_
     });
-
     /** @private @type {!boolean} */
-    this.everLogged_ = false;
 
+    this.everLogged_ = false;
     /**
      * @private @const {!AnalyticsContext}
      */
-    this.context_ = new _protoApi_messages.AnalyticsContext();
 
-    this.context_.setTransactionId(_utilsString.getUuid());
-
+    this.context_ = new _api_messages.AnalyticsContext();
+    this.context_.setTransactionId((0, _string.getUuid)());
     /** @private {?Promise<!web-activities/activity-ports.ActivityIframePort>} */
+
     this.serviceReady_ = null;
-
     /** @private {?Promise} */
-    this.lastAction_ = null;
 
+    this.lastAction_ = null;
     /** @private @const {!ClientEventManager} */
+
     this.eventManager_ = deps.eventManager();
     this.eventManager_.registerEventListener(this.handleClientEvent_.bind(this));
   }
-
   /**
    * @param {string} transactionId
    */
 
-  AnalyticsService.prototype.setTransactionId = function setTransactionId(transactionId) {
-    this.context_.setTransactionId(transactionId);
-  };
 
-  /**
-   * @return {string}
-   */
+  _createClass(AnalyticsService, [{
+    key: "setTransactionId",
+    value: function setTransactionId(transactionId) {
+      this.context_.setTransactionId(transactionId);
+    }
+    /**
+     * @return {string}
+     */
 
-  AnalyticsService.prototype.getTransactionId = function getTransactionId() {
-    return (/** @type {string} */this.context_.getTransactionId()
-    );
-  };
+  }, {
+    key: "getTransactionId",
+    value: function getTransactionId() {
+      return (
+        /** @type {string} */
+        this.context_.getTransactionId()
+      );
+    }
+    /**
+     * @return {?string}
+     */
 
-  /**
-   * @return {?string}
-   */
+  }, {
+    key: "getSku",
+    value: function getSku() {
+      return this.context_.getSku();
+    }
+    /**
+     * @param {string} sku
+     */
 
-  AnalyticsService.prototype.getSku = function getSku() {
-    return this.context_.getSku();
-  };
+  }, {
+    key: "setSku",
+    value: function setSku(sku) {
+      this.context_.setSku(sku);
+    }
+    /**
+     * @param {!Array<string>} labels
+     */
 
-  /**
-   * @param {string} sku
-   */
-
-  AnalyticsService.prototype.setSku = function setSku(sku) {
-    this.context_.setSku(sku);
-  };
-
-  /**
-   * @param {!Array<string>} labels
-   */
-
-  AnalyticsService.prototype.addLabels = function addLabels(labels) {
-    var _this = this;
-
-    if (labels && labels.length > 0) {
-      (function () {
-        var newLabels = [].concat(_this.context_.getLabelList());
+  }, {
+    key: "addLabels",
+    value: function addLabels(labels) {
+      if (labels && labels.length > 0) {
+        var newLabels = [].concat(this.context_.getLabelList());
         labels.forEach(function (label) {
           if (newLabels.indexOf(label) == -1) {
             newLabels.push(label);
           }
         });
-        _this.context_.setLabelList(newLabels);
-      })();
+        this.context_.setLabelList(newLabels);
+      }
     }
-  };
+    /**
+     * @return {!HTMLIFrameElement}
+     */
 
-  /**
-   * @return {!HTMLIFrameElement}
-   */
-
-  AnalyticsService.prototype.getElement = function getElement() {
-    return this.iframe_;
-  };
-
-  /**
-   * @return {string}
-   * @private
-   */
-
-  AnalyticsService.prototype.getQueryString_ = function getQueryString_() {
-    return this.doc_.getWin().location.search;
-  };
-
-  /**
-   * @return {string}
-   * @private
-   */
-
-  AnalyticsService.prototype.getReferrer_ = function getReferrer_() {
-    return this.doc_.getWin().document.referrer;
-  };
-
-  /**
-   * @private
-   */
-
-  AnalyticsService.prototype.setContext_ = function setContext_() {
-    var utmParams = _utilsUrl.parseQueryString(this.getQueryString_());
-    this.context_.setReferringOrigin(_utilsUrl.parseUrl(this.getReferrer_()).origin);
-    var campaign = utmParams['utm_campaign'];
-    var medium = utmParams['utm_medium'];
-    var source = utmParams['utm_source'];
-    if (campaign) {
-      this.context_.setUtmCampaign(campaign);
+  }, {
+    key: "getElement",
+    value: function getElement() {
+      return this.iframe_;
     }
-    if (medium) {
-      this.context_.setUtmMedium(medium);
+    /**
+     * @return {string}
+     * @private
+     */
+
+  }, {
+    key: "getQueryString_",
+    value: function getQueryString_() {
+      return this.doc_.getWin().location.search;
     }
-    if (source) {
-      this.context_.setUtmSource(source);
+    /**
+     * @return {string}
+     * @private
+     */
+
+  }, {
+    key: "getReferrer_",
+    value: function getReferrer_() {
+      return this.doc_.getWin().document.referrer;
     }
-    this.addLabels(_experiments.getOnExperiments(this.doc_.getWin()));
-  };
+    /**
+     * @private
+     */
 
-  /**
-   * @return {!Promise<!../components/activities.ActivityIframePort>}
-   * @private
-   */
+  }, {
+    key: "setContext_",
+    value: function setContext_() {
+      var utmParams = (0, _url.parseQueryString)(this.getQueryString_());
+      this.context_.setReferringOrigin((0, _url.parseUrl)(this.getReferrer_()).origin);
+      var campaign = utmParams['utm_campaign'];
+      var medium = utmParams['utm_medium'];
+      var source = utmParams['utm_source'];
 
-  AnalyticsService.prototype.start_ = function start_() {
-    var _this2 = this;
+      if (campaign) {
+        this.context_.setUtmCampaign(campaign);
+      }
 
-    if (!this.serviceReady_) {
-      // TODO(sohanirao): Potentially do this even earlier
-      this.doc_.getBody().appendChild(this.getElement());
-      this.serviceReady_ = this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
-        _this2.setContext_();
-        return port.whenReady().then(function () {
-          return port;
+      if (medium) {
+        this.context_.setUtmMedium(medium);
+      }
+
+      if (source) {
+        this.context_.setUtmSource(source);
+      }
+
+      this.context_.setClientVersion('SwG 0.1.22-1576261074655');
+      this.addLabels((0, _experiments.getOnExperiments)(this.doc_.getWin()));
+    }
+    /**
+     * @return {!Promise<!../components/activities.ActivityIframePort>}
+     */
+
+  }, {
+    key: "start",
+    value: function start() {
+      var _this = this;
+
+      if (!this.serviceReady_) {
+        // TODO(sohanirao): Potentially do this even earlier
+        this.doc_.getBody().appendChild(this.getElement());
+        this.serviceReady_ = this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
+          _this.setContext_();
+
+          return port.whenReady().then(function () {
+            return port;
+          });
         });
+      }
+
+      return this.serviceReady_;
+    }
+    /**
+     * @param {boolean} isReadyToPay
+     */
+
+  }, {
+    key: "setReadyToPay",
+    value: function setReadyToPay(isReadyToPay) {
+      this.context_.setReadyToPay(isReadyToPay);
+    }
+    /**
+     */
+
+  }, {
+    key: "close",
+    value: function close() {
+      this.doc_.getBody().removeChild(this.getElement());
+    }
+    /**
+     * @return {!AnalyticsContext}
+     */
+
+  }, {
+    key: "getContext",
+    value: function getContext() {
+      return this.context_;
+    }
+    /**
+     * Returns true if any logs have already be sent to the analytics server.
+     * @return {boolean}
+     */
+
+  }, {
+    key: "getHasLogged",
+    value: function getHasLogged() {
+      return this.everLogged_;
+    }
+    /**
+     * @param {!../api/client-event-manager-api.ClientEvent} event
+     * @return {!AnalyticsRequest}
+     */
+
+  }, {
+    key: "createLogRequest_",
+    value: function createLogRequest_(event) {
+      var meta = new _api_messages.AnalyticsEventMeta();
+      meta.setEventOriginator(event.eventOriginator);
+      meta.setIsFromUserAction(event.isFromUserAction);
+      var request = new _api_messages.AnalyticsRequest();
+      request.setEvent(event.eventType);
+      request.setContext(this.context_);
+      request.setMeta(meta);
+
+      if (event.additionalParameters instanceof _api_messages.EventParams) {
+        request.setParams(event.additionalParameters);
+      } // Ignore event.additionalParameters.  It may have data we shouldn't log.
+
+
+      return request;
+    }
+    /**
+     * @return {boolean}
+     */
+
+  }, {
+    key: "shouldLogPublisherEvents_",
+    value: function shouldLogPublisherEvents_() {
+      return this.deps_.config().enableSwgAnalytics === true;
+    }
+    /**
+     * @param {!../api/client-event-manager-api.ClientEvent} event
+     * @return {boolean}
+     */
+
+  }, {
+    key: "shouldAlwaysLogEvent_",
+    value: function shouldAlwaysLogEvent_(event) {
+      /* AMP_CLIENT events are considered publisher events and we generally only
+       * log those if the publisher decided to enable publisher event logging for
+       * privacy purposes.  The page load event is not private and is necessary
+       * just so we know the user is in AMP, so we will log it regardless of
+       * configuration.
+       */
+      return event.eventType === _api_messages.AnalyticsEvent.IMPRESSION_PAGE_LOAD && event.eventOriginator === _api_messages.EventOriginator.AMP_CLIENT;
+    }
+    /**
+     *  Listens for new events from the events manager and handles logging
+     * @param {!../api/client-event-manager-api.ClientEvent} event
+     */
+
+  }, {
+    key: "handleClientEvent_",
+    value: function handleClientEvent_(event) {
+      var _this2 = this;
+
+      //this event is just used to communicate information internally.  It should
+      //not be reported to the SwG analytics service.
+      if (event.eventType === _api_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE) {
+        return;
+      }
+
+      if (_clientEventManager.ClientEventManager.isPublisherEvent(event) && !this.shouldLogPublisherEvents_() && !this.shouldAlwaysLogEvent_(event)) {
+        return;
+      }
+
+      this.lastAction_ = this.start().then(function (port) {
+        var request = _this2.createLogRequest_(event);
+
+        _this2.everLogged_ = true;
+        port.execute(request);
       });
     }
-    return this.serviceReady_;
-  };
-
-  /**
-   * @param {boolean} isReadyToPay
-   */
-
-  AnalyticsService.prototype.setReadyToPay = function setReadyToPay(isReadyToPay) {
-    this.context_.setReadyToPay(isReadyToPay);
-  };
-
-  /**
-   */
-
-  AnalyticsService.prototype.close = function close() {
-    this.doc_.getBody().removeChild(this.getElement());
-  };
-
-  /**
-   * @return {!AnalyticsContext}
-   */
-
-  AnalyticsService.prototype.getContext = function getContext() {
-    return this.context_;
-  };
-
-  /**
-   * Returns true if any logs have already be sent to the analytics server.
-   * @return {boolean}
-   */
-
-  AnalyticsService.prototype.getHasLogged = function getHasLogged() {
-    return this.everLogged_;
-  };
-
-  /**
-   * @param {!../api/client-event-manager-api.ClientEvent} event
-   * @return {!AnalyticsRequest}
-   */
-
-  AnalyticsService.prototype.createLogRequest_ = function createLogRequest_(event) {
-    var meta = new _protoApi_messages.AnalyticsEventMeta();
-    meta.setEventOriginator(event.eventOriginator);
-    meta.setIsFromUserAction(event.isFromUserAction);
-
-    var request = new _protoApi_messages.AnalyticsRequest();
-    request.setEvent(event.eventType);
-    request.setContext(this.context_);
-    request.setMeta(meta);
-    if (event.additionalParameters instanceof _protoApi_messages.EventParams) {
-      request.setParams(event.additionalParameters);
-    } // Ignore event.additionalParameters.  It may have data we shouldn't log.
-    return request;
-  };
-
-  /**
-   * @return {boolean}
-   */
-
-  AnalyticsService.prototype.shouldLogPublisherEvents_ = function shouldLogPublisherEvents_() {
-    return this.deps_.config().enableSwgAnalytics === true;
-  };
-
-  /**
-   *  Listens for new events from the events manager and handles logging
-   * @param {!../api/client-event-manager-api.ClientEvent} event
-   */
-
-  AnalyticsService.prototype.handleClientEvent_ = function handleClientEvent_(event) {
-    var _this3 = this;
-
-    //this event is just used to communicate information internally.  It should
-    //not be reported to the SwG analytics service.
-    if (event.eventType === _protoApi_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE) {
-      return;
-    }
-
-    if (_clientEventManager.ClientEventManager.isPublisherEvent(event) && !this.shouldLogPublisherEvents_()) {
-      return;
-    }
-    this.lastAction_ = this.start_().then(function (port) {
-      var request = _this3.createLogRequest_(event);
-      _this3.everLogged_ = true;
-      port.execute(request);
-    });
-  };
+  }]);
 
   return AnalyticsService;
-})();
+}();
 
 exports.AnalyticsService = AnalyticsService;
 
-},{"../proto/api_messages":33,"../utils/dom":69,"../utils/string":78,"../utils/style":79,"../utils/url":81,"./client-event-manager":37,"./experiments":44,"./services":58}],35:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../proto/api_messages":32,"../utils/dom":68,"../utils/string":77,"../utils/style":78,"../utils/url":80,"./client-event-manager":36,"./experiments":43,"./services":57}],34:[function(require,module,exports){
+"use strict";
 
-var _protoApi_messages = require('../proto/api_messages');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ButtonApi = exports.ButtonParams = void 0;
 
-var _utilsDom = require('../utils/dom');
+var _api_messages = require("../proto/api_messages");
 
-var _utilsI18n = require('../utils/i18n');
+var _smartButtonApi = require("./smart-button-api");
 
-var _smartButtonApi = require('./smart-button-api');
+var _dom = require("../utils/dom");
+
+var _i18n = require("../utils/i18n");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * The button title should match that of button's SVG.
  */
+
 /** @type {!Object<string, string>} */
 var TITLE_LANG_MAP = {
   'en': 'Subscribe with Google',
@@ -8419,504 +9340,575 @@ var TITLE_LANG_MAP = {
   'uk': 'Підписатися через Google',
   'zh-tw': '透過 Google 訂閱'
 };
+/*
+ * Properties:
+ * - lang: Sets the button SVG and title. Default is "en".
+ * - theme: "light" or "dark". Default is "light".
+ *
+ * @typedef {{
+ *   options: (!../api/subscriptions.SmartButtonOptions|!../api/subscriptions.ButtonOptions),
+ *   clickFun: (!function(Event):?),
+ * }}
+ */
 
+var ButtonParams;
 /**
  * The button stylesheet can be found in the `/assets/swg-button.css`.
  * It's produced by the `gulp assets` task and deployed to
  * `https://news.google.com/swg/js/v1/swg-button.css`.
  */
 
-var ButtonApi = (function () {
+exports.ButtonParams = ButtonParams;
+
+var ButtonApi =
+/*#__PURE__*/
+function () {
   /**
    * @param {!../model/doc.Doc} doc
    * @param {!Promise<!./runtime.ConfiguredRuntime>} configuredRuntimePromise
    */
-
   function ButtonApi(doc, configuredRuntimePromise) {
-    babelHelpers.classCallCheck(this, ButtonApi);
+    _classCallCheck(this, ButtonApi);
 
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = doc;
-
     /** @private @const {!Promise<!./runtime.ConfiguredRuntime>} */
+
     this.configuredRuntimePromise_ = configuredRuntimePromise;
   }
-
   /**
    */
 
-  ButtonApi.prototype.init = function init() {
-    var head = this.doc_.getHead();
-    if (!head) {
-      return;
+
+  _createClass(ButtonApi, [{
+    key: "init",
+    value: function init() {
+      var head = this.doc_.getHead();
+
+      if (!head) {
+        return;
+      }
+
+      var url = '/assets/swg-button.css';
+      var existing = head.querySelector("link[href=\"".concat(url, "\"]"));
+
+      if (existing) {
+        return;
+      } // <link rel="stylesheet" href="..." type="text/css">
+
+
+      head.appendChild((0, _dom.createElement)(this.doc_.getWin().document, 'link', {
+        'rel': 'stylesheet',
+        'type': 'text/css',
+        'href': url
+      }));
     }
+    /**
+     * @param {!../api/subscriptions.ButtonOptions|function()} optionsOrCallback
+     * @param {function()=} callback
+     * @return {!Element}
+     */
 
-    var url = '/assets/swg-button.css';
-    var existing = head.querySelector('link[href="' + url + '"]');
-    if (existing) {
-      return;
+  }, {
+    key: "create",
+    value: function create(optionsOrCallback, callback) {
+      var button = (0, _dom.createElement)(this.doc_.getWin().document, 'button', {});
+      return this.attach(button, optionsOrCallback, callback);
     }
+    /**
+     * @param {!Element} button
+     * @param {../api/subscriptions.ButtonOptions|function()} optionsOrCallback
+     * @param {function()=} callback
+     * @return {!Element}
+     */
 
-    // <link rel="stylesheet" href="..." type="text/css">
-    head.appendChild(_utilsDom.createElement(this.doc_.getWin().document, 'link', {
-      'rel': 'stylesheet',
-      'type': 'text/css',
-      'href': url
-    }));
-  };
+  }, {
+    key: "attach",
+    value: function attach(button, optionsOrCallback, callback) {
+      var options = this.setupButtonAndGetParams_(button, optionsOrCallback, callback).options;
+      var theme = options['theme'];
+      button.classList.add("swg-button-".concat(theme));
+      button.setAttribute('role', 'button');
 
-  /**
-   * @param {!../api/subscriptions.ButtonOptions|function()} optionsOrCallback
-   * @param {function()=} opt_callback
-   * @return {!Element}
-   */
+      if (options['lang']) {
+        button.setAttribute('lang', options['lang']);
+      }
 
-  ButtonApi.prototype.create = function create(optionsOrCallback, opt_callback) {
-    var button = _utilsDom.createElement(this.doc_.getWin().document, 'button', {});
-    return this.attach(button, optionsOrCallback, opt_callback);
-  };
-
-  /**
-   * @param {!Element} button
-   * @param {../api/subscriptions.ButtonOptions|function()} optionsOrCallback
-   * @param {function()=} opt_callback
-   * @return {!Element}
-   */
-
-  ButtonApi.prototype.attach = function attach(button, optionsOrCallback, opt_callback) {
-    var _this = this;
-
-    var options = /** @type {!../api/subscriptions.ButtonOptions} */this.getOptions_(optionsOrCallback);
-    var callback = this.getCallback_(optionsOrCallback, opt_callback);
-
-    var theme = options['theme'];
-    button.classList.add('swg-button-' + theme);
-    button.setAttribute('role', 'button');
-    if (options['lang']) {
-      button.setAttribute('lang', options['lang']);
+      button.setAttribute('title', (0, _i18n.msg)(TITLE_LANG_MAP, button) || '');
+      this.logSwgEvent_(_api_messages.AnalyticsEvent.IMPRESSION_SWG_BUTTON);
+      return button;
     }
-    button.setAttribute('title', _utilsI18n.msg(TITLE_LANG_MAP, button) || '');
-    button.addEventListener('click', callback);
-    button.addEventListener('click', function () {
-      _this.configuredRuntimePromise_.then(function (configuredRuntime) {
-        configuredRuntime.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_SWG_BUTTON_CLICK,
-        /* isFromUserAction */true);
+    /**
+     * @param {!AnalyticsEvent} eventType
+     * @param {boolean=} isFromUserAction
+     */
+
+  }, {
+    key: "logSwgEvent_",
+    value: function logSwgEvent_(eventType, isFromUserAction) {
+      this.configuredRuntimePromise_.then(function (configuredRuntime) {
+        configuredRuntime.eventManager().logSwgEvent(eventType, isFromUserAction);
       });
-    });
-    this.configuredRuntimePromise_.then(function (configuredRuntime) {
-      configuredRuntime.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_SWG_BUTTON);
-    });
-    return button;
-  };
-
-  /**
-   *
-   * @param {../api/subscriptions.ButtonOptions|../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
-   * @return {!../api/subscriptions.ButtonOptions|!../api/subscriptions.SmartButtonOptions}
-   * @private
-   */
-
-  ButtonApi.prototype.getOptions_ = function getOptions_(optionsOrCallback) {
-    var options =
-    /** @type {!../api/subscriptions.ButtonOptions|!../api/subscriptions.SmartButtonOptions} */optionsOrCallback && typeof optionsOrCallback != 'function' ? optionsOrCallback : { 'theme': _smartButtonApi.Theme.LIGHT };
-
-    var theme = options['theme'];
-    if (theme !== _smartButtonApi.Theme.LIGHT && theme !== _smartButtonApi.Theme.DARK) {
-      options['theme'] = _smartButtonApi.Theme.LIGHT;
     }
-    return options;
-  };
+    /**
+     *
+     * @param {../api/subscriptions.ButtonOptions|../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
+     * @return {!../api/subscriptions.ButtonOptions|!../api/subscriptions.SmartButtonOptions}
+     * @private
+     */
 
-  /**
-   *
-   * @param {?../api/subscriptions.ButtonOptions|?../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
-   * @param {function()=} opt_callback
-   * @return {function()|function(Event):boolean}
-   * @private
-   */
+  }, {
+    key: "getOptions_",
+    value: function getOptions_(optionsOrCallback) {
+      var options =
+      /** @type {!../api/subscriptions.ButtonOptions|!../api/subscriptions.SmartButtonOptions} */
+      optionsOrCallback && typeof optionsOrCallback != 'function' ? optionsOrCallback : {
+        'theme': _smartButtonApi.Theme.LIGHT
+      };
+      var theme = options['theme'];
 
-  ButtonApi.prototype.getCallback_ = function getCallback_(optionsOrCallback, opt_callback) {
-    var callback =
-    /** @type {function()|function(Event):boolean} */(typeof optionsOrCallback == 'function' ? optionsOrCallback : null) || opt_callback;
-    return callback;
-  };
+      if (theme !== _smartButtonApi.Theme.LIGHT && theme !== _smartButtonApi.Theme.DARK) {
+        options['theme'] = _smartButtonApi.Theme.LIGHT;
+      }
 
-  /**
-   * @param {!./deps.DepsDef} deps
-   * @param {!Element} button
-   * @param {../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
-   * @param {function()=} opt_callback
-   * @return {!Element}
-   */
+      return options;
+    }
+    /**
+     *
+     * @param {?../api/subscriptions.ButtonOptions|?../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
+     * @param {function()=} callback
+     * @return {function()|function(Event):boolean}
+     * @private
+     */
 
-  ButtonApi.prototype.attachSmartButton = function attachSmartButton(deps, button, optionsOrCallback, opt_callback) {
-    var _this2 = this;
+  }, {
+    key: "getCallback_",
+    value: function getCallback_(optionsOrCallback, callback) {
+      return (
+        /** @type {function()|function(Event):boolean} */
+        (typeof optionsOrCallback == 'function' ? optionsOrCallback : null) || callback
+      );
+    }
+    /**
+     * @param {!Element} button
+     * @param {../api/subscriptions.SmartButtonOptions|function()|../api/subscriptions.ButtonOptions} optionsOrCallback
+     * @param {function()=} callbackFun
+     * @return {ButtonParams}
+     */
 
-    var options = /** @type {!../api/subscriptions.SmartButtonOptions} */this.getOptions_(optionsOrCallback);
-    var callback = /** @type {function()} */this.getCallback_(optionsOrCallback, opt_callback);
+  }, {
+    key: "setupButtonAndGetParams_",
+    value: function setupButtonAndGetParams_(button, optionsOrCallback, callbackFun) {
+      var _this = this;
 
-    // Add required CSS class, if missing.
-    button.classList.add('swg-smart-button');
-    button.addEventListener('click', function () {
-      return _this2.configuredRuntimePromise_.then(function (configuredRuntime) {
-        return configuredRuntime.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_SWG_BUTTON_CLICK,
-        /* isFromUserAction */true);
-      });
-    });
+      var options = this.getOptions_(optionsOrCallback);
+      var callback = this.getCallback_(optionsOrCallback, callbackFun);
 
-    return new _smartButtonApi.SmartSubscriptionButtonApi(deps, button, options, callback).start();
-  };
+      var clickFun = function clickFun(event) {
+        _this.logSwgEvent_(_api_messages.AnalyticsEvent.ACTION_SWG_BUTTON_CLICK, true);
+
+        if (typeof callback === 'function') {
+          callback(event);
+        }
+      };
+
+      button.addEventListener('click', clickFun);
+      return {
+        options: options,
+        clickFun: clickFun
+      };
+    }
+    /**
+     * @param {!./deps.DepsDef} deps
+     * @param {!Element} button
+     * @param {../api/subscriptions.SmartButtonOptions|function()} optionsOrCallback
+     * @param {function()=} callback
+     * @return {!Element}
+     */
+
+  }, {
+    key: "attachSmartButton",
+    value: function attachSmartButton(deps, button, optionsOrCallback, callback) {
+      var params = this.setupButtonAndGetParams_(button, optionsOrCallback, callback); // Add required CSS class, if missing.
+
+      button.classList.add('swg-smart-button');
+      return new _smartButtonApi.SmartSubscriptionButtonApi(deps, button, params.options, params.clickFun).start();
+    }
+  }]);
 
   return ButtonApi;
-})();
+}();
 
 exports.ButtonApi = ButtonApi;
 
-},{"../proto/api_messages":33,"../utils/dom":69,"../utils/i18n":71,"./smart-button-api":59}],36:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../proto/api_messages":32,"../utils/dom":68,"../utils/i18n":70,"./smart-button-api":58}],35:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Callbacks = void 0;
+
+var _log = require("../utils/log");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /** @enum {number} */
 var CallbackId = {
   ENTITLEMENTS: 1,
   SUBSCRIBE_REQUEST: 2,
-  SUBSCRIBE_RESPONSE: 3,
+  PAYMENT_RESPONSE: 3,
   LOGIN_REQUEST: 4,
   LINK_PROGRESS: 5,
   LINK_COMPLETE: 6,
   FLOW_STARTED: 7,
-  FLOW_CANCELED: 8,
-  CONTRIBUTION_RESPONSE: 9
+  FLOW_CANCELED: 8
 };
-
 /**
  */
 
-var Callbacks = (function () {
+var Callbacks =
+/*#__PURE__*/
+function () {
   /**
    */
-
   function Callbacks() {
-    babelHelpers.classCallCheck(this, Callbacks);
+    _classCallCheck(this, Callbacks);
 
     /** @private @const {!Object<CallbackId, function(*)>} */
     this.callbacks_ = {};
     /** @private @const {!Object<CallbackId, *>} */
+
     this.resultBuffer_ = {};
   }
-
   /**
    * @param {function(!Promise<!../api/entitlements.Entitlements>)} callback
    */
 
-  Callbacks.prototype.setOnEntitlementsResponse = function setOnEntitlementsResponse(callback) {
-    this.setCallback_(CallbackId.ENTITLEMENTS, callback);
-  };
 
-  /**
-   * @param {!Promise<!../api/entitlements.Entitlements>} promise
-   */
-
-  Callbacks.prototype.triggerEntitlementsResponse = function triggerEntitlementsResponse(promise) {
-    return this.trigger_(CallbackId.ENTITLEMENTS, promise.then(function (res) {
-      return res.clone();
-    }));
-  };
-
-  /**
-   * @return {boolean}
-   */
-
-  Callbacks.prototype.hasEntitlementsResponsePending = function hasEntitlementsResponsePending() {
-    return !!this.resultBuffer_[CallbackId.ENTITLEMENTS];
-  };
-
-  /**
-   * @param {function(!../api/subscriptions.LoginRequest)} callback
-   */
-
-  Callbacks.prototype.setOnLoginRequest = function setOnLoginRequest(callback) {
-    this.setCallback_(CallbackId.LOGIN_REQUEST, callback);
-  };
-
-  /**
-   * @param {!../api/subscriptions.LoginRequest} request
-   * @return {boolean} Whether the callback has been found.
-   */
-
-  Callbacks.prototype.triggerLoginRequest = function triggerLoginRequest(request) {
-    return this.trigger_(CallbackId.LOGIN_REQUEST, request);
-  };
-
-  /**
-   * @param {function()} callback
-   */
-
-  Callbacks.prototype.setOnLinkProgress = function setOnLinkProgress(callback) {
-    this.setCallback_(CallbackId.LINK_PROGRESS, callback);
-  };
-
-  /**
-   * @return {boolean} Whether the callback has been found.
-   */
-
-  Callbacks.prototype.triggerLinkProgress = function triggerLinkProgress() {
-    return this.trigger_(CallbackId.LINK_PROGRESS, true);
-  };
-
-  /**
-   */
-
-  Callbacks.prototype.resetLinkProgress = function resetLinkProgress() {
-    this.resetCallback_(CallbackId.LINK_PROGRESS);
-  };
-
-  /**
-   * @param {function()} callback
-   */
-
-  Callbacks.prototype.setOnLinkComplete = function setOnLinkComplete(callback) {
-    this.setCallback_(CallbackId.LINK_COMPLETE, callback);
-  };
-
-  /**
-   * @return {boolean} Whether the callback has been found.
-   */
-
-  Callbacks.prototype.triggerLinkComplete = function triggerLinkComplete() {
-    return this.trigger_(CallbackId.LINK_COMPLETE, true);
-  };
-
-  /**
-   * @return {boolean}
-   */
-
-  Callbacks.prototype.hasLinkCompletePending = function hasLinkCompletePending() {
-    return !!this.resultBuffer_[CallbackId.LINK_COMPLETE];
-  };
-
-  /**
-   * @param {function()} callback
-   */
-
-  Callbacks.prototype.setOnSubscribeRequest = function setOnSubscribeRequest(callback) {
-    this.setCallback_(CallbackId.SUBSCRIBE_REQUEST, callback);
-  };
-
-  /**
-   * @return {boolean} Whether the callback has been found.
-   */
-
-  Callbacks.prototype.triggerSubscribeRequest = function triggerSubscribeRequest() {
-    return this.trigger_(CallbackId.SUBSCRIBE_REQUEST, true);
-  };
-
-  /**
-   * @return {boolean}
-   */
-
-  Callbacks.prototype.hasSubscribeRequestCallback = function hasSubscribeRequestCallback() {
-    return !!this.callbacks_[CallbackId.SUBSCRIBE_REQUEST];
-  };
-
-  /**
-   * @param {function(!Promise<!../api/subscribe-response.SubscribeResponse>)} callback
-   */
-
-  Callbacks.prototype.setOnSubscribeResponse = function setOnSubscribeResponse(callback) {
-    this.setCallback_(CallbackId.SUBSCRIBE_RESPONSE, callback);
-  };
-
-  /**
-   * @param {function(!Promise<!../api/subscribe-response.SubscribeResponse>)} callback
-   */
-
-  Callbacks.prototype.setOnContributionResponse = function setOnContributionResponse(callback) {
-    this.setCallback_(CallbackId.CONTRIBUTION_RESPONSE, callback);
-  };
-
-  /**
-   * @param {!Promise<!../api/subscribe-response.SubscribeResponse>} responsePromise
-   * @return {boolean} Whether the callback has been found.
-   */
-
-  Callbacks.prototype.triggerSubscribeResponse = function triggerSubscribeResponse(responsePromise) {
-    return this.trigger_(CallbackId.SUBSCRIBE_RESPONSE, responsePromise.then(function (res) {
-      return res.clone();
-    }));
-  };
-
-  /**
-   * @param {!Promise<!../api/subscribe-response.SubscribeResponse>} responsePromise
-   * @return {boolean} Whether the callback has been found.
-   */
-
-  Callbacks.prototype.triggerContributionResponse = function triggerContributionResponse(responsePromise) {
-    return this.trigger_(CallbackId.CONTRIBUTION_RESPONSE, responsePromise.then(function (res) {
-      return res.clone();
-    }));
-  };
-
-  /**
-   * @return {boolean}
-   */
-
-  Callbacks.prototype.hasSubscribeResponsePending = function hasSubscribeResponsePending() {
-    return !!this.resultBuffer_[CallbackId.SUBSCRIBE_RESPONSE];
-  };
-
-  /**
-   * @return {boolean}
-   */
-
-  Callbacks.prototype.hasContributionResponsePending = function hasContributionResponsePending() {
-    return !!this.resultBuffer_[CallbackId.CONTRIBUTION_RESPONSE];
-  };
-
-  /**
-   * @param {function({flow: string, data: !Object})} callback
-   */
-
-  Callbacks.prototype.setOnFlowStarted = function setOnFlowStarted(callback) {
-    this.setCallback_(CallbackId.FLOW_STARTED, callback);
-  };
-
-  /**
-   * @param {string} flow
-   * @param {!Object=} opt_data
-   * @return {boolean} Whether the callback has been found.
-   */
-
-  Callbacks.prototype.triggerFlowStarted = function triggerFlowStarted(flow, opt_data) {
-    return this.trigger_(CallbackId.FLOW_STARTED, {
-      flow: flow,
-      data: opt_data || {}
-    });
-  };
-
-  /**
-   * @param {function({flow: string, data: !Object})} callback
-   */
-
-  Callbacks.prototype.setOnFlowCanceled = function setOnFlowCanceled(callback) {
-    this.setCallback_(CallbackId.FLOW_CANCELED, callback);
-  };
-
-  /**
-   * @param {string} flow
-   * @param {!Object=} opt_data
-   * @return {boolean} Whether the callback has been found.
-   */
-
-  Callbacks.prototype.triggerFlowCanceled = function triggerFlowCanceled(flow, opt_data) {
-    return this.trigger_(CallbackId.FLOW_CANCELED, {
-      flow: flow,
-      data: opt_data || {}
-    });
-  };
-
-  /**
-   * @param {!CallbackId} id
-   * @param {function(?)} callback
-   * @private
-   */
-
-  Callbacks.prototype.setCallback_ = function setCallback_(id, callback) {
-    this.callbacks_[id] = callback;
-    // If result already exist, execute the callback right away.
-    if (id in this.resultBuffer_) {
-      this.executeCallback_(id, callback, this.resultBuffer_[id]);
+  _createClass(Callbacks, [{
+    key: "setOnEntitlementsResponse",
+    value: function setOnEntitlementsResponse(callback) {
+      this.setCallback_(CallbackId.ENTITLEMENTS, callback);
     }
-  };
+    /**
+     * @param {!Promise<!../api/entitlements.Entitlements>} promise
+     */
 
-  /**
-   * @param {!CallbackId} id
-   * @param {*} data
-   * @return {boolean}
-   * @private
-   */
-
-  Callbacks.prototype.trigger_ = function trigger_(id, data) {
-    this.resultBuffer_[id] = data;
-    var callback = this.callbacks_[id];
-    if (callback) {
-      this.executeCallback_(id, callback, data);
+  }, {
+    key: "triggerEntitlementsResponse",
+    value: function triggerEntitlementsResponse(promise) {
+      return this.trigger_(CallbackId.ENTITLEMENTS, promise.then(function (res) {
+        return res.clone();
+      }));
     }
-    return !!callback;
-  };
+    /**
+     * @return {boolean}
+     */
 
-  /**
-   * @param {!CallbackId} id
-   * @private
-   */
-
-  Callbacks.prototype.resetCallback_ = function resetCallback_(id) {
-    if (id in this.resultBuffer_) {
-      delete this.resultBuffer_[id];
+  }, {
+    key: "hasEntitlementsResponsePending",
+    value: function hasEntitlementsResponsePending() {
+      return !!this.resultBuffer_[CallbackId.ENTITLEMENTS];
     }
-  };
+    /**
+     * @param {function(!../api/subscriptions.LoginRequest)} callback
+     */
 
-  /**
-   * @param {!CallbackId} id
-   * @param {function(*)} callback
-   * @param {*} data
-   * @private
-   */
+  }, {
+    key: "setOnLoginRequest",
+    value: function setOnLoginRequest(callback) {
+      this.setCallback_(CallbackId.LOGIN_REQUEST, callback);
+    }
+    /**
+     * @param {!../api/subscriptions.LoginRequest} request
+     * @return {boolean} Whether the callback has been found.
+     */
 
-  Callbacks.prototype.executeCallback_ = function executeCallback_(id, callback, data) {
-    var _this = this;
+  }, {
+    key: "triggerLoginRequest",
+    value: function triggerLoginRequest(request) {
+      return this.trigger_(CallbackId.LOGIN_REQUEST, request);
+    }
+    /**
+     * @param {function()} callback
+     */
 
-    // Always execute callbacks in a microtask.
-    Promise.resolve().then(function () {
-      callback(data);
-      _this.resetCallback_(id);
-    });
-  };
+  }, {
+    key: "setOnLinkProgress",
+    value: function setOnLinkProgress(callback) {
+      this.setCallback_(CallbackId.LINK_PROGRESS, callback);
+    }
+    /**
+     * @return {boolean} Whether the callback has been found.
+     */
+
+  }, {
+    key: "triggerLinkProgress",
+    value: function triggerLinkProgress() {
+      return this.trigger_(CallbackId.LINK_PROGRESS, true);
+    }
+    /**
+     */
+
+  }, {
+    key: "resetLinkProgress",
+    value: function resetLinkProgress() {
+      this.resetCallback_(CallbackId.LINK_PROGRESS);
+    }
+    /**
+     * @param {function()} callback
+     */
+
+  }, {
+    key: "setOnLinkComplete",
+    value: function setOnLinkComplete(callback) {
+      this.setCallback_(CallbackId.LINK_COMPLETE, callback);
+    }
+    /**
+     * @return {boolean} Whether the callback has been found.
+     */
+
+  }, {
+    key: "triggerLinkComplete",
+    value: function triggerLinkComplete() {
+      return this.trigger_(CallbackId.LINK_COMPLETE, true);
+    }
+    /**
+     * @return {boolean}
+     */
+
+  }, {
+    key: "hasLinkCompletePending",
+    value: function hasLinkCompletePending() {
+      return !!this.resultBuffer_[CallbackId.LINK_COMPLETE];
+    }
+    /**
+     * @param {function()} callback
+     */
+
+  }, {
+    key: "setOnSubscribeRequest",
+    value: function setOnSubscribeRequest(callback) {
+      this.setCallback_(CallbackId.SUBSCRIBE_REQUEST, callback);
+    }
+    /**
+     * @return {boolean} Whether the callback has been found.
+     */
+
+  }, {
+    key: "triggerSubscribeRequest",
+    value: function triggerSubscribeRequest() {
+      return this.trigger_(CallbackId.SUBSCRIBE_REQUEST, true);
+    }
+    /**
+     * @return {boolean}
+     */
+
+  }, {
+    key: "hasSubscribeRequestCallback",
+    value: function hasSubscribeRequestCallback() {
+      return !!this.callbacks_[CallbackId.SUBSCRIBE_REQUEST];
+    }
+    /**
+     * @param {function(!Promise<!../api/subscribe-response.SubscribeResponse>)} callback
+     */
+
+  }, {
+    key: "setOnSubscribeResponse",
+    value: function setOnSubscribeResponse(callback) {
+      (0, _log.warn)("[swg.js:setOnSubscribeResponse]: This method has been deprecated, please switch usages to 'setOnPaymentResponse'");
+      this.setCallback_(CallbackId.PAYMENT_RESPONSE, callback);
+    }
+    /**
+     * @param {function(!Promise<!../api/subscribe-response.SubscribeResponse>)} callback
+     */
+
+  }, {
+    key: "setOnContributionResponse",
+    value: function setOnContributionResponse(callback) {
+      (0, _log.warn)("[swg.js:setOnContributionResponse]: This method has been deprecated, please switch usages to 'setOnPaymentResponse'");
+      this.setCallback_(CallbackId.PAYMENT_RESPONSE, callback);
+    }
+    /**
+     * @param {function(!Promise<!../api/subscribe-response.SubscribeResponse>)} callback
+     */
+
+  }, {
+    key: "setOnPaymentResponse",
+    value: function setOnPaymentResponse(callback) {
+      this.setCallback_(CallbackId.PAYMENT_RESPONSE, callback);
+    }
+    /**
+     * @param {!Promise<!../api/subscribe-response.SubscribeResponse>} responsePromise
+     * @return {boolean} Whether the callback has been found.
+     */
+
+  }, {
+    key: "triggerPaymentResponse",
+    value: function triggerPaymentResponse(responsePromise) {
+      return this.trigger_(CallbackId.PAYMENT_RESPONSE, responsePromise.then(function (res) {
+        return res.clone();
+      }));
+    }
+    /**
+     * @return {boolean}
+     */
+
+  }, {
+    key: "hasPaymentResponsePending",
+    value: function hasPaymentResponsePending() {
+      return !!this.resultBuffer_[CallbackId.PAYMENT_RESPONSE];
+    }
+    /**
+     * @param {function({flow: string, data: !Object})} callback
+     */
+
+  }, {
+    key: "setOnFlowStarted",
+    value: function setOnFlowStarted(callback) {
+      this.setCallback_(CallbackId.FLOW_STARTED, callback);
+    }
+    /**
+     * @param {string} flow
+     * @param {!Object=} data
+     * @return {boolean} Whether the callback has been found.
+     */
+
+  }, {
+    key: "triggerFlowStarted",
+    value: function triggerFlowStarted(flow) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      return this.trigger_(CallbackId.FLOW_STARTED, {
+        flow: flow,
+        data: data
+      });
+    }
+    /**
+     * @param {function({flow: string, data: !Object})} callback
+     */
+
+  }, {
+    key: "setOnFlowCanceled",
+    value: function setOnFlowCanceled(callback) {
+      this.setCallback_(CallbackId.FLOW_CANCELED, callback);
+    }
+    /**
+     * @param {string} flow
+     * @param {!Object=} data
+     * @return {boolean} Whether the callback has been found.
+     */
+
+  }, {
+    key: "triggerFlowCanceled",
+    value: function triggerFlowCanceled(flow) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      return this.trigger_(CallbackId.FLOW_CANCELED, {
+        flow: flow,
+        data: data
+      });
+    }
+    /**
+     * @param {!CallbackId} id
+     * @param {function(?)} callback
+     * @private
+     */
+
+  }, {
+    key: "setCallback_",
+    value: function setCallback_(id, callback) {
+      if (this.callbacks_[id]) {
+        (0, _log.warn)("[swg.js]: You have registered multiple callbacks for the same response.");
+      }
+
+      this.callbacks_[id] = callback; // If result already exist, execute the callback right away.
+
+      if (id in this.resultBuffer_) {
+        this.executeCallback_(id, callback, this.resultBuffer_[id]);
+      }
+    }
+    /**
+     * @param {!CallbackId} id
+     * @param {*} data
+     * @return {boolean}
+     * @private
+     */
+
+  }, {
+    key: "trigger_",
+    value: function trigger_(id, data) {
+      this.resultBuffer_[id] = data;
+      var callback = this.callbacks_[id];
+
+      if (callback) {
+        this.executeCallback_(id, callback, data);
+      }
+
+      return !!callback;
+    }
+    /**
+     * @param {!CallbackId} id
+     * @private
+     */
+
+  }, {
+    key: "resetCallback_",
+    value: function resetCallback_(id) {
+      if (id in this.resultBuffer_) {
+        delete this.resultBuffer_[id];
+      }
+    }
+    /**
+     * @param {!CallbackId} id
+     * @param {function(*)} callback
+     * @param {*} data
+     * @private
+     */
+
+  }, {
+    key: "executeCallback_",
+    value: function executeCallback_(id, callback, data) {
+      var _this = this;
+
+      // Always execute callbacks in a microtask.
+      Promise.resolve().then(function () {
+        callback(data);
+
+        _this.resetCallback_(id);
+      });
+    }
+  }]);
 
   return Callbacks;
-})();
+}();
 
 exports.Callbacks = Callbacks;
 
-},{}],37:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../utils/log":73}],36:[function(require,module,exports){
+"use strict";
 
-var _apiClientEventManagerApi = require('../api/client-event-manager-api');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ClientEventManager = void 0;
 
-var _protoApi_messages = require('../proto/api_messages');
+var _api_messages = require("../proto/api_messages");
 
-var _utilsTypes = require('../utils/types');
+var _clientEventManagerApi = require("../api/client-event-manager-api");
 
-var _utilsLog = require('../utils/log');
+var _types = require("../utils/types");
+
+var _log = require("../utils/log");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * Helper function to describe an issue with an event object
@@ -8927,427 +9919,464 @@ var _utilsLog = require('../utils/log');
 function createEventErrorMessage(valueName, value) {
   return 'Event has an invalid ' + valueName + '(' + value + ')';
 }
-
 /**
  * Throws an error if the event is invalid.
  * @param {!../api/client-event-manager-api.ClientEvent} event
  */
+
+
 function validateEvent(event) {
-  if (!_utilsTypes.isObject(event)) {
+  if (!(0, _types.isObject)(event)) {
     throw new Error('Event must be a valid object');
   }
 
-  if (!_utilsTypes.isEnumValue(_protoApi_messages.AnalyticsEvent, event.eventType)) {
+  if (!(0, _types.isEnumValue)(_api_messages.AnalyticsEvent, event.eventType)) {
     throw new Error(createEventErrorMessage('eventType', event.eventType));
   }
 
-  if (!_utilsTypes.isEnumValue(_protoApi_messages.EventOriginator, event.eventOriginator)) {
+  if (!(0, _types.isEnumValue)(_api_messages.EventOriginator, event.eventOriginator)) {
     throw new Error(createEventErrorMessage('eventOriginator', event.eventOriginator));
   }
 
-  if (!_utilsTypes.isObject(event.additionalParameters) && event.additionalParameters != null) {
+  if (!(0, _types.isObject)(event.additionalParameters) && event.additionalParameters != null) {
     throw new Error(createEventErrorMessage('additionalParameters', event.additionalParameters));
   }
 
-  if (event.isFromUserAction != null && !_utilsTypes.isBoolean(event.isFromUserAction)) {
+  if (event.isFromUserAction != null && !(0, _types.isBoolean)(event.isFromUserAction)) {
     throw new Error(createEventErrorMessage('isFromUserAction', event.isFromUserAction));
   }
 }
-
 /** @implements {../api/client-event-manager-api.ClientEventManagerApi} */
 
-var ClientEventManager = (function () {
-  /**
-   * @param {!../api/client-event-manager-api.ClientEvent} event
-   * @return {boolean}
-   */
 
-  ClientEventManager.isPublisherEvent = function isPublisherEvent(event) {
-    return event.eventOriginator === _protoApi_messages.EventOriginator.PROPENSITY_CLIENT || event.eventOriginator === _protoApi_messages.EventOriginator.PUBLISHER_CLIENT || event.eventOriginator === _protoApi_messages.EventOriginator.AMP_CLIENT;
-  };
+var ClientEventManager =
+/*#__PURE__*/
+function () {
+  _createClass(ClientEventManager, null, [{
+    key: "isPublisherEvent",
 
-  /**
-   *
-   * @param {!Promise} configuredPromise
-   */
+    /**
+     * @param {!../api/client-event-manager-api.ClientEvent} event
+     * @return {boolean}
+     */
+    value: function isPublisherEvent(event) {
+      return event.eventOriginator === _api_messages.EventOriginator.PROPENSITY_CLIENT || event.eventOriginator === _api_messages.EventOriginator.PUBLISHER_CLIENT || event.eventOriginator === _api_messages.EventOriginator.AMP_CLIENT;
+    }
+    /**
+     *
+     * @param {!Promise} configuredPromise
+     */
+
+  }]);
 
   function ClientEventManager(configuredPromise) {
-    babelHelpers.classCallCheck(this, ClientEventManager);
+    _classCallCheck(this, ClientEventManager);
 
     /** @private {!Array<function(!../api/client-event-manager-api.ClientEvent)>} */
     this.listeners_ = [];
-
     /** @private {!Array<function(!../api/client-event-manager-api.ClientEvent):!FilterResult>} */
+
     this.filterers_ = [];
-
     /** @private {?Promise} */
-    this.lastAction_ = null;
 
+    this.lastAction_ = null;
     /** @private @const {!Promise} */
+
     this.isReadyPromise_ = configuredPromise;
   }
-
   /**
    * @overrides
    */
 
-  ClientEventManager.prototype.registerEventListener = function registerEventListener(listener) {
-    if (!_utilsTypes.isFunction(listener)) {
-      throw new Error('Event manager listeners must be a function');
+
+  _createClass(ClientEventManager, [{
+    key: "registerEventListener",
+    value: function registerEventListener(listener) {
+      if (!(0, _types.isFunction)(listener)) {
+        throw new Error('Event manager listeners must be a function');
+      }
+
+      this.listeners_.push(listener);
     }
-    this.listeners_.push(listener);
-  };
+    /**
+     * @overrides
+     */
 
-  /**
-   * @overrides
-   */
+  }, {
+    key: "registerEventFilterer",
+    value: function registerEventFilterer(filterer) {
+      if (!(0, _types.isFunction)(filterer)) {
+        throw new Error('Event manager filterers must be a function');
+      }
 
-  ClientEventManager.prototype.registerEventFilterer = function registerEventFilterer(filterer) {
-    if (!_utilsTypes.isFunction(filterer)) {
-      throw new Error('Event manager filterers must be a function');
+      this.filterers_.push(filterer);
     }
-    this.filterers_.push(filterer);
-  };
+    /**
+     * @overrides
+     */
 
-  /**
-   * @overrides
-   */
+  }, {
+    key: "logEvent",
+    value: function logEvent(event) {
+      var _this = this;
 
-  ClientEventManager.prototype.logEvent = function logEvent(event) {
-    var _this = this;
-
-    validateEvent(event);
-    this.lastAction_ = this.isReadyPromise_.then(function () {
-      for (var filterer = 0; filterer < _this.filterers_.length; filterer++) {
-        try {
-          if (_this.filterers_[filterer](event) === _apiClientEventManagerApi.FilterResult.CANCEL_EVENT) {
-            return Promise.resolve();
+      validateEvent(event);
+      this.lastAction_ = this.isReadyPromise_.then(function () {
+        for (var filterer = 0; filterer < _this.filterers_.length; filterer++) {
+          try {
+            if (_this.filterers_[filterer](event) === _clientEventManagerApi.FilterResult.CANCEL_EVENT) {
+              return Promise.resolve();
+            }
+          } catch (e) {
+            (0, _log.log)(e);
           }
-        } catch (e) {
-          _utilsLog.log(e);
         }
-      }
-      for (var listener = 0; listener < _this.listeners_.length; listener++) {
-        try {
-          _this.listeners_[listener](event);
-        } catch (e) {
-          _utilsLog.log(e);
+
+        for (var listener = 0; listener < _this.listeners_.length; listener++) {
+          try {
+            _this.listeners_[listener](event);
+          } catch (e) {
+            (0, _log.log)(e);
+          }
         }
-      }
-      return Promise.resolve();
-    });
-  };
 
-  /**
-   * Creates an event with the arguments provided and calls logEvent.
-   * @param {!AnalyticsEvent} eventType
-   * @param {?boolean=} isFromUserAction
-   * @param {../proto/api_messages.EventParams=} eventParams
-   */
+        return Promise.resolve();
+      });
+    }
+    /**
+     * Creates an event with the arguments provided and calls logEvent.
+     * @param {!AnalyticsEvent} eventType
+     * @param {?boolean=} isFromUserAction
+     * @param {../proto/api_messages.EventParams=} eventParams
+     */
 
-  ClientEventManager.prototype.logSwgEvent = function logSwgEvent(eventType) {
-    var isFromUserAction = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-    var eventParams = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
-
-    this.logEvent({
-      eventType: eventType,
-      eventOriginator: _protoApi_messages.EventOriginator.SWG_CLIENT,
-      isFromUserAction: isFromUserAction,
-      additionalParameters: eventParams
-    });
-  };
+  }, {
+    key: "logSwgEvent",
+    value: function logSwgEvent(eventType) {
+      var isFromUserAction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var eventParams = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      this.logEvent({
+        eventType: eventType,
+        eventOriginator: _api_messages.EventOriginator.SWG_CLIENT,
+        isFromUserAction: isFromUserAction,
+        additionalParameters: eventParams
+      });
+    }
+  }]);
 
   return ClientEventManager;
-})();
+}();
 
 exports.ClientEventManager = ClientEventManager;
 
-},{"../api/client-event-manager-api":5,"../proto/api_messages":33,"../utils/log":74,"../utils/types":80}],38:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../api/client-event-manager-api":5,"../proto/api_messages":32,"../utils/log":73,"../utils/types":79}],37:[function(require,module,exports){
+"use strict";
 
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ContributionsFlow = void 0;
 
-var _payFlow = require('./pay-flow');
+var _activityIframeView = require("../ui/activity-iframe-view");
 
-var _apiSubscriptions = require('../api/subscriptions');
+var _api_messages = require("../proto/api_messages");
 
-var _services = require('./services');
+var _payFlow = require("./pay-flow");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _subscriptions = require("../api/subscriptions");
+
+var _services = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * The class for Contributions flow.
  */
-
-var ContributionsFlow = (function () {
+var ContributionsFlow =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest|undefined} options
    */
-
   function ContributionsFlow(deps, options) {
-    babelHelpers.classCallCheck(this, ContributionsFlow);
+    _classCallCheck(this, ContributionsFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!../api/subscriptions.OffersRequest|undefined} */
+
     this.options_ = options;
-
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     var isClosable = options && options.isClosable || true;
-
     /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/contributionsiframe'), _services.feArgs({
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/contributionsiframe'), (0, _services.feArgs)({
       'productId': deps.pageConfig().getProductId(),
       'publicationId': deps.pageConfig().getPublicationId(),
-      'productType': _apiSubscriptions.ProductType.UI_CONTRIBUTION,
+      'productType': _subscriptions.ProductType.UI_CONTRIBUTION,
       'list': options && options.list || 'default',
       'skus': options && options.skus || null,
       'isClosable': isClosable
     }),
-    /* shouldFadeBody */true);
+    /* shouldFadeBody */
+    true);
   }
-
   /**
    * @param {AlreadySubscribedResponse} response
    */
 
-  ContributionsFlow.prototype.handleLinkRequest_ = function handleLinkRequest_(response) {
-    if (response.getSubscriberOrMember()) {
-      this.deps_.callbacks().triggerLoginRequest({
-        linkRequested: !!response.getLinkRequested()
+
+  _createClass(ContributionsFlow, [{
+    key: "handleLinkRequest_",
+    value: function handleLinkRequest_(response) {
+      if (response.getSubscriberOrMember()) {
+        this.deps_.callbacks().triggerLoginRequest({
+          linkRequested: !!response.getLinkRequested()
+        });
+      }
+    }
+    /**
+     * @param {SkuSelectedResponse} response
+     */
+
+  }, {
+    key: "startPayFlow_",
+    value: function startPayFlow_(response) {
+      var sku = response.getSku();
+      var isOneTime = response.getOneTime();
+
+      if (sku) {
+        if (isOneTime) {
+          var
+          /** @type {../api/subscriptions.SubscriptionRequest} */
+          contributionRequest = {
+            skuId: sku,
+            oneTime: isOneTime
+          };
+          new _payFlow.PayStartFlow(this.deps_, contributionRequest, _subscriptions.ProductType.UI_CONTRIBUTION).start();
+        } else {
+          new _payFlow.PayStartFlow(this.deps_, sku, _subscriptions.ProductType.UI_CONTRIBUTION).start();
+        }
+      }
+    }
+    /**
+     * Starts the contributions flow or alreadyMember flow.
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "start",
+    value: function start() {
+      var _this = this;
+
+      // Start/cancel events.
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SHOW_CONTRIBUTION_OPTIONS);
+      this.activityIframeView_.onCancel(function () {
+        _this.deps_.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.SHOW_CONTRIBUTION_OPTIONS);
       });
+      this.activityIframeView_.on(_api_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
+      this.activityIframeView_.on(_api_messages.SkuSelectedResponse, this.startPayFlow_.bind(this));
+      return this.dialogManager_.openView(this.activityIframeView_);
     }
-  };
-
-  /**
-   * @param {SkuSelectedResponse} response
-   */
-
-  ContributionsFlow.prototype.startPayFlow_ = function startPayFlow_(response) {
-    var sku = response.getSku();
-    if (sku) {
-      new _payFlow.PayStartFlow(this.deps_, sku, _apiSubscriptions.ProductType.UI_CONTRIBUTION).start();
-    }
-  };
-
-  /**
-   * Starts the contributions flow or alreadyMember flow.
-   * @return {!Promise}
-   */
-
-  ContributionsFlow.prototype.start = function start() {
-    var _this = this;
-
-    // Start/cancel events.
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_CONTRIBUTION_OPTIONS);
-    this.activityIframeView_.onCancel(function () {
-      _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_CONTRIBUTION_OPTIONS);
-    });
-    this.activityIframeView_.on(_protoApi_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
-    this.activityIframeView_.on(_protoApi_messages.SkuSelectedResponse, this.startPayFlow_.bind(this));
-
-    return this.dialogManager_.openView(this.activityIframeView_);
-  };
+  }]);
 
   return ContributionsFlow;
-})();
+}();
 
 exports.ContributionsFlow = ContributionsFlow;
 
-},{"../api/subscriptions":12,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"./pay-flow":54,"./services":58}],39:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../api/subscriptions":12,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"./pay-flow":53,"./services":57}],38:[function(require,module,exports){
+"use strict";
 
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DeferredAccountFlow = void 0;
 
-var _apiDeferredAccountCreation = require('../api/deferred-account-creation');
+var _activityIframeView = require("../ui/activity-iframe-view");
 
-var _utilsJwt = require('../utils/jwt');
+var _api_messages = require("../proto/api_messages");
 
-var _payFlow = require('./pay-flow');
+var _deferredAccountCreation = require("../api/deferred-account-creation");
 
-var _apiSubscribeResponse = require('../api/subscribe-response');
+var _jwt = require("../utils/jwt");
 
-var _apiSubscriptions = require('../api/subscriptions');
+var _payFlow = require("./pay-flow");
 
-var _apiUserData = require('../api/user-data');
+var _subscribeResponse = require("../api/subscribe-response");
 
-var _services = require('./services');
+var _subscriptions = require("../api/subscriptions");
 
-var _utilsErrors = require('../utils/errors');
+var _userData = require("../api/user-data");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _services = require("./services");
+
+var _errors = require("../utils/errors");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * The flow to initiate deferred account process.
  * See `Subscriptions.completeDeferredAccountCreation` API.
  */
-
-var DeferredAccountFlow = (function () {
+var DeferredAccountFlow =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {?../api/deferred-account-creation.DeferredAccountCreationRequest} options
    */
-
   function DeferredAccountFlow(deps, options) {
-    babelHelpers.classCallCheck(this, DeferredAccountFlow);
+    _classCallCheck(this, DeferredAccountFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private {?ActivityIframeView} */
+
     this.activityIframeView_ = null;
-
     /** @private {?Promise} */
-    this.openPromise_ = null;
 
+    this.openPromise_ = null;
     /** @type {!../api/deferred-account-creation.DeferredAccountCreationRequest} */
+
     var defaultOptions = {
       entitlements: null,
       consent: true
     };
     /** @private @const {!../api/deferred-account-creation.DeferredAccountCreationRequest} */
+
     this.options_ = Object.assign(defaultOptions, options || {});
   }
-
   /**
    * Starts the deferred account flow.
    * @return {!Promise<!DeferredAccountCreationResponse>}
    */
 
-  DeferredAccountFlow.prototype.start = function start() {
-    var _this = this;
 
-    var entitlements = this.options_.entitlements;
+  _createClass(DeferredAccountFlow, [{
+    key: "start",
+    value: function start() {
+      var _this = this;
 
-    // For now, entitlements are required to be present and have the Google
-    // token. This is strictly not required for the implementation. But it's
-    // preferrable API-wise at this time.
-    if (!entitlements || !entitlements.getEntitlementForSource('google')) {
-      throw new Error('No entitlements with "google" source');
+      var entitlements = this.options_.entitlements; // For now, entitlements are required to be present and have the Google
+      // token. This is strictly not required for the implementation. But it's
+      // preferrable API-wise at this time.
+
+      if (!entitlements || !entitlements.getEntitlementForSource('google')) {
+        throw new Error('No entitlements with "google" source');
+      } // Start/cancel events.
+
+
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.COMPLETE_DEFERRED_ACCOUNT_CREATION);
+      this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/recoveriframe'), (0, _services.feArgs)({
+        'publicationId': this.deps_.pageConfig().getPublicationId(),
+        'productId': this.deps_.pageConfig().getProductId(),
+        'entitlements': entitlements && entitlements.raw || null,
+        'consent': this.options_.consent
+      }),
+      /* shouldFadeBody */
+      true);
+      this.openPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+      return this.activityIframeView_.acceptResult().then(function (result) {
+        // The consent part is complete.
+        return _this.handleConsentResponse_(
+        /** @type {!Object} */
+        result.data);
+      }, function (reason) {
+        if ((0, _errors.isCancelError)(reason)) {
+          _this.deps_.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.COMPLETE_DEFERRED_ACCOUNT_CREATION);
+        } else {
+          _this.dialogManager_.completeView(_this.activityIframeView_);
+        }
+
+        throw reason;
+      });
     }
+    /**
+     * @param {!Object} data
+     * @return {!DeferredAccountCreationResponse}
+     * @private
+     */
 
-    // Start/cancel events.
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.COMPLETE_DEFERRED_ACCOUNT_CREATION);
+  }, {
+    key: "handleConsentResponse_",
+    value: function handleConsentResponse_(data) {
+      this.deps_.entitlementsManager().blockNextNotification(); // Parse the response.
 
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/recoveriframe'), _services.feArgs({
-      'publicationId': this.deps_.pageConfig().getPublicationId(),
-      'productId': this.deps_.pageConfig().getProductId(),
-      'entitlements': entitlements && entitlements.raw || null,
-      'consent': this.options_.consent
-    }),
-    /* shouldFadeBody */true);
+      var entitlementsJwt = data['entitlements'];
+      var idToken = data['idToken'];
+      var productType = data['productType'];
+      var entitlements = this.deps_.entitlementsManager().parseEntitlements({
+        'signedEntitlements': entitlementsJwt
+      });
+      var userData = new _userData.UserData(idToken,
+      /** @type {!Object} */
+      new _jwt.JwtHelper().decode(idToken));
+      var purchaseDataList = data['purchaseDataList'] ? data['purchaseDataList'].map(function (pd) {
+        return new _subscribeResponse.PurchaseData(pd['data'], pd['signature']);
+      }) : [// TODO(dvoytenko): cleanup/deprecate.
+      new _subscribeResponse.PurchaseData(data['purchaseData']['data'], data['purchaseData']['signature'])]; // For now, we'll use the `PayCompleteFlow` as a "creating account" flow.
+      // But this can be eventually implemented by the same iframe.
 
-    this.openPromise_ = this.dialogManager_.openView(this.activityIframeView_);
-    return this.activityIframeView_.acceptResult().then(function (result) {
-      // The consent part is complete.
-      return _this.handleConsentResponse_(
-      /** @type {!Object} */result.data);
-    }, function (reason) {
-      if (_utilsErrors.isCancelError(reason)) {
-        _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.COMPLETE_DEFERRED_ACCOUNT_CREATION);
-      } else {
-        _this.dialogManager_.completeView(_this.activityIframeView_);
-      }
-      throw reason;
-    });
-  };
+      var creatingFlow = new _payFlow.PayCompleteFlow(this.deps_);
+      var completeHandler = creatingFlow.complete.bind(creatingFlow);
+      var response = new _deferredAccountCreation.DeferredAccountCreationResponse(entitlements, userData, purchaseDataList, completeHandler);
+      this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_NEW_DEFERRED_ACCOUNT, true); // Start the "sync" flow.
 
-  /**
-   * @param {!Object} data
-   * @return {!DeferredAccountCreationResponse}
-   * @private
-   */
-
-  DeferredAccountFlow.prototype.handleConsentResponse_ = function handleConsentResponse_(data) {
-    this.deps_.entitlementsManager().blockNextNotification();
-
-    // Parse the response.
-    var entitlementsJwt = data['entitlements'];
-    var idToken = data['idToken'];
-    var productType = data['productType'];
-    var entitlements = this.deps_.entitlementsManager().parseEntitlements({ 'signedEntitlements': entitlementsJwt });
-    var userData = new _apiUserData.UserData(idToken,
-    /** @type {!Object} */new _utilsJwt.JwtHelper().decode(idToken));
-    var purchaseDataList = data['purchaseDataList'] ? data['purchaseDataList'].map(function (pd) {
-      return new _apiSubscribeResponse.PurchaseData(pd['data'], pd['signature']);
-    }) : [
-    // TODO(dvoytenko): cleanup/deprecate.
-    new _apiSubscribeResponse.PurchaseData(data['purchaseData']['data'], data['purchaseData']['signature'])];
-
-    // For now, we'll use the `PayCompleteFlow` as a "creating account" flow.
-    // But this can be eventually implemented by the same iframe.
-    var creatingFlow = new _payFlow.PayCompleteFlow(this.deps_);
-    var completeHandler = creatingFlow.complete.bind(creatingFlow);
-
-    var response = new _apiDeferredAccountCreation.DeferredAccountCreationResponse(entitlements, userData, purchaseDataList, completeHandler);
-
-    this.deps_.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_NEW_DEFERRED_ACCOUNT, true);
-
-    // Start the "sync" flow.
-    creatingFlow.start(new _apiSubscribeResponse.SubscribeResponse('', // raw field doesn't matter in this case
-    purchaseDataList[0], userData, entitlements, productType, function () {
-      return Promise.resolve();
-    } // completeHandler doesn't matter in this case
-    ));
-    return response;
-  };
+      creatingFlow.start(new _subscribeResponse.SubscribeResponse('', // raw field doesn't matter in this case
+      purchaseDataList[0], userData, entitlements, productType, function () {
+        return Promise.resolve();
+      } // completeHandler doesn't matter in this case
+      ));
+      return response;
+    }
+  }]);
 
   return DeferredAccountFlow;
-})();
+}();
 
 exports.DeferredAccountFlow = DeferredAccountFlow;
 
-},{"../api/deferred-account-creation":6,"../api/subscribe-response":11,"../api/subscriptions":12,"../api/user-data":13,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"../utils/errors":70,"../utils/jwt":73,"./pay-flow":54,"./services":58}],40:[function(require,module,exports){
-exports.__esModule = true;
+},{"../api/deferred-account-creation":6,"../api/subscribe-response":11,"../api/subscriptions":12,"../api/user-data":13,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"../utils/errors":69,"../utils/jwt":72,"./pay-flow":53,"./services":57}],39:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DepsDef = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -9365,567 +10394,623 @@ exports.__esModule = true;
  */
 
 /** @interface */
-
-var DepsDef = (function () {
+var DepsDef =
+/*#__PURE__*/
+function () {
   function DepsDef() {
-    babelHelpers.classCallCheck(this, DepsDef);
+    _classCallCheck(this, DepsDef);
   }
 
-  /**
-   * @return {!../model/doc.Doc}
-   */
+  _createClass(DepsDef, [{
+    key: "doc",
 
-  DepsDef.prototype.doc = function doc() {};
+    /**
+     * @return {!../model/doc.Doc}
+     */
+    value: function doc() {}
+    /**
+     * @return {!Window}
+     */
 
-  /**
-   * @return {!Window}
-   */
+  }, {
+    key: "win",
+    value: function win() {}
+    /**
+     * @return {!../api/subscriptions.Config}
+     */
 
-  DepsDef.prototype.win = function win() {};
+  }, {
+    key: "config",
+    value: function config() {}
+    /**
+     * @return {!../model/page-config.PageConfig}
+     */
 
-  /**
-   * @return {!../api/subscriptions.Config}
-   */
+  }, {
+    key: "pageConfig",
+    value: function pageConfig() {}
+    /**
+     * @return {!../components/activities.ActivityPorts}
+     */
 
-  DepsDef.prototype.config = function config() {};
+  }, {
+    key: "activities",
+    value: function activities() {}
+    /**
+     * @return {!./pay-client.PayClient}
+     */
 
-  /**
-   * @return {!../model/page-config.PageConfig}
-   */
+  }, {
+    key: "payClient",
+    value: function payClient() {}
+    /**
+     * @return {!../components/dialog-manager.DialogManager}
+     */
 
-  DepsDef.prototype.pageConfig = function pageConfig() {};
+  }, {
+    key: "dialogManager",
+    value: function dialogManager() {}
+    /**
+     * @return {!./entitlements-manager.EntitlementsManager}
+     */
 
-  /**
-   * @return {!../components/activities.ActivityPorts}
-   */
+  }, {
+    key: "entitlementsManager",
+    value: function entitlementsManager() {}
+    /**
+     * @return {!./callbacks.Callbacks}
+     */
 
-  DepsDef.prototype.activities = function activities() {};
+  }, {
+    key: "callbacks",
+    value: function callbacks() {}
+    /**
+     * @return {!../runtime/storage.Storage}
+     */
 
-  /**
-   * @return {!./pay-client.PayClient}
-   */
+  }, {
+    key: "storage",
+    value: function storage() {}
+    /**
+     * @return {!../runtime/analytics-service.AnalyticsService}
+     */
 
-  DepsDef.prototype.payClient = function payClient() {};
+  }, {
+    key: "analytics",
+    value: function analytics() {}
+    /**
+     * @return {!../runtime/jserror.JsError}
+     */
 
-  /**
-   * @return {!../components/dialog-manager.DialogManager}
-   */
+  }, {
+    key: "jserror",
+    value: function jserror() {}
+    /**
+     * @return {!../runtime/client-event-manager.ClientEventManager}
+     */
 
-  DepsDef.prototype.dialogManager = function dialogManager() {};
-
-  /**
-   * @return {!./entitlements-manager.EntitlementsManager}
-   */
-
-  DepsDef.prototype.entitlementsManager = function entitlementsManager() {};
-
-  /**
-   * @return {!./callbacks.Callbacks}
-   */
-
-  DepsDef.prototype.callbacks = function callbacks() {};
-
-  /**
-   * @return {!../runtime/storage.Storage}
-   */
-
-  DepsDef.prototype.storage = function storage() {};
-
-  /**
-   * @return {!../runtime/analytics-service.AnalyticsService}
-   */
-
-  DepsDef.prototype.analytics = function analytics() {};
-
-  /**
-   * @return {!../runtime/jserror.JsError}
-   */
-
-  DepsDef.prototype.jserror = function jserror() {};
-
-  /**
-   * @return {!../runtime/client-event-manager.ClientEventManager}
-   */
-
-  DepsDef.prototype.eventManager = function eventManager() {};
+  }, {
+    key: "eventManager",
+    value: function eventManager() {}
+  }]);
 
   return DepsDef;
-})();
+}();
 
 exports.DepsDef = DepsDef;
 
-},{}],41:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{}],40:[function(require,module,exports){
+"use strict";
 
-var _apiEntitlements = require('../api/entitlements');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EntitlementsManager = void 0;
 
-var _utilsJwt = require('../utils/jwt');
+var _entitlements = require("../api/entitlements");
 
-var _uiToast = require('../ui/toast');
+var _jwt = require("../utils/jwt");
 
-var _services = require('./services');
+var _toast = require("../ui/toast");
 
-var _runtimeServices = require('../runtime/services');
+var _services = require("../runtime/services");
+
+var _services2 = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var SERVICE_ID = 'subscribe.google.com';
 var TOAST_STORAGE_KEY = 'toast';
 var ENTS_STORAGE_KEY = 'ents';
 var IS_READY_TO_PAY_STORAGE_KEY = 'isreadytopay';
-
 /**
  */
 
-var EntitlementsManager = (function () {
+var EntitlementsManager =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    * @param {!../model/page-config.PageConfig} pageConfig
    * @param {!./fetcher.Fetcher} fetcher
    * @param {!./deps.DepsDef} deps
    */
-
   function EntitlementsManager(win, pageConfig, fetcher, deps) {
-    babelHelpers.classCallCheck(this, EntitlementsManager);
+    _classCallCheck(this, EntitlementsManager);
 
     /** @private @const {!Window} */
     this.win_ = win;
-
     /** @private @const {!../model/page-config.PageConfig} */
+
     this.pageConfig_ = pageConfig;
-
     /** @private @const {string} */
+
     this.publicationId_ = this.pageConfig_.getPublicationId();
-
     /** @private @const {!./fetcher.Fetcher} */
+
     this.fetcher_ = fetcher;
-
     /** @private @const {!./deps.DepsDef} */
+
     this.deps_ = deps;
-
     /** @private @const {!JwtHelper} */
-    this.jwtHelper_ = new _utilsJwt.JwtHelper();
 
+    this.jwtHelper_ = new _jwt.JwtHelper();
     /** @private {?Promise<!Entitlements>} */
+
     this.responsePromise_ = null;
-
     /** @private {number} */
+
     this.positiveRetries_ = 0;
-
     /** @private {boolean} */
+
     this.blockNextNotification_ = false;
-
     /** @private @const {!./storage.Storage} */
+
     this.storage_ = deps.storage();
-
     /** @private @const {!../runtime/analytics-service.AnalyticsService} */
-    this.analyticsService_ = deps.analytics();
 
+    this.analyticsService_ = deps.analytics();
     /** @private @const {!../api/subscriptions.Config} */
+
     this.config_ = deps.config();
   }
-
   /**
-   * Convert String value of isReadyToPay
-   * (from JSON or Cache) to a boolean value.
-   * @param {string} value
-   * @return {boolean|undefined}
-   * @private
+   * @param {boolean=} expectPositive
    */
 
-  /**
-   * @param {boolean=} opt_expectPositive
-   */
 
-  EntitlementsManager.prototype.reset = function reset(opt_expectPositive) {
-    this.responsePromise_ = null;
-    this.positiveRetries_ = Math.max(this.positiveRetries_, opt_expectPositive ? 3 : 0);
-    if (opt_expectPositive) {
+  _createClass(EntitlementsManager, [{
+    key: "reset",
+    value: function reset(expectPositive) {
+      this.responsePromise_ = null;
+      this.positiveRetries_ = Math.max(this.positiveRetries_, expectPositive ? 3 : 0);
+
+      if (expectPositive) {
+        this.storage_.remove(ENTS_STORAGE_KEY);
+        this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
+      }
+    }
+    /**
+     * Clears all of the entitlements state and cache.
+     */
+
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.responsePromise_ = null;
+      this.positiveRetries_ = 0;
+      this.unblockNextNotification();
       this.storage_.remove(ENTS_STORAGE_KEY);
+      this.storage_.remove(TOAST_STORAGE_KEY);
       this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
     }
-  };
+    /**
+     * @return {string}
+     * @private
+     */
 
-  /**
-   * Clears all of the entitlements state and cache.
-   */
-
-  EntitlementsManager.prototype.clear = function clear() {
-    this.responsePromise_ = null;
-    this.positiveRetries_ = 0;
-    this.unblockNextNotification();
-    this.storage_.remove(ENTS_STORAGE_KEY);
-    this.storage_.remove(TOAST_STORAGE_KEY);
-    this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
-  };
-
-  /**
-   * @return {string}
-   * @private
-   */
-
-  EntitlementsManager.prototype.getQueryString_ = function getQueryString_() {
-    return this.win_.location.search;
-  };
-
-  /**
-   * @param {?string=} opt_encryptedDocumentKey
-   * @return {!Promise<!Entitlements>}
-   */
-
-  EntitlementsManager.prototype.getEntitlements = function getEntitlements(opt_encryptedDocumentKey) {
-    var _this = this;
-
-    if (!this.responsePromise_) {
-      this.responsePromise_ = this.getEntitlementsFlow_(opt_encryptedDocumentKey);
+  }, {
+    key: "getQueryString_",
+    value: function getQueryString_() {
+      return this.win_.location.search;
     }
-    return this.responsePromise_.then(function (response) {
-      if (response.isReadyToPay != null) {
-        _this.analyticsService_.setReadyToPay(response.isReadyToPay);
+    /**
+     * @param {?string=} encryptedDocumentKey
+     * @return {!Promise<!Entitlements>}
+     */
+
+  }, {
+    key: "getEntitlements",
+    value: function getEntitlements(encryptedDocumentKey) {
+      var _this = this;
+
+      if (!this.responsePromise_) {
+        this.responsePromise_ = this.getEntitlementsFlow_(encryptedDocumentKey);
       }
-      return response;
-    });
-  };
 
-  /**
-   * @param {string} raw
-   * @param {boolean=} opt_isReadyToPay
-   * @return {boolean}
-   */
-
-  EntitlementsManager.prototype.pushNextEntitlements = function pushNextEntitlements(raw, opt_isReadyToPay) {
-    var entitlements = this.getValidJwtEntitlements_(raw,
-    /* requireNonExpired */true, opt_isReadyToPay);
-    if (entitlements && entitlements.enablesThis()) {
-      this.storage_.set(ENTS_STORAGE_KEY, raw);
-      return true;
-    }
-    return false;
-  };
-
-  /**
-   * @param {?string=} opt_encryptedDocumentKey
-   * @return {!Promise<!Entitlements>}
-   * @private
-   */
-
-  EntitlementsManager.prototype.getEntitlementsFlow_ = function getEntitlementsFlow_(opt_encryptedDocumentKey) {
-    var _this2 = this;
-
-    return this.fetchEntitlementsWithCaching_(opt_encryptedDocumentKey).then(function (entitlements) {
-      _this2.onEntitlementsFetched_(entitlements);
-      return entitlements;
-    });
-  };
-
-  /**
-   * @param {?string=} opt_encryptedDocumentKey
-   * @return {!Promise<!Entitlements>}
-   * @private
-   */
-
-  EntitlementsManager.prototype.fetchEntitlementsWithCaching_ = function fetchEntitlementsWithCaching_(opt_encryptedDocumentKey) {
-    var _this3 = this;
-
-    return Promise.all([this.storage_.get(ENTS_STORAGE_KEY), this.storage_.get(IS_READY_TO_PAY_STORAGE_KEY)]).then(function (cachedValues) {
-      var raw = cachedValues[0];
-      var irtp = cachedValues[1];
-      // Try cache first.
-      if (raw && !opt_encryptedDocumentKey) {
-        var cached = _this3.getValidJwtEntitlements_(raw,
-        /* requireNonExpired */true, irtpStringToBoolean(irtp));
-        if (cached && cached.enablesThis()) {
-          // Already have a positive response.
-          _this3.positiveRetries_ = 0;
-          return cached;
+      return this.responsePromise_.then(function (response) {
+        if (response.isReadyToPay != null) {
+          _this.analyticsService_.setReadyToPay(response.isReadyToPay);
         }
-      }
-      // If cache didn't match, perform fetch.
-      return _this3.fetchEntitlements_(opt_encryptedDocumentKey).then(function (ents) {
-        // If entitlements match the product, store them in cache.
-        if (ents && ents.enablesThis() && ents.raw) {
-          _this3.storage_.set(ENTS_STORAGE_KEY, ents.raw);
-        }
-        return ents;
+
+        return response;
       });
-    });
-  };
+    }
+    /**
+     * @param {string} raw
+     * @param {boolean=} isReadyToPay
+     * @return {boolean}
+     */
 
-  /**
-   * @param {?string=} opt_encryptedDocumentKey
-   * @return {!Promise<!Entitlements>}
-   * @private
-   */
+  }, {
+    key: "pushNextEntitlements",
+    value: function pushNextEntitlements(raw, isReadyToPay) {
+      var entitlements = this.getValidJwtEntitlements_(raw,
+      /* requireNonExpired */
+      true, isReadyToPay);
 
-  EntitlementsManager.prototype.fetchEntitlements_ = function fetchEntitlements_(opt_encryptedDocumentKey) {
-    var _this4 = this;
+      if (entitlements && entitlements.enablesThis()) {
+        this.storage_.set(ENTS_STORAGE_KEY, raw);
+        return true;
+      }
 
-    // TODO(dvoytenko): Replace retries with consistent fetch.
-    var positiveRetries = this.positiveRetries_;
-    this.positiveRetries_ = 0;
-    var attempt = function () {
-      positiveRetries--;
-      return _this4.fetch_(opt_encryptedDocumentKey).then(function (entitlements) {
-        if (entitlements.enablesThis() || positiveRetries <= 0) {
-          return entitlements;
-        }
-        return new Promise(function (resolve) {
-          _this4.win_.setTimeout(function () {
-            resolve(attempt());
-          }, 550);
+      return false;
+    }
+    /**
+     * @param {?string=} encryptedDocumentKey
+     * @return {!Promise<!Entitlements>}
+     * @private
+     */
+
+  }, {
+    key: "getEntitlementsFlow_",
+    value: function getEntitlementsFlow_(encryptedDocumentKey) {
+      var _this2 = this;
+
+      return this.fetchEntitlementsWithCaching_(encryptedDocumentKey).then(function (entitlements) {
+        _this2.onEntitlementsFetched_(entitlements);
+
+        return entitlements;
+      });
+    }
+    /**
+     * @param {?string=} encryptedDocumentKey
+     * @return {!Promise<!Entitlements>}
+     * @private
+     */
+
+  }, {
+    key: "fetchEntitlementsWithCaching_",
+    value: function fetchEntitlementsWithCaching_(encryptedDocumentKey) {
+      var _this3 = this;
+
+      return Promise.all([this.storage_.get(ENTS_STORAGE_KEY), this.storage_.get(IS_READY_TO_PAY_STORAGE_KEY)]).then(function (cachedValues) {
+        var raw = cachedValues[0];
+        var irtp = cachedValues[1]; // Try cache first.
+
+        if (raw && !encryptedDocumentKey) {
+          var cached = _this3.getValidJwtEntitlements_(raw,
+          /* requireNonExpired */
+          true, irtpStringToBoolean(irtp));
+
+          if (cached && cached.enablesThis()) {
+            // Already have a positive response.
+            _this3.positiveRetries_ = 0;
+            return cached;
+          }
+        } // If cache didn't match, perform fetch.
+
+
+        return _this3.fetchEntitlements_(encryptedDocumentKey).then(function (ents) {
+          // If entitlements match the product, store them in cache.
+          if (ents && ents.enablesThis() && ents.raw) {
+            _this3.storage_.set(ENTS_STORAGE_KEY, ents.raw);
+          }
+
+          return ents;
         });
       });
-    };
-    return attempt();
-  };
-
-  /**
-   * @param {boolean} value
-   */
-
-  EntitlementsManager.prototype.setToastShown = function setToastShown(value) {
-    this.storage_.set(TOAST_STORAGE_KEY, value ? '1' : '0');
-  };
-
-  /**
-   */
-
-  EntitlementsManager.prototype.blockNextNotification = function blockNextNotification() {
-    this.blockNextNotification_ = true;
-  };
-
-  /**
-   */
-
-  EntitlementsManager.prototype.unblockNextNotification = function unblockNextNotification() {
-    this.blockNextNotification_ = false;
-  };
-
-  /**
-   * The JSON must either contain a "signedEntitlements" with JWT, or
-   * "entitlements" field with plain JSON object.
-   * @param {!Object} json
-   * @return {!Entitlements}
-   */
-
-  EntitlementsManager.prototype.parseEntitlements = function parseEntitlements(json) {
-    var isReadyToPay = json['isReadyToPay'];
-    if (isReadyToPay == null) {
-      this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
-    } else {
-      this.storage_.set(IS_READY_TO_PAY_STORAGE_KEY, String(isReadyToPay));
     }
-    var signedData = json['signedEntitlements'];
-    if (signedData) {
-      var entitlements = this.getValidJwtEntitlements_(signedData,
-      /* requireNonExpired */false, isReadyToPay);
-      if (entitlements) {
-        return entitlements;
-      }
-    } else {
-      var plainEntitlements = json['entitlements'];
-      if (plainEntitlements) {
-        return this.createEntitlements_('', plainEntitlements, isReadyToPay);
-      }
+    /**
+     * @param {?string=} encryptedDocumentKey
+     * @return {!Promise<!Entitlements>}
+     * @private
+     */
+
+  }, {
+    key: "fetchEntitlements_",
+    value: function fetchEntitlements_(encryptedDocumentKey) {
+      var _this4 = this;
+
+      // TODO(dvoytenko): Replace retries with consistent fetch.
+      var positiveRetries = this.positiveRetries_;
+      this.positiveRetries_ = 0;
+
+      var attempt = function attempt() {
+        positiveRetries--;
+        return _this4.fetch_(encryptedDocumentKey).then(function (entitlements) {
+          if (entitlements.enablesThis() || positiveRetries <= 0) {
+            return entitlements;
+          }
+
+          return new Promise(function (resolve) {
+            _this4.win_.setTimeout(function () {
+              resolve(attempt());
+            }, 550);
+          });
+        });
+      };
+
+      return attempt();
     }
-    // Empty response.
-    return this.createEntitlements_('', [], isReadyToPay);
-  };
+    /**
+     * @param {boolean} value
+     */
 
-  /**
-   * @param {string} raw
-   * @param {boolean} requireNonExpired
-   * @param {boolean=} opt_isReadyToPay
-   * @param {?string=} opt_decryptedDocumentKey
-   * @return {?Entitlements}
-   * @private
-   */
+  }, {
+    key: "setToastShown",
+    value: function setToastShown(value) {
+      this.storage_.set(TOAST_STORAGE_KEY, value ? '1' : '0');
+    }
+    /**
+     */
 
-  EntitlementsManager.prototype.getValidJwtEntitlements_ = function getValidJwtEntitlements_(raw, requireNonExpired, opt_isReadyToPay, opt_decryptedDocumentKey) {
-    try {
-      var jwt = this.jwtHelper_.decode(raw);
-      if (requireNonExpired) {
-        var now = Date.now();
-        var exp = jwt['exp'];
-        if (parseFloat(exp) * 1000 < now) {
-          return null;
+  }, {
+    key: "blockNextNotification",
+    value: function blockNextNotification() {
+      this.blockNextNotification_ = true;
+    }
+    /**
+     */
+
+  }, {
+    key: "unblockNextNotification",
+    value: function unblockNextNotification() {
+      this.blockNextNotification_ = false;
+    }
+    /**
+     * The JSON must either contain a "signedEntitlements" with JWT, or
+     * "entitlements" field with plain JSON object.
+     * @param {!Object} json
+     * @return {!Entitlements}
+     */
+
+  }, {
+    key: "parseEntitlements",
+    value: function parseEntitlements(json) {
+      var isReadyToPay = json['isReadyToPay'];
+
+      if (isReadyToPay == null) {
+        this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
+      } else {
+        this.storage_.set(IS_READY_TO_PAY_STORAGE_KEY, String(isReadyToPay));
+      }
+
+      var signedData = json['signedEntitlements'];
+      var decryptedDocumentKey = json['decryptedDocumentKey'];
+
+      if (signedData) {
+        var entitlements = this.getValidJwtEntitlements_(signedData,
+        /* requireNonExpired */
+        false, isReadyToPay, decryptedDocumentKey);
+
+        if (entitlements) {
+          return entitlements;
         }
+      } else {
+        var plainEntitlements = json['entitlements'];
+
+        if (plainEntitlements) {
+          return this.createEntitlements_('', plainEntitlements, isReadyToPay, decryptedDocumentKey);
+        }
+      } // Empty response.
+
+
+      return this.createEntitlements_('', [], isReadyToPay);
+    }
+    /**
+     * @param {string} raw
+     * @param {boolean} requireNonExpired
+     * @param {boolean=} isReadyToPay
+     * @param {?string=} decryptedDocumentKey
+     * @return {?Entitlements}
+     * @private
+     */
+
+  }, {
+    key: "getValidJwtEntitlements_",
+    value: function getValidJwtEntitlements_(raw, requireNonExpired, isReadyToPay, decryptedDocumentKey) {
+      try {
+        var jwt = this.jwtHelper_.decode(raw);
+
+        if (requireNonExpired) {
+          var now = Date.now();
+          var exp = jwt['exp'];
+
+          if (parseFloat(exp) * 1000 < now) {
+            return null;
+          }
+        }
+
+        var entitlementsClaim = jwt['entitlements'];
+        return entitlementsClaim && this.createEntitlements_(raw, entitlementsClaim, isReadyToPay, decryptedDocumentKey) || null;
+      } catch (e) {
+        // Ignore the error.
+        this.win_.setTimeout(function () {
+          throw e;
+        });
       }
-      var entitlementsClaim = jwt['entitlements'];
-      return entitlementsClaim && this.createEntitlements_(raw, entitlementsClaim, opt_isReadyToPay, opt_decryptedDocumentKey) || null;
-    } catch (e) {
-      // Ignore the error.
-      this.win_.setTimeout(function () {
-        throw e;
+
+      return null;
+    }
+    /**
+     * @param {string} raw
+     * @param {!Object|!Array<!Object>} json
+     * @param {boolean=} isReadyToPay
+     * @param {?string=} decryptedDocumentKey
+     * @return {!Entitlements}
+     * @private
+     */
+
+  }, {
+    key: "createEntitlements_",
+    value: function createEntitlements_(raw, json, isReadyToPay, decryptedDocumentKey) {
+      return new _entitlements.Entitlements(SERVICE_ID, raw, _entitlements.Entitlement.parseListFromJson(json), this.pageConfig_.getProductId(), this.ack_.bind(this), isReadyToPay, decryptedDocumentKey);
+    }
+    /**
+     * @param {!Entitlements} entitlements
+     * @private
+     */
+
+  }, {
+    key: "onEntitlementsFetched_",
+    value: function onEntitlementsFetched_(entitlements) {
+      // Skip any notifications and toast if other flows are ongoing.
+      // TODO(dvoytenko): what's the right action when pay flow was canceled?
+      var blockNotification = this.blockNextNotification_;
+      this.blockNextNotification_ = false;
+
+      if (blockNotification) {
+        return;
+      } // Notify on the received entitlements.
+
+
+      this.deps_.callbacks().triggerEntitlementsResponse(Promise.resolve(entitlements)); // Show a toast if needed.
+
+      this.maybeShowToast_(entitlements);
+    }
+    /**
+     * @param {!Entitlements} entitlements
+     * @return {!Promise}
+     * @private
+     */
+
+  }, {
+    key: "maybeShowToast_",
+    value: function maybeShowToast_(entitlements) {
+      var _this5 = this;
+
+      var entitlement = entitlements.getEntitlementForThis();
+
+      if (!entitlement) {
+        return Promise.resolve();
+      } // Check if storage bit is set. It's only set by the `Entitlements.ack`
+      // method.
+
+
+      return this.storage_.get(TOAST_STORAGE_KEY).then(function (value) {
+        if (value == '1') {
+          // Already shown;
+          return;
+        }
+
+        if (entitlement) {
+          _this5.showToast_(entitlement);
+        }
       });
     }
-    return null;
-  };
+    /**
+     * @param {!Entitlement} entitlement
+     * @private
+     */
 
-  /**
-   * @param {string} raw
-   * @param {!Object|!Array<!Object>} json
-   * @param {boolean=} opt_isReadyToPay
-   * @param {?string=} opt_decryptedDocumentKey
-   * @return {!Entitlements}
-   * @private
-   */
-
-  EntitlementsManager.prototype.createEntitlements_ = function createEntitlements_(raw, json, opt_isReadyToPay, opt_decryptedDocumentKey) {
-    return new _apiEntitlements.Entitlements(SERVICE_ID, raw, _apiEntitlements.Entitlement.parseListFromJson(json), this.pageConfig_.getProductId(), this.ack_.bind(this), opt_isReadyToPay, opt_decryptedDocumentKey);
-  };
-
-  /**
-   * @param {!Entitlements} entitlements
-   * @private
-   */
-
-  EntitlementsManager.prototype.onEntitlementsFetched_ = function onEntitlementsFetched_(entitlements) {
-    // Skip any notifications and toast if other flows are ongoing.
-    // TODO(dvoytenko): what's the right action when pay flow was canceled?
-    var blockNotification = this.blockNextNotification_;
-    this.blockNextNotification_ = false;
-    if (blockNotification) {
-      return;
+  }, {
+    key: "showToast_",
+    value: function showToast_(entitlement) {
+      var source = entitlement.source || 'google';
+      return new _toast.Toast(this.deps_, (0, _services.feUrl)('/toastiframe'), (0, _services.feArgs)({
+        'publicationId': this.publicationId_,
+        'source': source
+      })).open();
     }
+    /**
+     * @param {!Entitlements} entitlements
+     * @private
+     */
 
-    // Notify on the received entitlements.
-    this.deps_.callbacks().triggerEntitlementsResponse(Promise.resolve(entitlements));
-
-    // Show a toast if needed.
-    this.maybeShowToast_(entitlements);
-  };
-
-  /**
-   * @param {!Entitlements} entitlements
-   * @return {!Promise}
-   * @private
-   */
-
-  EntitlementsManager.prototype.maybeShowToast_ = function maybeShowToast_(entitlements) {
-    var _this5 = this;
-
-    var entitlement = entitlements.getEntitlementForThis();
-    if (!entitlement) {
-      return Promise.resolve();
-    }
-    // Check if storage bit is set. It's only set by the `Entitlements.ack`
-    // method.
-    return this.storage_.get(TOAST_STORAGE_KEY).then(function (value) {
-      if (value == '1') {
-        // Already shown;
-        return;
+  }, {
+    key: "ack_",
+    value: function ack_(entitlements) {
+      if (entitlements.getEntitlementForThis()) {
+        this.setToastShown(true);
       }
-      if (entitlement) {
-        _this5.showToast_(entitlement);
+    }
+    /**
+     * @param {?string=} encryptedDocumentKey
+     * @return {!Promise<!Entitlements>}
+     * @private
+     */
+
+  }, {
+    key: "fetch_",
+    value: function fetch_(encryptedDocumentKey) {
+      var _this6 = this;
+
+      var url = '/publication/' + encodeURIComponent(this.publicationId_) + '/entitlements';
+
+      if (encryptedDocumentKey) {
+        //TODO(chenshay): Make this a 'Post'.
+        url += '?crypt=' + encodeURIComponent(encryptedDocumentKey);
       }
-    });
-  };
 
-  /**
-   * @param {!Entitlement} entitlement
-   * @private
-   */
-
-  EntitlementsManager.prototype.showToast_ = function showToast_(entitlement) {
-    var source = entitlement.source || 'google';
-    return new _uiToast.Toast(this.deps_, _runtimeServices.feUrl('/toastiframe'), _runtimeServices.feArgs({
-      'publicationId': this.publicationId_,
-      'source': source
-    })).open();
-  };
-
-  /**
-   * @param {!Entitlements} entitlements
-   * @private
-   */
-
-  EntitlementsManager.prototype.ack_ = function ack_(entitlements) {
-    if (entitlements.getEntitlementForThis()) {
-      this.setToastShown(true);
+      return this.fetcher_.fetchCredentialedJson((0, _services2.serviceUrl)(url)).then(function (json) {
+        return _this6.parseEntitlements(json);
+      });
     }
-  };
-
-  /**
-   * @param {?string=} opt_encryptedDocumentKey
-   * @return {!Promise<!Entitlements>}
-   * @private
-   */
-
-  EntitlementsManager.prototype.fetch_ = function fetch_(opt_encryptedDocumentKey) {
-    var _this6 = this;
-
-    var url = '/publication/' + encodeURIComponent(this.publicationId_) + '/entitlements';
-    if (opt_encryptedDocumentKey) {
-      //TODO(chenshay): Make this a 'Post'.
-      url += '?crypt=' + encodeURIComponent(opt_encryptedDocumentKey);
-    }
-    return this.fetcher_.fetchCredentialedJson(_services.serviceUrl(url)).then(function (json) {
-      return _this6.parseEntitlements(json);
-    });
-  };
+  }]);
 
   return EntitlementsManager;
-})();
+}();
+/**
+ * Convert String value of isReadyToPay
+ * (from JSON or Cache) to a boolean value.
+ * @param {string} value
+ * @return {boolean|undefined}
+ * @private
+ */
+
 
 exports.EntitlementsManager = EntitlementsManager;
+
 function irtpStringToBoolean(value) {
   switch (value) {
     case 'true':
       return true;
+
     case 'false':
       return false;
+
     default:
       return undefined;
   }
 }
 
-},{"../api/entitlements":7,"../runtime/services":58,"../ui/toast":64,"../utils/jwt":73,"./services":58}],42:[function(require,module,exports){
-exports.__esModule = true;
+},{"../api/entitlements":7,"../runtime/services":57,"../ui/toast":63,"../utils/jwt":72,"./services":57}],41:[function(require,module,exports){
+"use strict";
 
-var _PublisherEventToAnalyticsEvent, _AnalyticsEventToPublisherEvent;
-
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.publisherEventToAnalyticsEvent = publisherEventToAnalyticsEvent;
 exports.analyticsEventToPublisherEvent = analyticsEventToPublisherEvent;
-/**
- * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
-var _apiLoggerApi = require('../api/logger-api');
+var _api_messages = require("../proto/api_messages");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _loggerApi = require("../api/logger-api");
+
+var _PublisherEventToAnal, _AnalyticsEventToPubl;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /** @const {!Object<string,AnalyticsEvent>} */
-var PublisherEventToAnalyticsEvent = (_PublisherEventToAnalyticsEvent = {}, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.IMPRESSION_PAYWALL] = _protoApi_messages.AnalyticsEvent.IMPRESSION_PAYWALL, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.IMPRESSION_AD] = _protoApi_messages.AnalyticsEvent.IMPRESSION_AD, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.IMPRESSION_OFFERS] = _protoApi_messages.AnalyticsEvent.IMPRESSION_OFFERS, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.ACTION_SUBSCRIPTIONS_LANDING_PAGE] = _protoApi_messages.AnalyticsEvent.ACTION_SUBSCRIPTIONS_LANDING_PAGE, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.ACTION_OFFER_SELECTED] = _protoApi_messages.AnalyticsEvent.ACTION_OFFER_SELECTED, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.ACTION_PAYMENT_FLOW_STARTED] = _protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.ACTION_PAYMENT_COMPLETED] = _protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE, _PublisherEventToAnalyticsEvent[_apiLoggerApi.Event.EVENT_CUSTOM] = _protoApi_messages.AnalyticsEvent.EVENT_CUSTOM, _PublisherEventToAnalyticsEvent);
-
+var PublisherEventToAnalyticsEvent = (_PublisherEventToAnal = {}, _defineProperty(_PublisherEventToAnal, _loggerApi.Event.IMPRESSION_PAYWALL, _api_messages.AnalyticsEvent.IMPRESSION_PAYWALL), _defineProperty(_PublisherEventToAnal, _loggerApi.Event.IMPRESSION_AD, _api_messages.AnalyticsEvent.IMPRESSION_AD), _defineProperty(_PublisherEventToAnal, _loggerApi.Event.IMPRESSION_OFFERS, _api_messages.AnalyticsEvent.IMPRESSION_OFFERS), _defineProperty(_PublisherEventToAnal, _loggerApi.Event.ACTION_SUBSCRIPTIONS_LANDING_PAGE, _api_messages.AnalyticsEvent.ACTION_SUBSCRIPTIONS_LANDING_PAGE), _defineProperty(_PublisherEventToAnal, _loggerApi.Event.ACTION_OFFER_SELECTED, _api_messages.AnalyticsEvent.ACTION_OFFER_SELECTED), _defineProperty(_PublisherEventToAnal, _loggerApi.Event.ACTION_PAYMENT_FLOW_STARTED, _api_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED), _defineProperty(_PublisherEventToAnal, _loggerApi.Event.ACTION_PAYMENT_COMPLETED, _api_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE), _defineProperty(_PublisherEventToAnal, _loggerApi.Event.EVENT_CUSTOM, _api_messages.AnalyticsEvent.EVENT_CUSTOM), _PublisherEventToAnal);
 /** @const {!Object<number,?Event>} */
-var AnalyticsEventToPublisherEvent = (_AnalyticsEventToPublisherEvent = {}, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.UNKNOWN] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_PAYWALL] = _apiLoggerApi.Event.IMPRESSION_PAYWALL, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_AD] = _apiLoggerApi.Event.IMPRESSION_AD, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_OFFERS] = _apiLoggerApi.Event.IMPRESSION_OFFERS, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_SUBSCRIBE_BUTTON] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.IMPRESSION_SMARTBOX] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_SUBSCRIBE] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE] = _apiLoggerApi.Event.ACTION_PAYMENT_COMPLETED, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_ACCOUNT_CREATED] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_ACCOUNT_ACKNOWLEDGED] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_SUBSCRIPTIONS_LANDING_PAGE] = _apiLoggerApi.Event.ACTION_SUBSCRIPTIONS_LANDING_PAGE, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED] = _apiLoggerApi.Event.ACTION_PAYMENT_FLOW_STARTED, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.ACTION_OFFER_SELECTED] = _apiLoggerApi.Event.ACTION_OFFER_SELECTED, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED] = null, _AnalyticsEventToPublisherEvent[_protoApi_messages.AnalyticsEvent.EVENT_CUSTOM] = _apiLoggerApi.Event.EVENT_CUSTOM, _AnalyticsEventToPublisherEvent);
 
+var AnalyticsEventToPublisherEvent = (_AnalyticsEventToPubl = {}, _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.UNKNOWN, null), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.IMPRESSION_PAYWALL, _loggerApi.Event.IMPRESSION_PAYWALL), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.IMPRESSION_AD, _loggerApi.Event.IMPRESSION_AD), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.IMPRESSION_OFFERS, _loggerApi.Event.IMPRESSION_OFFERS), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.IMPRESSION_SUBSCRIBE_BUTTON, null), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.IMPRESSION_SMARTBOX, null), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.ACTION_SUBSCRIBE, null), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE, _loggerApi.Event.ACTION_PAYMENT_COMPLETED), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.ACTION_ACCOUNT_CREATED, null), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.ACTION_ACCOUNT_ACKNOWLEDGED, null), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.ACTION_SUBSCRIPTIONS_LANDING_PAGE, _loggerApi.Event.ACTION_SUBSCRIPTIONS_LANDING_PAGE), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED, _loggerApi.Event.ACTION_PAYMENT_FLOW_STARTED), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.ACTION_OFFER_SELECTED, _loggerApi.Event.ACTION_OFFER_SELECTED), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED, null), _defineProperty(_AnalyticsEventToPubl, _api_messages.AnalyticsEvent.EVENT_CUSTOM, _loggerApi.Event.EVENT_CUSTOM), _AnalyticsEventToPubl);
 /**
  * Converts a propensity event enum into an analytics event enum.
  * @param {!Event|string} propensityEvent
@@ -9935,19 +11020,25 @@ var AnalyticsEventToPublisherEvent = (_AnalyticsEventToPublisherEvent = {}, _Ana
 function publisherEventToAnalyticsEvent(propensityEvent) {
   return PublisherEventToAnalyticsEvent[propensityEvent];
 }
-
 /**
  * Converts an analytics event enum into a propensity event enum.
  * @param {!AnalyticsEvent} analyticsEvent
  * @returns {?Event}
  */
 
+
 function analyticsEventToPublisherEvent(analyticsEvent) {
   return AnalyticsEventToPublisherEvent[analyticsEvent];
 }
 
-},{"../api/logger-api":8,"../proto/api_messages":33}],43:[function(require,module,exports){
-exports.__esModule = true;
+},{"../api/logger-api":8,"../proto/api_messages":32}],42:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ExperimentFlags = void 0;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -9988,6 +11079,7 @@ var ExperimentFlags = {
 
   /**
    * Enables the contributions feature.
+   * DEPRECATED. This flag can be removed once not used by anyone.
    */
   CONTRIBUTIONS: 'contributions',
 
@@ -10008,12 +11100,21 @@ var ExperimentFlags = {
 };
 exports.ExperimentFlags = ExperimentFlags;
 
-},{}],44:[function(require,module,exports){
-exports.__esModule = true;
+},{}],43:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.setExperimentsStringForTesting = setExperimentsStringForTesting;
 exports.isExperimentOn = isExperimentOn;
 exports.setExperiment = setExperiment;
 exports.getOnExperiments = getOnExperiments;
+
+var _errors = require("../utils/errors");
+
+var _url = require("../utils/url");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -10029,10 +11130,6 @@ exports.getOnExperiments = getOnExperiments;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var _utilsErrors = require('../utils/errors');
-
-var _utilsUrl = require('../utils/url');
 
 /**
  * @fileoverview
@@ -10067,19 +11164,18 @@ var Selection = {
   EXPERIMENT: 'e',
   CONTROL: 'c'
 };
-
 /**
  * A comma-separated set of experiments.
  * @type {string}
  */
-var experimentsString = '';
 
+var experimentsString = '';
 /**
  * A parsed map of experiments.
  * @type {?Object<string, boolean>}
  */
-var experimentMap = null;
 
+var experimentMap = null;
 /**
  * @param {string} s
  * @package Visible for testing only.
@@ -10089,57 +11185,65 @@ function setExperimentsStringForTesting(s) {
   experimentsString = s;
   experimentMap = null;
 }
-
 /**
  * Ensures that the experiments have been initialized and returns them.
  * @param {!Window} win
  * @return {!Object<string, boolean>}
  */
+
+
 function getExperiments(win) {
   if (!experimentMap) {
     experimentMap = {};
     var combinedExperimentString = experimentsString;
+
     try {
-      var query = _utilsUrl.parseQueryString(win.location.hash);
+      var query = (0, _url.parseQueryString)(win.location.hash);
       var experimentStringFromHash = query['swg.experiments'];
+
       if (experimentStringFromHash) {
         combinedExperimentString += ',' + experimentStringFromHash;
       }
     } catch (e) {
       // Ignore: experiment parsing cannot block runtime.
-      _utilsErrors.ErrorUtils.throwAsync(e);
-    }
-
-    // Format:
+      _errors.ErrorUtils.throwAsync(e);
+    } // Format:
     // - experimentString = (experimentSpec,)*
+
+
     combinedExperimentString.split(',').forEach(function (s) {
       s = s.trim();
+
       if (!s) {
         return;
       }
+
       try {
         parseSetExperiment(win, experimentMap, s);
       } catch (e) {
         // Ignore: experiment parsing cannot block runtime.
-        _utilsErrors.ErrorUtils.throwAsync(e);
+        _errors.ErrorUtils.throwAsync(e);
       }
     });
   }
+
   return experimentMap;
 }
-
 /**
  * @param {!Window} win
  * @param {?Object<string, boolean>} experimentMap
  * @param {string} spec
  */
+
+
 function parseSetExperiment(win, experimentMap, spec) {
   // Format:
   // - experimentSpec = experimentId | experimentId '=' num100 ('c')?
-  var experimentId = undefined;
-  var fraction = undefined;
+  var experimentId;
+  var fraction;
   var control = false;
   var eq = spec.indexOf(':');
+
   if (eq == -1) {
     experimentId = spec;
     fraction = 100;
@@ -10147,18 +11251,22 @@ function parseSetExperiment(win, experimentMap, spec) {
   } else {
     experimentId = spec.substring(0, eq).trim();
     spec = spec.substring(eq + 1);
+
     if (spec.substring(spec.length - 1) == Selection.CONTROL) {
       control = true;
       spec = spec.substring(0, spec.length - 1);
     }
+
     fraction = parseInt(spec, 10);
   }
+
   if (isNaN(fraction)) {
     throw new Error('invalid fraction');
-  }
+  } // Calculate "on"/"off".
 
-  // Calculate "on"/"off".
-  var on = undefined;
+
+  var on;
+
   if (fraction > 99) {
     // Explicitly "on".
     on = true;
@@ -10171,10 +11279,12 @@ function parseSetExperiment(win, experimentMap, spec) {
     // a. We can't do persistent experiments if storage is not available.
     // b. We can't run control on more than 20%.
     control = control && fraction <= 20;
+
     try {
       // Set fraction in the experiment to make it unlaunchable.
       var storageKey = 'subscribe.google.com:e:' + experimentId + ':' + fraction + (control ? 'c' : '');
       var selection = parseSelection(win.sessionStorage.getItem(storageKey));
+
       if (!selection) {
         // Is experiment/control range?
         if (win.Math.random() * 100 <= fraction * (control ? 2 : 1)) {
@@ -10183,14 +11293,17 @@ function parseSetExperiment(win, experimentMap, spec) {
           win.sessionStorage.setItem(storageKey, selection);
         }
       }
+
       on = !!selection;
+
       if (selection == Selection.CONTROL) {
         experimentId = 'c-' + experimentId;
       }
     } catch (e) {
       // Ignore: experiment parsing cannot block runtime.
       on = false;
-      _utilsErrors.ErrorUtils.throwAsync(e);
+
+      _errors.ErrorUtils.throwAsync(e);
     }
   } else {
     on = false;
@@ -10198,16 +11311,16 @@ function parseSetExperiment(win, experimentMap, spec) {
 
   experimentMap[experimentId] = on;
 }
-
 /**
  * @param {?string} s
  * @return {?Selection}
  */
+
+
 function parseSelection(s) {
   // Do a simple if-then to inline the whole Selection enum.
   return s == Selection.EXPERIMENT ? Selection.EXPERIMENT : s == Selection.CONTROL ? Selection.CONTROL : null;
 }
-
 /**
  * Whether the specified experiment is on or off.
  * @param {!Window} win
@@ -10215,10 +11328,10 @@ function parseSelection(s) {
  * @return {boolean}
  */
 
+
 function isExperimentOn(win, experimentId) {
   return getExperiments(win)[experimentId] || false;
 }
-
 /**
  * Toggles the experiment on or off. Returns the actual value of the experiment
  * after toggling is done.
@@ -10227,116 +11340,141 @@ function isExperimentOn(win, experimentId) {
  * @param {boolean} on
  */
 
+
 function setExperiment(win, experimentId, on) {
   getExperiments(win)[experimentId] = on;
 }
-
 /**
  * @return {!Array<string>}
  */
 
+
 function getOnExperiments(win) {
   var experimentMap = getExperiments(win);
   var experiments = [];
+
   for (var experiment in experimentMap) {
     if (experimentMap[experiment]) {
       experiments.push(experiment);
     }
   }
+
   return experiments;
 }
 
-},{"../utils/errors":70,"../utils/url":81}],45:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../utils/errors":69,"../utils/url":80}],44:[function(require,module,exports){
+"use strict";
 
-var _utilsXhr = require('../utils/xhr');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.XhrFetcher = exports.Fetcher = void 0;
+
+var _xhr = require("../utils/xhr");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * @interface
  */
-
-var Fetcher = (function () {
+var Fetcher =
+/*#__PURE__*/
+function () {
   function Fetcher() {
-    babelHelpers.classCallCheck(this, Fetcher);
+    _classCallCheck(this, Fetcher);
   }
 
-  /**
-   * @implements {Fetcher}
-   */
+  _createClass(Fetcher, [{
+    key: "fetchCredentialedJson",
 
-  /**
-   * @param {string} unusedUrl
-   * @return {!Promise<!Object>}
-   */
+    /**
+     * @param {string} unusedUrl
+     * @return {!Promise<!Object>}
+     */
+    value: function fetchCredentialedJson(unusedUrl) {}
+    /**
+     * @param {string} unusedUrl
+     * @param {!../utils/xhr.FetchInitDef} unusedInit
+     * @return {!Promise<!../utils/xhr.FetchResponse>}
+     */
 
-  Fetcher.prototype.fetchCredentialedJson = function fetchCredentialedJson(unusedUrl) {};
-
-  /**
-   * @param {string} unusedUrl
-   * @param {!../utils/xhr.FetchInitDef} unusedInit
-   * @return {!Promise<!../utils/xhr.FetchResponse>}
-   */
-
-  Fetcher.prototype.fetch = function fetch(unusedUrl, unusedInit) {};
+  }, {
+    key: "fetch",
+    value: function fetch(unusedUrl, unusedInit) {}
+  }]);
 
   return Fetcher;
-})();
+}();
+/**
+ * @implements {Fetcher}
+ */
+
 
 exports.Fetcher = Fetcher;
 
-var XhrFetcher = (function () {
+var XhrFetcher =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    */
-
   function XhrFetcher(win) {
-    babelHelpers.classCallCheck(this, XhrFetcher);
+    _classCallCheck(this, XhrFetcher);
 
     /** @const {!Xhr} */
-    this.xhr_ = new _utilsXhr.Xhr(win);
+    this.xhr_ = new _xhr.Xhr(win);
   }
-
   /** @override */
 
-  XhrFetcher.prototype.fetchCredentialedJson = function fetchCredentialedJson(url) {
-    var init = /** @type {!../utils/xhr.FetchInitDef} */{
-      method: 'GET',
-      headers: { 'Accept': 'text/plain, application/json' },
-      credentials: 'include'
-    };
-    return this.xhr_.fetch(url, init).then(function (response) {
-      return response.json();
-    });
-  };
 
-  /** @override */
+  _createClass(XhrFetcher, [{
+    key: "fetchCredentialedJson",
+    value: function fetchCredentialedJson(url) {
+      var init =
+      /** @type {!../utils/xhr.FetchInitDef} */
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/plain, application/json'
+        },
+        credentials: 'include'
+      };
+      return this.xhr_.fetch(url, init).then(function (response) {
+        return response.json();
+      });
+    }
+    /** @override */
 
-  XhrFetcher.prototype.fetch = function fetch(url, init) {
-    return this.xhr_.fetch(url, init);
-  };
+  }, {
+    key: "fetch",
+    value: function fetch(url, init) {
+      return this.xhr_.fetch(url, init);
+    }
+  }]);
 
   return XhrFetcher;
-})();
+}();
 
 exports.XhrFetcher = XhrFetcher;
 
-},{"../utils/xhr":82}],46:[function(require,module,exports){
-exports.__esModule = true;
+},{"../utils/xhr":81}],45:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.JsError = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -10355,63 +11493,73 @@ exports.__esModule = true;
 
 /**
  */
-
-var JsError = (function () {
+var JsError =
+/*#__PURE__*/
+function () {
   /**
    * @param {!../model/doc.Doc} doc
    */
-
   function JsError(doc) {
-    babelHelpers.classCallCheck(this, JsError);
+    _classCallCheck(this, JsError);
 
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = doc;
-
     /** @private @const {!Promise} */
+
     this.microTask_ = Promise.resolve();
   }
-
-  /**
-   * @param {...*} var_args
-   * @return {!Error}
-   */
-
   /**
    * @param {...*} var_args
    * @return {!Promise}
    */
 
-  JsError.prototype.error = function error(var_args) {
-    var _this = this;
 
-    var args = Array.prototype.slice.call(arguments, 0);
-    return this.microTask_.then(function () {
-      var error = createErrorVargs.apply(null, args);
-      if (error.reported) {
-        return;
-      }
-      var img = _this.doc_.getWin().document.createElement('img');
-      img.src = 'https://subscribe-qual.sandbox.google.com/_/SubscribewithgoogleClientUi/jserror' + '?error=' + encodeURIComponent(String(error)) + '&script=' + encodeURIComponent('https://subscribe-qual.sandbox.google.com/swg/js/v1/swg.js') + '&line=' + (error.lineNumber || 1) + '&trace=' + encodeURIComponent(error.stack);
-      // Appending this image to DOM is not necessary.
-      error.reported = true;
-    });
-  };
+  _createClass(JsError, [{
+    key: "error",
+    value: function error(var_args) {
+      var _this = this;
+
+      var args = Array.prototype.slice.call(arguments, 0);
+      return this.microTask_.then(function () {
+        var error = createErrorVargs.apply(null, args);
+
+        if (error.reported) {
+          return;
+        }
+
+        var img = _this.doc_.getWin().document.createElement('img');
+
+        img.src = 'https://news.google.com/_/SubscribewithgoogleClientUi/jserror' + '?error=' + encodeURIComponent(String(error)) + '&script=' + encodeURIComponent('https://news.google.com/swg/js/v1/swg.js') + '&line=' + (error.lineNumber || 1) + '&trace=' + encodeURIComponent(error.stack); // Appending this image to DOM is not necessary.
+
+        error.reported = true;
+      });
+    }
+  }]);
 
   return JsError;
-})();
+}();
+/**
+ * @param {...*} var_args
+ * @return {!Error}
+ */
+
 
 exports.JsError = JsError;
+
 function createErrorVargs(var_args) {
   var error = null;
   var message = '';
+
   for (var i = 0; i < arguments.length; i++) {
     var arg = arguments[i];
+
     if (arg instanceof Error && !error) {
       error = duplicateErrorIfNecessary(arg);
     } else {
       if (message) {
         message += ' ';
       }
+
       message += arg;
     }
   }
@@ -10421,817 +11569,904 @@ function createErrorVargs(var_args) {
   } else if (message) {
     error.message = message + ': ' + error.message;
   }
+
   return error;
 }
-
 /**
  * Some exceptions (DOMException, namely) have read-only message.
  * @param {!Error} error
  * @return {!Error}
  */
+
+
 function duplicateErrorIfNecessary(error) {
   var messageProperty = Object.getOwnPropertyDescriptor(error, 'message');
+
   if (messageProperty && messageProperty.writable) {
     return error;
   }
 
-  var message = error.message;
-  var stack = error.stack;
+  var message = error.message,
+      stack = error.stack;
+  var e = new Error(message); // Copy all the extraneous things we attach.
 
-  var e = new Error(message);
-  // Copy all the extraneous things we attach.
   for (var prop in error) {
     e[prop] = error[prop];
-  }
-  // Ensure these are copied.
+  } // Ensure these are copied.
+
+
   e.stack = stack;
   return e;
 }
 
-},{}],47:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{}],46:[function(require,module,exports){
+"use strict";
 
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LinkSaveFlow = exports.LinkCompleteFlow = exports.LinkbackFlow = void 0;
 
-var _apiSubscriptions = require('../api/subscriptions');
+var _activityIframeView = require("../ui/activity-iframe-view");
 
-var _utilsActivityUtils = require('../utils/activity-utils');
+var _api_messages = require("../proto/api_messages");
 
-var _services = require('./services');
+var _subscriptions = require("../api/subscriptions");
 
-var _utilsErrors = require('../utils/errors');
+var _activityUtils = require("../utils/activity-utils");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _errors = require("../utils/errors");
+
+var _services = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var LINK_REQUEST_ID = 'swg-link';
-
 /**
- * The flow to initiate linkback flow.
+ * The flow to link an existing publisher account to an existing google account.
  */
 
-var LinkbackFlow = (function () {
+var LinkbackFlow =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
-
   function LinkbackFlow(deps) {
-    babelHelpers.classCallCheck(this, LinkbackFlow);
+    _classCallCheck(this, LinkbackFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../model/page-config.PageConfig} */
-    this.pageConfig_ = deps.pageConfig();
 
+    this.pageConfig_ = deps.pageConfig();
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
   }
-
-  /**
-   * The class for Link accounts flow.
-   */
-
   /**
    * Starts the Link account flow.
+   * @param {{ampReaderId: (string|undefined)}=} params
    * @return {!Promise}
    */
 
-  LinkbackFlow.prototype.start = function start() {
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.LINK_ACCOUNT);
-    var forceRedirect = this.deps_.config().windowOpenMode == _apiSubscriptions.WindowOpenMode.REDIRECT;
-    var opener = this.activityPorts_.open(LINK_REQUEST_ID, _services.feUrl('/linkbackstart'), forceRedirect ? '_top' : '_blank', _services.feArgs({
-      'publicationId': this.pageConfig_.getPublicationId()
-    }), {});
-    this.dialogManager_.popupOpened(opener && opener.targetWin);
-    return Promise.resolve();
-  };
+
+  _createClass(LinkbackFlow, [{
+    key: "start",
+    value: function start() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.LINK_ACCOUNT);
+
+      var forceRedirect = this.deps_.config().windowOpenMode == _subscriptions.WindowOpenMode.REDIRECT;
+
+      var args = params.ampReaderId ? (0, _services.feArgs)({
+        'publicationId': this.pageConfig_.getPublicationId(),
+        'ampReaderId': params.ampReaderId
+      }) : (0, _services.feArgs)({
+        'publicationId': this.pageConfig_.getPublicationId()
+      });
+      var opener = this.activityPorts_.open(LINK_REQUEST_ID, (0, _services.feUrl)('/linkbackstart'), forceRedirect ? '_top' : '_blank', args, {});
+      this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_LINK);
+      this.dialogManager_.popupOpened(opener && opener.targetWin);
+      return Promise.resolve();
+    }
+  }]);
 
   return LinkbackFlow;
-})();
+}();
+/**
+ * The class for Link accounts flow.
+ */
+
 
 exports.LinkbackFlow = LinkbackFlow;
 
-var LinkCompleteFlow = (function () {
-  /**
-   * @param {!./deps.DepsDef} deps
-   */
+var LinkCompleteFlow =
+/*#__PURE__*/
+function () {
+  _createClass(LinkCompleteFlow, null, [{
+    key: "configurePending",
 
-  LinkCompleteFlow.configurePending = function configurePending(deps) {
     /**
-     * Handler function.
-     * @param {!../components/activities.ActivityPortDef} port
+     * @param {!./deps.DepsDef} deps
      */
-    function handler(port) {
-      deps.entitlementsManager().blockNextNotification();
-      deps.callbacks().triggerLinkProgress();
-      deps.dialogManager().popupClosed();
-      var promise = _utilsActivityUtils.acceptPortResultData(port, _services.feOrigin(),
-      /* requireOriginVerified */false,
-      /* requireSecureChannel */false);
-      return promise.then(function (response) {
-        var flow = new LinkCompleteFlow(deps, response);
-        flow.start();
-      }, function (reason) {
-        if (_utilsErrors.isCancelError(reason)) {
-          deps.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.LINK_ACCOUNT);
-        }
-      });
-    }
-    deps.activities().onResult(LINK_REQUEST_ID, handler);
-  };
+    value: function configurePending(deps) {
+      /**
+       * Handler function.
+       * @param {!../components/activities.ActivityPortDef} port
+       */
+      function handler(port) {
+        deps.entitlementsManager().blockNextNotification();
+        deps.callbacks().triggerLinkProgress();
+        deps.dialogManager().popupClosed();
+        var promise = (0, _activityUtils.acceptPortResultData)(port, (0, _services.feOrigin)(),
+        /* requireOriginVerified */
+        false,
+        /* requireSecureChannel */
+        false);
+        return promise.then(function (response) {
+          deps.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_LINK_CONTINUE, true);
+          var flow = new LinkCompleteFlow(deps, response);
+          flow.start();
+        }, function (reason) {
+          if ((0, _errors.isCancelError)(reason)) {
+            deps.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_LINK_CANCEL, true);
+            deps.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.LINK_ACCOUNT);
+          } else {
+            // The user chose to continue but there was an error.
+            deps.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_LINK_CONTINUE, true);
+          }
+        });
+      }
 
-  /**
-   * @param {!./deps.DepsDef} deps
-   * @param {?Object} response
-   */
+      deps.activities().onResult(LINK_REQUEST_ID, handler);
+    }
+    /**
+     * @param {!./deps.DepsDef} deps
+     * @param {?Object} response
+     */
+
+  }]);
 
   function LinkCompleteFlow(deps, response) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, LinkCompleteFlow);
+    _classCallCheck(this, LinkCompleteFlow);
 
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private @const {!./entitlements-manager.EntitlementsManager} */
+
     this.entitlementsManager_ = deps.entitlementsManager();
-
     /** @private @const {!./callbacks.Callbacks} */
-    this.callbacks_ = deps.callbacks();
 
+    this.callbacks_ = deps.callbacks();
     var index = response && response['index'] || '0';
     /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/linkconfirmiframe', '/u/' + index), _services.feArgs({
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/linkconfirmiframe', '/u/' + index), (0, _services.feArgs)({
       'productId': deps.pageConfig().getProductId(),
       'publicationId': deps.pageConfig().getPublicationId()
     }),
-    /* shouldFadeBody */true);
-
+    /* shouldFadeBody */
+    true);
     /** @private {?function()} */
-    this.completeResolver_ = null;
 
+    this.completeResolver_ = null;
     /** @private @const {!Promise} */
+
     this.completePromise_ = new Promise(function (resolve) {
       _this.completeResolver_ = resolve;
     });
   }
-
-  /**
-   * The flow to save subscription information.
-   */
-
   /**
    * Starts the Link account flow.
    * @return {!Promise}
    */
 
-  LinkCompleteFlow.prototype.start = function start() {
-    var _this2 = this;
 
-    var promise = this.activityIframeView_.acceptResultAndVerify(_services.feOrigin(),
-    /* requireOriginVerified */true,
-    /* requireSecureChannel */true);
-    promise.then(function (response) {
-      _this2.complete_(response);
-    })['catch'](function (reason) {
-      // Rethrow async.
-      setTimeout(function () {
-        throw reason;
+  _createClass(LinkCompleteFlow, [{
+    key: "start",
+    value: function start() {
+      var _this2 = this;
+
+      var promise = this.activityIframeView_.acceptResultAndVerify((0, _services.feOrigin)(),
+      /* requireOriginVerified */
+      true,
+      /* requireSecureChannel */
+      true);
+      promise.then(function (response) {
+        _this2.complete_(response);
+      })["catch"](function (reason) {
+        // Rethrow async.
+        setTimeout(function () {
+          throw reason;
+        });
+      }).then(function () {
+        // The flow is complete.
+        _this2.dialogManager_.completeView(_this2.activityIframeView_);
       });
-    }).then(function () {
-      // The flow is complete.
-      _this2.dialogManager_.completeView(_this2.activityIframeView_);
-    });
-    return this.dialogManager_.openView(this.activityIframeView_);
-  };
-
-  /**
-   * @param {?Object} response
-   * @private
-   */
-
-  LinkCompleteFlow.prototype.complete_ = function complete_(response) {
-    this.callbacks_.triggerLinkComplete();
-    this.callbacks_.resetLinkProgress();
-    this.entitlementsManager_.setToastShown(true);
-    this.entitlementsManager_.unblockNextNotification();
-    this.entitlementsManager_.reset(response && response['success'] || false);
-    if (response && response['entitlements']) {
-      this.entitlementsManager_.pushNextEntitlements(response['entitlements']);
+      this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.EVENT_GOOGLE_UPDATED, true);
+      this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_GOOGLE_UPDATED, true);
+      return this.dialogManager_.openView(this.activityIframeView_);
     }
-    this.completeResolver_();
-  };
+    /**
+     * @param {?Object} response
+     * @private
+     */
 
-  /** @return {!Promise} */
+  }, {
+    key: "complete_",
+    value: function complete_(response) {
+      this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_GOOGLE_UPDATED_CLOSE, true);
+      this.callbacks_.triggerLinkComplete();
+      this.callbacks_.resetLinkProgress();
+      this.entitlementsManager_.setToastShown(true);
+      this.entitlementsManager_.unblockNextNotification();
+      this.entitlementsManager_.reset(response && response['success'] || false);
 
-  LinkCompleteFlow.prototype.whenComplete = function whenComplete() {
-    return this.completePromise_;
-  };
+      if (response && response['entitlements']) {
+        this.entitlementsManager_.pushNextEntitlements(response['entitlements']);
+      }
+
+      this.completeResolver_();
+    }
+    /** @return {!Promise} */
+
+  }, {
+    key: "whenComplete",
+    value: function whenComplete() {
+      return this.completePromise_;
+    }
+  }]);
 
   return LinkCompleteFlow;
-})();
+}();
+/**
+ * The flow to save subscription information from an existing publisher account
+ * to an existing google account.  The accounts may or may not already be
+ * linked.
+ */
+
 
 exports.LinkCompleteFlow = LinkCompleteFlow;
 
-var LinkSaveFlow = (function () {
+var LinkSaveFlow =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.SaveSubscriptionRequestCallback} callback
    */
-
   function LinkSaveFlow(deps, callback) {
-    babelHelpers.classCallCheck(this, LinkSaveFlow);
+    _classCallCheck(this, LinkSaveFlow);
 
     /** @private @const {!Window} */
     this.win_ = deps.win();
-
     /** @private @const {!./deps.DepsDef} */
+
     this.deps_ = deps;
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private {!../api/subscriptions.SaveSubscriptionRequestCallback} */
+
     this.callback_ = callback;
-
     /** @private {?Promise<!../api/subscriptions.SaveSubscriptionRequest>} */
+
     this.requestPromise_ = null;
-
     /** @private {?Promise} */
-    this.openPromise_ = null;
 
+    this.openPromise_ = null;
     /** @private {?ActivityIframeView} */
+
     this.activityIframeView_ = null;
   }
-
   /**
    * @return {?Promise<!../api/subscriptions.SaveSubscriptionRequest>}
    * @package Visible for testing.
    */
 
-  LinkSaveFlow.prototype.getRequestPromise = function getRequestPromise() {
-    return this.requestPromise_;
-  };
 
-  /**
-   * @private
-   */
-
-  LinkSaveFlow.prototype.complete_ = function complete_() {
-    this.dialogManager_.completeView(this.activityIframeView_);
-  };
-
-  /**
-   * @param {!Object} result
-   * @return {!Promise<boolean>}
-   * @private
-   */
-
-  LinkSaveFlow.prototype.handleLinkSaveResponse_ = function handleLinkSaveResponse_(result) {
-    var _this3 = this;
-
-    // This flow is complete
-    this.complete_();
-    var startPromise = undefined;
-    var linkConfirm = null;
-    if (result['linked']) {
-      // When linking succeeds, start link confirmation flow
-      this.dialogManager_.popupClosed();
-      this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.LINK_ACCOUNT);
-      linkConfirm = new LinkCompleteFlow(this.deps_, result);
-      startPromise = linkConfirm.start();
-    } else {
-      startPromise = Promise.reject(_utilsErrors.createCancelError(this.win_, 'not linked'));
+  _createClass(LinkSaveFlow, [{
+    key: "getRequestPromise",
+    value: function getRequestPromise() {
+      return this.requestPromise_;
     }
-    var completePromise = startPromise.then(function () {
-      _this3.deps_.callbacks().triggerLinkProgress();
-      return linkConfirm.whenComplete();
-    });
+    /**
+     * @private
+     */
 
-    return completePromise.then(function () {
-      return true;
-    });
-  };
-
-  /**
-   * @param {LinkingInfoResponse} response
-   * @private
-   */
-
-  LinkSaveFlow.prototype.sendLinkSaveToken_ = function sendLinkSaveToken_(response) {
-    var _this4 = this;
-
-    if (!response || !response.getRequested()) {
-      return;
+  }, {
+    key: "complete_",
+    value: function complete_() {
+      this.dialogManager_.completeView(this.activityIframeView_);
     }
-    this.requestPromise_ = new Promise(function (resolve) {
-      resolve(_this4.callback_());
-    }).then(function (request) {
-      var saveRequest = new _protoApi_messages.LinkSaveTokenRequest();
-      if (request && request.token) {
-        if (request.authCode) {
-          throw new Error('Both authCode and token are available');
-        } else {
-          saveRequest.setToken(request.token);
-        }
-      } else if (request && request.authCode) {
-        saveRequest.setAuthCode(request.authCode);
+    /**
+     * @param {!Object} result
+     * @return {!Promise<boolean>}
+     * @private
+     */
+
+  }, {
+    key: "handleLinkSaveResponse_",
+    value: function handleLinkSaveResponse_(result) {
+      var _this3 = this;
+
+      // This flow is complete
+      this.complete_();
+      var startPromise;
+      var linkConfirm = null;
+
+      if (result['linked']) {
+        // When linking succeeds, start link confirmation flow
+        this.dialogManager_.popupClosed();
+        this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.LINK_ACCOUNT);
+        linkConfirm = new LinkCompleteFlow(this.deps_, result);
+        startPromise = linkConfirm.start();
       } else {
-        throw new Error('Neither token or authCode is available');
+        startPromise = Promise.reject((0, _errors.createCancelError)(this.win_, 'not linked'));
       }
-      _this4.activityIframeView_.execute(saveRequest);
-    })['catch'](function (reason) {
-      // The flow is complete.
-      _this4.complete_();
-      throw reason;
-    });
-  };
 
-  /**
-   * @return {?Promise}
-   */
-  /**
-   * Starts the save subscription
-   * @return {!Promise}
-   */
+      var completePromise = startPromise.then(function () {
+        _this3.deps_.callbacks().triggerLinkProgress();
 
-  LinkSaveFlow.prototype.start = function start() {
-    var _this5 = this;
+        return linkConfirm.whenComplete();
+      });
+      return completePromise.then(function () {
+        return true;
+      });
+    }
+    /**
+     * @param {LinkingInfoResponse} response
+     * @private
+     */
 
-    var iframeArgs = {
-      'publicationId': this.deps_.pageConfig().getPublicationId(),
-      'isClosable': true
-    };
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/linksaveiframe'), _services.feArgs(iframeArgs),
-    /* shouldFadeBody */false,
-    /* hasLoadingIndicator */true);
-    this.activityIframeView_.on(_protoApi_messages.LinkingInfoResponse, this.sendLinkSaveToken_.bind(this));
+  }, {
+    key: "sendLinkSaveToken_",
+    value: function sendLinkSaveToken_(response) {
+      var _this4 = this;
 
-    this.openPromise_ = this.dialogManager_.openView(this.activityIframeView_,
-    /* hidden */true);
-    /** {!Promise<boolean>} */
-    return this.activityIframeView_.acceptResultAndVerify(_services.feOrigin(),
-    /* requireOriginVerified */true,
-    /* requireSecureChannel */true).then(function (result) {
-      return _this5.handleLinkSaveResponse_(result);
-    })['catch'](function (reason) {
-      // In case this flow wasn't complete, complete it here
-      _this5.complete_();
-      // Handle cancellation from user, link confirm start or completion here
-      if (_utilsErrors.isCancelError(reason)) {
-        _this5.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.LINK_ACCOUNT);
-        return false;
+      if (!response || !response.getRequested()) {
+        return;
       }
-      throw reason;
-    });
-  };
+
+      this.requestPromise_ = new Promise(function (resolve) {
+        resolve(_this4.callback_());
+      }).then(function (request) {
+        var saveRequest = new _api_messages.LinkSaveTokenRequest();
+
+        if (request && request.token) {
+          if (request.authCode) {
+            throw new Error('Both authCode and token are available');
+          } else {
+            saveRequest.setToken(request.token);
+          }
+        } else if (request && request.authCode) {
+          saveRequest.setAuthCode(request.authCode);
+        } else {
+          throw new Error('Neither token or authCode is available');
+        }
+
+        _this4.activityIframeView_.execute(saveRequest);
+      })["catch"](function (reason) {
+        // The flow is complete.
+        _this4.complete_();
+
+        throw reason;
+      });
+    }
+    /**
+     * @return {?Promise}
+     */
+
+    /**
+     * Starts the save subscription
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "start",
+    value: function start() {
+      var _this5 = this;
+
+      var iframeArgs = this.activityPorts_.addDefaultArguments({
+        'isClosable': true
+      });
+      this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/linksaveiframe'), iframeArgs,
+      /* shouldFadeBody */
+      false,
+      /* hasLoadingIndicator */
+      true);
+      this.activityIframeView_.on(_api_messages.LinkingInfoResponse, this.sendLinkSaveToken_.bind(this));
+      this.openPromise_ = this.dialogManager_.openView(this.activityIframeView_,
+      /* hidden */
+      true);
+      this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_SAVE_SUBSCR_TO_GOOGLE);
+      /** {!Promise<boolean>} */
+
+      return this.activityIframeView_.acceptResultAndVerify((0, _services.feOrigin)(),
+      /* requireOriginVerified */
+      true,
+      /* requireSecureChannel */
+      true).then(function (result) {
+        return _this5.handleLinkSaveResponse_(result);
+      })["catch"](function (reason) {
+        // In case this flow wasn't complete, complete it here
+        _this5.complete_(); // Handle cancellation from user, link confirm start or completion here
+
+
+        if ((0, _errors.isCancelError)(reason)) {
+          _this5.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_SAVE_SUBSCR_TO_GOOGLE_CANCEL, true);
+
+          _this5.deps_.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.LINK_ACCOUNT);
+
+          return false;
+        }
+
+        throw reason;
+      });
+    }
+  }]);
 
   return LinkSaveFlow;
-})();
+}();
 
 exports.LinkSaveFlow = LinkSaveFlow;
 
-},{"../api/subscriptions":12,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"../utils/activity-utils":65,"../utils/errors":70,"./services":58}],48:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../api/subscriptions":12,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"../utils/activity-utils":64,"../utils/errors":69,"./services":57}],47:[function(require,module,exports){
+"use strict";
 
-var _apiLoggerApi = require('../api/logger-api');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Logger = void 0;
 
-var _utilsTypes = require('../utils/types');
+var _api_messages = require("../proto/api_messages");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _loggerApi = require("../api/logger-api");
 
-var _eventTypeMapping = require('./event-type-mapping');
+var _types = require("../utils/types");
+
+var _eventTypeMapping = require("./event-type-mapping");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * @implements {../api/logger-api.LoggerApi}
  */
-
-var Logger = (function () {
+var Logger =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
-
   function Logger(deps) {
-    babelHelpers.classCallCheck(this, Logger);
+    _classCallCheck(this, Logger);
 
     /** @private @const {!../api/client-event-manager-api.ClientEventManagerApi} */
     this.eventManager_ = deps.eventManager();
   }
-
   /** @override */
 
-  Logger.prototype.sendSubscriptionState = function sendSubscriptionState(state, jsonProducts) {
-    if (!_utilsTypes.isEnumValue(_apiLoggerApi.SubscriptionState, state)) {
-      throw new Error('Invalid subscription state provided');
-    }
-    if ((_apiLoggerApi.SubscriptionState.SUBSCRIBER == state || _apiLoggerApi.SubscriptionState.PAST_SUBSCRIBER == state) && !jsonProducts) {
-      throw new Error('Entitlements must be provided for users with' + ' active or expired subscriptions');
-    }
-    if (jsonProducts && !_utilsTypes.isObject(jsonProducts)) {
-      throw new Error('Entitlements must be an Object');
-    }
-    var productsOrSkus = null;
-    if (jsonProducts) {
-      productsOrSkus = JSON.stringify(jsonProducts);
-    }
-    this.eventManager_.logEvent({
-      eventType: _protoApi_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE,
-      eventOriginator: _protoApi_messages.EventOriginator.PUBLISHER_CLIENT,
-      isFromUserAction: null,
-      additionalParameters: {
-        state: state,
-        productsOrSkus: productsOrSkus
+
+  _createClass(Logger, [{
+    key: "sendSubscriptionState",
+    value: function sendSubscriptionState(state, jsonProducts) {
+      if (!(0, _types.isEnumValue)(_loggerApi.SubscriptionState, state)) {
+        throw new Error('Invalid subscription state provided');
       }
-    });
-  };
 
-  /** @override */
-
-  Logger.prototype.sendEvent = function sendEvent(userEvent) {
-    var data = null;
-    if (!_utilsTypes.isEnumValue(_apiLoggerApi.Event, userEvent.name) || !_eventTypeMapping.publisherEventToAnalyticsEvent(userEvent.name)) {
-      throw new Error('Invalid user event provided(' + userEvent.name + ')');
-    }
-
-    if (userEvent.data) {
-      if (!_utilsTypes.isObject(userEvent.data)) {
-        throw new Error('Event data must be an Object(' + userEvent.data + ')');
-      } else {
-        data = {};
-        Object.assign(data, userEvent.data);
+      if ((_loggerApi.SubscriptionState.SUBSCRIBER == state || _loggerApi.SubscriptionState.PAST_SUBSCRIBER == state) && !jsonProducts) {
+        throw new Error('Entitlements must be provided for users with' + ' active or expired subscriptions');
       }
-    }
 
-    if (_utilsTypes.isBoolean(userEvent.active)) {
-      if (!data) {
-        data = {};
+      if (jsonProducts && !(0, _types.isObject)(jsonProducts)) {
+        throw new Error('Entitlements must be an Object');
       }
-      Object.assign(data, { 'is_active': userEvent.active });
-    } else if (userEvent.active != null) {
-      throw new Error('Event active must be a boolean');
+
+      var productsOrSkus = null;
+
+      if (jsonProducts) {
+        productsOrSkus = JSON.stringify(jsonProducts);
+      }
+
+      this.eventManager_.logEvent({
+        eventType: _api_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE,
+        eventOriginator: _api_messages.EventOriginator.PUBLISHER_CLIENT,
+        isFromUserAction: null,
+        additionalParameters: {
+          state: state,
+          productsOrSkus: productsOrSkus
+        }
+      });
     }
-    this.eventManager_.logEvent({
-      eventType: _eventTypeMapping.publisherEventToAnalyticsEvent(userEvent.name),
-      eventOriginator: _protoApi_messages.EventOriginator.PUBLISHER_CLIENT,
-      isFromUserAction: userEvent.active,
-      additionalParameters: data
-    });
-  };
+    /** @override */
+
+  }, {
+    key: "sendEvent",
+    value: function sendEvent(userEvent) {
+      var data = null;
+
+      if (!(0, _types.isEnumValue)(_loggerApi.Event, userEvent.name) || !(0, _eventTypeMapping.publisherEventToAnalyticsEvent)(userEvent.name)) {
+        throw new Error('Invalid user event provided(' + userEvent.name + ')');
+      }
+
+      if (userEvent.data) {
+        if (!(0, _types.isObject)(userEvent.data)) {
+          throw new Error('Event data must be an Object(' + userEvent.data + ')');
+        } else {
+          data = {};
+          Object.assign(data, userEvent.data);
+        }
+      }
+
+      if ((0, _types.isBoolean)(userEvent.active)) {
+        if (!data) {
+          data = {};
+        }
+
+        Object.assign(data, {
+          'is_active': userEvent.active
+        });
+      } else if (userEvent.active != null) {
+        throw new Error('Event active must be a boolean');
+      }
+
+      this.eventManager_.logEvent({
+        eventType: (0, _eventTypeMapping.publisherEventToAnalyticsEvent)(userEvent.name),
+        eventOriginator: _api_messages.EventOriginator.PUBLISHER_CLIENT,
+        isFromUserAction: userEvent.active,
+        additionalParameters: data
+      });
+    }
+  }]);
 
   return Logger;
-})();
+}();
 
 exports.Logger = Logger;
 
-},{"../api/logger-api":8,"../proto/api_messages":33,"../utils/types":80,"./event-type-mapping":42}],49:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../api/logger-api":8,"../proto/api_messages":32,"../utils/types":79,"./event-type-mapping":41}],48:[function(require,module,exports){
+"use strict";
 
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LoginNotificationApi = void 0;
 
-var _apiSubscriptions = require('../api/subscriptions');
+var _activityIframeView = require("../ui/activity-iframe-view");
 
-var _services = require('./services');
+var _subscriptions = require("../api/subscriptions");
 
-var LoginNotificationApi = (function () {
+var _services = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var LoginNotificationApi =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
-
   function LoginNotificationApi(deps) {
-    babelHelpers.classCallCheck(this, LoginNotificationApi);
+    _classCallCheck(this, LoginNotificationApi);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private {?Promise} */
-    this.openViewPromise_ = null;
 
+    this.openViewPromise_ = null;
     /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/loginiframe'), _services.feArgs({
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/loginiframe'), (0, _services.feArgs)({
       publicationId: deps.pageConfig().getPublicationId(),
       productId: deps.pageConfig().getProductId(),
       // No need to ask the user. Just tell them you're logging them in.
-      userConsent: false
-    }), // TODO(chenshay): Pass entitlements value here.
+      userConsent: false // TODO(chenshay): Pass entitlements value here.
 
-    /* shouldFadeBody */true);
+    }),
+    /* shouldFadeBody */
+    true);
   }
-
   /**
    * Continues the Login flow (after waiting).
    * @return {!Promise}
    */
 
-  LoginNotificationApi.prototype.start = function start() {
-    var _this = this;
 
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_LOGIN_NOTIFICATION);
+  _createClass(LoginNotificationApi, [{
+    key: "start",
+    value: function start() {
+      var _this = this;
 
-    this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SHOW_LOGIN_NOTIFICATION);
+      this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+      return this.activityIframeView_.acceptResult().then(function () {
+        // The consent part is complete.
+        _this.dialogManager_.completeView(_this.activityIframeView_);
+      }, function (reason) {
+        _this.dialogManager_.completeView(_this.activityIframeView_);
 
-    return this.activityIframeView_.acceptResult().then(function () {
-      // The consent part is complete.
-      _this.dialogManager_.completeView(_this.activityIframeView_);
-    }, function (reason) {
-      _this.dialogManager_.completeView(_this.activityIframeView_);
-      throw reason;
-    });
-  };
+        throw reason;
+      });
+    }
+  }]);
 
   return LoginNotificationApi;
-})();
+}();
 
 exports.LoginNotificationApi = LoginNotificationApi;
 
-},{"../api/subscriptions":12,"../ui/activity-iframe-view":62,"./services":58}],50:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../api/subscriptions":12,"../ui/activity-iframe-view":61,"./services":57}],49:[function(require,module,exports){
+"use strict";
 
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LoginPromptApi = void 0;
 
-var _apiSubscriptions = require('../api/subscriptions');
+var _activityIframeView = require("../ui/activity-iframe-view");
 
-var _services = require('./services');
+var _subscriptions = require("../api/subscriptions");
 
-var _utilsErrors = require('../utils/errors');
+var _services = require("./services");
 
-var LoginPromptApi = (function () {
+var _errors = require("../utils/errors");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var LoginPromptApi =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
-
   function LoginPromptApi(deps) {
-    babelHelpers.classCallCheck(this, LoginPromptApi);
+    _classCallCheck(this, LoginPromptApi);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private {?Promise} */
-    this.openViewPromise_ = null;
 
+    this.openViewPromise_ = null;
     /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/loginiframe'), _services.feArgs({
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/loginiframe'), (0, _services.feArgs)({
       publicationId: deps.pageConfig().getPublicationId(),
       productId: deps.pageConfig().getProductId(),
       // First ask the user if they want us to log them in.
-      userConsent: true
-    }), // TODO(chenshay): Pass entitlements value here.
+      userConsent: true // TODO(chenshay): Pass entitlements value here.
 
-    /* shouldFadeBody */true);
+    }),
+    /* shouldFadeBody */
+    true);
   }
-
   /**
    * Prompts the user to login.
    * @return {!Promise}
    */
 
-  LoginPromptApi.prototype.start = function start() {
-    var _this = this;
 
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_LOGIN_PROMPT);
+  _createClass(LoginPromptApi, [{
+    key: "start",
+    value: function start() {
+      var _this = this;
 
-    this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
-
-    return this.activityIframeView_.acceptResult().then(function () {
-      // The consent part is complete.
-      _this.dialogManager_.completeView(_this.activityIframeView_);
-    }, function (reason) {
-      if (_utilsErrors.isCancelError(reason)) {
-        _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_LOGIN_PROMPT);
-      } else {
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SHOW_LOGIN_PROMPT);
+      this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+      return this.activityIframeView_.acceptResult().then(function () {
+        // The consent part is complete.
         _this.dialogManager_.completeView(_this.activityIframeView_);
-      }
-      throw reason;
-    });
-  };
+      }, function (reason) {
+        if ((0, _errors.isCancelError)(reason)) {
+          _this.deps_.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.SHOW_LOGIN_PROMPT);
+        } else {
+          _this.dialogManager_.completeView(_this.activityIframeView_);
+        }
+
+        throw reason;
+      });
+    }
+  }]);
 
   return LoginPromptApi;
-})();
+}();
 
 exports.LoginPromptApi = LoginPromptApi;
 
-},{"../api/subscriptions":12,"../ui/activity-iframe-view":62,"../utils/errors":70,"./services":58}],51:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../api/subscriptions":12,"../ui/activity-iframe-view":61,"../utils/errors":69,"./services":57}],50:[function(require,module,exports){
+"use strict";
 
-var _services = require('./services');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.OffersApi = void 0;
 
-var OffersApi = (function () {
+var _services = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var OffersApi =
+/*#__PURE__*/
+function () {
   /**
    * @param {!../model/page-config.PageConfig} config
    * @param {!./fetcher.Fetcher} fetcher
    */
-
   function OffersApi(config, fetcher) {
-    babelHelpers.classCallCheck(this, OffersApi);
+    _classCallCheck(this, OffersApi);
 
     /** @private @const {!../model/page-config.PageConfig} */
     this.config_ = config;
-
     /** @private @const {!./fetcher.Fetcher} */
+
     this.fetcher_ = fetcher;
   }
-
   /**
-   * @param {string=} opt_productId
+   * @param {?string=} productId
    * @return {!Promise<!Array<!../api/offer.Offer>>}
    */
 
-  OffersApi.prototype.getOffers = function getOffers(opt_productId) {
-    var productId = opt_productId || this.config_.getProductId();
-    if (!productId) {
-      throw new Error('getOffers requires productId in config or arguments');
+
+  _createClass(OffersApi, [{
+    key: "getOffers",
+    value: function getOffers() {
+      var productId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.config_.getProductId();
+
+      if (!productId) {
+        throw new Error('getOffers requires productId in config or arguments');
+      }
+
+      return this.fetch_(productId);
     }
-    return this.fetch_(productId);
-  };
+    /**
+     * @param {string} productId
+     * @return {!Promise<!Array<!../api/offer.Offer>>}
+     * @private
+     */
 
-  /**
-   * @param {string} productId
-   * @return {!Promise<!Array<!../api/offer.Offer>>}
-   * @private
-   */
+  }, {
+    key: "fetch_",
+    value: function fetch_(productId) {
+      var url = (0, _services.serviceUrl)('/publication/' + encodeURIComponent(this.config_.getPublicationId()) + '/offers' + '?label=' + encodeURIComponent(productId)); // TODO(dvoytenko): switch to a non-credentialed request after launch.
 
-  OffersApi.prototype.fetch_ = function fetch_(productId) {
-    var url = _services.serviceUrl('/publication/' + encodeURIComponent(this.config_.getPublicationId()) + '/offers' + '?label=' + encodeURIComponent(productId));
-    // TODO(dvoytenko): switch to a non-credentialed request after launch.
-    return this.fetcher_.fetchCredentialedJson(url).then(function (json) {
-      return json['offers'] || [];
-    });
-  };
+      return this.fetcher_.fetchCredentialedJson(url).then(function (json) {
+        return json['offers'] || [];
+      });
+    }
+  }]);
 
   return OffersApi;
-})();
+}();
 
 exports.OffersApi = OffersApi;
 
-},{"./services":58}],52:[function(require,module,exports){
-exports.__esModule = true;
+},{"./services":57}],51:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.AbbrvOfferFlow = exports.SubscribeOptionFlow = exports.OffersFlow = void 0;
+
+var _activityIframeView = require("../ui/activity-iframe-view");
+
+var _api_messages = require("../proto/api_messages");
+
+var _payFlow = require("./pay-flow");
+
+var _subscriptions = require("../api/subscriptions");
+
+var _log = require("../utils/log");
+
+var _services = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @param {string} sku
+ * @return {!EventParams}
  */
-
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
-
-var _payFlow = require('./pay-flow');
-
-var _apiSubscriptions = require('../api/subscriptions');
-
-var _protoApi_messages = require('../proto/api_messages');
-
-var _services = require('./services');
-
-var _utilsLog = require('../utils/log');
-
+function getEventParams(sku) {
+  return new _api_messages.EventParams([,,,, sku]);
+}
 /**
  * Offers view is closable when request was originated from 'AbbrvOfferFlow'
  * or from 'SubscribeOptionFlow'.
  */
-var OFFERS_VIEW_CLOSABLE = true;
 
+
+var OFFERS_VIEW_CLOSABLE = true; // The value logged when the offers screen shows all available SKUs.
+
+var ALL_SKUS = '*';
 /**
  * The class for Offers flow.
  */
 
-var OffersFlow = (function () {
+var OffersFlow =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest|undefined} options
    */
-
   function OffersFlow(deps, options) {
-    babelHelpers.classCallCheck(this, OffersFlow);
+    _classCallCheck(this, OffersFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
-    this.eventManager_ = deps.eventManager();
 
+    this.eventManager_ = deps.eventManager();
     var isClosable = options && options.isClosable;
+
     if (isClosable == undefined) {
       isClosable = false; // Default is to hide Close button.
     }
@@ -11240,12 +12475,12 @@ var OffersFlow = (function () {
       'productId': deps.pageConfig().getProductId(),
       'publicationId': deps.pageConfig().getPublicationId(),
       'showNative': deps.callbacks().hasSubscribeRequestCallback(),
-      'productType': _apiSubscriptions.ProductType.SUBSCRIPTION,
+      'productType': _subscriptions.ProductType.SUBSCRIPTION,
       'list': options && options.list || 'default',
       'skus': options && options.skus || null,
-      'isClosable': isClosable
+      'isClosable': isClosable,
+      'analyticsContext': deps.analytics().getContext().toArray()
     };
-
     this.prorationMode = feArgsObj['replaceSkuProrationMode'] || undefined;
 
     if (options && options.oldSku) {
@@ -11253,245 +12488,279 @@ var OffersFlow = (function () {
     }
 
     if (feArgsObj['oldSku']) {
-      (function () {
-        _utilsLog.assert(feArgsObj['skus'], 'Need a sku list if old sku is provided!');
+      (0, _log.assert)(feArgsObj['skus'], 'Need a sku list if old sku is provided!'); // Remove old sku from offers if in list.
 
-        // Remove old sku from offers if in list.
-        var skuList = feArgsObj['skus'];
-        var /** @type {string} */oldSku = feArgsObj['oldSku'];
-        skuList = skuList.filter(function (sku) {
-          return sku !== oldSku;
-        });
+      var skuList = feArgsObj['skus'];
+      var
+      /** @type {string} */
+      oldSku = feArgsObj['oldSku'];
+      skuList = skuList.filter(function (sku) {
+        return sku !== oldSku;
+      });
+      (0, _log.assert)(skuList.length > 0, 'Sku list only contained offer user already has');
+      feArgsObj['skus'] = skuList;
+    } // Redirect to payments if only one upgrade option is passed.
 
-        _utilsLog.assert(skuList.length > 0, 'Sku list only contained offer user already has');
-        feArgsObj['skus'] = skuList;
-      })();
-    }
 
-    // Redirect to payments if only one upgrade option is passed.
     if (feArgsObj['skus'] && feArgsObj['skus'].length === 1) {
       var sku = feArgsObj['skus'][0];
-      var /** @type {string|undefined} */oldSku = feArgsObj['oldSku'];
-      // Update subscription triggers experimental flag if oldSku is passed,
+      var
+      /** @type {string|undefined} */
+      _oldSku = feArgsObj['oldSku']; // Update subscription triggers experimental flag if oldSku is passed,
       // so we need to check for oldSku to decide if it needs to be sent.
       // Otherwise we might accidentally block a regular subscription request.
-      if (oldSku) {
+
+      if (_oldSku) {
         new _payFlow.PayStartFlow(this.deps_, {
           skuId: sku,
-          oldSku: oldSku,
+          oldSku: _oldSku,
           replaceSkuProrationMode: this.prorationMode
         }).start();
         return;
       }
     }
+    /** @private  @const {!Array<!string>} */
+
+
+    this.skus_ = feArgsObj['skus'] || [ALL_SKUS];
     /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/offersiframe'), _services.feArgs(feArgsObj),
-    /* shouldFadeBody */true);
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/offersiframe'), (0, _services.feArgs)(feArgsObj),
+    /* shouldFadeBody */
+    true);
   }
-
-  /**
-   * The class for subscribe option flow.
-   */
-
   /**
    * @param {SkuSelectedResponse} response
    * @private
    */
 
-  OffersFlow.prototype.startPayFlow_ = function startPayFlow_(response) {
-    var sku = response.getSku();
-    var oldSku = response.getOldSku();
-    if (sku) {
-      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_OFFER_SELECTED, true);
-      var skuOrSubscriptionRequest = undefined;
-      if (oldSku) {
-        skuOrSubscriptionRequest = {};
-        skuOrSubscriptionRequest['skuId'] = sku;
-        skuOrSubscriptionRequest['oldSku'] = oldSku;
-      } else {
-        skuOrSubscriptionRequest = sku;
+
+  _createClass(OffersFlow, [{
+    key: "startPayFlow_",
+    value: function startPayFlow_(response) {
+      var sku = response.getSku();
+      var oldSku = response.getOldSku();
+
+      if (sku) {
+        if (oldSku) {
+          this.deps_.analytics().setSku(oldSku);
+        }
+
+        this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_OFFER_SELECTED, true, getEventParams(sku));
+        var skuOrSubscriptionRequest;
+
+        if (oldSku) {
+          skuOrSubscriptionRequest = {};
+          skuOrSubscriptionRequest['skuId'] = sku;
+          skuOrSubscriptionRequest['oldSku'] = oldSku;
+        } else {
+          skuOrSubscriptionRequest = sku;
+        }
+
+        new _payFlow.PayStartFlow(this.deps_, skuOrSubscriptionRequest).start();
       }
-      new _payFlow.PayStartFlow(this.deps_, skuOrSubscriptionRequest).start();
     }
-  };
+    /**
+     * @param {AlreadySubscribedResponse} response
+     * @private
+     */
 
-  /**
-   * @param {AlreadySubscribedResponse} response
-   * @private
-   */
-
-  OffersFlow.prototype.handleLinkRequest_ = function handleLinkRequest_(response) {
-    if (response.getSubscriberOrMember()) {
-      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_ALREADY_SUBSCRIBED, true);
-      this.deps_.callbacks().triggerLoginRequest({
-        linkRequested: !!response.getLinkRequested()
-      });
+  }, {
+    key: "handleLinkRequest_",
+    value: function handleLinkRequest_(response) {
+      if (response.getSubscriberOrMember()) {
+        this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_ALREADY_SUBSCRIBED, true);
+        this.deps_.callbacks().triggerLoginRequest({
+          linkRequested: !!response.getLinkRequested()
+        });
+      }
     }
-  };
+    /**
+     * @param {ViewSubscriptionsResponse} response
+     * @private
+     */
 
-  /**
-   * @param {ViewSubscriptionsResponse} response
-   * @private
-   */
-
-  OffersFlow.prototype.startNativeFlow_ = function startNativeFlow_(response) {
-    if (response.getNative()) {
-      this.deps_.callbacks().triggerSubscribeRequest();
+  }, {
+    key: "startNativeFlow_",
+    value: function startNativeFlow_(response) {
+      if (response.getNative()) {
+        this.deps_.callbacks().triggerSubscribeRequest();
+      }
     }
-  };
+    /**
+     * Starts the offers flow or alreadySubscribed flow.
+     * @return {!Promise}
+     */
 
-  /**
-   * Starts the offers flow or alreadySubscribed flow.
-   * @return {!Promise}
-   */
+  }, {
+    key: "start",
+    value: function start() {
+      var _this = this;
 
-  OffersFlow.prototype.start = function start() {
-    var _this = this;
+      if (this.activityIframeView_) {
+        // So no error if skipped to payment screen.
+        // Start/cancel events.
+        // The second parameter is required by Propensity in AMP.
+        this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SHOW_OFFERS, {
+          skus: this.skus_,
+          source: 'SwG'
+        });
+        this.activityIframeView_.onCancel(function () {
+          _this.deps_.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.SHOW_OFFERS);
+        });
+        this.activityIframeView_.on(_api_messages.SkuSelectedResponse, this.startPayFlow_.bind(this));
+        this.activityIframeView_.on(_api_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
+        this.activityIframeView_.on(_api_messages.ViewSubscriptionsResponse, this.startNativeFlow_.bind(this));
+        this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_OFFERS, null, getEventParams(this.skus_.join(',')));
+        return this.dialogManager_.openView(this.activityIframeView_);
+      }
 
-    if (this.activityIframeView_) {
-      // So no error if skipped to payment screen.
-      // Start/cancel events.
-      this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_OFFERS);
-      this.activityIframeView_.onCancel(function () {
-        _this.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_OFFERS);
-      });
-      this.activityIframeView_.on(_protoApi_messages.SkuSelectedResponse, this.startPayFlow_.bind(this));
-      this.activityIframeView_.on(_protoApi_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
-      this.activityIframeView_.on(_protoApi_messages.ViewSubscriptionsResponse, this.startNativeFlow_.bind(this));
-
-      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_OFFERS);
-
-      return this.dialogManager_.openView(this.activityIframeView_);
+      return Promise.resolve();
     }
-    return Promise.resolve();
-  };
+  }]);
 
   return OffersFlow;
-})();
+}();
+/**
+ * The class for subscribe option flow.
+ */
+
 
 exports.OffersFlow = OffersFlow;
 
-var SubscribeOptionFlow = (function () {
+var SubscribeOptionFlow =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest|undefined} options
    */
-
   function SubscribeOptionFlow(deps, options) {
-    babelHelpers.classCallCheck(this, SubscribeOptionFlow);
+    _classCallCheck(this, SubscribeOptionFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!../api/subscriptions.OffersRequest|undefined} */
+
     this.options_ = options;
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
-    this.eventManager_ = deps.eventManager();
 
+    this.eventManager_ = deps.eventManager();
     /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(deps.win(), this.activityPorts_, _services.feUrl('/optionsiframe'), _services.feArgs({
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(deps.win(), this.activityPorts_, (0, _services.feUrl)('/optionsiframe'), (0, _services.feArgs)({
       'publicationId': deps.pageConfig().getPublicationId(),
       'productId': deps.pageConfig().getProductId(),
       'list': options && options.list || 'default',
       'skus': options && options.skus || null,
       'isClosable': true
     }),
-    /* shouldFadeBody */false);
+    /* shouldFadeBody */
+    false);
   }
-
-  /**
-   * The class for Abbreviated Offer flow.
-   *
-   */
-
   /**
    * Starts the offers flow or alreadySubscribed flow.
    * @return {!Promise}
    */
 
-  SubscribeOptionFlow.prototype.start = function start() {
-    var _this2 = this;
 
-    // Start/cancel events.
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_SUBSCRIBE_OPTION);
-    this.activityIframeView_.onCancel(function () {
-      _this2.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_SUBSCRIBE_OPTION);
-    });
-    this.activityIframeView_.on(_protoApi_messages.SubscribeResponse, this.maybeOpenOffersFlow_.bind(this));
+  _createClass(SubscribeOptionFlow, [{
+    key: "start",
+    value: function start() {
+      var _this2 = this;
 
-    this.activityIframeView_.acceptResult().then(function (result) {
-      var data = result.data;
-      var response = new _protoApi_messages.SubscribeResponse();
-      if (data['subscribe']) {
-        response.setSubscribe(true);
-      }
-      _this2.maybeOpenOffersFlow_(response);
-    }, function (reason) {
-      _this2.dialogManager_.completeView(_this2.activityIframeView_);
-      throw reason;
-    });
-    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_CLICK_TO_SHOW_OFFERS);
-    return this.dialogManager_.openView(this.activityIframeView_);
-  };
+      // Start/cancel events.
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SHOW_SUBSCRIBE_OPTION);
+      this.activityIframeView_.onCancel(function () {
+        _this2.deps_.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.SHOW_SUBSCRIBE_OPTION);
+      });
+      this.activityIframeView_.on(_api_messages.SubscribeResponse, this.maybeOpenOffersFlow_.bind(this));
+      this.activityIframeView_.acceptResult().then(function (result) {
+        var data = result.data;
+        var response = new _api_messages.SubscribeResponse();
 
-  /**
-   * @param {SubscribeResponse} response
-   * @private
-   */
+        if (data['subscribe']) {
+          response.setSubscribe(true);
+        }
 
-  SubscribeOptionFlow.prototype.maybeOpenOffersFlow_ = function maybeOpenOffersFlow_(response) {
-    if (response.getSubscribe()) {
-      var options = this.options_ || {};
-      if (options.isClosable == undefined) {
-        options.isClosable = OFFERS_VIEW_CLOSABLE;
-      }
-      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_VIEW_OFFERS, true);
-      new OffersFlow(this.deps_, options).start();
+        _this2.maybeOpenOffersFlow_(response);
+      }, function (reason) {
+        _this2.dialogManager_.completeView(_this2.activityIframeView_);
+
+        throw reason;
+      });
+      this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_CLICK_TO_SHOW_OFFERS);
+      return this.dialogManager_.openView(this.activityIframeView_);
     }
-  };
+    /**
+     * @param {SubscribeResponse} response
+     * @private
+     */
+
+  }, {
+    key: "maybeOpenOffersFlow_",
+    value: function maybeOpenOffersFlow_(response) {
+      if (response.getSubscribe()) {
+        var options = this.options_ || {};
+
+        if (options.isClosable == undefined) {
+          options.isClosable = OFFERS_VIEW_CLOSABLE;
+        }
+
+        this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_VIEW_OFFERS, true);
+        new OffersFlow(this.deps_, options).start();
+      }
+    }
+  }]);
 
   return SubscribeOptionFlow;
-})();
+}();
+/**
+ * The class for Abbreviated Offer flow.
+ *
+ */
+
 
 exports.SubscribeOptionFlow = SubscribeOptionFlow;
 
-var AbbrvOfferFlow = (function () {
+var AbbrvOfferFlow =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest=} options
    */
-
   function AbbrvOfferFlow(deps) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-    babelHelpers.classCallCheck(this, AbbrvOfferFlow);
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, AbbrvOfferFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!../api/subscriptions.OffersRequest|undefined} */
+
     this.options_ = options;
-
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
-    this.eventManager_ = deps.eventManager();
 
+    this.eventManager_ = deps.eventManager();
     /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/abbrvofferiframe'), _services.feArgs({
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/abbrvofferiframe'), (0, _services.feArgs)({
       'publicationId': deps.pageConfig().getPublicationId(),
       'productId': deps.pageConfig().getProductId(),
       'showNative': deps.callbacks().hasSubscribeRequestCallback(),
@@ -11499,480 +12768,564 @@ var AbbrvOfferFlow = (function () {
       'skus': options && options.skus || null,
       'isClosable': true
     }),
-    /* shouldFadeBody */false);
+    /* shouldFadeBody */
+    false);
   }
-
   /**
    * @param {AlreadySubscribedResponse} response
    * @private
    */
 
-  AbbrvOfferFlow.prototype.handleLinkRequest_ = function handleLinkRequest_(response) {
-    if (response.getSubscriberOrMember()) {
-      this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_ALREADY_SUBSCRIBED, true);
-      this.deps_.callbacks().triggerLoginRequest({
-        linkRequested: !!response.getLinkRequested()
-      });
+
+  _createClass(AbbrvOfferFlow, [{
+    key: "handleLinkRequest_",
+    value: function handleLinkRequest_(response) {
+      if (response.getSubscriberOrMember()) {
+        this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_ALREADY_SUBSCRIBED, true);
+        this.deps_.callbacks().triggerLoginRequest({
+          linkRequested: !!response.getLinkRequested()
+        });
+      }
     }
-  };
+    /**
+     * Starts the offers flow
+     * @return {!Promise}
+     */
 
-  /**
-   * Starts the offers flow
-   * @return {!Promise}
-   */
+  }, {
+    key: "start",
+    value: function start() {
+      var _this3 = this;
 
-  AbbrvOfferFlow.prototype.start = function start() {
-    var _this3 = this;
+      // Start/cancel events.
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SHOW_ABBRV_OFFER);
+      this.activityIframeView_.onCancel(function () {
+        _this3.deps_.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.SHOW_ABBRV_OFFER);
+      }); // If the user is already subscribed, trigger login flow
 
-    // Start/cancel events.
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SHOW_ABBRV_OFFER);
-    this.activityIframeView_.onCancel(function () {
-      _this3.deps_.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SHOW_ABBRV_OFFER);
-    });
+      this.activityIframeView_.on(_api_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this)); // If result is due to requesting offers, redirect to offers flow
 
-    // If the user is already subscribed, trigger login flow
-    this.activityIframeView_.on(_protoApi_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
+      this.activityIframeView_.acceptResult().then(function (result) {
+        if (result.data['viewOffers']) {
+          var options = _this3.options_ || {};
 
-    // If result is due to requesting offers, redirect to offers flow
-    this.activityIframeView_.acceptResult().then(function (result) {
-      if (result.data['viewOffers']) {
-        var options = _this3.options_ || {};
-        if (options.isClosable == undefined) {
-          options.isClosable = OFFERS_VIEW_CLOSABLE;
+          if (options.isClosable == undefined) {
+            options.isClosable = OFFERS_VIEW_CLOSABLE;
+          }
+
+          _this3.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_VIEW_OFFERS, true);
+
+          new OffersFlow(_this3.deps_, options).start();
+          return;
         }
-        _this3.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_VIEW_OFFERS, true);
-        new OffersFlow(_this3.deps_, options).start();
-        return;
-      }
-      if (result.data['native']) {
-        _this3.deps_.callbacks().triggerSubscribeRequest();
-        // The flow is complete.
-        _this3.dialogManager_.completeView(_this3.activityIframeView_);
-        return;
-      }
-    });
 
-    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_CLICK_TO_SHOW_OFFERS_OR_ALREADY_SUBSCRIBED);
+        if (result.data['native']) {
+          _this3.deps_.callbacks().triggerSubscribeRequest(); // The flow is complete.
 
-    return this.dialogManager_.openView(this.activityIframeView_);
-  };
+
+          _this3.dialogManager_.completeView(_this3.activityIframeView_);
+
+          return;
+        }
+      });
+      this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_CLICK_TO_SHOW_OFFERS_OR_ALREADY_SUBSCRIBED);
+      return this.dialogManager_.openView(this.activityIframeView_);
+    }
+  }]);
 
   return AbbrvOfferFlow;
-})();
+}();
 
 exports.AbbrvOfferFlow = AbbrvOfferFlow;
 
-},{"../api/subscriptions":12,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"../utils/log":74,"./pay-flow":54,"./services":58}],53:[function(require,module,exports){
-exports.__esModule = true;
+},{"../api/subscriptions":12,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"../utils/log":73,"./pay-flow":53,"./services":57}],52:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.getPayjsBindingForTesting = getPayjsBindingForTesting;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+exports.RedirectVerifierHelper = exports.PayClientBindingPayjs = exports.PayClient = exports.PAY_ORIGIN = exports.PayOptionsDef = void 0;
 
-var _experimentFlags = require('./experiment-flags');
+var _experimentFlags = require("./experiment-flags");
 
-var _third_partyGpaySrcPayjs_async = require('../../third_party/gpay/src/payjs_async');
+var _payjs_async = require("../../third_party/gpay/src/payjs_async");
 
-var _utilsXhr = require('../utils/xhr');
+var _xhr = require("../utils/xhr");
 
-var _utilsBytes = require('../utils/bytes');
+var _bytes = require("../utils/bytes");
 
-var _utilsErrors = require('../utils/errors');
+var _errors = require("../utils/errors");
 
-var _services = require('./services');
+var _services = require("./services");
 
-var _experiments = require('./experiments');
+var _experiments = require("./experiments");
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var PAY_REQUEST_ID = 'swg-pay';
 var GPAY_ACTIVITY_REQUEST = 'GPAY';
-
 var REDIRECT_STORAGE_KEY = 'subscribe.google.com:rk';
-
 /**
  * @typedef {{
  *   forceRedirect: (boolean|undefined),
  * }}
  */
-var PayOptionsDef = undefined;
 
-exports.PayOptionsDef = PayOptionsDef;
+var PayOptionsDef;
 /**
  * @const {!Object<string, string>}
  * @package Visible for testing only.
  */
+
+exports.PayOptionsDef = PayOptionsDef;
 var PAY_ORIGIN = {
   'PRODUCTION': 'https://pay.google.com',
   'SANDBOX': 'https://pay.sandbox.google.com'
 };
+/** @return {string} */
 
 exports.PAY_ORIGIN = PAY_ORIGIN;
-/** @return {string} */
+
 function payOrigin() {
   return PAY_ORIGIN['SANDBOX'];
 }
-
 /** @return {string} */
+
+
 function payUrl() {
-  return _services.feCached(PAY_ORIGIN['SANDBOX'] + '/gp/p/ui/pay');
+  return (0, _services.feCached)(PAY_ORIGIN['SANDBOX'] + '/gp/p/ui/pay');
 }
-
 /** @return {string} */
+
+
 function payDecryptUrl() {
   return PAY_ORIGIN['SANDBOX'] + '/gp/p/apis/buyflow/process';
 }
-
 /**
  */
 
-var PayClient = (function () {
+
+var PayClient =
+/*#__PURE__*/
+function () {
   /**
-   * @param {!Window} win
-   * @param {!../components/activities.ActivityPorts} activityPorts
-   * @param {!../components/dialog-manager.DialogManager} dialogManager
+   * @param {!./deps.DepsDef} deps
    */
+  function PayClient(deps) {
+    _classCallCheck(this, PayClient);
 
-  function PayClient(win, activityPorts, dialogManager) {
-    babelHelpers.classCallCheck(this, PayClient);
+    /** @private @const {!Window} */
+    this.win_ = deps.win();
+    /** @private @const {!../components/activities.ActivityPorts} */
 
+    this.activityPorts_ = deps.activities();
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+
+    this.dialogManager_ = deps.dialogManager();
     /** @const @private {!PayClientBindingDef} */
-    this.binding_ = _experiments.isExperimentOn(win, _experimentFlags.ExperimentFlags.GPAY_API) ? new PayClientBindingPayjs(win, activityPorts) : new PayClientBindingSwg(win, activityPorts, dialogManager);
+
+    this.binding_ = (0, _experiments.isExperimentOn)(this.win_, _experimentFlags.ExperimentFlags.GPAY_API) ? new PayClientBindingPayjs(this.win_, this.activityPorts_, // Generates a new Google Transaction ID.
+    deps.analytics().getTransactionId()) : new PayClientBindingSwg(this.win_, this.activityPorts_, this.dialogManager_);
   }
-
-  /**
-   * TODO(dvoytenko, #406): remove delegated class once GPay launches.
-   * @interface
-   */
-
   /**
    * @param {!../utils/preconnect.Preconnect} pre
    */
 
-  PayClient.prototype.preconnect = function preconnect(pre) {
-    pre.prefetch(payUrl());
-    pre.prefetch('https://payments.google.com/payments/v4/js/integrator.js?ss=md');
-    pre.prefetch('https://clients2.google.com/gr/gr_full_2.0.6.js');
-    pre.preconnect('https://www.gstatic.com/');
-    pre.preconnect('https://fonts.googleapis.com/');
-    pre.preconnect('https://www.google.com/');
-  };
 
-  /**
-   * @return {string}
-   */
+  _createClass(PayClient, [{
+    key: "preconnect",
+    value: function preconnect(pre) {
+      pre.prefetch(payUrl());
+      pre.prefetch('https://payments.google.com/payments/v4/js/integrator.js?ss=md');
+      pre.prefetch('https://clients2.google.com/gr/gr_full_2.0.6.js');
+      pre.preconnect('https://www.gstatic.com/');
+      pre.preconnect('https://fonts.googleapis.com/');
+      pre.preconnect('https://www.google.com/');
+    }
+    /**
+     * @return {string}
+     */
 
-  PayClient.prototype.getType = function getType() {
-    // TODO(dvoytenko, #406): remove once GPay API is launched.
-    return this.binding_.getType();
-  };
+  }, {
+    key: "getType",
+    value: function getType() {
+      // TODO(dvoytenko, #406): remove once GPay API is launched.
+      return this.binding_.getType();
+    }
+    /**
+     * @param {!Object} paymentRequest
+     * @param {!PayOptionsDef=} options
+     */
 
-  /**
-   * @param {!Object} paymentRequest
-   * @param {!PayOptionsDef=} options
-   */
+  }, {
+    key: "start",
+    value: function start(paymentRequest) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      this.binding_.start(paymentRequest, options);
+    }
+    /**
+     * @param {function(!Promise<!Object>)} callback
+     */
 
-  PayClient.prototype.start = function start(paymentRequest) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-    this.binding_.start(paymentRequest, options);
-  };
-
-  /**
-   * @param {function(!Promise<!Object>)} callback
-   */
-
-  PayClient.prototype.onResponse = function onResponse(callback) {
-    this.binding_.onResponse(callback);
-  };
+  }, {
+    key: "onResponse",
+    value: function onResponse(callback) {
+      this.binding_.onResponse(callback);
+    }
+  }]);
 
   return PayClient;
-})();
+}();
+/**
+ * TODO(dvoytenko, #406): remove delegated class once GPay launches.
+ * @interface
+ */
+
 
 exports.PayClient = PayClient;
 
-var PayClientBindingDef = (function () {
+var PayClientBindingDef =
+/*#__PURE__*/
+function () {
   function PayClientBindingDef() {
-    babelHelpers.classCallCheck(this, PayClientBindingDef);
+    _classCallCheck(this, PayClientBindingDef);
   }
 
-  /**
-   * @implements {PayClientBindingDef}
-   */
+  _createClass(PayClientBindingDef, [{
+    key: "getType",
 
-  /**
-   * @return {string}
-   */
+    /**
+     * @return {string}
+     */
+    value: function getType() {}
+    /**
+     * @param {!Object} unusedPaymentRequest
+     * @param {!PayOptionsDef} unusedOptions
+     */
 
-  PayClientBindingDef.prototype.getType = function getType() {};
+  }, {
+    key: "start",
+    value: function start(unusedPaymentRequest, unusedOptions) {}
+    /**
+     * @param {function(!Promise<!Object>)} unusedCallback
+     */
 
-  /**
-   * @param {!Object} unusedPaymentRequest
-   * @param {!PayOptionsDef} unusedOptions
-   */
-
-  PayClientBindingDef.prototype.start = function start(unusedPaymentRequest, unusedOptions) {};
-
-  /**
-   * @param {function(!Promise<!Object>)} unusedCallback
-   */
-
-  PayClientBindingDef.prototype.onResponse = function onResponse(unusedCallback) {};
+  }, {
+    key: "onResponse",
+    value: function onResponse(unusedCallback) {}
+  }]);
 
   return PayClientBindingDef;
-})();
+}();
+/**
+ * @implements {PayClientBindingDef}
+ */
 
-var PayClientBindingSwg = (function () {
+
+var PayClientBindingSwg =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    * @param {!../components/activities.ActivityPorts} activityPorts
    * @param {!../components/dialog-manager.DialogManager} dialogManager
    */
-
   function PayClientBindingSwg(win, activityPorts, dialogManager) {
-    babelHelpers.classCallCheck(this, PayClientBindingSwg);
+    _classCallCheck(this, PayClientBindingSwg);
 
     /** @private @const {!Window} */
     this.win_ = win;
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = activityPorts;
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = dialogManager;
   }
-
-  /**
-   * Binding based on the https://github.com/google/payjs.
-   * @implements {PayClientBindingDef}
-   * @package Visible for testing only.
-   */
-
   /** @override */
 
-  PayClientBindingSwg.prototype.getType = function getType() {
-    return 'SWG';
-  };
 
-  /** @override */
+  _createClass(PayClientBindingSwg, [{
+    key: "getType",
+    value: function getType() {
+      return 'SWG';
+    }
+    /** @override */
 
-  PayClientBindingSwg.prototype.start = function start(paymentRequest, options) {
-    var opener = this.activityPorts_.open(GPAY_ACTIVITY_REQUEST, payUrl(), options.forceRedirect ? '_top' : '_blank', _services.feArgs(paymentRequest), {});
-    this.dialogManager_.popupOpened(opener && opener.targetWin || null);
-  };
+  }, {
+    key: "start",
+    value: function start(paymentRequest, options) {
+      var opener = this.activityPorts_.open(GPAY_ACTIVITY_REQUEST, payUrl(), options.forceRedirect ? '_top' : '_blank', (0, _services.feArgs)(paymentRequest), {});
+      this.dialogManager_.popupOpened(opener && opener.targetWin || null);
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "onResponse",
+    value: function onResponse(callback) {
+      var _this = this;
 
-  PayClientBindingSwg.prototype.onResponse = function onResponse(callback) {
-    var _this = this;
+      var responseCallback = function responseCallback(port) {
+        _this.dialogManager_.popupClosed();
 
-    var responseCallback = function (port) {
-      _this.dialogManager_.popupClosed();
-      callback(_this.validatePayResponse_(port));
-    };
-    this.activityPorts_.onResult(GPAY_ACTIVITY_REQUEST, responseCallback);
-    this.activityPorts_.onResult(PAY_REQUEST_ID, responseCallback);
-  };
+        callback(_this.validatePayResponse_(port));
+      };
 
-  /**
-   * @param {!../components/activities.ActivityPortDef} port
-   * @return {!Promise<!Object>}
-   * @private
-   */
+      this.activityPorts_.onResult(GPAY_ACTIVITY_REQUEST, responseCallback);
+      this.activityPorts_.onResult(PAY_REQUEST_ID, responseCallback);
+    }
+    /**
+     * @param {!../components/activities.ActivityPortDef} port
+     * @return {!Promise<!Object>}
+     * @private
+     */
 
-  PayClientBindingSwg.prototype.validatePayResponse_ = function validatePayResponse_(port) {
-    var _this2 = this;
+  }, {
+    key: "validatePayResponse_",
+    value: function validatePayResponse_(port) {
+      var _this2 = this;
 
-    // Do not require security immediately: it will be checked below.
-    return port.acceptResult().then(function (result) {
-      if (result.origin != payOrigin()) {
+      // Do not require security immediately: it will be checked below.
+      return port.acceptResult().then(function (result) {
+        if (result.origin != payOrigin()) {
+          throw new Error('channel mismatch');
+        }
+
+        var data =
+        /** @type {!Object} */
+        result.data;
+
+        if (data['redirectEncryptedCallbackData']) {
+          // Data is supplied as an encrypted blob.
+          var xhr = new _xhr.Xhr(_this2.win_);
+          var url = payDecryptUrl();
+          var init =
+          /** @type {!../utils/xhr.FetchInitDef} */
+          {
+            method: 'post',
+            headers: {
+              'Accept': 'text/plain, application/json'
+            },
+            credentials: 'include',
+            body: data['redirectEncryptedCallbackData'],
+            mode: 'cors'
+          };
+          return xhr.fetch(url, init).then(function (response) {
+            return response.json();
+          }).then(function (response) {
+            var dataClone = Object.assign({}, data);
+            delete dataClone['redirectEncryptedCallbackData'];
+            return Object.assign(dataClone, response);
+          });
+        } // Data is supplied directly: must be a verified and secure channel.
+
+
+        if (result.originVerified && result.secureChannel) {
+          return data;
+        }
+
         throw new Error('channel mismatch');
-      }
-      var data = /** @type {!Object} */result.data;
-      if (data['redirectEncryptedCallbackData']) {
-        // Data is supplied as an encrypted blob.
-        var xhr = new _utilsXhr.Xhr(_this2.win_);
-        var url = payDecryptUrl();
-        var init = /** @type {!../utils/xhr.FetchInitDef} */{
-          method: 'post',
-          headers: { 'Accept': 'text/plain, application/json' },
-          credentials: 'include',
-          body: data['redirectEncryptedCallbackData'],
-          mode: 'cors'
-        };
-        return xhr.fetch(url, init).then(function (response) {
-          return response.json();
-        }).then(function (response) {
-          var dataClone = Object.assign({}, data);
-          delete dataClone['redirectEncryptedCallbackData'];
-          return Object.assign(dataClone, response);
-        });
-      }
-      // Data is supplied directly: must be a verified and secure channel.
-      if (result.originVerified && result.secureChannel) {
-        return data;
-      }
-      throw new Error('channel mismatch');
-    });
-  };
+      });
+    }
+  }]);
 
   return PayClientBindingSwg;
-})();
+}();
+/**
+ * Binding based on the https://github.com/google/payjs.
+ * @implements {PayClientBindingDef}
+ * @package Visible for testing only.
+ */
 
-var PayClientBindingPayjs = (function () {
+
+var PayClientBindingPayjs =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    * @param {!../components/activities.ActivityPorts} activityPorts
+   * @param {!string} googleTransactionId
    */
-
-  function PayClientBindingPayjs(win, activityPorts) {
-    babelHelpers.classCallCheck(this, PayClientBindingPayjs);
+  function PayClientBindingPayjs(win, activityPorts, googleTransactionId) {
+    _classCallCheck(this, PayClientBindingPayjs);
 
     /** @private @const {!Window} */
     this.win_ = win;
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = activityPorts;
-
     /** @private {?function(!Promise<!Object>)} */
+
     this.responseCallback_ = null;
+    /** @private {?Object} */
 
+    this.request_ = null;
     /** @private {?Promise<!Object>} */
+
     this.response_ = null;
-
     /** @private @const {!RedirectVerifierHelper} */
-    this.redirectVerifierHelper_ = new RedirectVerifierHelper(this.win_);
 
+    this.redirectVerifierHelper_ = new RedirectVerifierHelper(this.win_);
     /** @private @const {!PaymentsAsyncClient} */
+
     this.client_ = this.createClient_({
       environment: 'SANDBOX',
       'i': {
         'redirectKey': this.redirectVerifierHelper_.restoreKey()
       }
-    }, this.handleResponse_.bind(this));
+    }, googleTransactionId, this.handleResponse_.bind(this)); // Prepare new verifier pair.
 
-    // Prepare new verifier pair.
     this.redirectVerifierHelper_.prepare();
   }
-
-  /**
-   * @typedef {{
-   *   key: string,
-   *   verifier: string,
-   * }}
-   */
-
   /**
    * @param {!Object} options
+   * @param {string} googleTransactionId
    * @param {function(!Promise<!Object>)} handler
    * @return {!PaymentsAsyncClient}
    * @private
    */
 
-  PayClientBindingPayjs.prototype.createClient_ = function createClient_(options, handler) {
-    return new _third_partyGpaySrcPayjs_async.PaymentsAsyncClient(options, handler,
-    /* useIframe */false, this.activityPorts_.getOriginalWebActivityPorts());
-  };
 
-  /** @override */
-
-  PayClientBindingPayjs.prototype.getType = function getType() {
-    return 'PAYJS';
-  };
-
-  /** @override */
-
-  PayClientBindingPayjs.prototype.start = function start(paymentRequest, options) {
-    var _this3 = this;
-
-    if (options.forceRedirect) {
-      paymentRequest = Object.assign(paymentRequest, {
-        'forceRedirect': options.forceRedirect || false
-      });
+  _createClass(PayClientBindingPayjs, [{
+    key: "createClient_",
+    value: function createClient_(options, googleTransactionId, handler) {
+      // Assign Google Transaction ID to PaymentsAsyncClient.googleTransactionId_
+      // so it can be passed to gpay_async.js and stored in payment clearcut log.
+      _payjs_async.PaymentsAsyncClient.googleTransactionId_ = googleTransactionId;
+      return new _payjs_async.PaymentsAsyncClient(options, handler,
+      /* useIframe */
+      false, this.activityPorts_.getOriginalWebActivityPorts());
     }
-    setInternalParam(paymentRequest, 'disableNative',
-    // The page cannot be iframed at this time. May be relaxed later
-    // for AMP and similar contexts.
-    this.win_ != this.top_() ||
-    // Experiment must be enabled.
-    !_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.GPAY_NATIVE));
-    // Notice that the callback for verifier may execute asynchronously.
-    this.redirectVerifierHelper_.useVerifier(function (verifier) {
-      if (verifier) {
-        setInternalParam(paymentRequest, 'redirectVerifier', verifier);
+    /** @override */
+
+  }, {
+    key: "getType",
+    value: function getType() {
+      return 'PAYJS';
+    }
+    /** @override */
+
+  }, {
+    key: "start",
+    value: function start(paymentRequest, options) {
+      var _this3 = this;
+
+      this.request_ = paymentRequest;
+
+      if (options.forceRedirect) {
+        paymentRequest = Object.assign(paymentRequest, {
+          'forceRedirect': options.forceRedirect || false
+        });
       }
-      _this3.client_.loadPaymentData(paymentRequest);
-    });
-  };
 
-  /** @override */
+      setInternalParam(paymentRequest, 'disableNative', // The page cannot be iframed at this time. May be relaxed later
+      // for AMP and similar contexts.
+      this.win_ != this.top_() || // Experiment must be enabled.
+      !(0, _experiments.isExperimentOn)(this.win_, _experimentFlags.ExperimentFlags.GPAY_NATIVE)); // Notice that the callback for verifier may execute asynchronously.
 
-  PayClientBindingPayjs.prototype.onResponse = function onResponse(callback) {
-    var _this4 = this;
-
-    this.responseCallback_ = callback;
-    var response = this.response_;
-    if (response) {
-      Promise.resolve().then(function () {
-        if (response) {
-          callback(_this4.convertResponse_(response));
+      this.redirectVerifierHelper_.useVerifier(function (verifier) {
+        if (verifier) {
+          setInternalParam(paymentRequest, 'redirectVerifier', verifier);
         }
+
+        _this3.client_.loadPaymentData(paymentRequest);
       });
     }
-  };
+    /** @override */
 
-  /**
-   * @param {!Promise<!Object>} responsePromise
-   * @private
-   */
+  }, {
+    key: "onResponse",
+    value: function onResponse(callback) {
+      var _this4 = this;
 
-  PayClientBindingPayjs.prototype.handleResponse_ = function handleResponse_(responsePromise) {
-    this.response_ = responsePromise;
-    if (this.responseCallback_) {
-      this.responseCallback_(this.convertResponse_(this.response_));
-    }
-  };
+      this.responseCallback_ = callback;
+      var response = this.response_;
 
-  /**
-   * @param {!Promise<!Object>} response
-   * @return {!Promise<!Object>}
-   * @private
-   */
-
-  PayClientBindingPayjs.prototype.convertResponse_ = function convertResponse_(response) {
-    var _this5 = this;
-
-    return response['catch'](function (reason) {
-      if (typeof reason == 'object' && reason['statusCode'] == 'CANCELED') {
-        return Promise.reject(_utilsErrors.createCancelError(_this5.win_));
+      if (response) {
+        Promise.resolve().then(function () {
+          if (response) {
+            callback(_this4.convertResponse_(response, _this4.request_));
+          }
+        });
       }
-      return Promise.reject(reason);
-    });
-  };
+    }
+    /**
+     * @param {!Promise<!Object>} responsePromise
+     * @private
+     */
 
-  /**
-   * @return {!Window}
-   * @private
-   */
+  }, {
+    key: "handleResponse_",
+    value: function handleResponse_(responsePromise) {
+      this.response_ = responsePromise;
 
-  PayClientBindingPayjs.prototype.top_ = function top_() {
-    // Only exists for testing since it's not possible to override `window.top`.
-    return this.win_.top;
-  };
+      if (this.responseCallback_) {
+        this.responseCallback_(this.convertResponse_(this.response_, this.request_));
+      }
+    }
+    /**
+     * @param {!Promise<!Object>} response
+     * @param {?Object} request
+     * @return {!Promise<!Object>}
+     * @private
+     */
+
+  }, {
+    key: "convertResponse_",
+    value: function convertResponse_(response, request) {
+      var _this5 = this;
+
+      return response.then( // Temporary client side solution to remember the
+      // input params. TODO: Remove this once server-side
+      // input preservation is done and is part of the response.
+      function (res) {
+        if (request) {
+          res['paymentRequest'] = request;
+        }
+
+        return res;
+      })["catch"](function (reason) {
+        if (_typeof(reason) == 'object' && reason['statusCode'] == 'CANCELED') {
+          return Promise.reject((0, _errors.createCancelError)(_this5.win_));
+        }
+
+        return Promise.reject(reason);
+      });
+    }
+    /**
+     * @return {!Window}
+     * @private
+     */
+
+  }, {
+    key: "top_",
+    value: function top_() {
+      // Only exists for testing since it's not possible to override `window.top`.
+      return this.win_.top;
+    }
+  }]);
 
   return PayClientBindingPayjs;
-})();
+}();
+/**
+ * @typedef {{
+ *   key: string,
+ *   verifier: string,
+ * }}
+ */
+
 
 exports.PayClientBindingPayjs = PayClientBindingPayjs;
-var RedirectVerifierPairDef = undefined;
-
+var RedirectVerifierPairDef;
 /**
  * This helper generates key/verifier pair for the redirect mode. When the
  * redirect mode is used, the encrypted payload is returned via nivigation URL.
@@ -11984,226 +13337,231 @@ var RedirectVerifierPairDef = undefined;
  * @package Visible for testing only.
  */
 
-var RedirectVerifierHelper = (function () {
+var RedirectVerifierHelper =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    */
-
   function RedirectVerifierHelper(win) {
-    babelHelpers.classCallCheck(this, RedirectVerifierHelper);
+    _classCallCheck(this, RedirectVerifierHelper);
 
     /** @private @const {!Window} */
     this.win_ = win;
-
     /** @private {boolean} */
+
     this.pairCreated_ = false;
-
     /** @private {?RedirectVerifierPairDef} */
-    this.pair_ = null;
 
+    this.pair_ = null;
     /** @private {?Promise<?RedirectVerifierPairDef>} */
+
     this.pairPromise_ = null;
   }
-
-  /**
-   * @param {!Object} paymentRequest
-   * @param {string} param
-   * @param {*} value
-   */
-
   /**
    * To avoid popup blockers, the key/verifier pair is created as soon as
    * possible.
    * @return {?Promise}
    */
 
-  RedirectVerifierHelper.prototype.prepare = function prepare() {
-    return this.getOrCreatePair_(function () {});
-  };
 
-  /**
-   * Calls the provided callback with the generated redirect verifier. This
-   * API is sync/async, which is a big anti-pattern. However, it's necessary
-   * to reduce the risk of popup blockers. If the verifier is already available
-   * (see `prepare` method), the callback will be called immediately and thus
-   * in the same event loop as the user action.
-   *
-   * The return verifier could be `null`. This could mean either that its
-   * generation failed, or if the platform doesn't support necessary APIs, such
-   * as Web Crypto. The redirect can still proceed and try to fallback on GAIA
-   * as a redirect verifier. The set of platforms where GAIA is not available
-   * and the redirect verifier cannot be created is negligible.
-   *
-   * The key corresponding to the returned verifier is stored in the session
-   * storage and can be later restored using `restoreKey` method.
-   *
-   * @param {function(?string)} callback
-   */
+  _createClass(RedirectVerifierHelper, [{
+    key: "prepare",
+    value: function prepare() {
+      return this.getOrCreatePair_(function () {});
+    }
+    /**
+     * Calls the provided callback with the generated redirect verifier. This
+     * API is sync/async, which is a big anti-pattern. However, it's necessary
+     * to reduce the risk of popup blockers. If the verifier is already available
+     * (see `prepare` method), the callback will be called immediately and thus
+     * in the same event loop as the user action.
+     *
+     * The return verifier could be `null`. This could mean either that its
+     * generation failed, or if the platform doesn't support necessary APIs, such
+     * as Web Crypto. The redirect can still proceed and try to fallback on GAIA
+     * as a redirect verifier. The set of platforms where GAIA is not available
+     * and the redirect verifier cannot be created is negligible.
+     *
+     * The key corresponding to the returned verifier is stored in the session
+     * storage and can be later restored using `restoreKey` method.
+     *
+     * @param {function(?string)} callback
+     */
 
-  RedirectVerifierHelper.prototype.useVerifier = function useVerifier(callback) {
-    var _this6 = this;
+  }, {
+    key: "useVerifier",
+    value: function useVerifier(callback) {
+      var _this6 = this;
 
-    this.getOrCreatePair_(function (pair) {
-      if (pair) {
-        try {
-          _this6.win_.localStorage.setItem(REDIRECT_STORAGE_KEY, pair.key);
-        } catch (e) {
-          // If storage has failed, there's no point in using the verifer.
-          // However, there are other ways to recover the redirect, so it's
-          // not necessarily a fatal condition.
-          pair = null;
+      this.getOrCreatePair_(function (pair) {
+        if (pair) {
+          try {
+            _this6.win_.localStorage.setItem(REDIRECT_STORAGE_KEY, pair.key);
+          } catch (e) {
+            // If storage has failed, there's no point in using the verifer.
+            // However, there are other ways to recover the redirect, so it's
+            // not necessarily a fatal condition.
+            pair = null;
+          }
         }
-      }
-      callback(pair && pair.verifier || null);
-    });
-  };
 
-  /**
-   * Restores the redirect key from the session storage. The key may be null.
-   * @return {?string}
-   */
-
-  RedirectVerifierHelper.prototype.restoreKey = function restoreKey() {
-    try {
-      return this.win_.localStorage && this.win_.localStorage.getItem(REDIRECT_STORAGE_KEY) || null;
-    } catch (e) {
-      return null;
-    }
-  };
-
-  /**
-   * @param {function(?RedirectVerifierPairDef)} callback
-   * @return {?Promise}
-   * @private
-   */
-
-  RedirectVerifierHelper.prototype.getOrCreatePair_ = function getOrCreatePair_(callback) {
-    this.createPair_();
-    if (this.pairCreated_) {
-      // Already created.
-      callback(this.pair_);
-    } else if (this.pairPromise_) {
-      // Otherwise wait for it to be created.
-      this.pairPromise_.then(function (pair) {
-        return callback(pair);
+        callback(pair && pair.verifier || null);
       });
     }
-    return this.pairPromise_;
-  };
+    /**
+     * Restores the redirect key from the session storage. The key may be null.
+     * @return {?string}
+     */
 
-  /**
-   * @private
-   */
-
-  RedirectVerifierHelper.prototype.createPair_ = function createPair_() {
-    var _this7 = this;
-
-    // Either already created or already started.
-    if (this.pairCreated_ || this.pairPromise_) {
-      return;
-    }
-
-    // Check that the platform can fully support verification. That means
-    // that it's expected to implement the following APIs:
-    // a. Local storage (localStorage);
-    // b. WebCrypto (crypto.subtle);
-    // c. Crypto random (crypto.getRandomValues);
-    // d. SHA284 (crypto.subtle.digest).
-    var crypto = this.win_.crypto;
-    if (this.win_.localStorage && crypto && crypto.getRandomValues && crypto.subtle && crypto.subtle.digest) {
-      this.pairPromise_ = new Promise(function (resolve, reject) {
-        // 1. Use crypto random to create a 128-bit (16 byte) redirect key.
-        var keyBytes = new Uint8Array(16);
-        crypto.getRandomValues(keyBytes);
-
-        // 2. Encode key as base64.
-        var key = btoa(_utilsBytes.bytesToString(keyBytes));
-
-        // 3. Create a hash.
-        crypto.subtle.digest({ name: 'SHA-384' }, _utilsBytes.stringToBytes(key)).then(function (buffer) {
-          var verifier = btoa(_utilsBytes.bytesToString(new Uint8Array( /** @type {!ArrayBuffer} */buffer)));
-          resolve({ key: key, verifier: verifier });
-        }, function (reason) {
-          reject(reason);
-        });
-      })['catch'](function () {
-        // Ignore failures. A failure to create a redirect verifier is often
-        // recoverable.
+  }, {
+    key: "restoreKey",
+    value: function restoreKey() {
+      try {
+        return this.win_.localStorage && this.win_.localStorage.getItem(REDIRECT_STORAGE_KEY) || null;
+      } catch (e) {
         return null;
-      }).then(function (pair) {
-        _this7.pairCreated_ = true;
-        _this7.pair_ = pair;
-        return pair;
-      });
-    } else {
-      // Not supported.
-      this.pairCreated_ = true;
-      this.pair_ = null;
+      }
     }
-  };
+    /**
+     * @param {function(?RedirectVerifierPairDef)} callback
+     * @return {?Promise}
+     * @private
+     */
+
+  }, {
+    key: "getOrCreatePair_",
+    value: function getOrCreatePair_(callback) {
+      this.createPair_();
+
+      if (this.pairCreated_) {
+        // Already created.
+        callback(this.pair_);
+      } else if (this.pairPromise_) {
+        // Otherwise wait for it to be created.
+        this.pairPromise_.then(function (pair) {
+          return callback(pair);
+        });
+      }
+
+      return this.pairPromise_;
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "createPair_",
+    value: function createPair_() {
+      var _this7 = this;
+
+      // Either already created or already started.
+      if (this.pairCreated_ || this.pairPromise_) {
+        return;
+      } // Check that the platform can fully support verification. That means
+      // that it's expected to implement the following APIs:
+      // a. Local storage (localStorage);
+      // b. WebCrypto (crypto.subtle);
+      // c. Crypto random (crypto.getRandomValues);
+      // d. SHA284 (crypto.subtle.digest).
+
+
+      var crypto = this.win_.crypto;
+
+      if (this.win_.localStorage && crypto && crypto.getRandomValues && crypto.subtle && crypto.subtle.digest) {
+        this.pairPromise_ = new Promise(function (resolve, reject) {
+          // 1. Use crypto random to create a 128-bit (16 byte) redirect key.
+          var keyBytes = new Uint8Array(16);
+          crypto.getRandomValues(keyBytes); // 2. Encode key as base64.
+
+          var key = btoa((0, _bytes.bytesToString)(keyBytes)); // 3. Create a hash.
+
+          crypto.subtle.digest({
+            name: 'SHA-384'
+          }, (0, _bytes.stringToBytes)(key)).then(function (buffer) {
+            var verifier = btoa((0, _bytes.bytesToString)(new Uint8Array(
+            /** @type {!ArrayBuffer} */
+            buffer)));
+            resolve({
+              key: key,
+              verifier: verifier
+            });
+          }, function (reason) {
+            reject(reason);
+          });
+        })["catch"](function () {
+          // Ignore failures. A failure to create a redirect verifier is often
+          // recoverable.
+          return null;
+        }).then(function (pair) {
+          _this7.pairCreated_ = true;
+          _this7.pair_ = pair;
+          return pair;
+        });
+      } else {
+        // Not supported.
+        this.pairCreated_ = true;
+        this.pair_ = null;
+      }
+    }
+  }]);
 
   return RedirectVerifierHelper;
-})();
+}();
+/**
+ * @param {!Object} paymentRequest
+ * @param {string} param
+ * @param {*} value
+ */
+
 
 exports.RedirectVerifierHelper = RedirectVerifierHelper;
+
 function setInternalParam(paymentRequest, param, value) {
-  var _Object$assign;
+  paymentRequest['i'] = Object.assign(paymentRequest['i'] || {}, _defineProperty({}, param, value));
+} // TODO(dvoytenko, #406): Remove once GPay API is supported.
 
-  paymentRequest['i'] = Object.assign(paymentRequest['i'] || {}, (_Object$assign = {}, _Object$assign[param] = value, _Object$assign));
-}
-
-// TODO(dvoytenko, #406): Remove once GPay API is supported.
 
 function getPayjsBindingForTesting() {
   return PayClientBindingPayjs;
 }
 
-},{"../../third_party/gpay/src/payjs_async":88,"../utils/bytes":67,"../utils/errors":70,"../utils/xhr":82,"./experiment-flags":43,"./experiments":44,"./services":58}],54:[function(require,module,exports){
-exports.__esModule = true;
+},{"../../third_party/gpay/src/payjs_async":86,"../utils/bytes":66,"../utils/errors":69,"../utils/xhr":81,"./experiment-flags":42,"./experiments":43,"./services":57}],53:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.parseSubscriptionResponse = parseSubscriptionResponse;
 exports.parseUserData = parseUserData;
 exports.parseEntitlements = parseEntitlements;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * The Flow goes like this:
- * a. Start Payments
- * b. Complete Payments
- * c. Create Account
- * d. Acknowledge Account
- *
- * In other words, Flow = Payments + Account Creation.
- */
+exports.PayCompleteFlow = exports.PayStartFlow = exports.RecurrenceMapping = exports.ReplaceSkuProrationModeMapping = void 0;
 
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
+var _api_messages = require("../proto/api_messages");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _activityIframeView = require("../ui/activity-iframe-view");
 
-var _utilsJwt = require('../utils/jwt');
+var _jwt = require("../utils/jwt");
 
-var _apiSubscribeResponse = require('../api/subscribe-response');
+var _subscriptions = require("../api/subscriptions");
 
-var _apiSubscriptions = require('../api/subscriptions');
+var _subscribeResponse = require("../api/subscribe-response");
 
-var _apiUserData = require('../api/user-data');
+var _userData = require("../api/user-data");
 
-var _services = require('./services');
+var _services = require("./services");
 
-var _utilsErrors = require('../utils/errors');
+var _json = require("../utils/json");
 
-var _utilsJson = require('../utils/json');
+var _errors = require("../utils/errors");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * String values input by the publisher are mapped to the number values.
@@ -12215,278 +13573,325 @@ var ReplaceSkuProrationModeMapping = {
   // behavior.
   'IMMEDIATE_WITH_TIME_PRORATION': 1
 };
-
 exports.ReplaceSkuProrationModeMapping = ReplaceSkuProrationModeMapping;
+var RecurrenceMapping = {
+  'AUTO': 1,
+  'ONE_TIME': 2
+};
+/**
+ * @param {string} sku
+ * @return {!EventParams}
+ */
+
+exports.RecurrenceMapping = RecurrenceMapping;
+
+function getEventParams(sku) {
+  return new _api_messages.EventParams([,,,, sku]);
+}
 /**
  * The flow to initiate payment process.
  */
 
-var PayStartFlow = (function () {
+
+var PayStartFlow =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.SubscriptionRequest|string} skuOrSubscriptionRequest
    * @param {!../api/subscriptions.ProductType} productType
    */
-
   function PayStartFlow(deps, skuOrSubscriptionRequest) {
-    var productType = arguments.length <= 2 || arguments[2] === undefined ? _apiSubscriptions.ProductType.SUBSCRIPTION : arguments[2];
-    babelHelpers.classCallCheck(this, PayStartFlow);
+    var productType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _subscriptions.ProductType.SUBSCRIPTION;
+
+    _classCallCheck(this, PayStartFlow);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!./pay-client.PayClient} */
+
     this.payClient_ = deps.payClient();
-
     /** @private @const {!../model/page-config.PageConfig} */
+
     this.pageConfig_ = deps.pageConfig();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private @const {!../api/subscriptions.SubscriptionRequest} */
-    this.subscriptionRequest_ = typeof skuOrSubscriptionRequest == 'string' ? { 'skuId': skuOrSubscriptionRequest } : skuOrSubscriptionRequest;
 
+    this.subscriptionRequest_ = typeof skuOrSubscriptionRequest == 'string' ? {
+      'skuId': skuOrSubscriptionRequest
+    } : skuOrSubscriptionRequest;
     /**@private @const {!ProductType} */
+
     this.productType_ = productType;
-
     /** @private @const {!../runtime/analytics-service.AnalyticsService} */
+
     this.analyticsService_ = deps.analytics();
-
     /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
-    this.eventManager_ = deps.eventManager();
 
-    // Map the proration mode to the enum value (if proration exists).
+    this.eventManager_ = deps.eventManager(); // Map the proration mode to the enum value (if proration exists).
+
     this.prorationMode = this.subscriptionRequest_.replaceSkuProrationMode;
     this.prorationEnum = 0;
+
     if (this.prorationMode) {
       this.prorationEnum = ReplaceSkuProrationModeMapping[this.prorationMode];
     } else if (this.subscriptionRequest_.oldSku) {
       this.prorationEnum = ReplaceSkuProrationModeMapping['IMMEDIATE_WITH_TIME_PRORATION'];
+    } // Assign one-time recurrence enum if applicable
+
+
+    this.oneTimeContribution = false;
+    this.recurrenceEnum = 0;
+
+    if (this.subscriptionRequest_.oneTime) {
+      this.recurrenceEnum = RecurrenceMapping['ONE_TIME'];
+      delete this.subscriptionRequest_.oneTime;
     }
   }
-
-  /**
-   * The flow for successful payments completion.
-   */
-
   /**
    * Starts the payments flow.
    * @return {!Promise}
    */
 
-  PayStartFlow.prototype.start = function start() {
-    // Add the 'publicationId' key to the subscriptionRequest_ object.
-    var swgPaymentRequest = Object.assign({}, this.subscriptionRequest_, {
-      'publicationId': this.pageConfig_.getPublicationId()
-    });
 
-    if (this.prorationEnum) {
-      swgPaymentRequest.replaceSkuProrationMode = this.prorationEnum;
-    }
+  _createClass(PayStartFlow, [{
+    key: "start",
+    value: function start() {
+      var req = this.subscriptionRequest_; // Add the 'publicationId' key to the subscriptionRequest_ object.
 
-    // Start/cancel events.
-    this.deps_.callbacks().triggerFlowStarted(_apiSubscriptions.SubscriptionFlows.SUBSCRIBE, this.subscriptionRequest_);
-    // TODO(chenshay): Create analytics for 'replace subscription'.
-    this.analyticsService_.setSku(this.subscriptionRequest_.skuId);
-    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED, true);
-    this.payClient_.start({
-      'apiVersion': 1,
-      'allowedPaymentMethods': ['CARD'],
-      'environment': 'SANDBOX',
-      'playEnvironment': 'STAGING',
-      'swg': swgPaymentRequest,
-      'i': {
-        'startTimeMs': Date.now(),
-        'googleTransactionId': this.analyticsService_.getTransactionId(),
-        'productType': this.productType_
+      var swgPaymentRequest = Object.assign({}, req, {
+        'publicationId': this.pageConfig_.getPublicationId()
+      });
+
+      if (this.prorationEnum) {
+        swgPaymentRequest.replaceSkuProrationMode = this.prorationEnum;
       }
-    }, {
-      forceRedirect: this.deps_.config().windowOpenMode == _apiSubscriptions.WindowOpenMode.REDIRECT
-    });
-    return Promise.resolve();
-  };
+
+      if (this.recurrenceEnum) {
+        swgPaymentRequest.paymentRecurrence = this.recurrenceEnum;
+      } // Start/cancel events.
+
+
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SUBSCRIBE, req);
+
+      if (req.oldSku) {
+        this.analyticsService_.setSku(req.oldSku);
+      }
+
+      this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED, true, getEventParams(req.skuId));
+      this.payClient_.start({
+        'apiVersion': 1,
+        'allowedPaymentMethods': ['CARD'],
+        'environment': 'SANDBOX',
+        'playEnvironment': 'STAGING',
+        'swg': swgPaymentRequest,
+        'i': {
+          'startTimeMs': Date.now(),
+          'productType': this.productType_
+        }
+      }, {
+        forceRedirect: this.deps_.config().windowOpenMode == _subscriptions.WindowOpenMode.REDIRECT
+      });
+      return Promise.resolve();
+    }
+  }]);
 
   return PayStartFlow;
-})();
+}();
+/**
+ * The flow for successful payments completion.
+ */
+
 
 exports.PayStartFlow = PayStartFlow;
 
-var PayCompleteFlow = (function () {
-  /**
-   * @param {!./deps.DepsDef} deps
-   */
+var PayCompleteFlow =
+/*#__PURE__*/
+function () {
+  _createClass(PayCompleteFlow, null, [{
+    key: "configurePending",
 
-  PayCompleteFlow.configurePending = function configurePending(deps) {
-    /** @const @type {./client-event-manager.ClientEventManager} */
-    var eventManager = deps.eventManager();
+    /**
+     * @param {!./deps.DepsDef} deps
+     */
+    value: function configurePending(deps) {
+      /** @const @type {./client-event-manager.ClientEventManager} */
+      var eventManager = deps.eventManager();
+      deps.payClient().onResponse(function (payPromise) {
+        deps.entitlementsManager().blockNextNotification();
+        var flow = new PayCompleteFlow(deps);
+        var promise = validatePayResponse(deps, payPromise, flow.complete.bind(flow));
+        deps.callbacks().triggerPaymentResponse(promise);
+        return promise.then(function (response) {
+          var sku = parseSkuFromPurchaseDataSafe(response.purchaseData);
+          deps.analytics().setSku(sku || '');
+          eventManager.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE, true, getEventParams(sku || ''));
+          flow.start(response);
+        }, function (reason) {
+          if ((0, _errors.isCancelError)(reason)) {
+            deps.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.SUBSCRIBE);
+            deps.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_USER_CANCELED_PAYFLOW, true);
+          } else {
+            deps.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED, false);
+            deps.jserror().error('Pay failed', reason);
+          }
 
-    deps.payClient().onResponse(function (payPromise) {
-      deps.entitlementsManager().blockNextNotification();
-      var flow = new PayCompleteFlow(deps);
-      var promise = validatePayResponse(deps, payPromise, flow.complete.bind(flow));
-      deps.callbacks().triggerSubscribeResponse(promise);
-      return promise.then(function (response) {
-        eventManager.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_PAYMENT_COMPLETE, true);
-        flow.start(response);
-      }, function (reason) {
-        if (_utilsErrors.isCancelError(reason)) {
-          deps.callbacks().triggerFlowCanceled(_apiSubscriptions.SubscriptionFlows.SUBSCRIBE);
-        } else {
-          deps.eventManager().logSwgEvent(_protoApi_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED, false);
-          deps.jserror().error('Pay failed', reason);
-        }
-        throw reason;
+          throw reason;
+        });
       });
-    });
-  };
+    }
+    /**
+     * @param {!./deps.DepsDef} deps
+     */
 
-  /**
-   * @param {!./deps.DepsDef} deps
-   */
+  }]);
 
   function PayCompleteFlow(deps) {
-    babelHelpers.classCallCheck(this, PayCompleteFlow);
+    _classCallCheck(this, PayCompleteFlow);
 
     /** @private @const {!Window} */
     this.win_ = deps.win();
-
     /** @private @const {!./deps.DepsDef} */
+
     this.deps_ = deps;
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private {?ActivityIframeView} */
+
     this.activityIframeView_ = null;
-
     /** @private {?SubscribeResponse} */
+
     this.response_ = null;
-
     /** @private {?Promise} */
+
     this.readyPromise_ = null;
-
     /** @private @const {!../runtime/analytics-service.AnalyticsService} */
+
     this.analyticsService_ = deps.analytics();
-
     /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
+
     this.eventManager_ = deps.eventManager();
+    /** @private {?string} */
+
+    this.sku_ = null;
   }
-
-  /**
-   * @param {!./deps.DepsDef} deps
-   * @param {!Promise<!Object>} payPromise
-   * @param {function():!Promise} completeHandler
-   * @return {!Promise<!SubscribeResponse>}
-   */
-
   /**
    * Starts the payments completion flow.
    * @param {!SubscribeResponse} response
    * @return {!Promise}
    */
 
-  PayCompleteFlow.prototype.start = function start(response) {
-    var _this = this;
 
-    if (!this.analyticsService_.getSku()) {
-      // This is a redirect response. Extract the SKU if possible.
-      this.analyticsService_.addLabels(['redirect']);
-      var sku = parseSkuFromPurchaseDataSafe(response.purchaseData);
-      if (sku) {
-        this.analyticsService_.setSku(sku);
+  _createClass(PayCompleteFlow, [{
+    key: "start",
+    value: function start(response) {
+      var _this = this;
+
+      this.sku_ = parseSkuFromPurchaseDataSafe(response.purchaseData);
+      this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_ACCOUNT_CHANGED, true, getEventParams(this.sku_ || ''));
+      this.deps_.entitlementsManager().reset(true);
+      this.response_ = response;
+      var args = {
+        'publicationId': this.deps_.pageConfig().getPublicationId(),
+        'productType': this.response_['productType'],
+        'isSubscriptionUpdate': !!this.response_['oldSku']
+      }; // TODO(dvoytenko, #400): cleanup once entitlements is launched everywhere.
+
+      if (response.userData && response.entitlements) {
+        args['idToken'] = response.userData.idToken;
+        this.deps_.entitlementsManager().pushNextEntitlements(response.entitlements.raw);
+      } else {
+        args['loginHint'] = response.userData && response.userData.email;
+      }
+
+      this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/payconfirmiframe'), (0, _services.feArgs)(args),
+      /* shouldFadeBody */
+      true);
+      this.activityIframeView_.on(_api_messages.EntitlementsResponse, this.handleEntitlementsResponse_.bind(this));
+      this.activityIframeView_.acceptResult().then(function () {
+        // The flow is complete.
+        _this.dialogManager_.completeView(_this.activityIframeView_);
+      });
+      this.readyPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+      return this.readyPromise_;
+    }
+    /**
+     * @param {!EntitlementsResponse} response
+     * @private
+     */
+
+  }, {
+    key: "handleEntitlementsResponse_",
+    value: function handleEntitlementsResponse_(response) {
+      var jwt = response.getJwt();
+
+      if (jwt) {
+        this.deps_.entitlementsManager().pushNextEntitlements(jwt);
       }
     }
+    /**
+     * @return {!Promise}
+     */
 
-    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.IMPRESSION_ACCOUNT_CHANGED, true);
-    this.deps_.entitlementsManager().reset(true);
-    this.response_ = response;
-    // TODO(dianajing): find a way to specify whether response is a subscription update
-    var args = {
-      'publicationId': this.deps_.pageConfig().getPublicationId(),
-      'productType': this.response_['productType']
-    };
-    // TODO(dvoytenko, #400): cleanup once entitlements is launched everywhere.
-    // 'isSubscriptionUpdate': !!response.oldSku,
-    if (response.userData && response.entitlements) {
-      args['idToken'] = response.userData.idToken;
-      this.deps_.entitlementsManager().pushNextEntitlements(response.entitlements.raw);
-    } else {
-      args['loginHint'] = response.userData && response.userData.email;
+  }, {
+    key: "complete",
+    value: function complete() {
+      var _this2 = this;
+
+      this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_ACCOUNT_CREATED, true, getEventParams(this.sku_ || ''));
+      this.deps_.entitlementsManager().unblockNextNotification();
+      this.readyPromise_.then(function () {
+        var accountCompletionRequest = new _api_messages.AccountCreationRequest();
+        accountCompletionRequest.setComplete(true);
+
+        _this2.activityIframeView_.execute(accountCompletionRequest);
+      });
+      return this.activityIframeView_.acceptResult()["catch"](function () {// Ignore errors.
+      }).then(function () {
+        _this2.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_ACCOUNT_ACKNOWLEDGED, true, getEventParams(_this2.sku_ || ''));
+
+        _this2.deps_.entitlementsManager().setToastShown(true);
+      });
     }
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/payconfirmiframe'), _services.feArgs(args),
-    /* shouldFadeBody */true);
-
-    this.activityIframeView_.on(_protoApi_messages.EntitlementsResponse, this.handleEntitlementsResponse_.bind(this));
-
-    this.activityIframeView_.acceptResult().then(function () {
-      // The flow is complete.
-      _this.dialogManager_.completeView(_this.activityIframeView_);
-    });
-    this.readyPromise_ = this.dialogManager_.openView(this.activityIframeView_);
-    return this.readyPromise_;
-  };
-
-  /**
-   * @param {!EntitlementsResponse} response
-   * @private
-   */
-
-  PayCompleteFlow.prototype.handleEntitlementsResponse_ = function handleEntitlementsResponse_(response) {
-    var jwt = response.getJwt();
-    if (jwt) {
-      this.deps_.entitlementsManager().pushNextEntitlements(jwt);
-    }
-  };
-
-  /**
-   * @return {!Promise}
-   */
-
-  PayCompleteFlow.prototype.complete = function complete() {
-    var _this2 = this;
-
-    this.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_ACCOUNT_CREATED, true);
-    this.deps_.entitlementsManager().unblockNextNotification();
-    this.readyPromise_.then(function () {
-      var accountCompletionRequest = new _protoApi_messages.AccountCreationRequest();
-      accountCompletionRequest.setComplete(true);
-      _this2.activityIframeView_.execute(accountCompletionRequest);
-    });
-    return this.activityIframeView_.acceptResult()['catch'](function () {
-      // Ignore errors.
-    }).then(function () {
-      _this2.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.ACTION_ACCOUNT_ACKNOWLEDGED, true);
-      _this2.deps_.entitlementsManager().setToastShown(true);
-    });
-  };
+  }]);
 
   return PayCompleteFlow;
-})();
+}();
+/**
+ * @param {!./deps.DepsDef} deps
+ * @param {!Promise<!Object>} payPromise
+ * @param {function():!Promise} completeHandler
+ * @return {!Promise<!SubscribeResponse>}
+ */
+
 
 exports.PayCompleteFlow = PayCompleteFlow;
+
 function validatePayResponse(deps, payPromise, completeHandler) {
   return payPromise.then(function (data) {
     // 1) We log against a random TX ID which is how we track a specific user
     //    anonymously.
     // 2) If there was a redirect to gPay, we may have lost our stored TX ID.
     // 3) Pay service is supposed to give us the TX ID it logged against.
-
     var hasLogged = deps.analytics().getHasLogged();
-    var eventType = _protoApi_messages.AnalyticsEvent.UNKNOWN;
+    var eventType = _api_messages.AnalyticsEvent.UNKNOWN;
     var eventParams = undefined;
-    if (typeof data !== 'object' || !data['googleTransactionId']) {
+
+    if (_typeof(data) !== 'object' || !data['googleTransactionId']) {
       // If gPay doesn't give us a TX ID it means that something may
       // be wrong.  If we previously logged then we are at least continuing to
       // log against the same TX ID.  If we didn't previously log then we have
       // lost all connection to the events that preceded the payment event and
       // we at least want to know why that data was lost.
-      eventParams = new _protoApi_messages.EventParams();
+      eventParams = new _api_messages.EventParams();
       eventParams.setHadLogged(hasLogged);
-      eventType = _protoApi_messages.AnalyticsEvent.EVENT_GPAY_NO_TX_ID;
+      eventType = _api_messages.AnalyticsEvent.EVENT_GPAY_NO_TX_ID;
     } else {
       var oldTxId = deps.analytics().getTransactionId();
       var newTxId = data['googleTransactionId'];
@@ -12496,25 +13901,25 @@ function validatePayResponse(deps, payPromise, completeHandler) {
         // unexpectedly at other times too though and we want to be aware of it
         // if it does.
         deps.analytics().setTransactionId(newTxId);
-        eventType = _protoApi_messages.AnalyticsEvent.EVENT_GPAY_CANNOT_CONFIRM_TX_ID;
+        eventType = _api_messages.AnalyticsEvent.EVENT_GPAY_CANNOT_CONFIRM_TX_ID;
       } else {
         if (oldTxId === newTxId) {
           // This is the expected case for non-redirect pay events
-          eventType = _protoApi_messages.AnalyticsEvent.EVENT_CONFIRM_TX_ID;
+          eventType = _api_messages.AnalyticsEvent.EVENT_CONFIRM_TX_ID;
         } else {
           // This is an unexpected case: gPay rejected our TX ID and created
           // its own.  Log the gPay TX ID but keep our logging consistent.
-          eventParams = new _protoApi_messages.EventParams();
+          eventParams = new _api_messages.EventParams();
           eventParams.setGpayTransactionId(newTxId);
-          eventType = _protoApi_messages.AnalyticsEvent.EVENT_CHANGED_TX_ID;
+          eventType = _api_messages.AnalyticsEvent.EVENT_CHANGED_TX_ID;
         }
       }
     }
+
     deps.eventManager().logSwgEvent(eventType, true, eventParams);
     return parseSubscriptionResponse(deps, data, completeHandler);
   });
 }
-
 /**
  * @param {!./deps.DepsDef} deps
  * @param {*} data
@@ -12522,69 +13927,88 @@ function validatePayResponse(deps, payPromise, completeHandler) {
  * @return {!SubscribeResponse}
  */
 
+
 function parseSubscriptionResponse(deps, data, completeHandler) {
   var swgData = null;
   var raw = null;
-  var productType = null;
+  var productType = _subscriptions.ProductType.SUBSCRIPTION;
+  var oldSku = null;
+
   if (data) {
     if (typeof data == 'string') {
-      raw = /** @type {string} */data;
+      raw =
+      /** @type {string} */
+      data;
     } else {
       // Assume it's a json object in the format:
       // `{integratorClientCallbackData: "..."}` or `{swgCallbackData: "..."}`.
-      var json = /** @type {!Object} */data;
-      if ('productType' in data) {
-        productType = data['productType'];
-      }
+      var json =
+      /** @type {!Object} */
+      data;
+
       if ('swgCallbackData' in json) {
-        swgData = /** @type {!Object} */json['swgCallbackData'];
+        swgData =
+        /** @type {!Object} */
+        json['swgCallbackData'];
       } else if ('integratorClientCallbackData' in json) {
         raw = json['integratorClientCallbackData'];
       }
+
+      if ('paymentRequest' in data) {
+        oldSku = (data['paymentRequest']['swg'] || {})['oldSku'];
+        productType = (data['paymentRequest']['i'] || {})['productType'] || _subscriptions.ProductType.SUBSCRIPTION;
+      }
     }
   }
-  if (!productType) {
-    productType = _apiSubscriptions.ProductType.SUBSCRIPTION;
-  }
+
   if (raw && !swgData) {
     raw = atob(raw);
+
     if (raw) {
-      var parsed = _utilsJson.parseJson(raw);
+      var parsed = (0, _json.parseJson)(raw);
       swgData = parsed['swgCallbackData'];
     }
   }
+
   if (!swgData) {
     throw new Error('unexpected payment response');
   }
-  raw = JSON.stringify( /** @type {!JsonObject} */swgData);
-  return new _apiSubscribeResponse.SubscribeResponse(raw, parsePurchaseData(swgData), parseUserData(swgData), parseEntitlements(deps, swgData), productType, completeHandler);
-}
 
+  raw = JSON.stringify(
+  /** @type {!JsonObject} */
+  swgData);
+  return new _subscribeResponse.SubscribeResponse(raw, parsePurchaseData(swgData), parseUserData(swgData), parseEntitlements(deps, swgData), productType, completeHandler, oldSku);
+}
 /**
  * @param {!Object} swgData
  * @return {!PurchaseData}
  */
+
+
 function parsePurchaseData(swgData) {
   var raw = swgData['purchaseData'];
   var signature = swgData['purchaseDataSignature'];
-  return new _apiSubscribeResponse.PurchaseData(raw, signature);
+  return new _subscribeResponse.PurchaseData(raw, signature);
 }
-
 /**
  * @param {!Object} swgData
  * @return {?UserData}
  * @package Visible for testing.
  */
 
+
 function parseUserData(swgData) {
   var idToken = swgData['idToken'];
+
   if (!idToken) {
     return null;
   }
-  var jwt = /** @type {!Object} */new _utilsJwt.JwtHelper().decode(idToken);
-  return new _apiUserData.UserData(idToken, jwt);
-}
 
+  var jwt =
+  /** @type {!Object} */
+  new _jwt.JwtHelper().decode(idToken);
+  return new _userData.UserData(idToken, jwt);
+}
 /**
  * @param {!./deps.DepsDef} deps
  * @param {!Object} swgData
@@ -12592,53 +14016,55 @@ function parseUserData(swgData) {
  * @package Visible for testing.
  */
 
+
 function parseEntitlements(deps, swgData) {
   if (swgData['signedEntitlements']) {
     return deps.entitlementsManager().parseEntitlements(swgData);
   }
+
   return null;
 }
-
 /**
  * @param {!PurchaseData} purchaseData
  * @return {?string}
  */
+
+
 function parseSkuFromPurchaseDataSafe(purchaseData) {
-  var json = _utilsJson.tryParseJson(purchaseData.raw);
-  return json && json['productId'] || null;
+  return (
+    /** @type {?string} */
+    (0, _json.getPropertyFromJsonString)(purchaseData.raw, 'productId') || null
+  );
 }
 
-},{"../api/subscribe-response":11,"../api/subscriptions":12,"../api/user-data":13,"../proto/api_messages":33,"../ui/activity-iframe-view":62,"../utils/errors":70,"../utils/json":72,"../utils/jwt":73,"./services":58}],55:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../api/subscribe-response":11,"../api/subscriptions":12,"../api/user-data":13,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"../utils/errors":69,"../utils/json":71,"../utils/jwt":72,"./services":57}],54:[function(require,module,exports){
+"use strict";
 
-var _services = require('./services');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PropensityServer = void 0;
 
-var _protoApi_messages = require('../proto/api_messages');
+var _api_messages = require("../proto/api_messages");
 
-var _utilsTypes = require('../utils/types');
+var _services = require("./services");
 
-var _eventTypeMapping = require('./event-type-mapping');
+var _eventTypeMapping = require("./event-type-mapping");
+
+var _types = require("../utils/types");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * Implements interface to Propensity server
  */
-
-var PropensityServer = (function () {
+var PropensityServer =
+/*#__PURE__*/
+function () {
   /**
    * Page configuration is known when Propensity API
    * is available, publication ID is therefore used
@@ -12647,259 +14073,329 @@ var PropensityServer = (function () {
    * @param {!./deps.DepsDef} deps
    * @param {!./fetcher.Fetcher} fetcher
    */
-
   function PropensityServer(win, deps, fetcher) {
-    babelHelpers.classCallCheck(this, PropensityServer);
+    _classCallCheck(this, PropensityServer);
 
     /** @private @const {!Window} */
     this.win_ = win;
     /** @private @const {!./deps.DepsDef} */
+
     this.deps_ = deps;
     /** @private @const {string} */
+
     this.publicationId_ = this.deps_.pageConfig().getPublicationId();
     /** @private {?string} */
+
     this.clientId_ = null;
     /** @private @const {!./fetcher.Fetcher} */
+
     this.fetcher_ = fetcher;
     /** @private @const {number} */
-    this.version_ = 1;
 
+    this.version_ = 1;
     this.deps_.eventManager().registerEventListener(this.handleClientEvent_.bind(this));
   }
-
   /**
    * @private
    * @return {string}
    */
 
-  PropensityServer.prototype.getDocumentCookie_ = function getDocumentCookie_() {
-    return this.win_.document.cookie;
-  };
 
-  /**
-   * Returns the client ID to be used.
-   * @return {?string}
-   * @private
-   */
-
-  PropensityServer.prototype.getClientId_ = function getClientId_() {
-    if (!this.clientId_) {
-      // Match '__gads' (name of the cookie) dropped by Ads Tag.
-      var gadsmatch = this.getDocumentCookie_().match('(^|;)\\s*__gads\\s*=\\s*([^;]+)');
-      // Since the cookie will be consumed using decodeURIComponent(),
-      // use encodeURIComponent() here to match.
-      this.clientId_ = gadsmatch && encodeURIComponent(gadsmatch.pop());
+  _createClass(PropensityServer, [{
+    key: "getDocumentCookie_",
+    value: function getDocumentCookie_() {
+      return this.win_.document.cookie;
     }
-    return this.clientId_;
-  };
-
-  /**
-   * @private
-   * @param {string} url
-   * @return {string}
-   */
-
-  PropensityServer.prototype.propensityUrl_ = function propensityUrl_(url) {
-    url = url + '&u_tz=240&v=' + this.version_;
-    var clientId = this.getClientId_();
-    if (clientId) {
-      url = url + '&cookie=' + clientId;
-    }
-    url = url + '&cdm=' + this.win_.location.hostname;
-    return url;
-  };
-
-  /**
-   * @param {string} state
-   * @param {?string} productsOrSkus
-   */
-
-  PropensityServer.prototype.sendSubscriptionState = function sendSubscriptionState(state, productsOrSkus) {
-    var init = /** @type {!../utils/xhr.FetchInitDef} */{
-      method: 'GET',
-      credentials: 'include'
-    };
-    var userState = this.publicationId_ + ':' + state;
-    if (productsOrSkus) {
-      userState = userState + ':' + encodeURIComponent(productsOrSkus);
-    }
-    var url = _services.adsUrl('/subopt/data?states=') + encodeURIComponent(userState);
-    return this.fetcher_.fetch(this.propensityUrl_(url), init);
-  };
-
-  /**
-   * @param {string} event
-   * @param {?string} context
-   * @private
-   */
-
-  PropensityServer.prototype.sendEvent_ = function sendEvent_(event, context) {
-    var init = /** @type {!../utils/xhr.FetchInitDef} */{
-      method: 'GET',
-      credentials: 'include'
-    };
-    var eventInfo = this.publicationId_ + ':' + event;
-    if (context) {
-      eventInfo = eventInfo + ':' + encodeURIComponent(context);
-    }
-    var url = _services.adsUrl('/subopt/data?events=') + encodeURIComponent(eventInfo);
-    return this.fetcher_.fetch(this.propensityUrl_(url), init);
-  };
-
-  /**
-   *
-   * @param {!../api/client-event-manager-api.ClientEvent} event
-   */
-
-  PropensityServer.prototype.handleClientEvent_ = function handleClientEvent_(event) {
     /**
-     * Does a live check of the config because we don't know when publisher
-     * called to enable (it may be after a consent dialog).
+     * Returns the client ID to be used.
+     * @return {?string}
+     * @private
      */
-    if (!this.deps_.config().enablePropensity && event.eventOriginator !== _protoApi_messages.EventOriginator.PROPENSITY_CLIENT) {
-      return;
-    }
 
-    if (event.eventType === _protoApi_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE) {
-      this.sendSubscriptionState(event.additionalParameters['state'], event.additionalParameters['productsOrSkus']);
-      return;
-    }
-    var propEvent = _eventTypeMapping.analyticsEventToPublisherEvent(event.eventType);
-    if (propEvent == null) {
-      return;
-    }
-    var additionalParameters = event.additionalParameters;
-    // The EventParams object is private to SwG analytics.  Do not send.
-    if (additionalParameters instanceof _protoApi_messages.EventParams) {
-      additionalParameters = undefined;
-    }
-    if (_utilsTypes.isBoolean(event.isFromUserAction)) {
-      if (!_utilsTypes.isObject(additionalParameters)) {
-        additionalParameters = {};
+  }, {
+    key: "getClientId_",
+    value: function getClientId_() {
+      if (!this.clientId_) {
+        // Match '__gads' (name of the cookie) dropped by Ads Tag.
+        var gadsmatch = this.getDocumentCookie_().match('(^|;)\\s*__gads\\s*=\\s*([^;]+)'); // Since the cookie will be consumed using decodeURIComponent(),
+        // use encodeURIComponent() here to match.
+
+        this.clientId_ = gadsmatch && encodeURIComponent(gadsmatch.pop());
       }
-      additionalParameters['is_active'] = event.isFromUserAction;
+
+      return this.clientId_;
     }
-    this.sendEvent_(propEvent, JSON.stringify( /** @type {?JsonObject} */additionalParameters));
-  };
+    /**
+     * @private
+     * @param {string} url
+     * @return {string}
+     */
 
-  /**
-   * @param {JsonObject} response
-   * @return {!../api/propensity-api.PropensityScore}
-   */
+  }, {
+    key: "propensityUrl_",
+    value: function propensityUrl_(url) {
+      url = url + '&u_tz=240&v=' + this.version_;
+      var clientId = this.getClientId_();
 
-  PropensityServer.prototype.parsePropensityResponse_ = function parsePropensityResponse_(response) {
-    var defaultScore = /** @type {!../api/propensity-api.PropensityScore} */{};
-    if (!response['header']) {
-      defaultScore = /** @type {!../api/propensity-api.PropensityScore} */{
-        header: { ok: false },
-        body: { error: 'No valid response' }
+      if (clientId) {
+        url = url + '&cookie=' + clientId;
+      }
+
+      url = url + '&cdm=' + this.win_.location.hostname;
+      return url;
+    }
+    /**
+     * @param {string} state
+     * @param {?string} productsOrSkus
+     */
+
+  }, {
+    key: "sendSubscriptionState",
+    value: function sendSubscriptionState(state, productsOrSkus) {
+      var init =
+      /** @type {!../utils/xhr.FetchInitDef} */
+      {
+        method: 'GET',
+        credentials: 'include'
+      };
+      var userState = this.publicationId_ + ':' + state;
+
+      if (productsOrSkus) {
+        userState = userState + ':' + encodeURIComponent(productsOrSkus);
+      }
+
+      var url = (0, _services.adsUrl)('/subopt/data?states=') + encodeURIComponent(userState);
+      return this.fetcher_.fetch(this.propensityUrl_(url), init);
+    }
+    /**
+     * @param {string} event
+     * @param {?string} context
+     * @private
+     */
+
+  }, {
+    key: "sendEvent_",
+    value: function sendEvent_(event, context) {
+      var init =
+      /** @type {!../utils/xhr.FetchInitDef} */
+      {
+        method: 'GET',
+        credentials: 'include'
+      };
+      var eventInfo = this.publicationId_ + ':' + event;
+
+      if (context) {
+        eventInfo = eventInfo + ':' + encodeURIComponent(context);
+      }
+
+      var url = (0, _services.adsUrl)('/subopt/data?events=') + encodeURIComponent(eventInfo);
+      return this.fetcher_.fetch(this.propensityUrl_(url), init);
+    }
+    /**
+     *
+     * @param {!../api/client-event-manager-api.ClientEvent} event
+     */
+
+  }, {
+    key: "handleClientEvent_",
+    value: function handleClientEvent_(event) {
+      /**
+       * Does a live check of the config because we don't know when publisher
+       * called to enable (it may be after a consent dialog).
+       */
+      if (!this.deps_.config().enablePropensity && event.eventOriginator !== _api_messages.EventOriginator.PROPENSITY_CLIENT) {
+        return;
+      }
+
+      if (event.eventType === _api_messages.AnalyticsEvent.EVENT_SUBSCRIPTION_STATE) {
+        this.sendSubscriptionState(event.additionalParameters['state'], event.additionalParameters['productsOrSkus']);
+        return;
+      }
+
+      var propEvent = (0, _eventTypeMapping.analyticsEventToPublisherEvent)(event.eventType);
+
+      if (propEvent == null) {
+        return;
+      }
+
+      var additionalParameters = event.additionalParameters; // The EventParams object is private to SwG analytics.  Do not send.
+
+      if (additionalParameters instanceof _api_messages.EventParams) {
+        additionalParameters = undefined;
+      }
+
+      if ((0, _types.isBoolean)(event.isFromUserAction)) {
+        if (!(0, _types.isObject)(additionalParameters)) {
+          additionalParameters = {};
+        }
+
+        additionalParameters['is_active'] = event.isFromUserAction;
+      }
+
+      this.sendEvent_(propEvent, JSON.stringify(
+      /** @type {?JsonObject} */
+      additionalParameters));
+    }
+    /**
+     * @param {JsonObject} response
+     * @return {!../api/propensity-api.PropensityScore}
+     */
+
+  }, {
+    key: "parsePropensityResponse_",
+    value: function parsePropensityResponse_(response) {
+      var defaultScore =
+      /** @type {!../api/propensity-api.PropensityScore} */
+      {};
+
+      if (!response['header']) {
+        defaultScore =
+        /** @type {!../api/propensity-api.PropensityScore} */
+        {
+          header: {
+            ok: false
+          },
+          body: {
+            error: 'No valid response'
+          }
+        };
+        return defaultScore;
+      }
+
+      var status = response['header'];
+      var scoreDetails = undefined;
+
+      if (status['ok']) {
+        var scores = response['scores'];
+        scoreDetails = [];
+
+        for (var i = 0; i < scores.length; i++) {
+          var result = scores[i];
+          var scoreStatus = !!result['score'];
+          var scoreDetail = void 0;
+
+          if (scoreStatus) {
+            var value =
+            /** @type {!../api/propensity-api.Score} */
+            {
+              value: result['score'],
+              bucketed: result['score_type'] == 2
+            };
+            scoreDetail =
+            /** @type {!../api/propensity-api.Body} */
+            {
+              product: result['product'],
+              score: value
+            };
+          } else {
+            scoreDetail =
+            /** @type {!../api/propensity-api.Body} */
+            {
+              product: result['product'],
+              error: result['error_message']
+            };
+          }
+
+          scoreDetails.push(scoreDetail);
+        }
+
+        if (scoreDetails) {
+          defaultScore =
+          /** @type {!../api/propensity-api.PropensityScore} */
+          {
+            header: {
+              ok: true
+            },
+            body: {
+              scores: scoreDetails
+            }
+          };
+        }
+
+        return defaultScore;
+      }
+
+      defaultScore =
+      /** @type {!../api/propensity-api.PropensityScore} */
+      {
+        header: {
+          ok: false
+        },
+        body: {
+          error: response['error']
+        }
       };
       return defaultScore;
     }
-    var status = response['header'];
-    var scoreDetails = undefined;
-    if (status['ok']) {
-      var scores = response['scores'];
-      scoreDetails = [];
-      for (var i = 0; i < scores.length; i++) {
-        var result = scores[i];
-        var scoreStatus = !!result['score'];
-        var scoreDetail = undefined;
-        if (scoreStatus) {
-          var value = /** @type {!../api/propensity-api.Score} */{
-            value: result['score'],
-            bucketed: result['score_type'] == 2
-          };
-          scoreDetail = /** @type {!../api/propensity-api.Body} */{
-            product: result['product'],
-            score: value
-          };
-        } else {
-          scoreDetail = /** @type {!../api/propensity-api.Body} */{
-            product: result['product'],
-            error: result['error_message']
-          };
-        }
-        scoreDetails.push(scoreDetail);
-      }
-      if (scoreDetails) {
-        defaultScore = /** @type {!../api/propensity-api.PropensityScore} */{
-          header: { ok: true },
-          body: { scores: scoreDetails }
-        };
-      }
-      return defaultScore;
+    /**
+     * @param {string} referrer
+     * @param {string} type
+     * @return {?Promise<../api/propensity-api.PropensityScore>}
+     */
+
+  }, {
+    key: "getPropensity",
+    value: function getPropensity(referrer, type) {
+      var _this = this;
+
+      var init =
+      /** @type {!../utils/xhr.FetchInitDef} */
+      {
+        method: 'GET',
+        credentials: 'include'
+      };
+      var url = (0, _services.adsUrl)('/subopt/pts?products=') + this.publicationId_ + '&type=' + type + '&ref=' + referrer;
+      return this.fetcher_.fetch(this.propensityUrl_(url), init).then(function (result) {
+        return result.json();
+      }).then(function (response) {
+        return _this.parsePropensityResponse_(response);
+      });
     }
-    defaultScore = /** @type {!../api/propensity-api.PropensityScore} */{
-      header: { ok: false },
-      body: { error: response['error'] }
-    };
-    return defaultScore;
-  };
-
-  /**
-   * @param {string} referrer
-   * @param {string} type
-   * @return {?Promise<../api/propensity-api.PropensityScore>}
-   */
-
-  PropensityServer.prototype.getPropensity = function getPropensity(referrer, type) {
-    var _this = this;
-
-    var init = /** @type {!../utils/xhr.FetchInitDef} */{
-      method: 'GET',
-      credentials: 'include'
-    };
-    var url = _services.adsUrl('/subopt/pts?products=') + this.publicationId_ + '&type=' + type + '&ref=' + referrer;
-    return this.fetcher_.fetch(this.propensityUrl_(url), init).then(function (result) {
-      return result.json();
-    }).then(function (response) {
-      return _this.parsePropensityResponse_(response);
-    });
-  };
+  }]);
 
   return PropensityServer;
-})();
+}();
 
 exports.PropensityServer = PropensityServer;
 
-},{"../proto/api_messages":33,"../utils/types":80,"./event-type-mapping":42,"./services":58}],56:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../proto/api_messages":32,"../utils/types":79,"./event-type-mapping":41,"./services":57}],55:[function(require,module,exports){
+"use strict";
 
-var _apiPropensityApi = require('../api/propensity-api');
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var PropensityApi = babelHelpers.interopRequireWildcard(_apiPropensityApi);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Propensity = void 0;
 
-var _apiLoggerApi = require('../api/logger-api');
+var PropensityApi = _interopRequireWildcard(require("../api/propensity-api"));
 
-var _propensityServer = require('./propensity-server');
+var _loggerApi = require("../api/logger-api");
 
-var _utilsTypes = require('../utils/types');
+var _api_messages = require("../proto/api_messages");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _propensityServer = require("./propensity-server");
 
-var _eventTypeMapping = require('./event-type-mapping');
+var _types = require("../utils/types");
+
+var _eventTypeMapping = require("./event-type-mapping");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * @implements {PropensityApi.PropensityApi}
  */
-
-var Propensity = (function () {
+var Propensity =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    * @param {!./deps.DepsDef} deps
@@ -12909,189 +14405,204 @@ var Propensity = (function () {
    * available immediately, other function should be gated on a ready promise.
    * #TODO(jpettitt) switch refactor to take out the win and use deps to get win
    */
-
   function Propensity(win, deps, fetcher) {
-    babelHelpers.classCallCheck(this, Propensity);
+    _classCallCheck(this, Propensity);
 
     /** @private @const {!Window} */
     this.win_ = win;
     /** @private {PropensityServer} */
-    this.propensityServer_ = new _propensityServer.PropensityServer(win, deps, fetcher);
 
+    this.propensityServer_ = new _propensityServer.PropensityServer(win, deps, fetcher);
     /** @private @const {!../api/client-event-manager-api.ClientEventManagerApi} */
+
     this.eventManager_ = deps.eventManager();
   }
-
   /** @override */
 
-  Propensity.prototype.sendSubscriptionState = function sendSubscriptionState(state, jsonProducts) {
-    if (!Object.values(_apiLoggerApi.SubscriptionState).includes(state)) {
-      throw new Error('Invalid subscription state provided');
-    }
-    if ((_apiLoggerApi.SubscriptionState.SUBSCRIBER == state || _apiLoggerApi.SubscriptionState.PAST_SUBSCRIBER == state) && !jsonProducts) {
-      throw new Error('Entitlements must be provided for users with' + ' active or expired subscriptions');
-    }
-    if (jsonProducts && !_utilsTypes.isObject(jsonProducts)) {
-      throw new Error('Entitlements must be an Object');
-    }
-    var productsOrSkus = null;
-    if (jsonProducts) {
-      productsOrSkus = JSON.stringify(jsonProducts);
-    }
-    this.propensityServer_.sendSubscriptionState(state, productsOrSkus);
-  };
 
-  /** @override */
-
-  Propensity.prototype.getPropensity = function getPropensity(type) {
-    if (type && !Object.values(PropensityApi.PropensityType).includes(type)) {
-      throw new Error('Invalid propensity type requested');
-    }
-    if (!type) {
-      type = PropensityApi.PropensityType.GENERAL;
-    }
-    return this.propensityServer_.getPropensity(this.win_.document.referrer, type);
-  };
-
-  /** @override */
-
-  Propensity.prototype.sendEvent = function sendEvent(userEvent) {
-    var analyticsEvent = _eventTypeMapping.publisherEventToAnalyticsEvent(userEvent.name);
-    var data = null;
-    if (!_utilsTypes.isEnumValue(_apiLoggerApi.Event, userEvent.name) || !analyticsEvent) {
-      throw new Error('Invalid user event provided(' + userEvent.name + ')');
-    }
-
-    if (userEvent.data) {
-      if (!_utilsTypes.isObject(userEvent.data)) {
-        throw new Error('Event data must be an Object(' + userEvent.data + ')');
-      } else {
-        data = {};
-        Object.assign(data, userEvent.data);
+  _createClass(Propensity, [{
+    key: "sendSubscriptionState",
+    value: function sendSubscriptionState(state, jsonProducts) {
+      if (!Object.values(_loggerApi.SubscriptionState).includes(state)) {
+        throw new Error('Invalid subscription state provided');
       }
-    }
 
-    if (_utilsTypes.isBoolean(userEvent.active)) {
-      if (!data) {
-        data = {};
+      if ((_loggerApi.SubscriptionState.SUBSCRIBER == state || _loggerApi.SubscriptionState.PAST_SUBSCRIBER == state) && !jsonProducts) {
+        throw new Error('Entitlements must be provided for users with' + ' active or expired subscriptions');
       }
-      Object.assign(data, { 'is_active': userEvent.active });
-    } else if (userEvent.active != null) {
-      throw new Error('Event active must be a boolean');
-    }
 
-    this.eventManager_.logEvent({
-      eventType: analyticsEvent,
-      eventOriginator: _protoApi_messages.EventOriginator.PROPENSITY_CLIENT,
-      isFromUserAction: userEvent.active,
-      additionalParameters: data
-    });
-  };
+      if (jsonProducts && !(0, _types.isObject)(jsonProducts)) {
+        throw new Error('Entitlements must be an Object');
+      }
+
+      var productsOrSkus = null;
+
+      if (jsonProducts) {
+        productsOrSkus = JSON.stringify(jsonProducts);
+      }
+
+      this.propensityServer_.sendSubscriptionState(state, productsOrSkus);
+    }
+    /** @override */
+
+  }, {
+    key: "getPropensity",
+    value: function getPropensity(type) {
+      if (type && !Object.values(PropensityApi.PropensityType).includes(type)) {
+        throw new Error('Invalid propensity type requested');
+      }
+
+      if (!type) {
+        type = PropensityApi.PropensityType.GENERAL;
+      }
+
+      return this.propensityServer_.getPropensity(this.win_.document.referrer, type);
+    }
+    /** @override */
+
+  }, {
+    key: "sendEvent",
+    value: function sendEvent(userEvent) {
+      var analyticsEvent = (0, _eventTypeMapping.publisherEventToAnalyticsEvent)(userEvent.name);
+      var data = null;
+
+      if (!(0, _types.isEnumValue)(_loggerApi.Event, userEvent.name) || !analyticsEvent) {
+        throw new Error('Invalid user event provided(' + userEvent.name + ')');
+      }
+
+      if (userEvent.data) {
+        if (!(0, _types.isObject)(userEvent.data)) {
+          throw new Error('Event data must be an Object(' + userEvent.data + ')');
+        } else {
+          data = {};
+          Object.assign(data, userEvent.data);
+        }
+      }
+
+      if ((0, _types.isBoolean)(userEvent.active)) {
+        if (!data) {
+          data = {};
+        }
+
+        Object.assign(data, {
+          'is_active': userEvent.active
+        });
+      } else if (userEvent.active != null) {
+        throw new Error('Event active must be a boolean');
+      }
+
+      this.eventManager_.logEvent({
+        eventType: analyticsEvent,
+        eventOriginator: _api_messages.EventOriginator.PROPENSITY_CLIENT,
+        isFromUserAction: userEvent.active,
+        additionalParameters: data
+      });
+    }
+  }]);
 
   return Propensity;
-})();
+}();
 
 exports.Propensity = Propensity;
 
-},{"../api/logger-api":8,"../api/propensity-api":10,"../proto/api_messages":33,"../utils/types":80,"./event-type-mapping":42,"./propensity-server":55}],57:[function(require,module,exports){
-exports.__esModule = true;
+},{"../api/logger-api":8,"../api/propensity-api":10,"../proto/api_messages":32,"../utils/types":79,"./event-type-mapping":41,"./propensity-server":54}],56:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.getRuntime = getRuntime;
 exports.installRuntime = installRuntime;
 exports.getSubscriptionsClassForTesting = getSubscriptionsClassForTesting;
 exports.getFetcherClassForTesting = getFetcherClassForTesting;
 exports.getDocClassForTesting = getDocClassForTesting;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+exports.ConfiguredRuntime = exports.Runtime = void 0;
 
-var _componentsActivities = require('../components/activities');
+var _offersFlow = require("./offers-flow");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _activities = require("../components/activities");
 
-var _buttonApi = require('./button-api');
+var _api_messages = require("../proto/api_messages");
 
-var _buildCssComponentsDialogCss = require('../../build/css/components/dialog.css');
+var _subscriptions = require("../api/subscriptions");
 
-var _callbacks = require('./callbacks');
+var _analyticsService = require("./analytics-service");
 
-var _contributionsFlow = require('./contributions-flow');
+var _buttonApi = require("./button-api");
 
-var _deferredAccountFlow = require('./deferred-account-flow');
+var _callbacks = require("./callbacks");
 
-var _deps = require('./deps');
+var _clientEventManager = require("./client-event-manager");
 
-var _componentsDialogManager = require('../components/dialog-manager');
+var _contributionsFlow = require("./contributions-flow");
 
-var _modelDoc = require('../model/doc');
+var _deferredAccountFlow = require("./deferred-account-flow");
 
-var _entitlementsManager = require('./entitlements-manager');
+var _deps = require("./deps");
 
-var _experimentFlags = require('./experiment-flags');
+var _dialogManager = require("../components/dialog-manager");
 
-var _fetcher = require('./fetcher');
+var _doc = require("../model/doc");
 
-var _jserror = require('./jserror');
+var _entitlementsManager = require("./entitlements-manager");
 
-var _linkAccountsFlow = require('./link-accounts-flow');
+var _experimentFlags = require("./experiment-flags");
 
-var _loginPromptApi = require('./login-prompt-api');
+var _fetcher = require("./fetcher");
 
-var _loginNotificationApi = require('./login-notification-api');
+var _jserror = require("./jserror");
 
-var _payClient = require('./pay-client');
+var _linkAccountsFlow = require("./link-accounts-flow");
 
-var _waitForSubscriptionLookupApi = require('./wait-for-subscription-lookup-api');
+var _logger = require("./logger");
 
-var _offersApi = require('./offers-api');
+var _loginNotificationApi = require("./login-notification-api");
 
-var _offersFlow = require('./offers-flow');
+var _loginPromptApi = require("./login-prompt-api");
 
-var _modelPageConfig = require('../model/page-config');
+var _offersApi = require("./offers-api");
 
-var _modelPageConfigResolver = require('../model/page-config-resolver');
+var _pageConfig = require("../model/page-config");
 
-var _payFlow = require('./pay-flow');
+var _pageConfigResolver = require("../model/page-config-resolver");
 
-var _utilsPreconnect = require('../utils/preconnect');
+var _payClient = require("./pay-client");
 
-var _storage = require('./storage');
+var _payFlow = require("./pay-flow");
 
-var _apiSubscriptions = require('../api/subscriptions');
+var _preconnect = require("../utils/preconnect");
 
-var _utilsLog = require('../utils/log');
+var _propensity = require("./propensity");
 
-var _utilsDom = require('../utils/dom');
+var _dialog = require("../../build/css/components/dialog.css");
 
-var _utilsTypes = require('../utils/types');
+var _storage = require("./storage");
 
-var _experiments = require('./experiments');
+var _waitForSubscriptionLookupApi = require("./wait-for-subscription-lookup-api");
 
-var _analyticsService = require('./analytics-service');
+var _log = require("../utils/log");
 
-var _propensity = require('./propensity');
+var _dom = require("../utils/dom");
 
-var _clientEventManager = require('./client-event-manager');
+var _types = require("../utils/types");
 
-var _logger = require('./logger');
+var _experiments = require("./experiments");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var RUNTIME_PROP = 'SWG';
 var RUNTIME_LEGACY_PROP = 'SUBSCRIPTIONS'; // MIGRATE
 
-/** @private {!Runtime} */
-var runtimeInstance_ = undefined;
+/**
+ * Reference to the runtime, for testing.
+ * @private {!Runtime}
+ */
 
+var runtimeInstance_;
 /**
  * Returns runtime for testing if available. Throws if the runtime is not
  * initialized yet.
@@ -13100,981 +14611,1132 @@ var runtimeInstance_ = undefined;
  */
 
 function getRuntime() {
-  _utilsLog.assert(runtimeInstance_, 'not initialized yet');
+  (0, _log.assert)(runtimeInstance_, 'not initialized yet');
   return runtimeInstance_;
 }
-
 /**
+ * Installs SwG runtime.
  * @param {!Window} win
  */
 
+
 function installRuntime(win) {
-  if (win[RUNTIME_PROP] && !_utilsTypes.isArray(win[RUNTIME_PROP])) {
+  // Only install the SwG runtime once.
+  if (win[RUNTIME_PROP] && !(0, _types.isArray)(win[RUNTIME_PROP])) {
     return;
-  }
+  } // Create a SwG runtime.
 
-  var runtime = new Runtime(win);
 
-  var waitingArray = [].concat(win[RUNTIME_PROP], win[RUNTIME_LEGACY_PROP]);
+  var runtime = new Runtime(win); // Create a public version of the SwG runtime.
 
-  // Public runtime.
   var publicRuntime = createPublicRuntime(runtime);
-
-  var dependencyInstaller = {};
-
   /**
+   * Executes a callback when SwG runtime is ready.
    * @param {function(!Subscriptions)} callback
    */
-  function pushDependency(callback) {
+
+  function callWhenRuntimeIsReady(callback) {
     if (!callback) {
       return;
     }
+
     runtime.whenReady().then(function () {
       callback(publicRuntime);
     });
-  }
-  Object.defineProperty(dependencyInstaller, 'push', {
-    get: function () {
-      return pushDependency;
-    },
-    configurable: false
-  });
-  win[RUNTIME_PROP] = dependencyInstaller;
-  win[RUNTIME_LEGACY_PROP] = dependencyInstaller;
-  if (waitingArray) {
-    waitingArray.forEach(pushDependency);
-  }
-  runtimeInstance_ = runtime;
+  } // Queue up any callbacks the publication might have provided.
+
+
+  var waitingCallbacks = [].concat(win[RUNTIME_PROP], win[RUNTIME_LEGACY_PROP]);
+  waitingCallbacks.forEach(callWhenRuntimeIsReady); // If any more callbacks are `push`ed to the global SwG variables,
+  // they'll be queued up to receive the SwG runtime when it's ready.
+
+  win[RUNTIME_PROP] = win[RUNTIME_LEGACY_PROP] = {
+    push: callWhenRuntimeIsReady
+  }; // Set variable for testing.
+
+  runtimeInstance_ = runtime; // Kick off subscriptions flow.
+
   runtime.startSubscriptionsFlowIfNeeded();
 }
-
 /**
  * @implements {Subscriptions}
  */
 
-var Runtime = (function () {
+
+var Runtime =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    */
-
   function Runtime(win) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, Runtime);
+    _classCallCheck(this, Runtime);
 
     /** @private @const {!Window} */
     this.win_ = win;
-
     /** @private @const {!Doc} */
-    this.doc_ = _modelDoc.resolveDoc(win);
 
+    this.doc_ = (0, _doc.resolveDoc)(win);
     /** @private @const {!Promise} */
+
     this.ready_ = Promise.resolve();
-
     /** @private {?string} */
+
     this.productOrPublicationId_ = null;
-
     /** @private @const {!../api/subscriptions.Config} */
+
     this.config_ = {};
-
     /** @private {boolean} */
+
     this.committed_ = false;
-
     /** @private {?function((!ConfiguredRuntime|!Promise))} */
-    this.configuredResolver_ = null;
 
+    this.configuredResolver_ = null;
     /** @private @const {!Promise<!ConfiguredRuntime>} */
+
     this.configuredPromise_ = new Promise(function (resolve) {
       _this.configuredResolver_ = resolve;
     });
-
     /** @private {?PageConfigResolver} */
-    this.pageConfigResolver_ = null;
 
+    this.pageConfigResolver_ = null;
     /** @private @const {!ButtonApi} */
+
     this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_, this.configuredPromise_);
     this.buttonApi_.init(); // Injects swg-button stylesheet.
   }
-
-  /**
-   * @implements {DepsDef}
-   * @implements {Subscriptions}
-   */
-
   /**
    * @return {!Promise}
    */
 
-  Runtime.prototype.whenReady = function whenReady() {
-    return this.ready_;
-  };
 
-  /**
-   * @param {boolean} commit
-   * @return {!Promise<!ConfiguredRuntime>}
-   * @private
-   */
+  _createClass(Runtime, [{
+    key: "whenReady",
+    value: function whenReady() {
+      return this.ready_;
+    }
+    /**
+     * @param {boolean} commit
+     * @return {!Promise<!ConfiguredRuntime>}
+     * @private
+     */
 
-  Runtime.prototype.configured_ = function configured_(commit) {
-    var _this2 = this;
+  }, {
+    key: "configured_",
+    value: function configured_(commit) {
+      var _this2 = this;
 
-    if (!this.committed_ && commit) {
-      this.committed_ = true;
-      /** @type {!Promise<!PageConfig>} */
-      var pageConfigPromise = undefined;
-      if (this.productOrPublicationId_) {
-        pageConfigPromise = Promise.resolve(new _modelPageConfig.PageConfig(this.productOrPublicationId_, /* locked */false));
-      } else {
-        this.pageConfigResolver_ = new _modelPageConfigResolver.PageConfigResolver(this.doc_);
-        pageConfigPromise = this.pageConfigResolver_.resolveConfig().then(function (config) {
-          _this2.pageConfigResolver_ = null;
-          return config;
+      if (!this.committed_ && commit) {
+        this.committed_ = true;
+        /** @type {!Promise<!PageConfig>} */
+
+        var pageConfigPromise;
+
+        if (this.productOrPublicationId_) {
+          pageConfigPromise = Promise.resolve(new _pageConfig.PageConfig(this.productOrPublicationId_,
+          /* locked */
+          false));
+        } else {
+          this.pageConfigResolver_ = new _pageConfigResolver.PageConfigResolver(this.doc_);
+          pageConfigPromise = this.pageConfigResolver_.resolveConfig().then(function (config) {
+            _this2.pageConfigResolver_ = null;
+            return config;
+          });
+        }
+
+        pageConfigPromise.then(function (pageConfig) {
+          _this2.configuredResolver_(new ConfiguredRuntime(_this2.doc_, pageConfig,
+          /* integr */
+          {
+            configPromise: _this2.configuredPromise_
+          }, _this2.config_));
+
+          _this2.configuredResolver_ = null;
+        }, function (reason) {
+          _this2.configuredResolver_(Promise.reject(reason));
+
+          _this2.configuredResolver_ = null;
         });
+      } else if (commit && this.pageConfigResolver_) {
+        this.pageConfigResolver_.check();
       }
-      pageConfigPromise.then(function (pageConfig) {
-        _this2.configuredResolver_(new ConfiguredRuntime(_this2.doc_, pageConfig,
-        /* opt_integr */{ configPromise: _this2.configuredPromise_ }, _this2.config_));
-        _this2.configuredResolver_ = null;
-      }, function (reason) {
-        _this2.configuredResolver_(Promise.reject(reason));
-        _this2.configuredResolver_ = null;
+
+      return this.configuredPromise_;
+    }
+    /**
+     * Starts the subscription flow if it hasn't been started and the page is
+     * configured to start it automatically.
+     *
+     * @return {?Promise}
+     * @package
+     */
+
+  }, {
+    key: "startSubscriptionsFlowIfNeeded",
+    value: function startSubscriptionsFlowIfNeeded() {
+      var control = (0, _pageConfigResolver.getControlFlag)(this.win_.document);
+      (0, _log.debugLog)(control, 'mode');
+
+      if (control == 'manual') {
+        // "Skipping automatic start because control flag is set to "manual".
+        return null;
+      }
+
+      return this.start();
+    }
+    /** @override */
+
+  }, {
+    key: "init",
+    value: function init(productOrPublicationId) {
+      (0, _log.assert)(!this.committed_, 'already configured');
+      this.productOrPublicationId_ = productOrPublicationId;
+    }
+    /** @override */
+
+  }, {
+    key: "configure",
+    value: function configure(config) {
+      // Accumulate config for startup.
+      Object.assign(this.config_, config);
+      return this.configured_(false).then(function (runtime) {
+        return runtime.configure(config);
       });
-    } else if (commit && this.pageConfigResolver_) {
-      this.pageConfigResolver_.check();
     }
-    return this.configuredPromise_;
-  };
+    /** @override */
 
-  /**
-   * Starts the subscription flow if it hasn't been started and the page is
-   * configured to start it automatically.
-   *
-   * @return {?Promise}
-   * @package
-   */
-
-  Runtime.prototype.startSubscriptionsFlowIfNeeded = function startSubscriptionsFlowIfNeeded() {
-    var control = _modelPageConfigResolver.getControlFlag(this.win_.document);
-    _utilsLog.debugLog(control, 'mode');
-    if (control == 'manual') {
-      // "Skipping automatic start because control flag is set to "manual".
-      return null;
+  }, {
+    key: "start",
+    value: function start() {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.start();
+      });
     }
-    return this.start();
-  };
-
-  /** @override */
-
-  Runtime.prototype.init = function init(productOrPublicationId) {
-    _utilsLog.assert(!this.committed_, 'already configured');
-    this.productOrPublicationId_ = productOrPublicationId;
-  };
-
-  /** @override */
-
-  Runtime.prototype.configure = function configure(config) {
-    // Accumulate config for startup.
-    Object.assign(this.config_, config);
-    return this.configured_(false).then(function (runtime) {
-      return runtime.configure(config);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.start = function start() {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.start();
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.reset = function reset() {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.reset();
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.clear = function clear() {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.clear();
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.getEntitlements = function getEntitlements(opt_encryptedDocumentKey) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.getEntitlements(opt_encryptedDocumentKey);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.setOnEntitlementsResponse = function setOnEntitlementsResponse(callback) {
-    return this.configured_(false).then(function (runtime) {
-      return runtime.setOnEntitlementsResponse(callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.getOffers = function getOffers(opt_options) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.getOffers(opt_options);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.showOffers = function showOffers(opt_options) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.showOffers(opt_options);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.showUpdateOffers = function showUpdateOffers(opt_options) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.showUpdateOffers(opt_options);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.showSubscribeOption = function showSubscribeOption(opt_options) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.showSubscribeOption(opt_options);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.showAbbrvOffer = function showAbbrvOffer(opt_options) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.showAbbrvOffer(opt_options);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.showContributionOptions = function showContributionOptions(opt_options) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.showContributionOptions(opt_options);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.waitForSubscriptionLookup = function waitForSubscriptionLookup(accountPromise) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.waitForSubscriptionLookup(accountPromise);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.setOnNativeSubscribeRequest = function setOnNativeSubscribeRequest(callback) {
-    return this.configured_(false).then(function (runtime) {
-      return runtime.setOnNativeSubscribeRequest(callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.setOnSubscribeResponse = function setOnSubscribeResponse(callback) {
-    return this.configured_(false).then(function (runtime) {
-      return runtime.setOnSubscribeResponse(callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.subscribe = function subscribe(sku) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.subscribe(sku);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.updateSubscription = function updateSubscription(subscriptionRequest) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.updateSubscription(subscriptionRequest);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.setOnContributionResponse = function setOnContributionResponse(callback) {
-    return this.configured_(false).then(function (runtime) {
-      return runtime.setOnContributionResponse(callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.contribute = function contribute(skuOrSubscriptionRequest) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.contribute(skuOrSubscriptionRequest);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.completeDeferredAccountCreation = function completeDeferredAccountCreation(opt_options) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.completeDeferredAccountCreation(opt_options);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.setOnLoginRequest = function setOnLoginRequest(callback) {
-    return this.configured_(false).then(function (runtime) {
-      return runtime.setOnLoginRequest(callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.setOnLinkComplete = function setOnLinkComplete(callback) {
-    return this.configured_(false).then(function (runtime) {
-      return runtime.setOnLinkComplete(callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.linkAccount = function linkAccount() {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.linkAccount();
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.setOnFlowStarted = function setOnFlowStarted(callback) {
-    return this.configured_(false).then(function (runtime) {
-      return runtime.setOnFlowStarted(callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.setOnFlowCanceled = function setOnFlowCanceled(callback) {
-    return this.configured_(false).then(function (runtime) {
-      return runtime.setOnFlowCanceled(callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.saveSubscription = function saveSubscription(saveSubscriptionRequestCallback) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.saveSubscription(saveSubscriptionRequestCallback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.showLoginPrompt = function showLoginPrompt() {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.showLoginPrompt();
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.showLoginNotification = function showLoginNotification() {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.showLoginNotification();
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.createButton = function createButton(optionsOrCallback, opt_callback) {
-    return this.buttonApi_.create(optionsOrCallback, opt_callback);
-  };
-
-  /** @override */
-
-  Runtime.prototype.attachSmartButton = function attachSmartButton(button, optionsOrCallback, opt_callback) {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.attachSmartButton(button, optionsOrCallback, opt_callback);
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.attachButton = function attachButton(button, optionsOrCallback, opt_callback) {
-    return this.buttonApi_.attach(button, optionsOrCallback, opt_callback);
-  };
-
-  /** @override */
-
-  Runtime.prototype.getPropensityModule = function getPropensityModule() {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.getPropensityModule();
-    });
-  };
-
-  /** @override */
-
-  Runtime.prototype.getLogger = function getLogger() {
-    return this.configured_(true).then(function (runtime) {
-      return runtime.getLogger();
-    });
-  };
+    /** @override */
+
+  }, {
+    key: "reset",
+    value: function reset() {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.reset();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "clear",
+    value: function clear() {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.clear();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "getEntitlements",
+    value: function getEntitlements(encryptedDocumentKey) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.getEntitlements(encryptedDocumentKey);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnEntitlementsResponse",
+    value: function setOnEntitlementsResponse(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnEntitlementsResponse(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "getOffers",
+    value: function getOffers(options) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.getOffers(options);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showOffers",
+    value: function showOffers(options) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.showOffers(options);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showUpdateOffers",
+    value: function showUpdateOffers(options) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.showUpdateOffers(options);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showSubscribeOption",
+    value: function showSubscribeOption(options) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.showSubscribeOption(options);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showAbbrvOffer",
+    value: function showAbbrvOffer(options) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.showAbbrvOffer(options);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showContributionOptions",
+    value: function showContributionOptions(options) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.showContributionOptions(options);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "waitForSubscriptionLookup",
+    value: function waitForSubscriptionLookup(accountPromise) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.waitForSubscriptionLookup(accountPromise);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnNativeSubscribeRequest",
+    value: function setOnNativeSubscribeRequest(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnNativeSubscribeRequest(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnSubscribeResponse",
+    value: function setOnSubscribeResponse(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnSubscribeResponse(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "subscribe",
+    value: function subscribe(sku) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.subscribe(sku);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "updateSubscription",
+    value: function updateSubscription(subscriptionRequest) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.updateSubscription(subscriptionRequest);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnContributionResponse",
+    value: function setOnContributionResponse(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnContributionResponse(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnPaymentResponse",
+    value: function setOnPaymentResponse(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnPaymentResponse(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "contribute",
+    value: function contribute(skuOrSubscriptionRequest) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.contribute(skuOrSubscriptionRequest);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "completeDeferredAccountCreation",
+    value: function completeDeferredAccountCreation(options) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.completeDeferredAccountCreation(options);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnLoginRequest",
+    value: function setOnLoginRequest(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnLoginRequest(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnLinkComplete",
+    value: function setOnLinkComplete(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnLinkComplete(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "linkAccount",
+    value: function linkAccount() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return this.configured_(true).then(function (runtime) {
+        return runtime.linkAccount(params);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnFlowStarted",
+    value: function setOnFlowStarted(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnFlowStarted(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnFlowCanceled",
+    value: function setOnFlowCanceled(callback) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.setOnFlowCanceled(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "saveSubscription",
+    value: function saveSubscription(saveSubscriptionRequestCallback) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.saveSubscription(saveSubscriptionRequestCallback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showLoginPrompt",
+    value: function showLoginPrompt() {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.showLoginPrompt();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showLoginNotification",
+    value: function showLoginNotification() {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.showLoginNotification();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "createButton",
+    value: function createButton(optionsOrCallback, callback) {
+      return this.buttonApi_.create(optionsOrCallback, callback);
+    }
+    /** @override */
+
+  }, {
+    key: "attachSmartButton",
+    value: function attachSmartButton(button, optionsOrCallback, callback) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.attachSmartButton(button, optionsOrCallback, callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "attachButton",
+    value: function attachButton(button, optionsOrCallback, callback) {
+      return this.buttonApi_.attach(button, optionsOrCallback, callback);
+    }
+    /** @override */
+
+  }, {
+    key: "getPropensityModule",
+    value: function getPropensityModule() {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.getPropensityModule();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "getLogger",
+    value: function getLogger() {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.getLogger();
+      });
+    }
+  }]);
 
   return Runtime;
-})();
+}();
+/**
+ * @implements {DepsDef}
+ * @implements {Subscriptions}
+ */
+
 
 exports.Runtime = Runtime;
 
-var ConfiguredRuntime = (function () {
+var ConfiguredRuntime =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window|!Document|!Doc} winOrDoc
    * @param {!../model/page-config.PageConfig} pageConfig
    * @param {{
    *     fetcher: (!Fetcher|undefined),
    *     configPromise: (!Promise|undefined),
-   *   }=} opt_integr
-   * @param {!../api/subscriptions.Config=} opt_config
+   *   }=} integr
+   * @param {!../api/subscriptions.Config=} config
    */
-
-  function ConfiguredRuntime(winOrDoc, pageConfig, opt_integr, opt_config) {
+  function ConfiguredRuntime(winOrDoc, pageConfig, integr, config) {
     var _this3 = this;
 
-    babelHelpers.classCallCheck(this, ConfiguredRuntime);
+    _classCallCheck(this, ConfiguredRuntime);
 
-    opt_integr = opt_integr || {};
-    opt_integr.configPromise = opt_integr.configPromise || Promise.resolve();
-
+    integr = integr || {};
+    integr.configPromise = integr.configPromise || Promise.resolve();
     /** @private @const {!ClientEventManager} */
-    this.eventManager_ = new _clientEventManager.ClientEventManager(opt_integr.configPromise);
 
+    this.eventManager_ = new _clientEventManager.ClientEventManager(integr.configPromise);
     /** @private @const {!Doc} */
-    this.doc_ = _modelDoc.resolveDoc(winOrDoc);
 
+    this.doc_ = (0, _doc.resolveDoc)(winOrDoc);
     /** @private @const {!Window} */
+
     this.win_ = this.doc_.getWin();
-
     /** @private @const {!../api/subscriptions.Config} */
-    this.config_ = _apiSubscriptions.defaultConfig();
 
-    if (_utilsDom.isEdgeBrowser(this.win_)) {
+    this.config_ = (0, _subscriptions.defaultConfig)();
+
+    if ((0, _dom.isEdgeBrowser)(this.win_)) {
       // TODO(dvoytenko, b/120607343): Find a way to remove this restriction
       // or move it to Web Activities.
-      this.config_.windowOpenMode = _apiSubscriptions.WindowOpenMode.REDIRECT;
-    }
-    if (opt_config) {
-      this.configure_(opt_config);
+      this.config_.windowOpenMode = _subscriptions.WindowOpenMode.REDIRECT;
     }
 
+    if (config) {
+      this.configure_(config);
+    }
     /** @private @const {!../model/page-config.PageConfig} */
+
+
     this.pageConfig_ = pageConfig;
-
     /** @private @const {!Promise} */
+
     this.documentParsed_ = this.doc_.whenReady();
-
     /** @private @const {!JsError} */
+
     this.jserror_ = new _jserror.JsError(this.doc_);
-
     /** @private @const {!Fetcher} */
-    this.fetcher_ = opt_integr.fetcher || new _fetcher.XhrFetcher(this.win_);
 
+    this.fetcher_ = integr.fetcher || new _fetcher.XhrFetcher(this.win_);
     /** @private @const {!Storage} */
-    this.storage_ = new _storage.Storage(this.win_);
 
+    this.storage_ = new _storage.Storage(this.win_);
     /** @private @const {!DialogManager} */
-    this.dialogManager_ = new _componentsDialogManager.DialogManager(this.doc_);
+
+    this.dialogManager_ = new _dialogManager.DialogManager(this.doc_);
+    /** @private @const {!Callbacks} */
+
+    this.callbacks_ = new _callbacks.Callbacks(); // WARNING: DepsDef ('this') is being progressively defined below.
+    // Constructors will crash if they rely on something that doesn't exist yet.
 
     /** @private @const {!../components/activities.ActivityPorts} */
-    this.activityPorts_ = new _componentsActivities.ActivityPorts(this.win_);
 
-    /** @private @const {!PayClient} */
-    this.payClient_ = new _payClient.PayClient(this.win_, this.activityPorts_, this.dialogManager_);
-
-    /** @private @const {!Callbacks} */
-    this.callbacks_ = new _callbacks.Callbacks();
-
-    //NOTE: 'this' is passed in as a DepsDef.  Do not pass in 'this' before
-    //analytics service and entitlements manager are constructed unless
-    //you are certain they do not rely on them because they are part of that
-    //definition.
-    /** @private @const {!Logger} */
-    this.logger_ = new _logger.Logger(this);
-
+    this.activityPorts_ = new _activities.ActivityPorts(this);
     /** @private @const {!AnalyticsService} */
-    this.analyticsService_ = new _analyticsService.AnalyticsService(this);
 
+    this.analyticsService_ = new _analyticsService.AnalyticsService(this);
+    /** @private @const {!PayClient} */
+
+    this.payClient_ = new _payClient.PayClient(this);
+    /** @private @const {!Logger} */
+
+    this.logger_ = new _logger.Logger(this);
     /** @private @const {!EntitlementsManager} */
+
     this.entitlementsManager_ = new _entitlementsManager.EntitlementsManager(this.win_, this.pageConfig_, this.fetcher_, this // See note about 'this' above
     );
-
     /** @private @const {!Propensity} */
+
     this.propensityModule_ = new _propensity.Propensity(this.win_, this, // See note about 'this' above
-    this.fetcher_);
+    this.fetcher_); // ALL CLEAR: DepsDef definition now complete.
 
     /** @private @const {!OffersApi} */
+
     this.offersApi_ = new _offersApi.OffersApi(this.pageConfig_, this.fetcher_);
-
     /** @private @const {!ButtonApi} */
+
     this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_, Promise.resolve(this));
-
-    var preconnect = new _utilsPreconnect.Preconnect(this.win_.document);
-
+    var preconnect = new _preconnect.Preconnect(this.win_.document);
     preconnect.prefetch('/assets/loader.svg');
+
     _linkAccountsFlow.LinkCompleteFlow.configurePending(this);
+
     _payFlow.PayCompleteFlow.configurePending(this);
+
     this.payClient_.preconnect(preconnect);
+    (0, _dom.injectStyleSheet)(this.doc_, _dialog.CSS); // Report redirect errors if any.
 
-    _utilsDom.injectStyleSheet(this.doc_, _buildCssComponentsDialogCss.CSS);
-
-    // Report redirect errors if any.
     this.activityPorts_.onRedirectError(function (error) {
       _this3.analyticsService_.addLabels(['redirect']);
-      _this3.eventManager_.logSwgEvent(_protoApi_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED, false);
+
+      _this3.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED, false);
+
       _this3.jserror_.error('Redirect error', error);
     });
   }
-
-  /**
-   * @param {!Runtime} runtime
-   * @return {!Subscriptions}
-   */
-
   /** @override */
 
-  ConfiguredRuntime.prototype.doc = function doc() {
-    return this.doc_;
-  };
 
-  /** @override */
+  _createClass(ConfiguredRuntime, [{
+    key: "doc",
+    value: function doc() {
+      return this.doc_;
+    }
+    /** @override */
 
-  ConfiguredRuntime.prototype.win = function win() {
-    return this.win_;
-  };
+  }, {
+    key: "win",
+    value: function win() {
+      return this.win_;
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "pageConfig",
+    value: function pageConfig() {
+      return this.pageConfig_;
+    }
+    /** @override */
 
-  ConfiguredRuntime.prototype.pageConfig = function pageConfig() {
-    return this.pageConfig_;
-  };
+  }, {
+    key: "jserror",
+    value: function jserror() {
+      return this.jserror_;
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "activities",
+    value: function activities() {
+      return this.activityPorts_;
+    }
+    /** @override */
 
-  ConfiguredRuntime.prototype.jserror = function jserror() {
-    return this.jserror_;
-  };
+  }, {
+    key: "payClient",
+    value: function payClient() {
+      return this.payClient_;
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "dialogManager",
+    value: function dialogManager() {
+      return this.dialogManager_;
+    }
+    /** @override */
 
-  ConfiguredRuntime.prototype.activities = function activities() {
-    return this.activityPorts_;
-  };
+  }, {
+    key: "entitlementsManager",
+    value: function entitlementsManager() {
+      return this.entitlementsManager_;
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "callbacks",
+    value: function callbacks() {
+      return this.callbacks_;
+    }
+    /** @override */
 
-  ConfiguredRuntime.prototype.payClient = function payClient() {
-    return this.payClient_;
-  };
+  }, {
+    key: "storage",
+    value: function storage() {
+      return this.storage_;
+    }
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "analytics",
+    value: function analytics() {
+      return this.analyticsService_;
+    }
+    /** @override */
 
-  ConfiguredRuntime.prototype.dialogManager = function dialogManager() {
-    return this.dialogManager_;
-  };
+  }, {
+    key: "init",
+    value: function init() {} // Implemented by the `Runtime` class.
 
-  /** @override */
+    /** @override */
 
-  ConfiguredRuntime.prototype.entitlementsManager = function entitlementsManager() {
-    return this.entitlementsManager_;
-  };
+  }, {
+    key: "configure",
+    value: function configure(config) {
+      // Indirected for constructor testing.
+      this.configure_(config);
+    }
+    /**
+     * @param {!../api/subscriptions.Config} config
+     * @private
+     */
 
-  /** @override */
+  }, {
+    key: "configure_",
+    value: function configure_(config) {
+      var _this4 = this;
 
-  ConfiguredRuntime.prototype.callbacks = function callbacks() {
-    return this.callbacks_;
-  };
+      // Validate first.
+      var error = '';
 
-  /** @override */
+      for (var k in config) {
+        var v = config[k];
 
-  ConfiguredRuntime.prototype.storage = function storage() {
-    return this.storage_;
-  };
+        switch (k) {
+          case 'windowOpenMode':
+            if (v != _subscriptions.WindowOpenMode.AUTO && v != _subscriptions.WindowOpenMode.REDIRECT) {
+              error = 'Unknown windowOpenMode: ' + v;
+            }
 
-  /** @override */
+            break;
 
-  ConfiguredRuntime.prototype.analytics = function analytics() {
-    return this.analyticsService_;
-  };
+          case 'experiments':
+            v.forEach(function (experiment) {
+              return (0, _experiments.setExperiment)(_this4.win_, experiment, true);
+            });
+            break;
 
-  /** @override */
+          case 'analyticsMode':
+            if (v != _subscriptions.AnalyticsMode.DEFAULT && v != _subscriptions.AnalyticsMode.IMPRESSIONS) {
+              error = 'Unknown analytics mode: ' + v;
+            }
 
-  ConfiguredRuntime.prototype.init = function init() {}
-  // Implemented by the `Runtime` class.
+            break;
 
-  /** @override */
-  ;
+          case 'enableSwgAnalytics':
+            if (!(0, _types.isBoolean)(v)) {
+              error = 'Unknown enableSwgAnalytics value: ' + v;
+            }
 
-  ConfiguredRuntime.prototype.configure = function configure(config) {
-    // Indirected for constructor testing.
-    this.configure_(config);
-  };
+            break;
 
-  /**
-   * @param {!../api/subscriptions.Config} config
-   * @private
-   */
+          case 'enablePropensity':
+            if (!(0, _types.isBoolean)(v)) {
+              error = 'Unknown enablePropensity value: ' + v;
+            }
 
-  ConfiguredRuntime.prototype.configure_ = function configure_(config) {
-    var _this4 = this;
+            break;
 
-    // Validate first.
-    var error = '';
-    for (var k in config) {
-      var v = config[k];
-      switch (k) {
-        case 'windowOpenMode':
-          if (v != _apiSubscriptions.WindowOpenMode.AUTO && v != _apiSubscriptions.WindowOpenMode.REDIRECT) {
-            error = 'Unknown windowOpenMode: ' + v;
-          }
-          break;
-        case 'experiments':
-          v.forEach(function (experiment) {
-            return _experiments.setExperiment(_this4.win_, experiment, true);
-          });
-          break;
-        case 'analyticsMode':
-          if (v != _apiSubscriptions.AnalyticsMode.DEFAULT && v != _apiSubscriptions.AnalyticsMode.IMPRESSIONS) {
-            error = 'Unknown analytics mode: ' + v;
-          }
-          break;
-        case 'enableSwgAnalytics':
-          if (!_utilsTypes.isBoolean(v)) {
-            error = 'Unknown enableSwgAnalytics value: ' + v;
-          }
-          break;
-        case 'enablePropensity':
-          if (!_utilsTypes.isBoolean(v)) {
-            error = 'Unknown enablePropensity value: ' + v;
-          }
-          break;
-        default:
-          error = 'Unknown config property: ' + k;
+          default:
+            error = 'Unknown config property: ' + k;
+        }
+      } // Throw error string if it's not null
+
+
+      (0, _log.assert)(!error, error || undefined); // Assign.
+
+      Object.assign(this.config_, config);
+    }
+    /** @override */
+
+  }, {
+    key: "config",
+    value: function config() {
+      return this.config_;
+    }
+    /** @override */
+
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.entitlementsManager_.reset();
+      this.dialogManager_.completeAll();
+    }
+    /** @override */
+
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.entitlementsManager_.clear();
+      this.dialogManager_.completeAll();
+    }
+    /** @override */
+
+  }, {
+    key: "start",
+    value: function start() {
+      // No need to run entitlements without a product or for an unlocked page.
+      if (!this.pageConfig_.getProductId() || !this.pageConfig_.isLocked()) {
+        return Promise.resolve();
       }
+
+      this.getEntitlements();
     }
-    // Throw error string if it's not null
-    _utilsLog.assert(!error, error || undefined);
-    // Assign.
-    Object.assign(this.config_, config);
-  };
+    /** @override */
 
-  /** @override */
+  }, {
+    key: "getEntitlements",
+    value: function getEntitlements(encryptedDocumentKey) {
+      var _this5 = this;
 
-  ConfiguredRuntime.prototype.config = function config() {
-    return this.config_;
-  };
+      return this.entitlementsManager_.getEntitlements(encryptedDocumentKey).then(function (entitlements) {
+        // Auto update internal things tracking the user's current SKU.
+        if (entitlements) {
+          try {
+            var skus = entitlements.entitlements.map(function (entitlement) {
+              return entitlement.getSku() || 'unknown subscriptionToken';
+            });
 
-  /** @override */
+            if (skus.length > 0) {
+              _this5.analyticsService_.setSku(skus.join(','));
+            }
+          } catch (ex) {}
+        }
 
-  ConfiguredRuntime.prototype.reset = function reset() {
-    this.entitlementsManager_.reset();
-    this.dialogManager_.completeAll();
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.clear = function clear() {
-    this.entitlementsManager_.clear();
-    this.dialogManager_.completeAll();
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.start = function start() {
-    // No need to run entitlements without a product or for an unlocked page.
-    if (!this.pageConfig_.getProductId() || !this.pageConfig_.isLocked()) {
-      return Promise.resolve();
+        return entitlements.clone();
+      });
     }
-    this.getEntitlements();
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.getEntitlements = function getEntitlements(opt_encryptedDocumentKey) {
-    return this.entitlementsManager_.getEntitlements(opt_encryptedDocumentKey).then(function (entitlements) {
-      return entitlements.clone();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.setOnEntitlementsResponse = function setOnEntitlementsResponse(callback) {
-    this.callbacks_.setOnEntitlementsResponse(callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.getOffers = function getOffers(opt_options) {
-    return this.offersApi_.getOffers(opt_options && opt_options.productId);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.showOffers = function showOffers(opt_options) {
-    var _this5 = this;
-
-    return this.documentParsed_.then(function () {
-      var errorMessage = 'The showOffers() method cannot be used to update a subscription. ' + 'Use the showUpdateOffers() method instead.';
-      _utilsLog.assert(opt_options ? !opt_options['oldSku'] : true, errorMessage);
-      var flow = new _offersFlow.OffersFlow(_this5, opt_options);
-      return flow.start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.showUpdateOffers = function showUpdateOffers(opt_options) {
-    var _this6 = this;
-
-    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.REPLACE_SUBSCRIPTION), 'Not yet launched!');
-    return this.documentParsed_.then(function () {
-      var errorMessage = 'The showUpdateOffers() method cannot be used for new subscribers. ' + 'Use the showOffers() method instead.';
-      _utilsLog.assert(opt_options ? !!opt_options['oldSku'] : false, errorMessage);
-      var flow = new _offersFlow.OffersFlow(_this6, opt_options);
-      return flow.start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.showSubscribeOption = function showSubscribeOption(opt_options) {
-    var _this7 = this;
-
-    return this.documentParsed_.then(function () {
-      var flow = new _offersFlow.SubscribeOptionFlow(_this7, opt_options);
-      return flow.start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.showAbbrvOffer = function showAbbrvOffer(opt_options) {
-    var _this8 = this;
-
-    return this.documentParsed_.then(function () {
-      var flow = new _offersFlow.AbbrvOfferFlow(_this8, opt_options);
-      return flow.start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.showContributionOptions = function showContributionOptions(opt_options) {
-    var _this9 = this;
-
-    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.CONTRIBUTIONS), 'Not yet launched!');
-    return this.documentParsed_.then(function () {
-      var flow = new _contributionsFlow.ContributionsFlow(_this9, opt_options);
-      return flow.start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.waitForSubscriptionLookup = function waitForSubscriptionLookup(accountPromise) {
-    var _this10 = this;
-
-    return this.documentParsed_.then(function () {
-      var wait = new _waitForSubscriptionLookupApi.WaitForSubscriptionLookupApi(_this10, accountPromise);
-      return wait.start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.setOnLoginRequest = function setOnLoginRequest(callback) {
-    this.callbacks_.setOnLoginRequest(callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.setOnLinkComplete = function setOnLinkComplete(callback) {
-    this.callbacks_.setOnLinkComplete(callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.linkAccount = function linkAccount() {
-    var _this11 = this;
-
-    return this.documentParsed_.then(function () {
-      return new _linkAccountsFlow.LinkbackFlow(_this11).start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.saveSubscription = function saveSubscription(saveSubscriptionRequestCallback) {
-    var _this12 = this;
-
-    return this.documentParsed_.then(function () {
-      return new _linkAccountsFlow.LinkSaveFlow(_this12, saveSubscriptionRequestCallback).start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.showLoginPrompt = function showLoginPrompt() {
-    var _this13 = this;
-
-    return this.documentParsed_.then(function () {
-      return new _loginPromptApi.LoginPromptApi(_this13).start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.showLoginNotification = function showLoginNotification() {
-    var _this14 = this;
-
-    return this.documentParsed_.then(function () {
-      return new _loginNotificationApi.LoginNotificationApi(_this14).start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.setOnNativeSubscribeRequest = function setOnNativeSubscribeRequest(callback) {
-    this.callbacks_.setOnSubscribeRequest(callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.setOnSubscribeResponse = function setOnSubscribeResponse(callback) {
-    this.callbacks_.setOnSubscribeResponse(callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.subscribe = function subscribe(sku) {
-    var _this15 = this;
-
-    var errorMessage = 'The subscribe() method can only take a sku as its parameter; ' + 'for subscription updates please use the updateSubscription() method';
-    _utilsLog.assert(typeof sku === 'string', errorMessage);
-    return this.documentParsed_.then(function () {
-      return new _payFlow.PayStartFlow(_this15, sku).start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.updateSubscription = function updateSubscription(subscriptionRequest) {
-    var _this16 = this;
-
-    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.REPLACE_SUBSCRIPTION), 'Not yet launched!');
-    var errorMessage = 'The updateSubscription() method should be used for subscription ' + 'updates; for new subscriptions please use the subscribe() method';
-    _utilsLog.assert(subscriptionRequest ? subscriptionRequest['oldSku'] : false, errorMessage);
-    return this.documentParsed_.then(function () {
-      return new _payFlow.PayStartFlow(_this16, subscriptionRequest).start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.setOnContributionResponse = function setOnContributionResponse(callback) {
-    this.callbacks_.setOnContributionResponse(callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.contribute = function contribute(skuOrSubscriptionRequest) {
-    var _this17 = this;
-
-    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.CONTRIBUTIONS), 'Not yet launched!');
-
-    return this.documentParsed_.then(function () {
-      return new _payFlow.PayStartFlow(_this17, skuOrSubscriptionRequest, _apiSubscriptions.ProductType.UI_CONTRIBUTION).start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.completeDeferredAccountCreation = function completeDeferredAccountCreation(opt_options) {
-    var _this18 = this;
-
-    return this.documentParsed_.then(function () {
-      return new _deferredAccountFlow.DeferredAccountFlow(_this18, opt_options || null).start();
-    });
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.setOnFlowStarted = function setOnFlowStarted(callback) {
-    this.callbacks_.setOnFlowStarted(callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.setOnFlowCanceled = function setOnFlowCanceled(callback) {
-    this.callbacks_.setOnFlowCanceled(callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.createButton = function createButton(optionsOrCallback, opt_callback) {
-    // This is a minor duplication to allow this code to be sync.
-    return this.buttonApi_.create(optionsOrCallback, opt_callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.attachButton = function attachButton(button, optionsOrCallback, opt_callback) {
-    // This is a minor duplication to allow this code to be sync.
-    this.buttonApi_.attach(button, optionsOrCallback, opt_callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.attachSmartButton = function attachSmartButton(button, optionsOrCallback, opt_callback) {
-    _utilsLog.assert(_experiments.isExperimentOn(this.win_, _experimentFlags.ExperimentFlags.SMARTBOX), 'Not yet launched!');
-    this.buttonApi_.attachSmartButton(this, button, optionsOrCallback, opt_callback);
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.getPropensityModule = function getPropensityModule() {
-    return Promise.resolve(this.propensityModule_);
-  };
-
-  /** @override
-   * @return {!ClientEventManager}
-   */
-
-  ConfiguredRuntime.prototype.eventManager = function eventManager() {
-    return this.eventManager_;
-  };
-
-  /** @override */
-
-  ConfiguredRuntime.prototype.getLogger = function getLogger() {
-    return Promise.resolve(this.logger_);
-  };
+    /** @override */
+
+  }, {
+    key: "setOnEntitlementsResponse",
+    value: function setOnEntitlementsResponse(callback) {
+      this.callbacks_.setOnEntitlementsResponse(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "getOffers",
+    value: function getOffers(options) {
+      return this.offersApi_.getOffers(options && options.productId);
+    }
+    /** @override */
+
+  }, {
+    key: "showOffers",
+    value: function showOffers(options) {
+      var _this6 = this;
+
+      return this.documentParsed_.then(function () {
+        var errorMessage = 'The showOffers() method cannot be used to update a subscription. ' + 'Use the showUpdateOffers() method instead.';
+        (0, _log.assert)(options ? !options['oldSku'] : true, errorMessage);
+        var flow = new _offersFlow.OffersFlow(_this6, options);
+        return flow.start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showUpdateOffers",
+    value: function showUpdateOffers(options) {
+      var _this7 = this;
+
+      (0, _log.assert)((0, _experiments.isExperimentOn)(this.win_, _experimentFlags.ExperimentFlags.REPLACE_SUBSCRIPTION), 'Not yet launched!');
+      return this.documentParsed_.then(function () {
+        var errorMessage = 'The showUpdateOffers() method cannot be used for new subscribers. ' + 'Use the showOffers() method instead.';
+        (0, _log.assert)(options ? !!options['oldSku'] : false, errorMessage);
+        var flow = new _offersFlow.OffersFlow(_this7, options);
+        return flow.start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showSubscribeOption",
+    value: function showSubscribeOption(options) {
+      var _this8 = this;
+
+      return this.documentParsed_.then(function () {
+        var flow = new _offersFlow.SubscribeOptionFlow(_this8, options);
+        return flow.start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showAbbrvOffer",
+    value: function showAbbrvOffer(options) {
+      var _this9 = this;
+
+      return this.documentParsed_.then(function () {
+        var flow = new _offersFlow.AbbrvOfferFlow(_this9, options);
+        return flow.start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showContributionOptions",
+    value: function showContributionOptions(options) {
+      var _this10 = this;
+
+      return this.documentParsed_.then(function () {
+        var flow = new _contributionsFlow.ContributionsFlow(_this10, options);
+        return flow.start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "waitForSubscriptionLookup",
+    value: function waitForSubscriptionLookup(accountPromise) {
+      var _this11 = this;
+
+      return this.documentParsed_.then(function () {
+        var wait = new _waitForSubscriptionLookupApi.WaitForSubscriptionLookupApi(_this11, accountPromise);
+        return wait.start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnLoginRequest",
+    value: function setOnLoginRequest(callback) {
+      this.callbacks_.setOnLoginRequest(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "setOnLinkComplete",
+    value: function setOnLinkComplete(callback) {
+      this.callbacks_.setOnLinkComplete(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "linkAccount",
+    value: function linkAccount() {
+      var _this12 = this;
+
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return this.documentParsed_.then(function () {
+        return new _linkAccountsFlow.LinkbackFlow(_this12).start(params);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "saveSubscription",
+    value: function saveSubscription(saveSubscriptionRequestCallback) {
+      var _this13 = this;
+
+      return this.documentParsed_.then(function () {
+        return new _linkAccountsFlow.LinkSaveFlow(_this13, saveSubscriptionRequestCallback).start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showLoginPrompt",
+    value: function showLoginPrompt() {
+      var _this14 = this;
+
+      return this.documentParsed_.then(function () {
+        return new _loginPromptApi.LoginPromptApi(_this14).start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showLoginNotification",
+    value: function showLoginNotification() {
+      var _this15 = this;
+
+      return this.documentParsed_.then(function () {
+        return new _loginNotificationApi.LoginNotificationApi(_this15).start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnNativeSubscribeRequest",
+    value: function setOnNativeSubscribeRequest(callback) {
+      this.callbacks_.setOnSubscribeRequest(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "setOnSubscribeResponse",
+    value: function setOnSubscribeResponse(callback) {
+      this.callbacks_.setOnSubscribeResponse(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "setOnPaymentResponse",
+    value: function setOnPaymentResponse(callback) {
+      this.callbacks_.setOnPaymentResponse(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "subscribe",
+    value: function subscribe(sku) {
+      var _this16 = this;
+
+      var errorMessage = 'The subscribe() method can only take a sku as its parameter; ' + 'for subscription updates please use the updateSubscription() method';
+      (0, _log.assert)(typeof sku === 'string', errorMessage);
+      return this.documentParsed_.then(function () {
+        return new _payFlow.PayStartFlow(_this16, sku).start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "updateSubscription",
+    value: function updateSubscription(subscriptionRequest) {
+      var _this17 = this;
+
+      (0, _log.assert)((0, _experiments.isExperimentOn)(this.win_, _experimentFlags.ExperimentFlags.REPLACE_SUBSCRIPTION), 'Not yet launched!');
+      var errorMessage = 'The updateSubscription() method should be used for subscription ' + 'updates; for new subscriptions please use the subscribe() method';
+      (0, _log.assert)(subscriptionRequest ? subscriptionRequest['oldSku'] : false, errorMessage);
+      return this.documentParsed_.then(function () {
+        return new _payFlow.PayStartFlow(_this17, subscriptionRequest).start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnContributionResponse",
+    value: function setOnContributionResponse(callback) {
+      this.callbacks_.setOnContributionResponse(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "contribute",
+    value: function contribute(skuOrSubscriptionRequest) {
+      var _this18 = this;
+
+      return this.documentParsed_.then(function () {
+        return new _payFlow.PayStartFlow(_this18, skuOrSubscriptionRequest, _subscriptions.ProductType.UI_CONTRIBUTION).start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "completeDeferredAccountCreation",
+    value: function completeDeferredAccountCreation(options) {
+      var _this19 = this;
+
+      return this.documentParsed_.then(function () {
+        return new _deferredAccountFlow.DeferredAccountFlow(_this19, options || null).start();
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "setOnFlowStarted",
+    value: function setOnFlowStarted(callback) {
+      this.callbacks_.setOnFlowStarted(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "setOnFlowCanceled",
+    value: function setOnFlowCanceled(callback) {
+      this.callbacks_.setOnFlowCanceled(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "createButton",
+    value: function createButton(optionsOrCallback, callback) {
+      // This is a minor duplication to allow this code to be sync.
+      return this.buttonApi_.create(optionsOrCallback, callback);
+    }
+    /** @override */
+
+  }, {
+    key: "attachButton",
+    value: function attachButton(button, optionsOrCallback, callback) {
+      // This is a minor duplication to allow this code to be sync.
+      this.buttonApi_.attach(button, optionsOrCallback, callback);
+    }
+    /** @override */
+
+  }, {
+    key: "attachSmartButton",
+    value: function attachSmartButton(button, optionsOrCallback, callback) {
+      (0, _log.assert)((0, _experiments.isExperimentOn)(this.win_, _experimentFlags.ExperimentFlags.SMARTBOX), 'Not yet launched!');
+      this.buttonApi_.attachSmartButton(this, button, optionsOrCallback, callback);
+    }
+    /** @override */
+
+  }, {
+    key: "getPropensityModule",
+    value: function getPropensityModule() {
+      return Promise.resolve(this.propensityModule_);
+    }
+    /** @override
+     * @return {!ClientEventManager}
+     */
+
+  }, {
+    key: "eventManager",
+    value: function eventManager() {
+      return this.eventManager_;
+    }
+    /** @override */
+
+  }, {
+    key: "getLogger",
+    value: function getLogger() {
+      return Promise.resolve(this.logger_);
+    }
+  }]);
 
   return ConfiguredRuntime;
-})();
+}();
+/**
+ * @param {!Runtime} runtime
+ * @return {!Subscriptions}
+ */
+
 
 exports.ConfiguredRuntime = ConfiguredRuntime;
+
 function createPublicRuntime(runtime) {
-  return (/** @type {!Subscriptions} */{
+  return (
+    /** @type {!Subscriptions} */
+    {
       init: runtime.init.bind(runtime),
       configure: runtime.configure.bind(runtime),
       start: runtime.start.bind(runtime),
@@ -14099,6 +15761,7 @@ function createPublicRuntime(runtime) {
       setOnLoginRequest: runtime.setOnLoginRequest.bind(runtime),
       setOnLinkComplete: runtime.setOnLinkComplete.bind(runtime),
       setOnNativeSubscribeRequest: runtime.setOnNativeSubscribeRequest.bind(runtime),
+      setOnPaymentResponse: runtime.setOnPaymentResponse.bind(runtime),
       setOnSubscribeResponse: runtime.setOnSubscribeResponse.bind(runtime),
       setOnContributionResponse: runtime.setOnContributionResponse.bind(runtime),
       setOnFlowStarted: runtime.setOnFlowStarted.bind(runtime),
@@ -14112,33 +15775,37 @@ function createPublicRuntime(runtime) {
     }
   );
 }
-
 /**
  * @return {!Function}
  * @protected
  */
+
 
 function getSubscriptionsClassForTesting() {
-  return _apiSubscriptions.Subscriptions;
+  return _subscriptions.Subscriptions;
 }
-
 /**
  * @return {!Function}
  * @protected
  */
+
 
 function getFetcherClassForTesting() {
   return _fetcher.Fetcher;
 }
-
 /** @package Visible for testing only. */
 
+
 function getDocClassForTesting() {
-  return _modelDoc.Doc;
+  return _doc.Doc;
 }
 
-},{"../../build/css/components/dialog.css":1,"../api/subscriptions":12,"../components/activities":14,"../components/dialog-manager":15,"../model/doc":22,"../model/page-config":24,"../model/page-config-resolver":23,"../proto/api_messages":33,"../utils/dom":69,"../utils/log":74,"../utils/preconnect":76,"../utils/types":80,"./analytics-service":34,"./button-api":35,"./callbacks":36,"./client-event-manager":37,"./contributions-flow":38,"./deferred-account-flow":39,"./deps":40,"./entitlements-manager":41,"./experiment-flags":43,"./experiments":44,"./fetcher":45,"./jserror":46,"./link-accounts-flow":47,"./logger":48,"./login-notification-api":49,"./login-prompt-api":50,"./offers-api":51,"./offers-flow":52,"./pay-client":53,"./pay-flow":54,"./propensity":56,"./storage":60,"./wait-for-subscription-lookup-api":61}],58:[function(require,module,exports){
-exports.__esModule = true;
+},{"../../build/css/components/dialog.css":1,"../api/subscriptions":12,"../components/activities":14,"../components/dialog-manager":15,"../model/doc":21,"../model/page-config":23,"../model/page-config-resolver":22,"../proto/api_messages":32,"../utils/dom":68,"../utils/log":73,"../utils/preconnect":75,"../utils/types":79,"./analytics-service":33,"./button-api":34,"./callbacks":35,"./client-event-manager":36,"./contributions-flow":37,"./deferred-account-flow":38,"./deps":39,"./entitlements-manager":40,"./experiment-flags":42,"./experiments":43,"./fetcher":44,"./jserror":45,"./link-accounts-flow":46,"./logger":47,"./login-notification-api":48,"./login-prompt-api":49,"./offers-api":50,"./offers-flow":51,"./pay-client":52,"./pay-flow":53,"./propensity":55,"./storage":59,"./wait-for-subscription-lookup-api":60}],57:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.feOrigin = feOrigin;
 exports.serviceUrl = serviceUrl;
 exports.adsUrl = adsUrl;
@@ -14146,6 +15813,10 @@ exports.feUrl = feUrl;
 exports.feCached = feCached;
 exports.feArgs = feArgs;
 exports.cacheParam = cacheParam;
+exports.CACHE_KEYS = void 0;
+
+var _url = require("../utils/url");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -14161,8 +15832,6 @@ exports.cacheParam = cacheParam;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var _utilsUrl = require('../utils/url');
 
 /**
  * Have to put these in the map to avoid compiler optimization. Due to
@@ -14173,180 +15842,182 @@ var _utilsUrl = require('../utils/url');
  */
 var CACHE_KEYS = {
   'nocache': 1,
-  'hr1': 3600000, // 1hr = 1000 * 60 * 60
-  'hr12': 43200000 };
+  'hr1': 3600000,
+  // 1hr = 1000 * 60 * 60
+  'hr12': 43200000 // 12hr = 1000 * 60 * 60 * 12
 
-exports.CACHE_KEYS = CACHE_KEYS;
+};
 /**
  * @return {string}
  */
-// 12hr = 1000 * 60 * 60 * 12
+
+exports.CACHE_KEYS = CACHE_KEYS;
 
 function feOrigin() {
-  return _utilsUrl.parseUrl('https://subscribe-qual.sandbox.google.com').origin;
+  return (0, _url.parseUrl)('https://news.google.com').origin;
 }
-
 /**
  * @param {string} url Relative URL, e.g. "/service1".
  * @return {string} The complete URL.
  */
 
-function serviceUrl(url) {
-  return 'https://subscribe-qual.sandbox.google.com/swg/_/api/v1' + url;
-}
 
+function serviceUrl(url) {
+  return 'https://news.google.com/swg/_/api/v1' + url;
+}
 /**
  * @param {string} url  Relative URL, e.g. "/service1".
  * @return {string} The complete URL.
  */
 
+
 function adsUrl(url) {
   return 'https://pubads.g.doubleclick.net' + url;
 }
-
 /**
  * @param {string} url Relative URL, e.g. "/offersiframe".
  * @param {string=} prefix
  * @return {string} The complete URL.
  */
 
+
 function feUrl(url) {
-  var prefix = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
-
+  var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
   // Add cache param.
-  url = feCached('https://subscribe-qual.sandbox.google.com' + prefix + '/swg/_/ui/v1' + url);
+  url = feCached('https://news.google.com' + prefix + '/swg/_/ui/v1' + url); // Optionally add jsmode param. This allows us to test against "aggressively" compiled Boq JS.
 
-  // Optionally add jsmode param. This allows us to test against "aggressively" compiled Boq JS.
-  var query = _utilsUrl.parseQueryString(self.location.hash);
+  var query = (0, _url.parseQueryString)(self.location.hash);
   var boqJsMode = query['swg.boqjsmode'];
+
   if (boqJsMode !== undefined) {
-    url = _utilsUrl.addQueryParam(url, 'jsmode', boqJsMode);
+    url = (0, _url.addQueryParam)(url, 'jsmode', boqJsMode);
   }
 
   return url;
 }
-
 /**
  * @param {string} url FE URL.
  * @return {string} The complete URL including cache param.
  */
 
-function feCached(url) {
-  return _utilsUrl.addQueryParam(url, '_', cacheParam('nocache'));
-}
 
+function feCached(url) {
+  return (0, _url.addQueryParam)(url, '_', cacheParam('nocache'));
+}
 /**
  * @param {!Object<string, ?>} args
  * @return {!Object<string, ?>}
  */
 
+
 function feArgs(args) {
   return Object.assign(args, {
-    '_client': 'SwG 0.1.22-1571866632912'
+    '_client': 'SwG 0.1.22-1576261074655'
   });
 }
-
 /**
  * @param {string} cacheKey
  * @return {string}
  * @package Visible for testing only.
  */
 
+
 function cacheParam(cacheKey) {
   var period = CACHE_KEYS[cacheKey];
+
   if (period == null) {
     period = 1;
   }
+
   if (period === 0) {
     return '_';
   }
+
   var now = Date.now();
   return String(period <= 1 ? now : Math.floor(now / period));
 }
 
-},{"../utils/url":81}],59:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../utils/url":80}],58:[function(require,module,exports){
+"use strict";
 
-var _utilsDom = require('../utils/dom');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SmartSubscriptionButtonApi = exports.Theme = void 0;
 
-var _utilsStyle = require('../utils/style');
+var _api_messages = require("../proto/api_messages");
 
-var _services = require('./services');
+var _dom = require("../utils/dom");
 
-var _protoApi_messages = require('../proto/api_messages');
+var _services = require("./services");
+
+var _style = require("../utils/style");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /** @const {!Object<string, string>} */
 var iframeAttributes = {
   'frameborder': '0',
   'scrolling': 'no'
 };
-
 /**
  * @enum {string}
  */
+
 var Theme = {
   LIGHT: 'light',
   DARK: 'dark'
 };
-
-exports.Theme = Theme;
 /**
  * The class for Smart button Api.
  */
 
-var SmartSubscriptionButtonApi = (function () {
+exports.Theme = Theme;
+
+var SmartSubscriptionButtonApi =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!Element} button
    * @param {!../api/subscriptions.SmartButtonOptions} options
    * @param {function()=} callback
    */
-
   function SmartSubscriptionButtonApi(deps, button, options, callback) {
-    babelHelpers.classCallCheck(this, SmartSubscriptionButtonApi);
+    _classCallCheck(this, SmartSubscriptionButtonApi);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!Document} */
+
     this.doc_ = this.win_.document;
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!HTMLIFrameElement} */
-    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_, 'iframe', iframeAttributes);
 
+    this.iframe_ =
+    /** @type {!HTMLIFrameElement} */
+    (0, _dom.createElement)(this.doc_, 'iframe', iframeAttributes);
     /** @private @const {!Element} */
+
     this.button_ = button;
-
     /** @private {!../api/subscriptions.SmartButtonOptions} */
+
     this.options_ = options;
-
     /** @private const {function()=} */
+
     this.callback_ = callback;
-
     /** @private @const {string} */
-    this.src_ = _services.feUrl('/smartboxiframe');
 
+    this.src_ = (0, _services.feUrl)('/smartboxiframe');
     var frontendArguments = {
       'productId': this.deps_.pageConfig().getProductId(),
       'publicationId': this.deps_.pageConfig().getPublicationId(),
@@ -14354,70 +16025,80 @@ var SmartSubscriptionButtonApi = (function () {
       'lang': this.options_ && this.options_.lang || 'en'
     };
     var messageTextColor = this.options_ && this.options_.messageTextColor;
+
     if (messageTextColor) {
       frontendArguments['messageTextColor'] = messageTextColor;
     }
-
     /** @private @const {!Object} */
-    this.args_ = _services.feArgs(frontendArguments);
-  }
 
+
+    this.args_ = (0, _services.feArgs)(frontendArguments);
+  }
   /**
    * @param {SmartBoxMessage} smartBoxMessage
    */
 
-  SmartSubscriptionButtonApi.prototype.handleSmartBoxClick_ = function handleSmartBoxClick_(smartBoxMessage) {
-    if (smartBoxMessage && smartBoxMessage.getIsClicked()) {
-      if (!this.callback_) {
-        throw new Error('No callback!');
+
+  _createClass(SmartSubscriptionButtonApi, [{
+    key: "handleSmartBoxClick_",
+    value: function handleSmartBoxClick_(smartBoxMessage) {
+      if (smartBoxMessage && smartBoxMessage.getIsClicked()) {
+        if (!this.callback_) {
+          throw new Error('No callback!');
+        }
+
+        this.callback_();
+        return;
       }
-      this.callback_();
-      return;
     }
-  };
-
-  /**
-   * Make a call to build button content and listens for the 'click' message.
-   * @return {!Element}
-   */
-
-  SmartSubscriptionButtonApi.prototype.start = function start() {
-    var _this = this;
-
     /**
-     * Add a callback to the button itself to fire the iframe's button click
-     * action when user tabs to the container button and hits enter.
+     * Make a call to build button content and listens for the 'click' message.
+     * @return {!Element}
      */
-    this.button_.addEventListener('click', function () {
-      _this.callback_();
-    });
 
-    _utilsStyle.setImportantStyles(this.iframe_, {
-      'opacity': 1,
-      'position': 'absolute',
-      'top': 0,
-      'bottom': 0,
-      'left': 0,
-      'height': '100%',
-      'right': 0,
-      'width': '100%'
-    });
-    this.button_.appendChild(this.iframe_);
-    var analyticsContext = this.deps_.analytics().getContext().toArray();
-    this.args_['analyticsContext'] = analyticsContext;
-    this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
-      port.on(_protoApi_messages.SmartBoxMessage, _this.handleSmartBoxClick_.bind(_this));
-    });
-    return this.iframe_;
-  };
+  }, {
+    key: "start",
+    value: function start() {
+      var _this = this;
+
+      (0, _style.setImportantStyles)(this.iframe_, {
+        'opacity': 1,
+        'position': 'absolute',
+        'top': 0,
+        'bottom': 0,
+        'left': 0,
+        'height': '100%',
+        'right': 0,
+        'width': '100%'
+      });
+      this.button_.appendChild(this.iframe_);
+      var args = this.activityPorts_.addDefaultArguments(this.args_);
+      this.activityPorts_.openIframe(this.iframe_, this.src_, args).then(function (port) {
+        port.on(_api_messages.SmartBoxMessage, _this.handleSmartBoxClick_.bind(_this));
+      });
+      return this.iframe_;
+    }
+  }]);
 
   return SmartSubscriptionButtonApi;
-})();
+}();
 
 exports.SmartSubscriptionButtonApi = SmartSubscriptionButtonApi;
 
-},{"../proto/api_messages":33,"../utils/dom":69,"../utils/style":79,"./services":58}],60:[function(require,module,exports){
-exports.__esModule = true;
+},{"../proto/api_messages":32,"../utils/dom":68,"../utils/style":78,"./services":57}],59:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Storage = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -14433,228 +16114,251 @@ exports.__esModule = true;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 var PREFIX = 'subscribe.google.com';
 
-var Storage = (function () {
+var Storage =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    */
-
   function Storage(win) {
-    babelHelpers.classCallCheck(this, Storage);
+    _classCallCheck(this, Storage);
 
     /** @private @const {!Window} */
     this.win_ = win;
-
     /** @private @const {!Object<string, !Promise<?string>>} */
+
     this.values_ = {};
   }
-
-  /**
-   * @param {string} key
-   * @return {string}
-   */
-
   /**
    * @param {string} key
    * @return {!Promise<?string>}
    */
 
-  Storage.prototype.get = function get(key) {
-    var _this = this;
 
-    if (!this.values_[key]) {
-      this.values_[key] = new Promise(function (resolve) {
-        if (_this.win_.sessionStorage) {
-          try {
-            resolve(_this.win_.sessionStorage.getItem(storageKey(key)));
-          } catch (e) {
-            // Ignore error.
+  _createClass(Storage, [{
+    key: "get",
+    value: function get(key) {
+      var _this = this;
+
+      if (!this.values_[key]) {
+        this.values_[key] = new Promise(function (resolve) {
+          if (_this.win_.sessionStorage) {
+            try {
+              resolve(_this.win_.sessionStorage.getItem(storageKey(key)));
+            } catch (e) {
+              // Ignore error.
+              resolve(null);
+            }
+          } else {
             resolve(null);
           }
-        } else {
-          resolve(null);
+        });
+      }
+
+      return this.values_[key];
+    }
+    /**
+     * @param {string} key
+     * @param {string} value
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "set",
+    value: function set(key, value) {
+      var _this2 = this;
+
+      this.values_[key] = Promise.resolve(value);
+      return new Promise(function (resolve) {
+        if (_this2.win_.sessionStorage) {
+          try {
+            _this2.win_.sessionStorage.setItem(storageKey(key), value);
+          } catch (e) {// Ignore error.
+          }
         }
+
+        resolve();
       });
     }
-    return this.values_[key];
-  };
+    /**
+     * @param {string} key
+     * @return {!Promise}
+     */
 
-  /**
-   * @param {string} key
-   * @param {string} value
-   * @return {!Promise}
-   */
+  }, {
+    key: "remove",
+    value: function remove(key) {
+      var _this3 = this;
 
-  Storage.prototype.set = function set(key, value) {
-    var _this2 = this;
-
-    this.values_[key] = Promise.resolve(value);
-    return new Promise(function (resolve) {
-      if (_this2.win_.sessionStorage) {
-        try {
-          _this2.win_.sessionStorage.setItem(storageKey(key), value);
-        } catch (e) {
-          // Ignore error.
+      delete this.values_[key];
+      return new Promise(function (resolve) {
+        if (_this3.win_.sessionStorage) {
+          try {
+            _this3.win_.sessionStorage.removeItem(storageKey(key));
+          } catch (e) {// Ignore error.
+          }
         }
-      }
-      resolve();
-    });
-  };
 
-  /**
-   * @param {string} key
-   * @return {!Promise}
-   */
-
-  Storage.prototype.remove = function remove(key) {
-    var _this3 = this;
-
-    delete this.values_[key];
-    return new Promise(function (resolve) {
-      if (_this3.win_.sessionStorage) {
-        try {
-          _this3.win_.sessionStorage.removeItem(storageKey(key));
-        } catch (e) {
-          // Ignore error.
-        }
-      }
-      resolve();
-    });
-  };
+        resolve();
+      });
+    }
+  }]);
 
   return Storage;
-})();
+}();
+/**
+ * @param {string} key
+ * @return {string}
+ */
+
 
 exports.Storage = Storage;
+
 function storageKey(key) {
   return PREFIX + ':' + key;
 }
 
-},{}],61:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{}],60:[function(require,module,exports){
+"use strict";
 
-var _uiActivityIframeView = require('../ui/activity-iframe-view');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.WaitForSubscriptionLookupApi = void 0;
 
-var _apiDeferredAccountCreation = require('../api/deferred-account-creation');
+var _activityIframeView = require("../ui/activity-iframe-view");
 
-var _services = require('./services');
+var _deferredAccountCreation = require("../api/deferred-account-creation");
 
-var WaitForSubscriptionLookupApi = (function () {
+var _services = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var NO_PROMISE_ERR = 'No account promise provided';
+
+var WaitForSubscriptionLookupApi =
+/*#__PURE__*/
+function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {?Promise} accountPromise
    */
-
   function WaitForSubscriptionLookupApi(deps, accountPromise) {
-    babelHelpers.classCallCheck(this, WaitForSubscriptionLookupApi);
+    _classCallCheck(this, WaitForSubscriptionLookupApi);
 
     /** @private @const {!./deps.DepsDef} */
     this.deps_ = deps;
-
     /** @private @const {!Window} */
+
     this.win_ = deps.win();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {!../components/dialog-manager.DialogManager} */
+
     this.dialogManager_ = deps.dialogManager();
-
     /** @private {?Promise} */
+
     this.openViewPromise_ = null;
+    /** @private {!Promise} */
 
-    /** @private {?Promise} */
-    this.accountPromise_ = accountPromise || null;
-
+    this.accountPromise_ = accountPromise || Promise.reject(NO_PROMISE_ERR);
     /** @private @const {!ActivityIframeView} */
-    this.activityIframeView_ = new _uiActivityIframeView.ActivityIframeView(this.win_, this.activityPorts_, _services.feUrl('/waitforsubscriptionlookupiframe'), _services.feArgs({
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/waitforsubscriptionlookupiframe'), (0, _services.feArgs)({
       publicationId: deps.pageConfig().getPublicationId(),
       productId: deps.pageConfig().getProductId()
     }),
-    /* shouldFadeBody */true,
-    /* hasLoadingIndicator */true);
+    /* shouldFadeBody */
+    true,
+    /* hasLoadingIndicator */
+    true);
   }
-
   /**
    * Starts the Login Flow.
    * @return {!Promise}
    */
 
-  WaitForSubscriptionLookupApi.prototype.start = function start() {
-    var _this = this;
 
-    this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+  _createClass(WaitForSubscriptionLookupApi, [{
+    key: "start",
+    value: function start() {
+      var _this = this;
 
-    return this.accountPromise_.then(function (account) {
-      // Account was found.
-      _this.dialogManager_.completeView(_this.activityIframeView_);
-      return account;
-    }, function (reason) {
-      _this.dialogManager_.completeView(_this.activityIframeView_);
-      throw reason;
-    });
-  };
+      this.openViewPromise_ = this.dialogManager_.openView(this.activityIframeView_);
+      return this.accountPromise_.then(function (account) {
+        // Account was found.
+        _this.dialogManager_.completeView(_this.activityIframeView_);
+
+        return account;
+      }, function (reason) {
+        _this.dialogManager_.completeView(_this.activityIframeView_);
+
+        throw reason;
+      });
+    }
+  }]);
 
   return WaitForSubscriptionLookupApi;
-})();
+}();
 
 exports.WaitForSubscriptionLookupApi = WaitForSubscriptionLookupApi;
 
-},{"../api/deferred-account-creation":6,"../ui/activity-iframe-view":62,"./services":58}],62:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../api/deferred-account-creation":6,"../ui/activity-iframe-view":61,"./services":57}],61:[function(require,module,exports){
+"use strict";
 
-var _componentsView = require('../components/view');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ActivityIframeView = void 0;
 
-var _utilsDom = require('../utils/dom');
+var _api_messages = require("../proto/api_messages");
 
-var _utilsErrors = require('../utils/errors');
+var _view = require("../components/view");
 
-var _utilsActivityUtils = require('../utils/activity-utils');
+var _activityUtils = require("../utils/activity-utils");
+
+var _dom = require("../utils/dom");
+
+var _errors = require("../utils/errors");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /** @const {!Object<string, string>} */
 var iframeAttributes = {
   'frameborder': '0',
   'scrolling': 'no'
 };
-
 /**
  * Class to build and render Activity iframe view.
  */
 
-var ActivityIframeView = (function (_View) {
-  babelHelpers.inherits(ActivityIframeView, _View);
+var ActivityIframeView =
+/*#__PURE__*/
+function (_View) {
+  _inherits(ActivityIframeView, _View);
 
   /**
    * @param {!Window} win
@@ -14664,487 +16368,512 @@ var ActivityIframeView = (function (_View) {
    * @param {boolean=} shouldFadeBody
    * @param {boolean=} hasLoadingIndicator
    */
-
   function ActivityIframeView(win, activityPorts, src, args) {
-    var _this = this;
+    var _this;
 
-    var shouldFadeBody = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
-    var hasLoadingIndicator = arguments.length <= 5 || arguments[5] === undefined ? false : arguments[5];
-    babelHelpers.classCallCheck(this, ActivityIframeView);
+    var shouldFadeBody = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var hasLoadingIndicator = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
 
-    _View.call(this);
+    _classCallCheck(this, ActivityIframeView);
 
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ActivityIframeView).call(this));
     /** @private @const {!Window} */
-    this.win_ = win;
 
+    _this.win_ = win;
     /** @private @const {!Document} */
-    this.doc_ = this.win_.document;
 
+    _this.doc_ = _this.win_.document;
     /** @private @const {!HTMLIFrameElement} */
-    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_, 'iframe', iframeAttributes);
 
+    _this.iframe_ =
+    /** @type {!HTMLIFrameElement} */
+    (0, _dom.createElement)(_this.doc_, 'iframe', iframeAttributes);
     /** @private @const {!../components/activities.ActivityPorts} */
-    this.activityPorts_ = activityPorts;
 
+    _this.activityPorts_ = activityPorts;
     /** @private @const {string} */
-    this.src_ = src;
 
+    _this.src_ = src;
     /** @private @const {!Object<string, ?>} */
-    this.args_ = args || {};
 
+    _this.args_ = args || {};
     /** @private @const {boolean} */
-    this.shouldFadeBody_ = shouldFadeBody;
 
+    _this.shouldFadeBody_ = shouldFadeBody;
     /** @private @const {boolean} */
-    this.hasLoadingIndicator_ = hasLoadingIndicator;
 
+    _this.hasLoadingIndicator_ = hasLoadingIndicator;
     /** @private {?../components/activities.ActivityIframePort} */
-    this.port_ = null;
 
+    _this.port_ = null;
     /**
      * @private
      * {?function<!web-activities/activity-ports.ActivityIframePort|!Promise>}
      */
-    this.portResolver_ = null;
 
+    _this.portResolver_ = null;
     /**
      * @private @const
      * {!Promise<!web-activities/activity-ports.ActivityIframePort>}
      */
-    this.portPromise_ = new Promise(function (resolve) {
+
+    _this.portPromise_ = new Promise(function (resolve) {
       _this.portResolver_ = resolve;
     });
+    return _this;
   }
-
   /** @override */
 
-  ActivityIframeView.prototype.getElement = function getElement() {
-    return this.iframe_;
-  };
 
-  /** @override */
-
-  ActivityIframeView.prototype.init = function init(dialog) {
-    var _this2 = this;
-
-    return this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
-      return _this2.onOpenIframeResponse_(port, dialog);
-    });
-  };
-
-  /**
-   * Returns if document should fade for this view.
-   * @return {boolean}
-   */
-
-  ActivityIframeView.prototype.shouldFadeBody = function shouldFadeBody() {
-    return this.shouldFadeBody_;
-  };
-
-  /**
-   * Returns if the view shows loading indicator.
-   * @return {boolean}
-   */
-
-  ActivityIframeView.prototype.hasLoadingIndicator = function hasLoadingIndicator() {
-    return this.hasLoadingIndicator_;
-  };
-
-  /**
-   * @param {!../components/activities.ActivityIframePort} port
-   * @param {!../components/dialog.Dialog} dialog
-   * @return {!Promise}
-   */
-
-  ActivityIframeView.prototype.onOpenIframeResponse_ = function onOpenIframeResponse_(port, dialog) {
-    var _this3 = this;
-
-    this.port_ = port;
-    this.portResolver_(port);
-
-    this.port_.onResizeRequest(function (height) {
-      dialog.resizeView(_this3, height);
-    });
-
-    return this.port_.whenReady();
-  };
-
-  /**
-   * @return {!Promise<!../components/activities.ActivityIframePort>}
-   * @private
-   */
-
-  ActivityIframeView.prototype.getPortPromise_ = function getPortPromise_() {
-    return this.portPromise_;
-  };
-
-  /**
-   * @param {!function(new: T)}  message
-   * @param {function(../proto/api_messages.Message)} callback
-   * @template T
-   */
-
-  ActivityIframeView.prototype.on = function on(message, callback) {
-    this.getPortPromise_().then(function (port) {
-      port.on(message, callback);
-    });
-  };
-
-  /**
-   * @param {!../proto/api_messages.Message} request
-   */
-
-  ActivityIframeView.prototype.execute = function execute(request) {
-    this.getPortPromise_().then(function (port) {
-      port.execute(request);
-    });
-  };
-
-  /**
-   * Accepts results from the caller.
-   * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
-   */
-
-  ActivityIframeView.prototype.acceptResult = function acceptResult() {
-    return this.getPortPromise_().then(function (port) {
-      return port.acceptResult();
-    });
-  };
-
-  /**
-   * Accepts results from the caller and verifies origin.
-   * @param {string} requireOrigin
-   * @param {boolean} requireOriginVerified
-   * @param {boolean} requireSecureChannel
-   * @return {!Promise<!Object>}
-   */
-
-  ActivityIframeView.prototype.acceptResultAndVerify = function acceptResultAndVerify(requireOrigin, requireOriginVerified, requireSecureChannel) {
-    return this.getPortPromise_().then(function (port) {
-      return _utilsActivityUtils.acceptPortResultData(port, requireOrigin, requireOriginVerified, requireSecureChannel);
-    });
-  };
-
-  /**
-   * Completes the flow.
-   * @return {!Promise}
-   */
-
-  ActivityIframeView.prototype.whenComplete = function whenComplete() {
-    return this.acceptResult();
-  };
-
-  /**
-   * @param {function()} callback
-   */
-
-  ActivityIframeView.prototype.onCancel = function onCancel(callback) {
-    this.acceptResult()['catch'](function (reason) {
-      if (_utilsErrors.isCancelError(reason)) {
-        callback();
-      }
-      throw reason;
-    });
-  };
-
-  /** @override */
-
-  ActivityIframeView.prototype.resized = function resized() {
-    if (this.port_) {
-      this.port_.resized();
+  _createClass(ActivityIframeView, [{
+    key: "getElement",
+    value: function getElement() {
+      return this.iframe_;
     }
-  };
+    /** @override */
+
+  }, {
+    key: "init",
+    value: function init(dialog) {
+      var _this2 = this;
+
+      return this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
+        return _this2.onOpenIframeResponse_(port, dialog);
+      });
+    }
+    /**
+     * Returns if document should fade for this view.
+     * @return {boolean}
+     */
+
+  }, {
+    key: "shouldFadeBody",
+    value: function shouldFadeBody() {
+      return this.shouldFadeBody_;
+    }
+    /**
+     * Returns if the view shows loading indicator.
+     * @return {boolean}
+     */
+
+  }, {
+    key: "hasLoadingIndicator",
+    value: function hasLoadingIndicator() {
+      return this.hasLoadingIndicator_;
+    }
+    /**
+     * @param {!../components/activities.ActivityIframePort} port
+     * @param {!../components/dialog.Dialog} dialog
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "onOpenIframeResponse_",
+    value: function onOpenIframeResponse_(port, dialog) {
+      var _this3 = this;
+
+      this.port_ = port;
+      this.portResolver_(port);
+      this.port_.onResizeRequest(function (height) {
+        dialog.resizeView(_this3, height);
+      });
+      return this.port_.whenReady();
+    }
+    /**
+     * @return {!Promise<!../components/activities.ActivityIframePort>}
+     * @private
+     */
+
+  }, {
+    key: "getPortPromise_",
+    value: function getPortPromise_() {
+      return this.portPromise_;
+    }
+    /**
+     * @param {!function(new: T)}  message
+     * @param {function(../proto/api_messages.Message)} callback
+     * @template T
+     */
+
+  }, {
+    key: "on",
+    value: function on(message, callback) {
+      this.getPortPromise_().then(function (port) {
+        port.on(message, callback);
+      });
+    }
+    /**
+     * @param {!../proto/api_messages.Message} request
+     */
+
+  }, {
+    key: "execute",
+    value: function execute(request) {
+      this.getPortPromise_().then(function (port) {
+        port.execute(request);
+      });
+    }
+    /**
+     * Accepts results from the caller.
+     * @return {!Promise<!web-activities/activity-ports.ActivityResult>}
+     */
+
+  }, {
+    key: "acceptResult",
+    value: function acceptResult() {
+      return this.getPortPromise_().then(function (port) {
+        return port.acceptResult();
+      });
+    }
+    /**
+     * Accepts results from the caller and verifies origin.
+     * @param {string} requireOrigin
+     * @param {boolean} requireOriginVerified
+     * @param {boolean} requireSecureChannel
+     * @return {!Promise<!Object>}
+     */
+
+  }, {
+    key: "acceptResultAndVerify",
+    value: function acceptResultAndVerify(requireOrigin, requireOriginVerified, requireSecureChannel) {
+      return this.getPortPromise_().then(function (port) {
+        return (0, _activityUtils.acceptPortResultData)(port, requireOrigin, requireOriginVerified, requireSecureChannel);
+      });
+    }
+    /**
+     * Completes the flow.
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "whenComplete",
+    value: function whenComplete() {
+      return this.acceptResult();
+    }
+    /**
+     * @param {function()} callback
+     */
+
+  }, {
+    key: "onCancel",
+    value: function onCancel(callback) {
+      this.acceptResult()["catch"](function (reason) {
+        if ((0, _errors.isCancelError)(reason)) {
+          callback();
+        }
+
+        throw reason;
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "resized",
+    value: function resized() {
+      if (this.port_) {
+        this.port_.resized();
+      }
+    }
+  }]);
 
   return ActivityIframeView;
-})(_componentsView.View);
+}(_view.View);
 
 exports.ActivityIframeView = ActivityIframeView;
 
-},{"../components/view":19,"../utils/activity-utils":65,"../utils/dom":69,"../utils/errors":70}],63:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../components/view":19,"../proto/api_messages":32,"../utils/activity-utils":64,"../utils/dom":68,"../utils/errors":69}],62:[function(require,module,exports){
+"use strict";
 
-var _utilsDom = require('../utils/dom');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LoadingView = void 0;
+
+var _dom = require("../utils/dom");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * Loading indicator class. Builds the loading indicator view to be injected in
  * parent element <iframe class="swg-dialog"> element. Provides methods to
  * show/hide loading indicator.
  */
-
-var LoadingView = (function () {
+var LoadingView =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Document} doc
    */
-
   function LoadingView(doc) {
-    babelHelpers.classCallCheck(this, LoadingView);
+    _classCallCheck(this, LoadingView);
 
     /** @private @const {!Document} */
     this.doc_ = doc;
-
     /** @private @const {!Element} */
-    this.loadingContainer_ = _utilsDom.createElement(this.doc_, 'swg-loading-container', {});
 
+    this.loadingContainer_ = (0, _dom.createElement)(this.doc_, 'swg-loading-container', {});
     /** @private @const {!Element} */
-    this.loading_ = _utilsDom.createElement(this.doc_, 'swg-loading', {});
+
+    this.loading_ = (0, _dom.createElement)(this.doc_, 'swg-loading', {});
     this.loadingContainer_.appendChild(this.loading_);
+    this.loadingContainer_.style.setProperty('display', 'none', 'important'); // Build the animated loading indicator.
 
-    this.loadingContainer_.style.setProperty('display', 'none', 'important');
-
-    // Build the animated loading indicator.
     this.buildLoadingIndicator_();
   }
-
   /**
    * Gets the populated loading container.
    * @return {!Element}
    */
 
-  LoadingView.prototype.getElement = function getElement() {
-    return this.loadingContainer_;
-  };
 
-  /**
-   * Shows the loading indicator within the container element.
-   */
+  _createClass(LoadingView, [{
+    key: "getElement",
+    value: function getElement() {
+      return this.loadingContainer_;
+    }
+    /**
+     * Shows the loading indicator within the container element.
+     */
 
-  LoadingView.prototype.show = function show() {
-    this.loadingContainer_.style.removeProperty('display');
-  };
+  }, {
+    key: "show",
+    value: function show() {
+      this.loadingContainer_.style.removeProperty('display');
+    }
+    /**
+     * Hides the loading indicator within the container element.
+     */
 
-  /**
-   * Hides the loading indicator within the container element.
-   */
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.loadingContainer_.style.setProperty('display', 'none', 'important');
+    }
+    /**
+     * Populates the loading indivicator. The populated element
+     * can be added in any view, when required.
+     * @private
+     */
 
-  LoadingView.prototype.hide = function hide() {
-    this.loadingContainer_.style.setProperty('display', 'none', 'important');
-  };
-
-  /**
-   * Populates the loading indivicator. The populated element
-   * can be added in any view, when required.
-   * @private
-   */
-
-  LoadingView.prototype.buildLoadingIndicator_ = function buildLoadingIndicator_() {
-    var loadingContainer = this.loading_;
-
-    var loadingIndicatorTopContainer = _utilsDom.createElement(this.doc_, 'swg-loading-animate', {});
-    loadingContainer.appendChild(loadingIndicatorTopContainer);
-
-    var loadingIndicatorChildContainer = _utilsDom.createElement(this.doc_, 'swg-loading-image', {});
-    loadingIndicatorTopContainer.appendChild(loadingIndicatorChildContainer);
-  };
+  }, {
+    key: "buildLoadingIndicator_",
+    value: function buildLoadingIndicator_() {
+      var loadingContainer = this.loading_;
+      var loadingIndicatorTopContainer = (0, _dom.createElement)(this.doc_, 'swg-loading-animate', {});
+      loadingContainer.appendChild(loadingIndicatorTopContainer);
+      var loadingIndicatorChildContainer = (0, _dom.createElement)(this.doc_, 'swg-loading-image', {});
+      loadingIndicatorTopContainer.appendChild(loadingIndicatorChildContainer);
+    }
+  }]);
 
   return LoadingView;
-})();
+}();
 
 exports.LoadingView = LoadingView;
 
-},{"../utils/dom":69}],64:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"../utils/dom":68}],63:[function(require,module,exports){
+"use strict";
 
-var _utilsDom = require('../utils/dom');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Toast = exports.ToastSpecDef = exports.toastImportantStyles = void 0;
 
-var _utilsStyle = require('../utils/style');
+var _dom = require("../utils/dom");
 
-var _utilsAnimation = require('../utils/animation');
+var _style = require("../utils/style");
+
+var _animation = require("../utils/animation");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /** @const {!Object<string, string|number>} */
 var toastImportantStyles = {
   'height': 0
 };
-
-exports.toastImportantStyles = toastImportantStyles;
 /** @typedef {{
  *    text: string,
  *    action: ({label: string, handler: function()}|undefined)
  *  }}
  */
-var ToastSpecDef = undefined;
+
+exports.toastImportantStyles = toastImportantStyles;
+var ToastSpecDef;
+/** @const {!Object<string, string>} */
 
 exports.ToastSpecDef = ToastSpecDef;
-/** @const {!Object<string, string>} */
 var iframeAttributes = {
   'frameborder': '0',
   'scrolling': 'no',
   'class': 'swg-toast'
 };
-
 /**
  * The class Notification toast.
  */
 
-var Toast = (function () {
+var Toast =
+/*#__PURE__*/
+function () {
   /**
    * @param {!../runtime/deps.DepsDef} deps
    * @param {string} src
    * @param {!Object<string, ?>} args
    */
-
   function Toast(deps, src, args) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, Toast);
+    _classCallCheck(this, Toast);
 
     /** @private @const {!../model/doc.Doc} */
     this.doc_ = deps.doc();
-
     /** @private @const {!../components/activities.ActivityPorts} */
+
     this.activityPorts_ = deps.activities();
-
     /** @private @const {string} */
+
     this.src_ = src;
-
     /** @private @const {!Object<string, ?>} */
+
     this.args_ = args;
-
     /** @private {?Promise} */
+
     this.animating_ = null;
-
     /** @private @const {!HTMLIFrameElement} */
-    this.iframe_ = /** @type {!HTMLIFrameElement} */_utilsDom.createElement(this.doc_.getWin().document, 'iframe', iframeAttributes);
 
-    _utilsStyle.setImportantStyles(this.iframe_, toastImportantStyles);
-
+    this.iframe_ =
+    /** @type {!HTMLIFrameElement} */
+    (0, _dom.createElement)(this.doc_.getWin().document, 'iframe', iframeAttributes);
+    (0, _style.setImportantStyles)(this.iframe_, toastImportantStyles);
     /** @private @const {!Promise} */
+
     this.ready_ = new Promise(function (resolve) {
       _this.iframe_.onload = resolve;
     });
   }
-
   /**
    * Returns the iframe element.
    * @return {!HTMLIFrameElement}
    */
 
-  Toast.prototype.getElement = function getElement() {
-    return this.iframe_;
-  };
 
-  /**
-   * Opens the notification toast.
-   * @return {!Promise}
-   */
+  _createClass(Toast, [{
+    key: "getElement",
+    value: function getElement() {
+      return this.iframe_;
+    }
+    /**
+     * Opens the notification toast.
+     * @return {!Promise}
+     */
 
-  Toast.prototype.open = function open() {
-    this.doc_.getBody().appendChild(this.iframe_); // Fires onload.
-    return this.buildToast_();
-  };
+  }, {
+    key: "open",
+    value: function open() {
+      this.doc_.getBody().appendChild(this.iframe_); // Fires onload.
 
-  /**
-   * Builds the content of the iframe. On load, animates the toast.
-   */
+      return this.buildToast_();
+    }
+    /**
+     * Builds the content of the iframe. On load, animates the toast.
+     */
 
-  Toast.prototype.buildToast_ = function buildToast_() {
-    var _this2 = this;
+  }, {
+    key: "buildToast_",
+    value: function buildToast_() {
+      var _this2 = this;
 
-    var toastDurationSeconds = 7;
-    return this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
-      return port.whenReady();
-    }).then(function () {
-      _utilsStyle.resetStyles(_this2.iframe_, ['height']);
+      var toastDurationSeconds = 7;
+      return this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
+        return port.whenReady();
+      }).then(function () {
+        (0, _style.resetStyles)(_this2.iframe_, ['height']);
 
-      _this2.animate_(function () {
-        _utilsStyle.setImportantStyles(_this2.iframe_, {
+        _this2.animate_(function () {
+          (0, _style.setImportantStyles)(_this2.iframe_, {
+            'transform': 'translateY(100%)',
+            'opactiy': 1,
+            'visibility': 'visible'
+          });
+          return (0, _animation.transition)(_this2.iframe_, {
+            'transform': 'translateY(0)',
+            'opacity': 1,
+            'visibility': 'visible'
+          }, 400, 'ease-out');
+        }); // Close the Toast after the specified duration.
+
+
+        _this2.doc_.getWin().setTimeout(function () {
+          _this2.close();
+        }, (toastDurationSeconds + 1) * 1000);
+      });
+    }
+    /**
+     * @param {function():!Promise} callback
+     * @return {!Promise}
+     * @private
+     */
+
+  }, {
+    key: "animate_",
+    value: function animate_(callback) {
+      var _this3 = this;
+
+      var wait = this.animating_ || Promise.resolve();
+      return this.animating_ = wait.then(function () {
+        return callback();
+      }, function () {// Ignore errors to make sure animations don't get stuck.
+      }).then(function () {
+        _this3.animating_ = null;
+      });
+    }
+    /**
+     * Closes the toast.
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "close",
+    value: function close() {
+      var _this4 = this;
+
+      return this.animate_(function () {
+        // Remove the toast from the DOM after animation is complete.
+        _this4.doc_.getWin().setTimeout(function () {
+          _this4.doc_.getBody().removeChild(_this4.iframe_);
+
+          return Promise.resolve();
+        }, 500);
+
+        return (0, _animation.transition)(_this4.iframe_, {
           'transform': 'translateY(100%)',
-          'opactiy': 1,
-          'visibility': 'visible'
-        });
-        return _utilsAnimation.transition(_this2.iframe_, {
-          'transform': 'translateY(0)',
           'opacity': 1,
           'visibility': 'visible'
         }, 400, 'ease-out');
       });
-
-      // Close the Toast after the specified duration.
-      _this2.doc_.getWin().setTimeout(function () {
-        _this2.close();
-      }, (toastDurationSeconds + 1) * 1000);
-    });
-  };
-
-  /**
-   * @param {function():!Promise} callback
-   * @return {!Promise}
-   * @private
-   */
-
-  Toast.prototype.animate_ = function animate_(callback) {
-    var _this3 = this;
-
-    var wait = this.animating_ || Promise.resolve();
-    return this.animating_ = wait.then(function () {
-      return callback();
-    }, function () {
-      // Ignore errors to make sure animations don't get stuck.
-    }).then(function () {
-      _this3.animating_ = null;
-    });
-  };
-
-  /**
-   * Closes the toast.
-   * @return {!Promise}
-   */
-
-  Toast.prototype.close = function close() {
-    var _this4 = this;
-
-    return this.animate_(function () {
-      // Remove the toast from the DOM after animation is complete.
-      _this4.doc_.getWin().setTimeout(function () {
-        _this4.doc_.getBody().removeChild(_this4.iframe_);
-        return Promise.resolve();
-      }, 500);
-
-      return _utilsAnimation.transition(_this4.iframe_, {
-        'transform': 'translateY(100%)',
-        'opacity': 1,
-        'visibility': 'visible'
-      }, 400, 'ease-out');
-    });
-  };
+    }
+  }]);
 
   return Toast;
-})();
+}();
 
 exports.Toast = Toast;
 
-},{"../utils/animation":66,"../utils/dom":69,"../utils/style":79}],65:[function(require,module,exports){
-exports.__esModule = true;
+},{"../utils/animation":65,"../utils/dom":68,"../utils/style":78}],64:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.acceptPortResultData = acceptPortResultData;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -15168,19 +16897,26 @@ exports.acceptPortResultData = acceptPortResultData;
  * @param {boolean} requireSecureChannel
  * @return {!Promise<!Object>}
  */
-
 function acceptPortResultData(port, requireOrigin, requireOriginVerified, requireSecureChannel) {
   return port.acceptResult().then(function (result) {
     if (result.origin != requireOrigin || requireOriginVerified && !result.originVerified || requireSecureChannel && !result.secureChannel) {
       throw new Error('channel mismatch');
     }
+
     return result.data;
   });
 }
 
-},{}],66:[function(require,module,exports){
-exports.__esModule = true;
+},{}],65:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.transition = transition;
+
+var _style = require("./style");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -15196,8 +16932,6 @@ exports.transition = transition;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var _style = require('./style');
 
 /**
  * Returns a promise which is resolved after the given duration of animation
@@ -15207,33 +16941,39 @@ var _style = require('./style');
  * @param {string} curve - transition function for the animation.
  * @return {!Promise} Promise which resolves once the animation is done playing.
  */
-
 function transition(el, props, durationMillis, curve) {
   var win = el.ownerDocument.defaultView;
   var previousTransitionValue = el.style.transition || '';
   return new Promise(function (resolve) {
     win.setTimeout(function () {
       win.setTimeout(resolve, durationMillis);
-      var tr = durationMillis + 'ms ' + curve;
-      _style.setImportantStyles(el, Object.assign({
-        'transition': 'transform ' + tr + ', opacity ' + tr
+      var tr = "".concat(durationMillis, "ms ").concat(curve);
+      (0, _style.setImportantStyles)(el, Object.assign({
+        'transition': "transform ".concat(tr, ", opacity ").concat(tr)
       }, props));
     });
   }).then(function () {
-    _style.setImportantStyles(el, {
+    (0, _style.setImportantStyles)(el, {
       'transition': previousTransitionValue
     });
   });
 }
 
-},{"./style":79}],67:[function(require,module,exports){
-exports.__esModule = true;
+},{"./style":78}],66:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.stringToBytes = stringToBytes;
 exports.bytesToString = bytesToString;
 exports.utf8DecodeSync = utf8DecodeSync;
 exports.utf8EncodeSync = utf8EncodeSync;
 exports.base64UrlDecodeToBytes = base64UrlDecodeToBytes;
 exports.base64UrlEncodeFromBytes = base64UrlEncodeFromBytes;
+
+var _log = require("./log");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -15250,20 +16990,24 @@ exports.base64UrlEncodeFromBytes = base64UrlEncodeFromBytes;
  * limitations under the License.
  */
 
-var _log = require('./log');
-
 /**
  * Character mapping from base64url to base64.
  * @const {!Object<string, string>}
  */
-var base64UrlDecodeSubs = { '-': '+', '_': '/', '.': '=' };
-
+var base64UrlDecodeSubs = {
+  '-': '+',
+  '_': '/',
+  '.': '='
+};
 /**
  * Character mapping from base64 to base64url.
  * @const {!Object<string, string>}
  */
-var base64UrlEncodeSubs = { '+': '-', '/': '_' };
 
+var base64UrlEncodeSubs = {
+  '+': '-',
+  '/': '_'
+};
 /**
  * Converts a string which holds 8-bit code points, such as the result of atob,
  * into a Uint8Array with the corresponding bytes.
@@ -15274,57 +17018,62 @@ var base64UrlEncodeSubs = { '+': '-', '/': '_' };
 
 function stringToBytes(str) {
   var bytes = new Uint8Array(str.length);
+
   for (var i = 0; i < str.length; i++) {
     var charCode = str.charCodeAt(i);
-    _log.assert(charCode <= 255, 'Characters must be in range [0,255]');
+    (0, _log.assert)(charCode <= 255, 'Characters must be in range [0,255]');
     bytes[i] = charCode;
   }
+
   return bytes;
 }
-
 /**
  * Converts a 8-bit bytes array into a string
  * @param {!Uint8Array} bytes
  * @return {string}
  */
 
+
 function bytesToString(bytes) {
   // Intentionally avoids String.fromCharCode.apply so we don't suffer a
   // stack overflow. #10495, https://jsperf.com/bytesToString-2
   var array = new Array(bytes.length);
+
   for (var i = 0; i < bytes.length; i++) {
     array[i] = String.fromCharCode(bytes[i]);
   }
+
   return array.join('');
 }
-
 /**
  * Interpret a byte array as a UTF-8 string.
  * @param {!BufferSource} bytes
  * @return {string}
  */
 
+
 function utf8DecodeSync(bytes) {
   if (typeof TextDecoder !== 'undefined') {
     return new TextDecoder('utf-8').decode(bytes);
   }
+
   var asciiString = bytesToString(new Uint8Array(bytes.buffer || bytes));
   return decodeURIComponent(escape(asciiString));
 }
-
 /**
  * Turn a string into UTF-8 bytes.
  * @param {string} string
  * @return {!Uint8Array}
  */
 
+
 function utf8EncodeSync(string) {
   if (typeof TextEncoder !== 'undefined') {
     return new TextEncoder('utf-8').encode(string);
   }
+
   return stringToBytes(unescape(encodeURIComponent(string)));
 }
-
 /**
  * Converts a string which is in base64url encoding into a Uint8Array
  * containing the decoded value.
@@ -15332,19 +17081,20 @@ function utf8EncodeSync(string) {
  * @return {!Uint8Array}
  */
 
+
 function base64UrlDecodeToBytes(str) {
   var encoded = atob(str.replace(/[-_.]/g, function (ch) {
     return base64UrlDecodeSubs[ch];
   }));
   return stringToBytes(encoded);
 }
-
 /**
  * Converts a bytes array into base64url encoded string.
  * base64url is defined in RFC 4648. It is sometimes referred to as "web safe".
  * @param {!Uint8Array} bytes
  * @return {string}
  */
+
 
 function base64UrlEncodeFromBytes(bytes) {
   var str = bytesToString(bytes);
@@ -15353,12 +17103,17 @@ function base64UrlEncodeFromBytes(bytes) {
   });
 }
 
-},{"./log":74}],68:[function(require,module,exports){
-exports.__esModule = true;
+},{"./log":73}],67:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.isDocumentReady = isDocumentReady;
 exports.onDocumentReady = onDocumentReady;
 exports.whenDocumentReady = whenDocumentReady;
 exports.whenDocumentComplete = whenDocumentComplete;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -15380,83 +17135,88 @@ exports.whenDocumentComplete = whenDocumentComplete;
  * @return {string}
  */
 function getReadyState(doc) {
-  return (/** @type {string} */doc['readyState']
+  return (
+    /** @type {string} */
+    doc['readyState']
   );
 }
-
 /**
  * Whether the document is ready.
  * @param {!Document} doc
  * @return {boolean}
  */
 
+
 function isDocumentReady(doc) {
   var readyState = getReadyState(doc);
   return readyState != 'loading' && readyState != 'uninitialized';
 }
-
 /**
  * Whether the document has loaded all the css and sub-resources.
  * @param {!Document} doc
  * @return {boolean}
  */
+
+
 function isDocumentComplete(doc) {
   return getReadyState(doc) == 'complete';
 }
-
 /**
  * Calls the callback when document is ready.
  * @param {!Document} doc
  * @param {function(!Document)} callback
  */
 
+
 function onDocumentReady(doc, callback) {
   onDocumentState(doc, isDocumentReady, callback);
 }
-
 /**
  * Calls the callback when document's state satisfies the stateFn.
  * @param {!Document} doc
  * @param {function(!Document):boolean} stateFn
  * @param {function(!Document)} callback
  */
+
+
 function onDocumentState(doc, stateFn, callback) {
   var ready = stateFn(doc);
+
   if (ready) {
     callback(doc);
   } else {
-    (function () {
-      var readyListener = function () {
-        if (stateFn(doc)) {
-          if (!ready) {
-            ready = true;
-            callback(doc);
-          }
-          doc.removeEventListener('readystatechange', readyListener);
+    var readyListener = function readyListener() {
+      if (stateFn(doc)) {
+        if (!ready) {
+          ready = true;
+          callback(doc);
         }
-      };
-      doc.addEventListener('readystatechange', readyListener);
-    })();
+
+        doc.removeEventListener('readystatechange', readyListener);
+      }
+    };
+
+    doc.addEventListener('readystatechange', readyListener);
   }
 }
-
 /**
  * Returns a promise that is resolved when document is ready.
  * @param {!Document} doc
  * @return {!Promise<!Document>}
  */
 
+
 function whenDocumentReady(doc) {
   return new Promise(function (resolve) {
     onDocumentReady(doc, resolve);
   });
 }
-
 /**
  * Returns a promise that is resolved when document is complete.
  * @param {!Document} doc
  * @return {!Promise<!Document>}
  */
+
 
 function whenDocumentComplete(doc) {
   return new Promise(function (resolve) {
@@ -15464,8 +17224,12 @@ function whenDocumentComplete(doc) {
   });
 }
 
-},{}],69:[function(require,module,exports){
-exports.__esModule = true;
+},{}],68:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.addAttributesToElement = addAttributesToElement;
 exports.createElement = createElement;
 exports.removeElement = removeElement;
@@ -15474,6 +17238,12 @@ exports.injectStyleSheet = injectStyleSheet;
 exports.hasNextNodeInDocumentOrder = hasNextNodeInDocumentOrder;
 exports.isConnected = isConnected;
 exports.isEdgeBrowser = isEdgeBrowser;
+exports.styleExistsQuerySelector = exports.styleType = exports.styleLinkAttrs = void 0;
+
+var _log = require("./log");
+
+var _style = require("./style");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -15490,25 +17260,19 @@ exports.isEdgeBrowser = isEdgeBrowser;
  * limitations under the License.
  */
 
-var _log = require('./log');
-
-var _style = require('./style');
-
 /** @const @enum{string} */
 var styleLinkAttrs = {
   'rel': 'stylesheet',
   'type': 'text/css'
 };
+/** @const {string} */
 
 exports.styleLinkAttrs = styleLinkAttrs;
-/** @const {string} */
 var styleType = 'text/css';
+/** @const {string} */
 
 exports.styleType = styleType;
-/** @const {string} */
 var styleExistsQuerySelector = 'link[rel=stylesheet][href]';
-
-exports.styleExistsQuerySelector = styleExistsQuerySelector;
 /**
  * Add attributes to an element.
  * @param {!Element} element
@@ -15516,74 +17280,80 @@ exports.styleExistsQuerySelector = styleExistsQuerySelector;
  * @return {!Element} updated element.
  */
 
+exports.styleExistsQuerySelector = styleExistsQuerySelector;
+
 function addAttributesToElement(element, attributes) {
   for (var attr in attributes) {
     if (attr == 'style') {
-      _style.setStyles(element,
+      (0, _style.setStyles)(element,
       /** @type {!Object<string, string|boolean|number>} */
       attributes[attr]);
     } else {
       element.setAttribute(attr,
-      /** @type {string|boolean|number} */attributes[attr]);
+      /** @type {string|boolean|number} */
+      attributes[attr]);
     }
   }
+
   return element;
 }
-
 /**
  * Create a new element on document with specified tagName and attributes.
  * @param {!Document} doc
  * @param {string} tagName
  * @param {!Object<string, string>} attributes
- * @param {?(string|!Node|!ArrayLike<!Node>|!Array<!Node>)=} opt_content
+ * @param {?(string|!Node|!ArrayLike<!Node>|!Array<!Node>)=} content
  * @return {!Element} created element.
  */
 
-function createElement(doc, tagName, attributes, opt_content) {
+
+function createElement(doc, tagName, attributes, content) {
   var element = doc.createElement(tagName);
   addAttributesToElement(element, attributes);
-  if (opt_content != null) {
-    if (typeof opt_content == 'string') {
-      element.textContent = opt_content;
-    } else if (opt_content.nodeType) {
-      element.appendChild(opt_content);
-    } else if ('length' in opt_content) {
-      for (var i = 0; i < opt_content.length; i++) {
-        element.appendChild(opt_content[i]);
+
+  if (content != null) {
+    if (typeof content == 'string') {
+      element.textContent = content;
+    } else if (content.nodeType) {
+      element.appendChild(content);
+    } else if ('length' in content) {
+      for (var i = 0; i < content.length; i++) {
+        element.appendChild(content[i]);
       }
     } else {
-      _log.assert(false, 'Unsupported content: %s', opt_content);
+      (0, _log.assert)(false, 'Unsupported content: %s', content);
     }
   }
+
   return element;
 }
-
 /**
  * Removes the element.
  * @param {!Element} element
  */
+
 
 function removeElement(element) {
   if (element.parentElement) {
     element.parentElement.removeChild(element);
   }
 }
-
 /**
  * Removes all children from the parent element.
  * @param {!Element} parent
  */
 
+
 function removeChildren(parent) {
   parent.textContent = '';
 }
-
 /**
  * Injects the provided styles in the HEAD section of the document.
  * @param {!../model/doc.Doc} doc The document object.
  * @param {string} styleText The style string.
  * @return {!Element}
  */
+
 
 function injectStyleSheet(doc, styleText) {
   var styleElement = createElement(doc.getWin().document, 'style', {
@@ -15593,27 +17363,28 @@ function injectStyleSheet(doc, styleText) {
   doc.getHead().appendChild(styleElement);
   return styleElement;
 }
-
 /**
  * Whether the element have a next node in the document order.
  * This means either:
  *  a. The element itself has a nextSibling.
  *  b. Any of the element ancestors has a nextSibling.
  * @param {!Element} element
- * @param {?Node=} opt_stopNode
+ * @param {?Node=} stopNode
  * @return {boolean}
  */
 
-function hasNextNodeInDocumentOrder(element, opt_stopNode) {
+
+function hasNextNodeInDocumentOrder(element, stopNode) {
   var currentElement = element;
+
   do {
     if (currentElement.nextSibling) {
       return true;
     }
-  } while ((currentElement = currentElement.parentNode) && currentElement != opt_stopNode);
+  } while ((currentElement = currentElement.parentNode) && currentElement != stopNode);
+
   return false;
 }
-
 /**
  * Polyfill of the `Node.isConnected` API. See
  * https://developer.mozilla.org/en-US/docs/Web/API/Node/isConnected.
@@ -15621,50 +17392,47 @@ function hasNextNodeInDocumentOrder(element, opt_stopNode) {
  * @return {boolean}
  */
 
+
 function isConnected(node) {
   // Ensure that node is attached if specified. This check uses a new and
   // fast `isConnected` API and thus only checked on platforms that have it.
   // See https://www.chromestatus.com/feature/5676110549352448.
   if ('isConnected' in node) {
     return node['isConnected'];
-  }
-  // Polyfill.
+  } // Polyfill.
+
+
   var root = node.ownerDocument && node.ownerDocument.documentElement;
   return root && root.contains(node) || false;
 }
-
 /**
  * @param {!Window} win
  * @return {boolean}
  */
 
+
 function isEdgeBrowser(win) {
   var nav = win.navigator;
-  return (/Edge/i.test(nav && nav.userAgent)
-  );
+  return /Edge/i.test(nav && nav.userAgent);
 }
 
-},{"./log":74,"./style":79}],70:[function(require,module,exports){
-exports.__esModule = true;
+},{"./log":73,"./style":78}],69:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.isCancelError = isCancelError;
 exports.createCancelError = createCancelError;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+exports.ErrorUtils = void 0;
 
-var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+var _activityPorts = require("web-activities/activity-ports");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * Whether the specified error is an AbortError type.
@@ -15672,50 +17440,59 @@ var _webActivitiesActivityPorts = require('web-activities/activity-ports');
  * @param {*} error
  * @return {boolean}
  */
-
 function isCancelError(error) {
-  return _webActivitiesActivityPorts.isAbortError(error);
+  return (0, _activityPorts.isAbortError)(error);
 }
-
 /**
  * Creates or emulates a DOMException of AbortError type.
  * See https://heycam.github.io/webidl/#aborterror.
  * @param {!Window} win
- * @param {string=} opt_message
+ * @param {string=} message
  * @return {!DOMException}
  */
 
-function createCancelError(win, opt_message) {
-  return _webActivitiesActivityPorts.createAbortError(win, opt_message);
-}
 
+function createCancelError(win, message) {
+  return (0, _activityPorts.createAbortError)(win, message);
+}
 /**
  * A set of error utilities combined in a class to allow easy stubbing in tests.
  */
 
-var ErrorUtils = (function () {
+
+var ErrorUtils =
+/*#__PURE__*/
+function () {
   function ErrorUtils() {
-    babelHelpers.classCallCheck(this, ErrorUtils);
+    _classCallCheck(this, ErrorUtils);
   }
 
-  /**
-   * @param {!Error} error
-   */
+  _createClass(ErrorUtils, null, [{
+    key: "throwAsync",
 
-  ErrorUtils.throwAsync = function throwAsync(error) {
-    setTimeout(function () {
-      throw error;
-    });
-  };
+    /**
+     * @param {!Error} error
+     */
+    value: function throwAsync(error) {
+      setTimeout(function () {
+        throw error;
+      });
+    }
+  }]);
 
   return ErrorUtils;
-})();
+}();
 
 exports.ErrorUtils = ErrorUtils;
 
-},{"web-activities/activity-ports":4}],71:[function(require,module,exports){
-exports.__esModule = true;
+},{"web-activities/activity-ports":4}],70:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.msg = msg;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -15737,69 +17514,61 @@ exports.msg = msg;
  * @param {?string|?Element} langOrElement
  * @return {?string}
  */
-
 function msg(map, langOrElement) {
   var lang = !langOrElement ? '' : typeof langOrElement == 'string' ? langOrElement : langOrElement.lang || langOrElement.ownerDocument && langOrElement.ownerDocument.documentElement.lang;
   var search = (lang && lang.toLowerCase() || 'en').replace(/_/g, '-');
+
   while (search) {
     if (search in map) {
       return map[search];
     }
+
     var dash = search.lastIndexOf('-');
     search = dash != -1 ? search.substring(0, dash) : '';
-  }
-  // "en" is always default.
+  } // "en" is always default.
+
+
   return map['en'];
 }
 
-},{}],72:[function(require,module,exports){
-exports.__esModule = true;
+},{}],71:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.recreateNonProtoObject = recreateNonProtoObject;
 exports.getValueForExpr = getValueForExpr;
 exports.parseJson = parseJson;
 exports.tryParseJson = tryParseJson;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+exports.getPropertyFromJsonString = getPropertyFromJsonString;
 
-/**
- * @fileoverview This module declares JSON types as defined in the
- * {@link http://json.org/}.
- */
+var _types = require("./types");
 
-var _types = require('./types');
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
  * Recreates objects with prototype-less copies.
  * @param {!JsonObject} obj
  * @return {!JsonObject}
  */
-
 function recreateNonProtoObject(obj) {
   var copy = Object.create(null);
+
   for (var k in obj) {
     if (!hasOwnProperty(obj, k)) {
       continue;
     }
+
     var v = obj[k];
-    copy[k] = _types.isObject(v) ? recreateNonProtoObject(v) : v;
+    copy[k] = (0, _types.isObject)(v) ? recreateNonProtoObject(v) : v;
   }
-  return (/** @type {!JsonObject} */copy
+
+  return (
+    /** @type {!JsonObject} */
+    copy
   );
 }
-
 /**
  * Returns a value from an object for a field-based expression. The expression
  * is a simple nested dot-notation of fields, such as `field1.field2`. If any
@@ -15811,29 +17580,35 @@ function recreateNonProtoObject(obj) {
  * @return {*}
  */
 
+
 function getValueForExpr(obj, expr) {
   // The `.` indicates "the object itself".
   if (expr == '.') {
     return obj;
-  }
-  // Otherwise, navigate via properties.
+  } // Otherwise, navigate via properties.
+
+
   var parts = expr.split('.');
   var value = obj;
+
   for (var i = 0; i < parts.length; i++) {
     var part = parts[i];
+
     if (!part) {
       value = undefined;
       break;
     }
-    if (!_types.isObject(value) || value[part] === undefined || !hasOwnProperty(value, part)) {
+
+    if (!(0, _types.isObject)(value) || value[part] === undefined || !hasOwnProperty(value, part)) {
       value = undefined;
       break;
     }
+
     value = value[part];
   }
+
   return value;
 }
-
 /**
  * Simple wrapper around JSON.parse that casts the return value
  * to JsonObject.
@@ -15842,66 +17617,84 @@ function getValueForExpr(obj, expr) {
  * @return {?JsonObject|undefined} May be extend to parse arrays.
  */
 
+
 function parseJson(json) {
-  return (/** @type {?JsonObject} */JSON.parse( /** @type {string} */json)
+  return (
+    /** @type {?JsonObject} */
+    JSON.parse(
+    /** @type {string} */
+    json)
   );
 }
-
 /**
  * Parses the given `json` string without throwing an exception if not valid.
  * Returns `undefined` if parsing fails.
  * Returns the `Object` corresponding to the JSON string when parsing succeeds.
  * @param {*} json JSON string to parse
- * @param {function(!Error)=} opt_onFailed Optional function that will be called
+ * @param {function(!Error)=} onFailed Optional function that will be called
  *     with the error if parsing fails.
  * @return {?JsonObject|undefined} May be extend to parse arrays.
  */
 
-function tryParseJson(json, opt_onFailed) {
+
+function tryParseJson(json, onFailed) {
   try {
     return parseJson(json);
   } catch (e) {
-    if (opt_onFailed) {
-      opt_onFailed(e);
+    if (onFailed) {
+      onFailed(e);
     }
+
     return undefined;
   }
 }
-
 /**
  * @param {*} obj
  * @param {string} key
  * @return {boolean}
  */
+
+
 function hasOwnProperty(obj, key) {
-  if (obj == null || typeof obj != 'object') {
+  if (obj == null || _typeof(obj) != 'object') {
     return false;
   }
-  return Object.prototype.hasOwnProperty.call(
-  /** @type {!Object} */obj, key);
-}
 
-},{"./types":80}],73:[function(require,module,exports){
-exports.__esModule = true;
+  return Object.prototype.hasOwnProperty.call(
+  /** @type {!Object} */
+  obj, key);
+}
 /**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Converts the passed string into a JSON object (if possible) and returns the
+ * value of the propertyName on that object.
+ * @param {string} jsonString
+ * @param {string} propertyName
+ * @return {*}
  */
 
-var _bytes = require('./bytes');
 
-var _json = require('./json');
+function getPropertyFromJsonString(jsonString, propertyName) {
+  var json = tryParseJson(jsonString);
+  return json && json[propertyName] || null;
+}
+
+},{"./types":79}],72:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.JwtHelper = void 0;
+
+var _bytes = require("./bytes");
+
+var _json = require("./json");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * @typedef {{
@@ -15911,65 +17704,75 @@ var _json = require('./json');
  *   sig: string,
  * }}
  */
-var JwtTokenInternalDef = undefined;
-
+var JwtTokenInternalDef;
 /**
  * Provides helper methods to decode and verify JWT tokens.
  */
 
-var JwtHelper = (function () {
+var JwtHelper =
+/*#__PURE__*/
+function () {
   function JwtHelper() {
-    babelHelpers.classCallCheck(this, JwtHelper);
+    _classCallCheck(this, JwtHelper);
   }
-
   /**
    * Decodes JWT token and returns its payload.
    * @param {string} encodedToken
    * @return {?JsonObject|undefined}
    */
 
-  JwtHelper.prototype.decode = function decode(encodedToken) {
-    return this.decodeInternal_(encodedToken).payload;
-  };
 
-  /**
-   * @param {string} encodedToken
-   * @return {!JwtTokenInternalDef}
-   * @private
-   */
-
-  JwtHelper.prototype.decodeInternal_ = function decodeInternal_(encodedToken) {
-    // See https://jwt.io/introduction/
+  _createClass(JwtHelper, [{
+    key: "decode",
+    value: function decode(encodedToken) {
+      return this.decodeInternal_(encodedToken).payload;
+    }
     /**
-     * Throws error about invalid token.
+     * @param {string} encodedToken
+     * @return {!JwtTokenInternalDef}
+     * @private
      */
-    function invalidToken() {
-      throw new Error('Invalid token: "' + encodedToken + '"');
-    }
 
-    // Encoded token has three parts: header.payload.sig
-    // Note! The padding is not allowed by JWT spec:
-    // http://self-issued.info/docs/draft-goland-json-web-token-00.html#rfc.section.5
-    var parts = encodedToken.split('.');
-    if (parts.length != 3) {
-      invalidToken();
+  }, {
+    key: "decodeInternal_",
+    value: function decodeInternal_(encodedToken) {
+      // See https://jwt.io/introduction/
+
+      /**
+       * Throws error about invalid token.
+       */
+      function invalidToken() {
+        throw new Error("Invalid token: \"".concat(encodedToken, "\""));
+      } // Encoded token has three parts: header.payload.sig
+      // Note! The padding is not allowed by JWT spec:
+      // http://self-issued.info/docs/draft-goland-json-web-token-00.html#rfc.section.5
+
+
+      var parts = encodedToken.split('.');
+
+      if (parts.length != 3) {
+        invalidToken();
+      }
+
+      var headerUtf8Bytes = (0, _bytes.base64UrlDecodeToBytes)(parts[0]);
+      var payloadUtf8Bytes = (0, _bytes.base64UrlDecodeToBytes)(parts[1]);
+      return {
+        header: (0, _json.tryParseJson)((0, _bytes.utf8DecodeSync)(headerUtf8Bytes), invalidToken),
+        payload: (0, _json.tryParseJson)((0, _bytes.utf8DecodeSync)(payloadUtf8Bytes), invalidToken),
+        verifiable: "".concat(parts[0], ".").concat(parts[1]),
+        sig: parts[2]
+      };
     }
-    var headerUtf8Bytes = _bytes.base64UrlDecodeToBytes(parts[0]);
-    var payloadUtf8Bytes = _bytes.base64UrlDecodeToBytes(parts[1]);
-    return {
-      header: _json.tryParseJson(_bytes.utf8DecodeSync(headerUtf8Bytes), invalidToken),
-      payload: _json.tryParseJson(_bytes.utf8DecodeSync(payloadUtf8Bytes), invalidToken),
-      verifiable: parts[0] + '.' + parts[1],
-      sig: parts[2]
-    };
-  };
+  }]);
 
   return JwtHelper;
-})();
+}();
 
 exports.JwtHelper = JwtHelper;
 
-},{"./bytes":67,"./json":72}],74:[function(require,module,exports){
+},{"./bytes":66,"./json":71}],73:[function(require,module,exports){
+"use strict";
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -15992,7 +17795,6 @@ exports.JwtHelper = JwtHelper;
  */
 
 /* eslint-disable */
-
 function debugLog(var_args) {
   if (/swg.debug=1/.test(self.location.hash)) {
     var logArgs = Array.prototype.slice.call(arguments, 0);
@@ -16000,14 +17802,22 @@ function debugLog(var_args) {
     log.apply(log, logArgs);
   }
 }
-
 /**
  * @param  {...*} var_args [description]
  */
+
+
 function log(var_args) {
   console.log.apply(console, arguments);
 }
+/**
+ * @param  {...*} var_args [description]
+ */
 
+
+function warn(var_args) {
+  console.warn.apply(console, arguments);
+}
 /**
  * Throws an error if the first argument isn't trueish.
  *
@@ -16022,43 +17832,52 @@ function log(var_args) {
  *
  * @param {T} shouldBeTrueish The value to assert. The assert fails if it does
  *     not evaluate to true.
- * @param {string=} opt_message The assertion message
+ * @param {string=} message The assertion message
  * @param {...*} var_args Arguments substituted into %s in the message.
  * @return {T} The value of shouldBeTrueish.
  * @template T
  */
-function assert(shouldBeTrueish, opt_message, var_args) {
-  var firstElement = undefined;
+
+
+function assert(shouldBeTrueish, message, var_args) {
+  var firstElement;
+
   if (!shouldBeTrueish) {
-    var message = opt_message || 'Assertion failed';
+    message = message || 'Assertion failed';
     var splitMessage = message.split('%s');
     var first = splitMessage.shift();
     var formatted = first;
     var messageArray = [];
     pushIfNonEmpty(messageArray, first);
+
     for (var i = 2; i < arguments.length; i++) {
       var val = arguments[i];
+
       if (val && val.tagName) {
         firstElement = val;
       }
+
       var nextConstant = splitMessage.shift();
       messageArray.push(val);
       pushIfNonEmpty(messageArray, nextConstant.trim());
       formatted += toString(val) + nextConstant;
     }
+
     var e = new Error(formatted);
     e.fromAssert = true;
     e.associatedElement = firstElement;
     e.messageArray = messageArray;
     throw e;
   }
+
   return shouldBeTrueish;
 }
-
 /**
  * @param {!Array} array
  * @param {*} val
  */
+
+
 function pushIfNonEmpty(array, val) {
   if (val != '') {
     array.push(val);
@@ -16070,20 +17889,29 @@ function toString(val) {
   if (val && val.nodeType == 1) {
     return val.tagName.toLowerCase() + (val.id ? '#' + val.id : '');
   }
-  return (/** @type {string} */val
+
+  return (
+    /** @type {string} */
+    val
   );
 }
 
 module.exports = {
   assert: assert,
   debugLog: debugLog,
+  warn: warn,
   log: log
 };
 
-},{}],75:[function(require,module,exports){
-exports.__esModule = true;
+},{}],74:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.map = map;
 exports.findInArray = findInArray;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -16102,21 +17930,21 @@ exports.findInArray = findInArray;
 
 /**
  * Returns a map-like object.
- * If opt_initial is provided, copies its own properties into the
+ * If initial is provided, copies its own properties into the
  * newly created object.
- * @param {Object=} opt_initial This should typically be an object literal.
+ * @param {Object=} initial This should typically be an object literal.
  * @return {!Object}
  * @template T
  */
-
-function map(opt_initial) {
+function map(initial) {
   var obj = Object.create(null);
-  if (opt_initial) {
-    Object.assign(obj, opt_initial);
+
+  if (initial) {
+    Object.assign(obj, initial);
   }
+
   return obj;
 }
-
 /**
  * Implements `Array.find()` method that's not yet available in all browsers.
  *
@@ -16126,114 +17954,130 @@ function map(opt_initial) {
  * @template T
  */
 
+
 function findInArray(array, predicate) {
   if (!array) {
     return null;
   }
+
   var len = array.length || 0;
+
   if (len > 0) {
     for (var i = 0; i < len; i++) {
       var other = array[i];
+
       if (predicate(other, i, array)) {
         return other;
       }
     }
   }
+
   return null;
 }
 
-},{}],76:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{}],75:[function(require,module,exports){
+"use strict";
 
-var _dom = require('./dom');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Preconnect = void 0;
 
-var Preconnect = (function () {
+var _dom = require("./dom");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Preconnect =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Document} doc
    */
-
   function Preconnect(doc) {
-    babelHelpers.classCallCheck(this, Preconnect);
+    _classCallCheck(this, Preconnect);
 
     /** @private @const {!Document} */
     this.doc_ = doc;
   }
-
   /**
    * @param {string} url
    */
 
-  Preconnect.prototype.preconnect = function preconnect(url) {
-    this.pre_(url, 'preconnect');
-  };
 
-  /**
-   * @param {string} url
-   */
-
-  Preconnect.prototype.dnsPrefetch = function dnsPrefetch(url) {
-    this.pre_(url, 'dns-prefetch');
-  };
-
-  /**
-   * @param {string} url
-   */
-
-  Preconnect.prototype.prefetch = function prefetch(url) {
-    this.pre_(url, 'preconnect prefetch');
-  };
-
-  /**
-   * @param {string} url
-   * @param {string} as
-   */
-
-  Preconnect.prototype.preload = function preload(url, as) {
-    this.pre_(url, 'preconnect preload', as);
-  };
-
-  /**
-   * @param {string} url
-   * @param {string} rel
-   * @param {?string=} opt_as
-   * @private
-   */
-
-  Preconnect.prototype.pre_ = function pre_(url, rel, opt_as) {
-    // <link rel="prefetch" href="..." as="">
-    var linkEl = _dom.createElement(this.doc_, 'link', {
-      'rel': rel,
-      'href': url
-    });
-    if (opt_as) {
-      linkEl.setAttribute('as', opt_as);
+  _createClass(Preconnect, [{
+    key: "preconnect",
+    value: function preconnect(url) {
+      this.pre_(url, 'preconnect');
     }
-    this.doc_.head.appendChild(linkEl);
-  };
+    /**
+     * @param {string} url
+     */
+
+  }, {
+    key: "dnsPrefetch",
+    value: function dnsPrefetch(url) {
+      this.pre_(url, 'dns-prefetch');
+    }
+    /**
+     * @param {string} url
+     */
+
+  }, {
+    key: "prefetch",
+    value: function prefetch(url) {
+      this.pre_(url, 'preconnect prefetch');
+    }
+    /**
+     * @param {string} url
+     * @param {string} as
+     */
+
+  }, {
+    key: "preload",
+    value: function preload(url, as) {
+      this.pre_(url, 'preconnect preload', as);
+    }
+    /**
+     * @param {string} url
+     * @param {string} rel
+     * @param {?string=} as
+     * @private
+     */
+
+  }, {
+    key: "pre_",
+    value: function pre_(url, rel, as) {
+      // <link rel="prefetch" href="..." as="">
+      var linkEl = (0, _dom.createElement)(this.doc_, 'link', {
+        'rel': rel,
+        'href': url
+      });
+
+      if (as) {
+        linkEl.setAttribute('as', as);
+      }
+
+      this.doc_.head.appendChild(linkEl);
+    }
+  }]);
 
   return Preconnect;
-})();
+}();
 
 exports.Preconnect = Preconnect;
 
-},{"./dom":69}],77:[function(require,module,exports){
-exports.__esModule = true;
+},{"./dom":68}],76:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.getRandomInts = getRandomInts;
+
 /**
  * Copyright 2019 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -16256,28 +18100,32 @@ exports.getRandomInts = getRandomInts;
  * @param {!number} numInts
  * @param {!number} maxVal
  */
-
 function getRandomInts(numInts, maxVal) {
   // Ensure array type is appropriate for the max value (performance)
   var arr = maxVal < 256 ? new Uint8Array(numInts) : maxVal < 32768 ? new Uint16Array(numInts) : new Uint32Array(numInts);
 
   if (crypto && crypto.getRandomValues) {
     crypto.getRandomValues(arr);
+
     for (var i = arr.length - 1; i > -1; i--) {
       arr[i] = arr[i] % maxVal;
     }
   } else {
     // For older browsers
-    for (var i = arr.length - 1; i > -1; i--) {
-      arr[i] = Math.floor(Math.random() * maxVal);
+    for (var _i = arr.length - 1; _i > -1; _i--) {
+      arr[_i] = Math.floor(Math.random() * maxVal);
     }
   }
 
   return arr;
 }
 
-},{}],78:[function(require,module,exports){
-exports.__esModule = true;
+},{}],77:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.dashToCamelCase = dashToCamelCase;
 exports.dashToUnderline = dashToUnderline;
 exports.endsWith = endsWith;
@@ -16285,6 +18133,9 @@ exports.startsWith = startsWith;
 exports.expandTemplate = expandTemplate;
 exports.stringHash32 = stringHash32;
 exports.getUuid = getUuid;
+
+var _random = require("./random");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -16300,39 +18151,35 @@ exports.getUuid = getUuid;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var _random = require('./random');
-
 var CHARS = '0123456789ABCDEF';
-
 /**
  * @param {string} _match
  * @param {string} character
  * @return {string}
  */
+
 function toUpperCase(_match, character) {
   return character.toUpperCase();
 }
-
 /**
  * @param {string} name Attribute name with dashes
  * @return {string} Dashes removed and character after to upper case.
  * visibleForTesting
  */
 
+
 function dashToCamelCase(name) {
   return name.replace(/-([a-z])/g, toUpperCase);
 }
-
 /**
  * @param {string} name Attribute name with dashes
  * @return {string} Dashes replaced by underlines.
  */
 
+
 function dashToUnderline(name) {
   return name.replace('-', '_');
 }
-
 /**
  * Polyfill for String.prototype.endsWith.
  * @param {string} string
@@ -16340,11 +18187,11 @@ function dashToUnderline(name) {
  * @return {boolean}
  */
 
+
 function endsWith(string, suffix) {
   var index = string.length - suffix.length;
   return index >= 0 && string.indexOf(suffix, index) == index;
 }
-
 /**
  * Polyfill for String.prototype.startsWith.
  * @param {string} string
@@ -16352,13 +18199,14 @@ function endsWith(string, suffix) {
  * @return {boolean}
  */
 
+
 function startsWith(string, prefix) {
   if (prefix.length > string.length) {
     return false;
   }
+
   return string.lastIndexOf(prefix, 0) == 0;
 }
-
 /**
  * Expands placeholders in a given template string with values.
  *
@@ -16368,34 +18216,36 @@ function startsWith(string, prefix) {
  * @param {string} template The template string to expand.
  * @param {!function(string):*} getter Function used to retrieve a value for a
  *   placeholder. Returns values will be coerced into strings.
- * @param {number=} opt_maxIterations Number of times to expand the template.
+ * @param {number=} maxIterations Number of times to expand the template.
  *   Defaults to 1, but should be set to a larger value your placeholder tokens
  *   can be expanded to other placeholder tokens. Take caution with large values
  *   as recursively expanding a string can be exponentially expensive.
  */
 
-function expandTemplate(template, getter, opt_maxIterations) {
-  var maxIterations = opt_maxIterations || 1;
 
-  var _loop = function (i) {
+function expandTemplate(template, getter) {
+  var maxIterations = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
+  var _loop = function _loop(i) {
     var matches = 0;
     template = template.replace(/\${([^}]*)}/g, function (_a, b) {
       matches++;
       return getter(b);
     });
+
     if (!matches) {
-      return 'break';
+      return "break";
     }
   };
 
   for (var i = 0; i < maxIterations; i++) {
     var _ret = _loop(i);
 
-    if (_ret === 'break') break;
+    if (_ret === "break") break;
   }
+
   return template;
 }
-
 /**
  * Hash function djb2a
  * This is intended to be a simple, fast hashing function using minimal code.
@@ -16404,45 +18254,51 @@ function expandTemplate(template, getter, opt_maxIterations) {
  * @return {string} 32-bit unsigned hash of the string
  */
 
+
 function stringHash32(str) {
   var length = str.length;
   var hash = 5381;
+
   for (var i = 0; i < length; i++) {
     hash = hash * 33 ^ str.charCodeAt(i);
-  }
-  // Convert from 32-bit signed to unsigned.
+  } // Convert from 32-bit signed to unsigned.
+
+
   return String(hash >>> 0);
 }
-
 /**
  * Ensures the passed value is safe to use for character 19 per rfc4122,
  * sec. 4.1.5.  "Sets the high bits of clock sequence".
  * @param {!number} v
  */
+
+
 function getChar19(v) {
   return CHARS[v & 0x3 | 0x8];
 }
-
 /**
  * The returned identifier will always be an 8 digit valid hexidecimal number
  * and will be unique for each MS within a given month.
  * @return {string}
  */
+
+
 function getMonthlyTimeIdentifier() {
   var hexTime = Date.now().toString(16);
   return hexTime.substring(hexTime.length - 8).toUpperCase();
 }
-
 /**
  * Generates a RFC 4122 V4 UUID. Ex: "92329D39-6F5C-4520-ABFC-AAB64544E172"
  * The first 8 digits are unique for the millisecond of the month.  The rest
  * are randomly generated.
  */
 
+
 function getUuid() {
   var uuid = getMonthlyTimeIdentifier() + '-';
   var rIndex = 0;
-  var rands = _random.getRandomInts(23, 16);
+  var rands = (0, _random.getRandomInts)(23, 16);
+
   for (var i = 9; i < 36; i++) {
     switch (i) {
       case 13:
@@ -16450,22 +18306,30 @@ function getUuid() {
       case 23:
         uuid += '-';
         break;
+
       case 14:
         uuid += '4';
         break;
+
       case 19:
         uuid += getChar19(rands[rIndex++]);
         break;
+
       default:
         uuid += CHARS[rands[rIndex++]];
         break;
     }
   }
+
   return uuid;
 }
 
-},{"./random":77}],79:[function(require,module,exports){
-exports.__esModule = true;
+},{"./random":76}],78:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.camelCaseToTitleCase = camelCaseToTitleCase;
 exports.getVendorJsPropertyName = getVendorJsPropertyName;
 exports.setImportantStyles = setImportantStyles;
@@ -16481,6 +18345,12 @@ exports.removeAlphaFromColor = removeAlphaFromColor;
 exports.computedStyle = computedStyle;
 exports.resetStyles = resetStyles;
 exports.resetAllStyles = resetAllStyles;
+exports.googleFontsUrl = exports.defaultStyles = void 0;
+
+var _object = require("./object.js");
+
+var _string = require("./string");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -16496,19 +18366,13 @@ exports.resetAllStyles = resetAllStyles;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 // Note: loaded by 3p system. Cannot rely on babel polyfills.
 
-var _objectJs = require('./object.js');
-
-var _string = require('./string');
-
 /** @type {Object<string, string>} */
-var propertyNameCache = undefined;
-
+var propertyNameCache;
 /** @const {!Array<string>} */
-var vendorPrefixes = ['Webkit', 'webkit', 'Moz', 'moz', 'ms', 'O', 'o'];
 
+var vendorPrefixes = ['Webkit', 'webkit', 'Moz', 'moz', 'ms', 'O', 'o'];
 /**
  * Default styles to be set for top level friendly iframe.
  * Some attributes are not included such as height, left, margin-left; since
@@ -16516,6 +18380,7 @@ var vendorPrefixes = ['Webkit', 'webkit', 'Moz', 'moz', 'ms', 'O', 'o'];
  * defined here as !important does not work on IE/edge browsers.
  * @const {!Object<string, string|number>}
  */
+
 var defaultStyles = {
   'align-content': 'normal',
   'animation': 'none',
@@ -16556,8 +18421,10 @@ var defaultStyles = {
   'display': 'block',
   'empty-cells': 'show',
   'filter': 'none',
-  'flex': 'none', // flex-grow, flex-shrink, and flex-basis.
-  'flex-flow': 'row nowrap', // flex-direction, flex-wrap.
+  'flex': 'none',
+  // flex-grow, flex-shrink, and flex-basis.
+  'flex-flow': 'row nowrap',
+  // flex-direction, flex-wrap.
   'float': 'none',
   'flood-color': 'rgb(0, 0, 0)',
   'flood-opacity': '1',
@@ -16567,7 +18434,8 @@ var defaultStyles = {
   'height': 'auto',
   'hyphens': 'manual',
   'image-rendering': 'auto',
-  'inline-size': '', // Setting to 'auto' will not allow override.
+  'inline-size': '',
+  // Setting to 'auto' will not allow override.
   'isolation': 'auto',
   'justify-content': 'normal',
   'justify-items': 'normal',
@@ -16586,10 +18454,14 @@ var defaultStyles = {
   'min-inline-size': '0',
   'min-width': '0',
   'mix-blend-mode': 'normal',
-  'object-fit': 'fill', // Important for Safari browser.
-  'offset-distance': 'none', // Chrome only (Experimental).
-  'offset-path': 'none', // Chrome only (Experimental).
-  'offset-rotate': 'auto 0deg', // Chrome only (Experimental).
+  'object-fit': 'fill',
+  // Important for Safari browser.
+  'offset-distance': 'none',
+  // Chrome only (Experimental).
+  'offset-path': 'none',
+  // Chrome only (Experimental).
+  'offset-rotate': 'auto 0deg',
+  // Chrome only (Experimental).
   'opacity': '1',
   'order': '0',
   'orphans': '2',
@@ -16606,7 +18478,8 @@ var defaultStyles = {
   'resize': 'none',
   'right': '0',
   'scroll-behavior': 'auto',
-  'tab-size': '8', // Only Chrome, Safari (Experimental).
+  'tab-size': '8',
+  // Only Chrome, Safari (Experimental).
   'table-layout': 'auto',
   'text-align': 'start',
   'text-align-last': 'auto',
@@ -16639,22 +18512,21 @@ var defaultStyles = {
   'zoom': '1',
   'z-index': 'auto'
 };
+/** @const {string} */
 
 exports.defaultStyles = defaultStyles;
-/** @const {string} */
 var googleFontsUrl = 'https://fonts.googleapis.com/css?family=Google+Sans';
-
-exports.googleFontsUrl = googleFontsUrl;
 /**
  * @export
  * @param {string} camelCase camel cased string
  * @return {string} title cased string
  */
 
+exports.googleFontsUrl = googleFontsUrl;
+
 function camelCaseToTitleCase(camelCase) {
   return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
 }
-
 /**
  * Checks the style if a prefixed version of a property exists and returns
  * it or returns an empty string.
@@ -16663,16 +18535,19 @@ function camelCaseToTitleCase(camelCase) {
  * @param {string} titleCase the title case version of a css property name
  * @return {string} the prefixed property name or null.
  */
+
+
 function getVendorJsPropertyName_(style, titleCase) {
   for (var i = 0; i < vendorPrefixes.length; i++) {
     var propertyName = vendorPrefixes[i] + titleCase;
+
     if (style[propertyName] !== undefined) {
       return propertyName;
     }
   }
+
   return '';
 }
-
 /**
  * Returns the possibly prefixed JavaScript property name of a style property
  * (ex. WebkitTransitionDuration) given a camelCase'd version of the property
@@ -16680,22 +18555,27 @@ function getVendorJsPropertyName_(style, titleCase) {
  * @export
  * @param {!Object} style
  * @param {string} camelCase the camel cased version of a css property name
- * @param {boolean=} opt_bypassCache bypass the memoized cache of property
+ * @param {boolean=} bypassCache bypass the memoized cache of property
  *   mapping
  * @return {string}
  */
 
-function getVendorJsPropertyName(style, camelCase, opt_bypassCache) {
-  if (_string.startsWith(camelCase, '--')) {
+
+function getVendorJsPropertyName(style, camelCase, bypassCache) {
+  if ((0, _string.startsWith)(camelCase, '--')) {
     // CSS vars are returned as is.
     return camelCase;
   }
+
   if (!propertyNameCache) {
-    propertyNameCache = _objectJs.map();
+    propertyNameCache = (0, _object.map)();
   }
+
   var propertyName = propertyNameCache[camelCase];
-  if (!propertyName || opt_bypassCache) {
+
+  if (!propertyName || bypassCache) {
     propertyName = camelCase;
+
     if (style[camelCase] === undefined) {
       var titleCase = camelCaseToTitleCase(camelCase);
       var prefixedPropertyName = getVendorJsPropertyName_(style, titleCase);
@@ -16704,13 +18584,14 @@ function getVendorJsPropertyName(style, camelCase, opt_bypassCache) {
         propertyName = prefixedPropertyName;
       }
     }
-    if (!opt_bypassCache) {
+
+    if (!bypassCache) {
       propertyNameCache[camelCase] = propertyName;
     }
   }
+
   return propertyName;
 }
-
 /**
  * Sets the CSS styles of the specified element with !important. The styles
  * are specified as a map from CSS property names to their values.
@@ -16718,44 +18599,49 @@ function getVendorJsPropertyName(style, camelCase, opt_bypassCache) {
  * @param {!Object<string, string|number>} styles
  */
 
+
 function setImportantStyles(element, styles) {
   for (var k in styles) {
     element.style.setProperty(getVendorJsPropertyName(styles, k), styles[k].toString(), 'important');
   }
 }
-
 /**
  * Sets the CSS style of the specified element with optional units, e.g. "px".
  * @param {Element} element
  * @param {string} property
  * @param {?string|number|boolean} value
- * @param {string=} opt_units
- * @param {boolean=} opt_bypassCache
+ * @param {string=} units
+ * @param {boolean=} bypassCache
  */
 
-function setStyle(element, property, value, opt_units, opt_bypassCache) {
-  var propertyName = getVendorJsPropertyName(element.style, property, opt_bypassCache);
+
+function setStyle(element, property, value, units, bypassCache) {
+  var propertyName = getVendorJsPropertyName(element.style, property, bypassCache);
+
   if (propertyName) {
-    element.style[propertyName] = /** @type {string} */opt_units ? value + opt_units : value;
+    element.style[propertyName] =
+    /** @type {string} */
+    units ? value + units : value;
   }
 }
-
 /**
  * Returns the value of the CSS style of the specified element.
  * @param {!Element} element
  * @param {string} property
- * @param {boolean=} opt_bypassCache
+ * @param {boolean=} bypassCache
  * @return {*}
  */
 
-function getStyle(element, property, opt_bypassCache) {
-  var propertyName = getVendorJsPropertyName(element.style, property, opt_bypassCache);
+
+function getStyle(element, property, bypassCache) {
+  var propertyName = getVendorJsPropertyName(element.style, property, bypassCache);
+
   if (!propertyName) {
     return undefined;
   }
+
   return element.style[propertyName];
 }
-
 /**
  * Sets the CSS styles of the specified element. The styles
  * a specified as a map from CSS property names to their values.
@@ -16763,78 +18649,83 @@ function getStyle(element, property, opt_bypassCache) {
  * @param {!Object<string, ?string|number|boolean>} styles
  */
 
+
 function setStyles(element, styles) {
   for (var k in styles) {
     setStyle(element, k, styles[k]);
   }
 }
-
 /**
  * Shows or hides the specified element.
  * @param {!Element} element
- * @param {boolean=} opt_display
+ * @param {boolean=} display
  */
 
-function toggle(element, opt_display) {
-  if (opt_display === undefined) {
-    opt_display = getStyle(element, 'display') == 'none';
-  }
-  setStyle(element, 'display', opt_display ? '' : 'none');
-}
 
+function toggle(element, display) {
+  if (display === undefined) {
+    display = getStyle(element, 'display') == 'none';
+  }
+
+  setStyle(element, 'display', display ? '' : 'none');
+}
 /**
  * Returns a pixel value.
  * @param {number} value
  * @return {string}
  */
 
+
 function px(value) {
   return value + 'px';
 }
-
 /**
  * Returns a "translateX" for CSS "transform" property.
  * @param {number|string} value
  * @return {string}
  */
 
+
 function translateX(value) {
   if (typeof value == 'string') {
-    return 'translateX(' + value + ')';
+    return "translateX(".concat(value, ")");
   }
-  return 'translateX(' + px(value) + ')';
-}
 
+  return "translateX(".concat(px(value), ")");
+}
 /**
  * Returns a "translateX" for CSS "transform" property.
  * @param {number|string} x
- * @param {(number|string)=} opt_y
+ * @param {(number|string)=} y
  * @return {string}
  */
 
-function translate(x, opt_y) {
+
+function translate(x, y) {
   if (typeof x == 'number') {
     x = px(x);
   }
-  if (opt_y === undefined) {
-    return 'translate(' + x + ')';
-  }
-  if (typeof opt_y == 'number') {
-    opt_y = px(opt_y);
-  }
-  return 'translate(' + x + ', ' + opt_y + ')';
-}
 
+  if (y === undefined) {
+    return "translate(".concat(x, ")");
+  }
+
+  if (typeof y == 'number') {
+    y = px(y);
+  }
+
+  return "translate(".concat(x, ", ").concat(y, ")");
+}
 /**
  * Returns a "scale" for CSS "transform" property.
  * @param {number|string} value
  * @return {string}
  */
 
-function scale(value) {
-  return 'scale(' + value + ')';
-}
 
+function scale(value) {
+  return "scale(".concat(value, ")");
+}
 /**
  * Remove alpha value from a rgba color value.
  * Return the new color property with alpha equals if has the alpha value.
@@ -16843,10 +18734,10 @@ function scale(value) {
  * @return {string}
  */
 
+
 function removeAlphaFromColor(rgbaColor) {
   return rgbaColor.replace(/\(([^,]+),([^,]+),([^,)]+),[^)]+\)/g, '($1,$2,$3, 1)');
 }
-
 /**
  * Gets the computed style of the element. The helper is necessary to enforce
  * the possible `null` value returned by a buggy Firefox.
@@ -16856,17 +18747,22 @@ function removeAlphaFromColor(rgbaColor) {
  * @return {!Object<string, string>}
  */
 
+
 function computedStyle(win, el) {
-  var style = /** @type {?CSSStyleDeclaration} */win.getComputedStyle(el);
-  return (/** @type {!Object<string, string>} */style || _objectJs.map()
+  var style =
+  /** @type {?CSSStyleDeclaration} */
+  win.getComputedStyle(el);
+  return (
+    /** @type {!Object<string, string>} */
+    style || (0, _object.map)()
   );
 }
-
 /**
  * Resets styles that were set dynamically (i.e. inline)
  * @param {!Element} element
  * @param {!Array<string>} properties
  */
+
 
 function resetStyles(element, properties) {
   var styleObj = {};
@@ -16875,19 +18771,23 @@ function resetStyles(element, properties) {
   });
   setStyles(element, styleObj);
 }
-
 /**
  * Resets all the styles of an element to a given value. Defaults to null.
  * The valid values are 'inherit', 'initial', 'unset' or null.
  * @param {!Element} element
  */
 
+
 function resetAllStyles(element) {
   setImportantStyles(element, defaultStyles);
 }
 
-},{"./object.js":75,"./string":78}],80:[function(require,module,exports){
-exports.__esModule = true;
+},{"./object.js":74,"./string":77}],79:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.isArray = isArray;
 exports.toArray = toArray;
 exports.isObject = isObject;
@@ -16896,6 +18796,7 @@ exports.isFormData = isFormData;
 exports.isEnumValue = isEnumValue;
 exports.isFunction = isFunction;
 exports.isBoolean = isBoolean;
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -16914,26 +18815,25 @@ exports.isBoolean = isBoolean;
 
 /* @const */
 var toString_ = Object.prototype.toString;
-
 /**
  * Returns the ECMA [[Class]] of a value
  * @param {*} value
  * @return {string}
  */
+
 function toString(value) {
   return toString_.call(value);
 }
-
 /**
  * Determines if value is actually an Array.
  * @param {*} value
  * @return {boolean}
  */
 
+
 function isArray(value) {
   return Array.isArray(value);
 }
-
 /**
  * Converts an array-like object to an array.
  * @param {?IArrayLike<T>|string} arrayLike
@@ -16941,27 +18841,30 @@ function isArray(value) {
  * @template T
  */
 
+
 function toArray(arrayLike) {
   if (!arrayLike) {
     return [];
   }
+
   var array = new Array(arrayLike.length);
+
   for (var i = 0; i < arrayLike.length; i++) {
     array[i] = arrayLike[i];
   }
+
   return array;
 }
-
 /**
  * Determines if value is actually an Object.
  * @param {*} value
  * @return {boolean}
  */
 
+
 function isObject(value) {
   return toString(value) === '[object Object]';
 }
-
 /**
  * Determines if value is of number type and finite.
  * NaN and Infinity are not considered a finite number.
@@ -16970,20 +18873,20 @@ function isObject(value) {
  * @return {boolean}
  */
 
+
 function isFiniteNumber(value) {
   return typeof value === 'number' && isFinite(value);
 }
-
 /**
  * Determines if value is of FormData type.
  * @param {*} value
  * @return {boolean}
  */
 
+
 function isFormData(value) {
   return toString(value) === '[object FormData]';
 }
-
 /**
  * Checks whether `s` is a valid value of `enumObj`.
  *
@@ -16993,40 +18896,49 @@ function isFormData(value) {
  * @template T
  */
 
+
 function isEnumValue(enumObj, s) {
   for (var k in enumObj) {
     if (enumObj[k] === s) {
       return true;
     }
   }
+
   return false;
 }
-
 /**
  * True if the value is a function.
  * @param {*} value
  */
 
+
 function isFunction(value) {
   return value !== null && typeof value === 'function';
 }
-
 /**
  * True if the value is either true or false.
  * @param {?*} value
  */
 
+
 function isBoolean(value) {
   return value === true || value === false;
 }
 
-},{}],81:[function(require,module,exports){
-exports.__esModule = true;
+},{}],80:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.serializeQueryString = serializeQueryString;
 exports.parseUrl = parseUrl;
 exports.parseQueryString = parseQueryString;
 exports.addQueryParam = addQueryParam;
 exports.getHostUrl = getHostUrl;
+
+var _types = require("./types");
+
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
  *
@@ -17042,8 +18954,6 @@ exports.getHostUrl = getHostUrl;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var _types = require('./types');
 
 /**
   @typedef {{
@@ -17058,22 +18968,21 @@ var _types = require('./types');
     origin: string,
   }}
   */
-var LocationDef = undefined;
-
+var LocationDef;
 /**
  * Cached a-tag to avoid memory allocation during URL parsing.
  * @type {HTMLAnchorElement}
  */
-var a = undefined;
 
+var a;
 /**
  * We cached all parsed URLs. As of now there are no use cases
  * of AMP docs that would ever parse an actual large number of URLs,
  * but we often parse the same one over and over again.
  * @type {Object<string, !LocationDef>}
  */
-var cache = undefined;
 
+var cache;
 /**
  * Serializes the passed parameter map into a query string with both keys
  * and values encoded.
@@ -17083,49 +18992,56 @@ var cache = undefined;
 
 function serializeQueryString(params) {
   var s = [];
+
   for (var k in params) {
     var v = params[k];
+
     if (v == null) {
       continue;
-    } else if (_types.isArray(v)) {
+    } else if ((0, _types.isArray)(v)) {
       for (var i = 0; i < v.length; i++) {
-        var sv = /** @type {string} */v[i];
-        s.push(encodeURIComponent(k) + '=' + encodeURIComponent(sv));
+        var sv =
+        /** @type {string} */
+        v[i];
+        s.push("".concat(encodeURIComponent(k), "=").concat(encodeURIComponent(sv)));
       }
     } else {
-      var sv = /** @type {string} */v;
-      s.push(encodeURIComponent(k) + '=' + encodeURIComponent(sv));
+      var _sv =
+      /** @type {string} */
+      v;
+      s.push("".concat(encodeURIComponent(k), "=").concat(encodeURIComponent(_sv)));
     }
   }
+
   return s.join('&');
 }
-
 /**
  * Returns a Location-like object for the given URL. If it is relative,
  * the URL gets resolved.
  * Consider the returned object immutable. This is enforced during
  * testing by freezing the object.
  * @param {string} url
- * @param {boolean=} opt_nocache
  * @return {!LocationDef}
  */
 
-function parseUrl(url, opt_nocache) {
+
+function parseUrl(url) {
   if (!a) {
-    a = /** @type {!HTMLAnchorElement} */self.document.createElement('a');
+    a =
+    /** @type {!HTMLAnchorElement} */
+    self.document.createElement('a');
     cache = self.UrlCache || (self.UrlCache = Object.create(null));
   }
 
   var fromCache = cache[url];
+
   if (fromCache) {
     return fromCache;
   }
 
   var info = parseUrlWithA(a, url);
-
   return cache[url] = info;
 }
-
 /**
  * Returns a Location-like object for the given URL. If it is relative,
  * the URL gets resolved.
@@ -17133,16 +19049,18 @@ function parseUrl(url, opt_nocache) {
  * @param {string} url
  * @return {!LocationDef}
  */
-function parseUrlWithA(a, url) {
-  a.href = url;
 
-  // IE11 doesn't provide full URL components when parsing relative URLs.
+
+function parseUrlWithA(a, url) {
+  a.href = url; // IE11 doesn't provide full URL components when parsing relative URLs.
   // Assigning to itself again does the trick.
+
   if (!a.protocol) {
     a.href = a.href;
   }
-
   /** @type {!LocationDef} */
+
+
   var info = {
     href: a.href,
     protocol: a.protocol,
@@ -17152,24 +19070,24 @@ function parseUrlWithA(a, url) {
     pathname: a.pathname,
     search: a.search,
     hash: a.hash,
-    origin: '' };
+    origin: '' // Set below.
 
-  // Some IE11 specific polyfills.
+  }; // Some IE11 specific polyfills.
   // 1) IE11 strips out the leading '/' in the pathname.
-  // Set below.
+
   if (info.pathname[0] !== '/') {
     info.pathname = '/' + info.pathname;
-  }
-
-  // 2) For URLs with implicit ports, IE11 parses to default ports while
+  } // 2) For URLs with implicit ports, IE11 parses to default ports while
   // other browsers leave the port field empty.
+
+
   if (info.protocol == 'http:' && info.port == 80 || info.protocol == 'https:' && info.port == 443) {
     info.port = '';
     info.host = info.hostname;
-  }
-
-  // For data URI a.origin is equal to the string 'null' which is not useful.
+  } // For data URI a.origin is equal to the string 'null' which is not useful.
   // We instead return the actual origin which is the full URL.
+
+
   if (a.origin && a.origin != 'null') {
     info.origin = a.origin;
   } else if (info.protocol == 'data:' || !info.host) {
@@ -17177,30 +19095,33 @@ function parseUrlWithA(a, url) {
   } else {
     info.origin = info.protocol + '//' + info.host;
   }
+
   return info;
 }
-
 /**
  * Parses and builds Object of URL query string.
  * @param {string} query The URL query string.
  * @return {!Object<string, string>}
  */
 
+
 function parseQueryString(query) {
   if (!query) {
     return {};
   }
+
   return (/^[?#]/.test(query) ? query.slice(1) : query).split('&').reduce(function (params, param) {
     var item = param.split('=');
     var key = decodeURIComponent(item[0] || '');
     var value = decodeURIComponent(item[1] || '');
+
     if (key) {
       params[key] = value;
     }
+
     return params;
   }, {});
 }
-
 /**
  * Adds a parameter to a query string.
  * @param {string} url
@@ -17209,61 +19130,61 @@ function parseQueryString(query) {
  * @return {string}
  */
 
+
 function addQueryParam(url, param, value) {
   var queryIndex = url.indexOf('?');
   var fragmentIndex = url.indexOf('#');
   var fragment = '';
+
   if (fragmentIndex != -1) {
     fragment = url.substring(fragmentIndex);
     url = url.substring(0, fragmentIndex);
   }
+
   if (queryIndex == -1) {
     url += '?';
   } else if (queryIndex < url.length - 1) {
     url += '&';
   }
+
   url += encodeURIComponent(param) + '=' + encodeURIComponent(value);
   return url + fragment;
 }
-
 /**
  * Returns the Url including the path and search, without fregment.
  * @param {string} url
  * @return {string}
  */
 
+
 function getHostUrl(url) {
   var locationHref = parseUrl(url);
   return locationHref.origin + locationHref.pathname + locationHref.search;
 }
 
-},{"./types":80}],82:[function(require,module,exports){
-exports.__esModule = true;
+},{"./types":79}],81:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.fetchPolyfill = fetchPolyfill;
 exports.assertSuccess = assertSuccess;
-/**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+exports.FetchResponseHeaders = exports.FetchResponse = exports.Xhr = exports.FetchInitDef = void 0;
 
-var _log = require('./log');
+var _log = require("./log");
 
-var _json = require('./json');
+var _json = require("./json");
 
-var _url = require('./url');
+var _url = require("./url");
 
-var _bytes = require('./bytes');
+var _bytes = require("./bytes");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * The "init" argument of the Fetch API. Currently, only "credentials: include"
@@ -17279,41 +19200,33 @@ var _bytes = require('./bytes');
  *   responseType: (string)
  * }}
  */
-var FetchInitDef = undefined;
+var FetchInitDef;
+/** @private @const {!Array<string>} */
 
 exports.FetchInitDef = FetchInitDef;
-/** @private @const {!Array<string>} */
 var allowedMethods_ = ['GET', 'POST'];
-
 /** @private @enum {number} Allowed fetch responses. */
+
 var allowedFetchTypes_ = {
   document: 1,
   text: 2
 };
-
 /**
  * A class that polyfills Fetch API.
  */
 
-var Xhr = (function () {
+var Xhr =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Window} win
    */
-
   function Xhr(win) {
-    babelHelpers.classCallCheck(this, Xhr);
+    _classCallCheck(this, Xhr);
 
     /** @const {!Window} */
     this.win = win;
   }
-
-  /**
-   * Normalized method name by uppercasing.
-   * @param {string|undefined} method
-   * @return {string}
-   * @private
-   */
-
   /**
    * We want to call `fetch_` unbound from any context since it could
    * be either the native fetch or our polyfill.
@@ -17324,73 +19237,90 @@ var Xhr = (function () {
    * @private
    */
 
-  Xhr.prototype.fetch_ = function fetch_(input, init) {
-    // TODO(avimehta): Should the requests go through when page is not visible?
-    _log.assert(typeof input == 'string', 'Only URL supported: %s', input);
-    // In particular, Firefox does not tolerate `null` values for
-    // `credentials`.
-    var creds = init.credentials;
-    _log.assert(creds === undefined || creds == 'include' || creds == 'omit', 'Only credentials=include|omit support: %s', creds);
-    // Fallback to xhr polyfill since `fetch` api does not support
-    // responseType = 'document'. We do this so we don't have to do any parsing
-    // and document construction on the UI thread which would be expensive.
-    if (init.responseType == 'document') {
-      return fetchPolyfill(input, init);
+
+  _createClass(Xhr, [{
+    key: "fetch_",
+    value: function fetch_(input, init) {
+      // TODO(avimehta): Should the requests go through when page is not visible?
+      (0, _log.assert)(typeof input == 'string', 'Only URL supported: %s', input); // In particular, Firefox does not tolerate `null` values for
+      // `credentials`.
+
+      var creds = init.credentials;
+      (0, _log.assert)(creds === undefined || creds == 'include' || creds == 'omit', 'Only credentials=include|omit support: %s', creds); // Fallback to xhr polyfill since `fetch` api does not support
+      // responseType = 'document'. We do this so we don't have to do any parsing
+      // and document construction on the UI thread which would be expensive.
+
+      if (init.responseType == 'document') {
+        return fetchPolyfill(input, init);
+      }
+
+      return (this.win.fetch || fetchPolyfill).apply(null, arguments);
     }
-    return (this.win.fetch || fetchPolyfill).apply(null, arguments);
-  };
+    /**
+     * @param {string} input URL
+     * @param {?FetchInitDef} init Fetch options object.
+     * @return {!Promise<!FetchResponse>}
+     */
 
-  /**
-   * @param {string} input URL
-   * @param {?FetchInitDef} opt_init Fetch options object.
-   * @return {!Promise<!FetchResponse>}
-   */
-
-  Xhr.prototype.fetch = function fetch(input, opt_init) {
-    // TODO (avimehta): Figure out if CORS needs be handled the way AMP does it.
-    var init = setupInit(opt_init);
-    return this.fetch_(input, init).then(function (response) {
-      return response;
-    }, function (reason) {
-      var targetOrigin = _url.parseUrl(input).origin;
-      throw new Error('XHR Failed fetching (' + targetOrigin + '/...):', reason && reason.message);
-    }).then(function (response) {
-      return assertSuccess(response);
-    });
-  };
+  }, {
+    key: "fetch",
+    value: function fetch(input, init) {
+      // TODO (avimehta): Figure out if CORS needs be handled the way AMP does it.
+      init = setupInit(init);
+      return this.fetch_(input, init).then(function (response) {
+        return response;
+      }, function (reason) {
+        var targetOrigin = (0, _url.parseUrl)(input).origin;
+        throw new Error("XHR Failed fetching (".concat(targetOrigin, "/...):"), reason && reason.message);
+      }).then(function (response) {
+        return assertSuccess(response);
+      });
+    }
+  }]);
 
   return Xhr;
-})();
+}();
+/**
+ * Normalized method name by uppercasing.
+ * @param {string|undefined} method
+ * @return {string}
+ * @private
+ */
+
 
 exports.Xhr = Xhr;
+
 function normalizeMethod_(method) {
   if (method === undefined) {
     return 'GET';
   }
+
   method = method.toUpperCase();
-
-  _log.assert(allowedMethods_.includes(method), 'Only one of %s is currently allowed. Got %s', allowedMethods_.join(', '), method);
-
+  (0, _log.assert)(allowedMethods_.includes(method), 'Only one of %s is currently allowed. Got %s', allowedMethods_.join(', '), method);
   return method;
 }
-
 /**
  * Sets up and normalizes the FetchInitDef
  *
- * @param {?FetchInitDef=} opt_init Fetch options object.
- * @param {string=} opt_accept The HTTP Accept header value.
+ * @param {?FetchInitDef=} init Fetch options object.
+ * @param {string=} accept The HTTP Accept header value.
  * @return {!FetchInitDef}
  */
-function setupInit(opt_init, opt_accept) {
-  var init = opt_init || /** @type {FetchInitDef} */{};
+
+
+function setupInit(init, accept) {
+  init = init ||
+  /** @type {FetchInitDef} */
+  {};
   init.method = normalizeMethod_(init.method);
   init.headers = init.headers || {};
-  if (opt_accept) {
-    init.headers['Accept'] = opt_accept;
+
+  if (accept) {
+    init.headers['Accept'] = accept;
   }
+
   return init;
 }
-
 /**
  * A minimal polyfill of Fetch API. It only polyfills what we currently use.
  *
@@ -17404,6 +19334,7 @@ function setupInit(opt_init, opt_accept) {
  * @return {!Promise<!FetchResponse>}
  * @private Visible for testing
  */
+
 
 function fetchPolyfill(input, init) {
   return new Promise(function (resolve, reject) {
@@ -17424,25 +19355,32 @@ function fetchPolyfill(input, init) {
     }
 
     xhr.onreadystatechange = function () {
-      if (xhr.readyState < /* STATUS_RECEIVED */2) {
-        return;
-      }
-      if (xhr.status < 100 || xhr.status > 599) {
-        xhr.onreadystatechange = null;
-        reject(new Error('Unknown HTTP status ' + xhr.status));
+      if (xhr.readyState <
+      /* STATUS_RECEIVED */
+      2) {
         return;
       }
 
-      // TODO(dvoytenko): This is currently simplified: we will wait for the
+      if (xhr.status < 100 || xhr.status > 599) {
+        xhr.onreadystatechange = null;
+        reject(new Error("Unknown HTTP status ".concat(xhr.status)));
+        return;
+      } // TODO(dvoytenko): This is currently simplified: we will wait for the
       // whole document loading to complete. This is fine for the use cases
       // we have now, but may need to be reimplemented later.
-      if (xhr.readyState == /* COMPLETE */4) {
+
+
+      if (xhr.readyState ==
+      /* COMPLETE */
+      4) {
         resolve(new FetchResponse(xhr));
       }
     };
+
     xhr.onerror = function () {
       reject(new Error('Network failure'));
     };
+
     xhr.onabort = function () {
       reject(new Error('Request aborted'));
     };
@@ -17454,37 +19392,41 @@ function fetchPolyfill(input, init) {
     }
   });
 }
-
 /**
  * @param {string} method
  * @param {string} url
  * @return {!XMLHttpRequest}
  * @private
  */
+
+
 function createXhrRequest(method, url) {
   var xhr = new XMLHttpRequest();
+
   if ('withCredentials' in xhr) {
     xhr.open(method, url, true);
   } else {
     throw new Error('CORS is not supported');
   }
+
   return xhr;
 }
-
 /**
  * If 415 or in the 5xx range.
  * @param {number} status
  */
+
+
 function isRetriable(status) {
   return status == 415 || status >= 500 && status < 600;
 }
-
 /**
  * Returns the response if successful or otherwise throws an error.
  * @param {!FetchResponse} response
  * @return {!Promise<!FetchResponse>}
  * @private Visible for testing
  */
+
 
 function assertSuccess(response) {
   return new Promise(function (resolve) {
@@ -17493,279 +19435,188 @@ function assertSuccess(response) {
     }
 
     var status = response.status;
-
-    var err = new Error('HTTP error ' + status);
-    err.retriable = isRetriable(status);
-    // TODO(@jridgewell, #9448): Callers who need the response should
+    var err = new Error("HTTP error ".concat(status));
+    err.retriable = isRetriable(status); // TODO(@jridgewell, #9448): Callers who need the response should
     // skip processing.
+
     err.response = response;
     throw err;
   });
 }
-
 /**
  * Response object in the Fetch API.
  *
  * See https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch
  */
 
-var FetchResponse = (function () {
+
+var FetchResponse =
+/*#__PURE__*/
+function () {
   /**
    * @param {!XMLHttpRequest} xhr
    */
-
   function FetchResponse(xhr) {
-    babelHelpers.classCallCheck(this, FetchResponse);
+    _classCallCheck(this, FetchResponse);
 
     /** @private @const {!XMLHttpRequest} */
     this.xhr_ = xhr;
-
     /** @const {number} */
+
     this.status = this.xhr_.status;
-
     /** @const {boolean} */
+
     this.ok = this.status >= 200 && this.status < 300;
-
     /** @const {!FetchResponseHeaders} */
+
     this.headers = new FetchResponseHeaders(xhr);
-
     /** @type {boolean} */
-    this.bodyUsed = false;
 
+    this.bodyUsed = false;
     /** @type {?ReadableStream} */
+
     this.body = null;
   }
-
-  /**
-   * Provides access to the response headers as defined in the Fetch API.
-   * @private Visible for testing.
-   */
-
   /**
    * Create a copy of the response and return it.
    * @return {!FetchResponse}
    */
 
-  FetchResponse.prototype.clone = function clone() {
-    _log.assert(!this.bodyUsed, 'Body already used');
-    return new FetchResponse(this.xhr_);
-  };
 
-  /**
-   * Drains the response and returns the text.
-   * @return {!Promise<string>}
-   * @private
-   */
+  _createClass(FetchResponse, [{
+    key: "clone",
+    value: function clone() {
+      (0, _log.assert)(!this.bodyUsed, 'Body already used');
+      return new FetchResponse(this.xhr_);
+    }
+    /**
+     * Drains the response and returns the text.
+     * @return {!Promise<string>}
+     * @private
+     */
 
-  FetchResponse.prototype.drainText_ = function drainText_() {
-    _log.assert(!this.bodyUsed, 'Body already used');
-    this.bodyUsed = true;
-    return Promise.resolve(this.xhr_.responseText);
-  };
+  }, {
+    key: "drainText_",
+    value: function drainText_() {
+      (0, _log.assert)(!this.bodyUsed, 'Body already used');
+      this.bodyUsed = true;
+      return Promise.resolve(this.xhr_.responseText);
+    }
+    /**
+     * Drains the response and returns a promise that resolves with the response
+     * text.
+     * @return {!Promise<string>}
+     */
 
-  /**
-   * Drains the response and returns a promise that resolves with the response
-   * text.
-   * @return {!Promise<string>}
-   */
+  }, {
+    key: "text",
+    value: function text() {
+      return this.drainText_();
+    }
+    /**
+     * Drains the response and returns the JSON object.
+     * @return {!Promise<!JsonObject>}
+     */
 
-  FetchResponse.prototype.text = function text() {
-    return this.drainText_();
-  };
+  }, {
+    key: "json",
+    value: function json() {
+      return (
+        /** @type {!Promise<!JsonObject>} */
+        this.drainText_().then(_json.parseJson)
+      );
+    }
+    /**
+     * Reads the xhr responseXML.
+     * @return {!Promise<!Document>}
+     * @private
+     */
 
-  /**
-   * Drains the response and returns the JSON object.
-   * @return {!Promise<!JsonObject>}
-   */
+  }, {
+    key: "document_",
+    value: function document_() {
+      (0, _log.assert)(!this.bodyUsed, 'Body already used');
+      this.bodyUsed = true;
+      (0, _log.assert)(this.xhr_.responseXML, 'responseXML should exist. Make sure to return ' + 'Content-Type: text/html header.');
+      return (
+        /** @type {!Promise<!Document>} */
+        Promise.resolve((0, _log.assert)(this.xhr_.responseXML))
+      );
+    }
+    /**
+     * Drains the response and returns a promise that resolves with the response
+     * ArrayBuffer.
+     * @return {!Promise<!ArrayBuffer>}
+     */
 
-  FetchResponse.prototype.json = function json() {
-    return (/** @type {!Promise<!JsonObject>} */this.drainText_().then(_json.parseJson)
-    );
-  };
-
-  /**
-   * Reads the xhr responseXML.
-   * @return {!Promise<!Document>}
-   * @private
-   */
-
-  FetchResponse.prototype.document_ = function document_() {
-    _log.assert(!this.bodyUsed, 'Body already used');
-    this.bodyUsed = true;
-    _log.assert(this.xhr_.responseXML, 'responseXML should exist. Make sure to return ' + 'Content-Type: text/html header.');
-    return (/** @type {!Promise<!Document>} */Promise.resolve(_log.assert(this.xhr_.responseXML))
-    );
-  };
-
-  /**
-   * Drains the response and returns a promise that resolves with the response
-   * ArrayBuffer.
-   * @return {!Promise<!ArrayBuffer>}
-   */
-
-  FetchResponse.prototype.arrayBuffer = function arrayBuffer() {
-    return (/** @type {!Promise<!ArrayBuffer>} */this.drainText_().then(_bytes.utf8EncodeSync)
-    );
-  };
+  }, {
+    key: "arrayBuffer",
+    value: function arrayBuffer() {
+      return (
+        /** @type {!Promise<!ArrayBuffer>} */
+        this.drainText_().then(_bytes.utf8EncodeSync)
+      );
+    }
+  }]);
 
   return FetchResponse;
-})();
+}();
+/**
+ * Provides access to the response headers as defined in the Fetch API.
+ * @private Visible for testing.
+ */
+
 
 exports.FetchResponse = FetchResponse;
 
-var FetchResponseHeaders = (function () {
+var FetchResponseHeaders =
+/*#__PURE__*/
+function () {
   /**
    * @param {!XMLHttpRequest} xhr
    */
-
   function FetchResponseHeaders(xhr) {
-    babelHelpers.classCallCheck(this, FetchResponseHeaders);
+    _classCallCheck(this, FetchResponseHeaders);
 
     /** @private @const {!XMLHttpRequest} */
     this.xhr_ = xhr;
   }
-
   /**
    * @param {string} name
    * @return {string}
    */
 
-  FetchResponseHeaders.prototype.get = function get(name) {
-    return this.xhr_.getResponseHeader(name);
-  };
 
-  /**
-   * @param {string} name
-   * @return {boolean}
-   */
+  _createClass(FetchResponseHeaders, [{
+    key: "get",
+    value: function get(name) {
+      return this.xhr_.getResponseHeader(name);
+    }
+    /**
+     * @param {string} name
+     * @return {boolean}
+     */
 
-  FetchResponseHeaders.prototype.has = function has(name) {
-    return this.xhr_.getResponseHeader(name) != null;
-  };
+  }, {
+    key: "has",
+    value: function has(name) {
+      return this.xhr_.getResponseHeader(name) != null;
+    }
+  }]);
 
   return FetchResponseHeaders;
-})();
+}();
 
 exports.FetchResponseHeaders = FetchResponseHeaders;
 
-},{"./bytes":67,"./json":72,"./log":74,"./url":81}],83:[function(require,module,exports){
-(function (global){
-(function (global) {
-  var babelHelpers = global.babelHelpers = {};
+},{"./bytes":66,"./json":71,"./log":73,"./url":80}],82:[function(require,module,exports){
+"use strict";
 
-  babelHelpers.inherits = function (subClass, superClass) {
-    if (typeof superClass !== "function" && superClass !== null) {
-      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-    }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Constants = void 0;
 
-    subClass.prototype = Object.create(superClass && superClass.prototype, {
-      constructor: {
-        value: subClass,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-  };
-
-  babelHelpers.createClass = (function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-      }
-    }
-
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  })();
-
-  babelHelpers.slice = Array.prototype.slice;
-  babelHelpers.bind = Function.prototype.bind;
-
-  babelHelpers.interopRequireWildcard = function (obj) {
-    if (obj && obj.__esModule) {
-      return obj;
-    } else {
-      var newObj = {};
-
-      if (obj != null) {
-        for (var key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-        }
-      }
-
-      newObj["default"] = obj;
-      return newObj;
-    }
-  };
-
-  babelHelpers.interopRequireDefault = function (obj) {
-    return obj && obj.__esModule ? obj : { "default": obj };
-  };
-
-  babelHelpers.get = function get(_x, _x2, _x3) {
-    var _again = true;
-
-    _function: while (_again) {
-      var object = _x,
-          property = _x2,
-          receiver = _x3;
-      _again = false;
-
-      if (object === null) object = Function.prototype;
-      var desc = Object.getOwnPropertyDescriptor(object, property);
-
-      if (desc === undefined) {
-        var parent = Object.getPrototypeOf(object);
-
-        if (parent === null) {
-          return undefined;
-        } else {
-          _x = parent;
-          _x2 = property;
-          _x3 = receiver;
-          _again = true;
-          desc = parent = undefined;
-          continue _function;
-        }
-      } else if ("value" in desc) {
-        return desc.value;
-      } else {
-        var getter = desc.get;
-
-        if (getter === undefined) {
-          return undefined;
-        }
-
-        return getter.call(receiver);
-      }
-    }
-  };
-
-  babelHelpers.classCallCheck = function (instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  };
-
-  babelHelpers.defineProperty = function (obj, key, value) {
-    obj[key] = value;
-    return obj;
-  };
-})(typeof global === "undefined" ? self : global);
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{}],84:[function(require,module,exports){
-exports.__esModule = true;
 /**
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
@@ -17782,16 +19633,15 @@ exports.__esModule = true;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 var MAX_Z_INDEX = 2147483647;
-
 var Constants = {};
-
 /**
  * Supported environments.
  *
  * @enum {string}
  */
+
+exports.Constants = Constants;
 Constants.Environment = {
   LOCAL: 'LOCAL',
   PREPROD: 'PREPROD',
@@ -17800,100 +19650,96 @@ Constants.Environment = {
   TEST: 'TEST',
   TIN: 'TIN'
 };
-
 /**
  * Supported payment methods.
  *
  * @enum {string}
  */
+
 Constants.PaymentMethod = {
   CARD: 'CARD',
   TOKENIZED_CARD: 'TOKENIZED_CARD',
   UPI: 'UPI'
 };
-
 /**
  * Auth methods.
  *
  * @enum {string}
  */
+
 Constants.AuthMethod = {
   CRYPTOGRAM_3DS: 'CRYPTOGRAM_3DS',
   PAN_ONLY: 'PAN_ONLY'
 };
-
 /**
  * Returned result status.
  *
  * @enum {string}
  */
+
 Constants.ResponseStatus = {
   CANCELED: 'CANCELED',
   DEVELOPER_ERROR: 'DEVELOPER_ERROR'
 };
-
 /**
  * Supported total price status.
  *
  * @enum {string}
  */
+
 Constants.TotalPriceStatus = {
   ESTIMATED: 'ESTIMATED',
   FINAL: 'FINAL',
   NOT_CURRENTLY_KNOWN: 'NOT_CURRENTLY_KNOWN'
 };
-
 /**
  * Supported Google Pay payment button type.
  *
  * @enum {string}
  */
+
 Constants.ButtonType = {
   SHORT: 'short',
   LONG: 'long'
 };
-
 /**
  * Supported button colors.
  *
  * @enum {string}
  */
+
 Constants.ButtonColor = {
-  DEFAULT: 'default', // Currently defaults to black.
+  DEFAULT: 'default',
+  // Currently defaults to black.
   BLACK: 'black',
   WHITE: 'white'
 };
-
 /**
  * Id attributes.
  *
  * @enum {string}
  */
+
 Constants.Id = {
   POPUP_WINDOW_CONTAINER: 'popup-window-container'
 };
-
 /** @const {string} */
+
 Constants.STORAGE_KEY_PREFIX = 'google.payments.api.storage';
-
 /** @const {string} */
+
 Constants.IS_READY_TO_PAY_RESULT_KEY = Constants.STORAGE_KEY_PREFIX + '.isreadytopay.result';
-
 /** @const {string} */
+
 Constants.UPI_CAN_MAKE_PAYMENT_CACHE_KEY = Constants.STORAGE_KEY_PREFIX + '.upi.canMakePaymentCache';
-
 Constants.CLASS_PREFIX = 'google-payments-';
-Constants.IFRAME_ACTIVE_CONTAINER_CLASS = Constants.CLASS_PREFIX + 'activeContainer';
-Constants.IFRAME_CONTAINER_CLASS = Constants.CLASS_PREFIX + 'dialogContainer';
-Constants.IFRAME_STYLE_CENTER_CLASS = Constants.CLASS_PREFIX + 'dialogCenter';
-Constants.IFRAME_STYLE_CLASS = Constants.CLASS_PREFIX + 'dialog';
-
-Constants.IFRAME_STYLE = '\n.' + Constants.IFRAME_STYLE_CLASS + ' {\n    animation: none 0s ease 0s 1 normal none running;\n    background: none 0 0 / auto repeat scroll padding-box border-box #fff;\n    background-blend-mode: normal;\n    border: 0 none #333;\n    border-radius: 8px 8px 0 0;\n    border-collapse: separate;\n    bottom: 0;\n    box-shadow: #808080 0 3px 0 0, #808080 0 0 22px;\n    box-sizing: border-box;\n    letter-spacing: normal;\n    max-height: 100%;\n    overflow: visible;\n    position: fixed;\n    width: 100%;\n    z-index: ' + MAX_Z_INDEX + ';\n    -webkit-appearance: none;\n    left: 0;\n}\n@media (min-width: 480px) {\n  .' + Constants.IFRAME_STYLE_CLASS + ' {\n    width: 480px !important;\n    left: -240px !important;\n    margin-left: calc(100vw - 100vw / 2) !important;\n  }\n}\n.' + Constants.IFRAME_CONTAINER_CLASS + ' {\n  background-color: rgba(0,0,0,0.26);\n  bottom: 0;\n  height: 100%;\n  left: 0;\n  position: absolute;\n  right: 0;\n}\n.iframeContainer {\n  -webkit-overflow-scrolling: touch;\n}\n';
-
-Constants.IFRAME_STYLE_CENTER = '\n.' + Constants.IFRAME_STYLE_CENTER_CLASS + ' {\n  animation: none 0s ease 0s 1 normal none running;\n  background-blend-mode: normal;\n  background: none 0 0 / auto repeat scroll padding-box border-box #fff;\n  border-collapse: separate;\n  border-radius: 8px;\n  border: 0px none #333;\n  bottom: auto;\n  box-shadow: #808080 0 0 22px;\n  box-sizing: border-box;\n  left: -240px;\n  letter-spacing: normal;\n  margin-left: calc(100vw - 100vw / 2) !important;\n  max-height: 90%;\n  overflow: visible;\n  position: absolute;\n  top: 100%;\n  transform: scale(0.8);\n  width: 480px;\n  z-index: ' + MAX_Z_INDEX + ';\n  -webkit-appearance: none;\n}\n@media (min-height: 667px) {\n  .' + Constants.IFRAME_STYLE_CENTER_CLASS + ' {\n    max-height: 600px;\n  }\n}\n.' + Constants.IFRAME_ACTIVE_CONTAINER_CLASS + ' {\n  top: 50%;\n  transform: scale(1.0) translateY(-50%);\n}\n';
-
+Constants.IFRAME_ACTIVE_CONTAINER_CLASS = "".concat(Constants.CLASS_PREFIX, "activeContainer");
+Constants.IFRAME_CONTAINER_CLASS = "".concat(Constants.CLASS_PREFIX, "dialogContainer");
+Constants.IFRAME_STYLE_CENTER_CLASS = "".concat(Constants.CLASS_PREFIX, "dialogCenter");
+Constants.IFRAME_STYLE_CLASS = "".concat(Constants.CLASS_PREFIX, "dialog");
+Constants.IFRAME_STYLE = "\n.".concat(Constants.IFRAME_STYLE_CLASS, " {\n    animation: none 0s ease 0s 1 normal none running;\n    background: none 0 0 / auto repeat scroll padding-box border-box #fff;\n    background-blend-mode: normal;\n    border: 0 none #333;\n    border-radius: 8px 8px 0 0;\n    border-collapse: separate;\n    bottom: 0;\n    box-shadow: #808080 0 3px 0 0, #808080 0 0 22px;\n    box-sizing: border-box;\n    letter-spacing: normal;\n    max-height: 100%;\n    overflow: visible;\n    position: fixed;\n    width: 100%;\n    z-index: ").concat(MAX_Z_INDEX, ";\n    -webkit-appearance: none;\n    left: 0;\n}\n@media (min-width: 480px) {\n  .").concat(Constants.IFRAME_STYLE_CLASS, " {\n    width: 480px !important;\n    left: -240px !important;\n    margin-left: calc(100vw - 100vw / 2) !important;\n  }\n}\n.").concat(Constants.IFRAME_CONTAINER_CLASS, " {\n  background-color: rgba(0,0,0,0.26);\n  bottom: 0;\n  height: 100%;\n  left: 0;\n  position: absolute;\n  right: 0;\n}\n.iframeContainer {\n  -webkit-overflow-scrolling: touch;\n}\n");
+Constants.IFRAME_STYLE_CENTER = "\n.".concat(Constants.IFRAME_STYLE_CENTER_CLASS, " {\n  animation: none 0s ease 0s 1 normal none running;\n  background-blend-mode: normal;\n  background: none 0 0 / auto repeat scroll padding-box border-box #fff;\n  border-collapse: separate;\n  border-radius: 8px;\n  border: 0px none #333;\n  bottom: auto;\n  box-shadow: #808080 0 0 22px;\n  box-sizing: border-box;\n  left: -240px;\n  letter-spacing: normal;\n  margin-left: calc(100vw - 100vw / 2) !important;\n  max-height: 90%;\n  overflow: visible;\n  position: absolute;\n  top: 100%;\n  transform: scale(0.8);\n  width: 480px;\n  z-index: ").concat(MAX_Z_INDEX, ";\n  -webkit-appearance: none;\n}\n@media (min-height: 667px) {\n  .").concat(Constants.IFRAME_STYLE_CENTER_CLASS, " {\n    max-height: 600px;\n  }\n}\n.").concat(Constants.IFRAME_ACTIVE_CONTAINER_CLASS, " {\n  top: 50%;\n  transform: scale(1.0) translateY(-50%);\n}\n");
 Constants.GPAY_BUTTON_WITH_CARD_INFO_IMAGE = 'background-image: url(https://pay.google.com/gp/p/generate_gpay_btn_img);';
-
 Constants.BUTTON_LOCALE_TO_MIN_WIDTH = {
   'en': 152,
   'bg': 163,
@@ -17917,55 +19763,54 @@ Constants.BUTTON_LOCALE_TO_MIN_WIDTH = {
   'uk': 207,
   'zh': 156
 };
-
 /**
  * Name of the graypane.
  *
  * @const {string}
  */
-Constants.GPAY_GRAYPANE = 'gpay-graypane';
 
+Constants.GPAY_GRAYPANE = 'gpay-graypane';
 /**
  * Class used for the gpay button.
  *
  * @const {string}
  */
+
 Constants.GPAY_BUTTON_CLASS = 'gpay-button';
-
-Constants.BUTTON_STYLE = '\n.' + Constants.GPAY_BUTTON_CLASS + ' {\n  background-origin: content-box;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 0px;\n  border-radius: 4px;\n  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;\n  cursor: pointer;\n  height: 40px;\n  min-height: 40px;\n  padding: 11px 24px;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.black {\n  background-color: #000;\n  box-shadow: none;\n  padding: 12px 24px 10px;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white {\n  background-color: #fff;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.short {\n  min-width: 90px;\n  width: 160px;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.black.short {\n  background-image: url(https://www.gstatic.com/instantbuy/svg/dark_gpay.svg);\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white.short {\n  background-image: url(https://www.gstatic.com/instantbuy/svg/light_gpay.svg);\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.black.active {\n  background-color: #5f6368;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.black.hover {\n  background-color: #3c4043;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white.active {\n  background-color: #fff;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white.focus {\n  box-shadow: #e8e8e8 0 1px 1px 0, #e8e8e8 0 1px 3px;\n}\n\n.' + Constants.GPAY_BUTTON_CLASS + '.white.hover {\n  background-color: #f8f8f8;\n}\n';
-
+Constants.BUTTON_STYLE = "\n.".concat(Constants.GPAY_BUTTON_CLASS, " {\n  background-origin: content-box;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 0px;\n  border-radius: 4px;\n  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;\n  cursor: pointer;\n  height: 40px;\n  min-height: 40px;\n  padding: 11px 24px;\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".black {\n  background-color: #000;\n  box-shadow: none;\n  padding: 12px 24px 10px;\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".white {\n  background-color: #fff;\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".short {\n  min-width: 90px;\n  width: 160px;\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".black.short {\n  background-image: url(https://www.gstatic.com/instantbuy/svg/dark_gpay.svg);\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".white.short {\n  background-image: url(https://www.gstatic.com/instantbuy/svg/light_gpay.svg);\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".black.active {\n  background-color: #5f6368;\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".black.hover {\n  background-color: #3c4043;\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".white.active {\n  background-color: #fff;\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".white.focus {\n  box-shadow: #e8e8e8 0 1px 1px 0, #e8e8e8 0 1px 3px;\n}\n\n.").concat(Constants.GPAY_BUTTON_CLASS, ".white.hover {\n  background-color: #f8f8f8;\n}\n");
 Constants.GPAY_BUTTON_WITH_OFFER_ICON_ADDITIONAL_STYLE = 'position: relative;';
-
 Constants.GPAY_OFFER_ICON_CLASS = 'gpay-offer-icon';
-
 Constants.GPAY_OFFER_ICON_SVG = "<svg width=\"20px\" height=\"20px\" viewBox=\"0 0 20 20\" " + "version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=" + "\"http://www.w3.org/1999/xlink\" class=\"gpay-offer-icon\"><defs><path d=\"M19.41,9.58 L10.41,0.58 " + "C10.05,0.22 9.55,0 9,0 L2,0 C0.9,0 0,0.9 0,2 L0,9 C0,9.55 0.22,10.05 " + "0.59,10.42 L9.59,19.42 C9.95,19.78 10.45,20 11,20 C11.55,20 12.05,19.78 " + "12.41,19.41 L19.41,12.41 C19.78,12.05 20,11.55 20,11 C20,10.45 19.77," + "9.94 19.41,9.58 Z\" id=\"path-1\"></path></defs><g id=\"buttons_10.05\"" + " stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">" + "<g id=\"Artboard\" transform=\"translate(-40.000000, -43.000000)\">" + "<g id=\"Group-3\" transform=\"translate(40.000000, 43.000000)\">" + "<g id=\"Group-2-Copy-2\"><g id=\"Group-Copy\"><g id=\"ic_loyalty_24px\">" + "<mask id=\"mask-2\" fill=\"white\"><use xlink:href=\"#path-1\"></use>" + "</mask><use id=\"gpay-Shape\" fill=\"#FF6100\" fill-rule=\"nonzero\" " + "xlink:href=\"#path-1\"></use><path d=\"M3.5,5 C2.67,5 2,4.33 2,3.5 C2," + "2.67 2.67,2 3.5,2 C4.33,2 5,2.67 5,3.5 C5,4.33 4.33,5 3.5,5 Z\" " + "id=\"Path\" fill=\"#FFFFFF\" fill-rule=\"nonzero\" mask=\"url(#mask-2)\">" + "</path></g></g></g><g id=\"Group-13-Copy-7\" transform=\"translate" + "(6.000000, 6.000000)\" fill=\"#FFFFFF\" fill-rule=\"nonzero\">" + "<g id=\"Group-13-Copy-2\"><path d=\"M2.15217391,4.55172414 C0.963561082," + "4.55172414 1.99840144e-14,3.53278598 1.99840144e-14,2.27586207 " + "C1.99840144e-14,1.01893816 0.963561082,6.30606678e-14 2.15217391,6." + "30606678e-14 C3.34078674,6.30606678e-14 4.30434783,1.01893816 4.30434783," + "2.27586207 C4.30434783,3.53278598 3.34078674,4.55172414 2.15217391," + "4.55172414 Z M2.15217391,3.31034483 C2.69245247,3.31034483 3.13043478,2." + "84719112 3.13043478,2.27586207 C3.13043478,1.70453302 2.69245247," + "1.24137931 2.15217391,1.24137931 C1.61189535,1.24137931 1.17391304,1" + ".70453302 1.17391304,2.27586207 C1.17391304,2.84719112 1.61189535,3." + "31034483 2.15217391,3.31034483 Z\" id=\"Combined-Shape\"></path>" + "<path d=\"M6.84782609,9 C5.65921326,9 4.69565217,7.98106184 4.69565217," + "6.72413793 C4.69565217,5.46721402 5.65921326,4.44827586 6.84782609," + "4.44827586 C8.03643892,4.44827586 9,5.46721402 9,6.72413793 C9,7.98106184" + " 8.03643892,9 6.84782609,9 Z M6.84782609,7.75862069 C7.38810465," + "7.75862069 7.82608696,7.29546698 7.82608696,6.72413793 C7.82608696" + ",6.15280888 7.38810465,5.68965517 6.84782609,5.68965517 C6.30754753," + "5.68965517 5.86956522,6.15280888 5.86956522,6.72413793 C5.86956522," + "7.29546698 6.30754753,7.75862069 6.84782609,7.75862069 Z\" " + "id=\"Combined-Shape\"></path><polygon id=\"Rectangle\" " + "transform=\"translate(4.497720, 4.541938) rotate(34.000000) " + "translate(-4.497720, -4.541938) \" points=\"3.77901778 -0.202295978 " + "4.9740273 -0.171019161 5.21642263 9.28617278 4.02141311 9.25489596\">" + "</polygon></g></g></g></g></g></svg>";
-
-Constants.GPAY_OFFER_ICON_STYLE = '\n.' + Constants.GPAY_OFFER_ICON_CLASS + ' {\n  position: absolute;\n  right: -5px;\n  top: -5px;\n}\n\n#ic_loyalty_24px use.hover {\n  fill: #FC853B;\n}\n';
-
+Constants.GPAY_OFFER_ICON_STYLE = "\n.".concat(Constants.GPAY_OFFER_ICON_CLASS, " {\n  position: absolute;\n  right: -5px;\n  top: -5px;\n}\n\n#ic_loyalty_24px use.hover {\n  fill: #FC853B;\n}\n");
 Constants.GPAY_OFFER_DESCRIPTION_CLASS = 'gpay-offer-description';
-
-Constants.GPAY_OFFER_DESCRIPTION_STYLE = '\n@import url(//fonts.googleapis.com/css?family=Google+Sans:500);\n.' + Constants.GPAY_OFFER_DESCRIPTION_CLASS + ' {\n  text-align: center;\n  font: 10px \'Google Sans\';\n  margin-top: 2px;\n  margin-bottom: 0px;\n}\n\n.' + Constants.GPAY_OFFER_DESCRIPTION_CLASS + '.gpay-btn-clicked {\n  color: #3C4043;\n}\n\n.' + Constants.GPAY_OFFER_DESCRIPTION_CLASS + '.short {\n  min-width: 90px;\n  width: 160px;\n}\n\n.' + Constants.GPAY_OFFER_DESCRIPTION_CLASS + '.long {\n  min-width: 152px;\n  width: 240px;\n}\n';
-
+Constants.GPAY_OFFER_DESCRIPTION_STYLE = "\n@import url(//fonts.googleapis.com/css?family=Google+Sans:500);\n.".concat(Constants.GPAY_OFFER_DESCRIPTION_CLASS, " {\n  text-align: center;\n  font: 10px 'Google Sans';\n  margin-top: 2px;\n  margin-bottom: 0px;\n}\n\n.").concat(Constants.GPAY_OFFER_DESCRIPTION_CLASS, ".gpay-btn-clicked {\n  color: #3C4043;\n}\n\n.").concat(Constants.GPAY_OFFER_DESCRIPTION_CLASS, ".short {\n  min-width: 90px;\n  width: 160px;\n}\n\n.").concat(Constants.GPAY_OFFER_DESCRIPTION_CLASS, ".long {\n  min-width: 152px;\n  width: 240px;\n}\n");
 /**
  * Class used for the new gpay button with card info (last 4 digits, card net).
  *
  * @const {string}
  */
+
 Constants.GPAY_BUTTON_CARD_INFO_CLASS = 'gpay-card-info-btn';
-
-Constants.GPAY_BUTTON_CARD_INFO_BUTTON_STYLE = '\n  .' + Constants.GPAY_BUTTON_CARD_INFO_CLASS + ' {\n    background-origin: content-box;\n    background-position: center center;\n    background-repeat: no-repeat;\n    background-size: contain;\n    border: 0px;\n    border-radius: 4px;\n    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;\n    cursor: pointer;\n    height: 40px;\n    min-height: 40px;\n    padding: 11px 24px;\n    background-color: #000;\n    box-shadow: none;\n    padding: 9px 24px 10px;\n    min-width: 190px;\n    width: 240px;\n  }\n\n  .' + Constants.GPAY_BUTTON_CARD_INFO_CLASS + '.active {\n    background-color: #5f6368;\n  }\n\n  .' + Constants.GPAY_BUTTON_CARD_INFO_CLASS + '.hover {\n    background-color: #3c4043;\n  }\n  ';
-
+Constants.GPAY_BUTTON_CARD_INFO_BUTTON_STYLE = "\n  .".concat(Constants.GPAY_BUTTON_CARD_INFO_CLASS, " {\n    background-origin: content-box;\n    background-position: center center;\n    background-repeat: no-repeat;\n    background-size: contain;\n    border: 0px;\n    border-radius: 4px;\n    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;\n    cursor: pointer;\n    height: 40px;\n    min-height: 40px;\n    padding: 11px 24px;\n    background-color: #000;\n    box-shadow: none;\n    padding: 9px 24px 10px;\n    min-width: 190px;\n    width: 240px;\n  }\n\n  .").concat(Constants.GPAY_BUTTON_CARD_INFO_CLASS, ".active {\n    background-color: #5f6368;\n  }\n\n  .").concat(Constants.GPAY_BUTTON_CARD_INFO_CLASS, ".hover {\n    background-color: #3c4043;\n  }\n  ");
 /**
  * Trusted domain for secure context validation
  *
  * @const {string}
  */
+
 Constants.TRUSTED_DOMAIN = '.google.com';
 
-exports.Constants = Constants;
+},{}],83:[function(require,module,exports){
+"use strict";
 
-},{}],85:[function(require,module,exports){
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.injectStyleSheet = injectStyleSheet;
+exports.injectIframe = injectIframe;
+
+var _constants = require("./constants.js");
+
 /**
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
@@ -17982,8 +19827,6 @@ exports.__esModule = true;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var _constantsJs = require('./constants.js');
 
 /**
  * Injects the provided style sheet to the document head.
@@ -17997,71 +19840,69 @@ function injectStyleSheet(styleText) {
   document.head.appendChild(styleElement);
   return styleElement;
 }
-
 /**
  * Injects the pay with google iframe.
  * @param {string} iframeClassName The classname of the iFrame wrapper.
  * @return {!{container: !Element, iframe:!HTMLIFrameElement}}
  */
+
+
 function injectIframe(iframeClassName) {
   var container = document.createElement('div');
-  container.classList.add(_constantsJs.Constants.IFRAME_CONTAINER_CLASS);
+  container.classList.add(_constants.Constants.IFRAME_CONTAINER_CLASS);
   var iframeContainer = document.createElement('div');
   iframeContainer.classList.add('iframeContainer');
   /** @private @const {!HTMLIFrameElement} */
+
   var iframe =
-  /** @type {!HTMLIFrameElement} */document.createElement('iframe');
+  /** @type {!HTMLIFrameElement} */
+  document.createElement('iframe');
   iframe.classList.add(iframeClassName);
   iframe.setAttribute('frameborder', '0');
   iframe.setAttribute('scrolling', 'no');
   iframeContainer.appendChild(iframe);
   container.appendChild(iframeContainer);
   document.body.appendChild(container);
-  return { 'container': container, 'iframe': iframe };
+  return {
+    'container': container,
+    'iframe': iframe
+  };
 }
 
-exports.injectStyleSheet = injectStyleSheet;
-exports.injectIframe = injectIframe;
+},{"./constants.js":82}],84:[function(require,module,exports){
+"use strict";
 
-},{"./constants.js":84}],86:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Graypane = void 0;
 
-var _constantsJs = require('./constants.js');
+var _constants = require("./constants.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var MAX_Z_INDEX = 2147483647;
 
-var Graypane = (function () {
-
+var Graypane =
+/*#__PURE__*/
+function () {
   /**
    * @param {!Document} doc
    */
-
   function Graypane(doc) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, Graypane);
+    _classCallCheck(this, Graypane);
 
     /** @private @const {!Document} */
     this.doc_ = doc;
-
     /** @private @const {!Element} */
-    this.element_ = doc.createElement(_constantsJs.Constants.GPAY_GRAYPANE);
+
+    this.element_ = doc.createElement(_constants.Constants.GPAY_GRAYPANE);
     setImportantStyles(this.element_, {
       'z-index': MAX_Z_INDEX,
       'display': 'none',
@@ -18072,81 +19913,89 @@ var Graypane = (function () {
       'left': 0,
       'background-color': 'rgba(32, 33, 36, .6)'
     });
-
     /** @private {?Window} */
-    this.popupWindow_ = null;
 
+    this.popupWindow_ = null;
     this.element_.addEventListener('click', function () {
       if (_this.popupWindow_) {
         try {
           _this.popupWindow_.focus();
-        } catch (e) {
-          // Ignore error.
+        } catch (e) {// Ignore error.
         }
       }
     });
   }
-
-  /**
-   * Sets the CSS styles of the specified element with !important. The styles
-   * are specified as a map from CSS property names to their values.
-   *
-   * The `!important` styles are used to avoid accidental specificity overrides
-   * from the 3p page's stylesheet.
-   *
-   * @param {!Element} element
-   * @param {!Object<string, string|number>} styles
-   */
-
   /**
    * Shows the graypane.
    * @param {?Window|undefined} popupWindow
    * @return {!Promise}
    */
 
-  Graypane.prototype.show = function show(popupWindow) {
-    this.popupWindow_ = popupWindow || null;
-    this.doc_.body.appendChild(this.element_);
-    setImportantStyles(this.element_, {
-      'display': 'block',
-      'opacity': 0
-    });
-    return transition(this.element_, {
-      'opacity': 1
-    }, 300, 'ease-out');
-  };
 
-  /**
-   * Hides the graypane.
-   * @return {!Promise|undefined}
-   */
-
-  Graypane.prototype.hide = function hide() {
-    var _this2 = this;
-
-    this.popupWindow_ = null;
-    if (!this.element_.parentElement) {
-      // Has already been removed or haven't been even added to DOM.
-      // This could be possible after redirect.
-      return;
+  _createClass(Graypane, [{
+    key: "show",
+    value: function show(popupWindow) {
+      this.popupWindow_ = popupWindow || null;
+      this.doc_.body.appendChild(this.element_);
+      setImportantStyles(this.element_, {
+        'display': 'block',
+        'opacity': 0
+      });
+      return transition(this.element_, {
+        'opacity': 1
+      }, 300, 'ease-out');
     }
-    return transition(this.element_, {
-      'opacity': 0
-    }, 300, 'ease-out').then(function () {
-      setImportantStyles(_this2.element_, { 'display': 'none' });
-      _this2.doc_.body.removeChild(_this2.element_);
-    });
-  };
+    /**
+     * Hides the graypane.
+     * @return {!Promise|undefined}
+     */
+
+  }, {
+    key: "hide",
+    value: function hide() {
+      var _this2 = this;
+
+      this.popupWindow_ = null;
+
+      if (!this.element_.parentElement) {
+        // Has already been removed or haven't been even added to DOM.
+        // This could be possible after redirect.
+        return;
+      }
+
+      return transition(this.element_, {
+        'opacity': 0
+      }, 300, 'ease-out').then(function () {
+        setImportantStyles(_this2.element_, {
+          'display': 'none'
+        });
+
+        _this2.doc_.body.removeChild(_this2.element_);
+      });
+    }
+  }]);
 
   return Graypane;
-})();
+}();
+/**
+ * Sets the CSS styles of the specified element with !important. The styles
+ * are specified as a map from CSS property names to their values.
+ *
+ * The `!important` styles are used to avoid accidental specificity overrides
+ * from the 3p page's stylesheet.
+ *
+ * @param {!Element} element
+ * @param {!Object<string, string|number>} styles
+ */
+
+
+exports.Graypane = Graypane;
 
 function setImportantStyles(element, styles) {
   for (var k in styles) {
     element.style.setProperty(k, styles[k].toString(), 'important');
   }
 }
-
 /**
  * Returns a promise which is resolved after the given duration of animation
  * @param {!Element} el - Element to be observed.
@@ -18155,15 +20004,17 @@ function setImportantStyles(element, styles) {
  * @param {string} curve - transition function for the animation.
  * @return {!Promise} Promise which resolves once the animation is done playing.
  */
+
+
 function transition(el, props, durationMillis, curve) {
   var win = el.ownerDocument.defaultView;
   var previousTransitionValue = el.style.transition || '';
   return new Promise(function (resolve) {
     win.setTimeout(function () {
       win.setTimeout(resolve, durationMillis);
-      var tr = durationMillis + 'ms ' + curve;
+      var tr = "".concat(durationMillis, "ms ").concat(curve);
       setImportantStyles(el, Object.assign({
-        'transition': 'transform ' + tr + ', opacity ' + tr
+        'transition': "transform ".concat(tr, ", opacity ").concat(tr)
       }, props));
     });
   }).then(function () {
@@ -18174,30 +20025,23 @@ function transition(el, props, durationMillis, curve) {
   });
 }
 
-exports.Graypane = Graypane;
+},{"./constants.js":82}],85:[function(require,module,exports){
+"use strict";
 
-},{"./constants.js":84}],87:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PublicErrorCode = exports.PostMessageEventType = exports.PayFrameHelper = exports.BuyFlowMode = exports.BuyFlowActivityMode = void 0;
 
-var _constantsJs = require('./constants.js');
+var _constants = require("./constants.js");
 
-var _post_message_serviceJs = require('./post_message_service.js');
+var _post_message_service = require("./post_message_service.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * Supported interactions between iframe and merchant page.
@@ -18220,12 +20064,13 @@ var PostMessageEventType = {
   LOG_INLINE_PAYMENT_WIDGET_DISPLAYED: 7,
   LOG_INLINE_PAYMENT_WIDGET_HIDDEN: 8
 };
-
 /**
  * Types of buy flow activity modes.
  *
  * @enum {number}
  */
+
+exports.PostMessageEventType = PostMessageEventType;
 var BuyFlowActivityMode = {
   UNKNOWN_MODE: 0,
   IFRAME: 1,
@@ -18234,12 +20079,13 @@ var BuyFlowActivityMode = {
   ANDROID_NATIVE: 4,
   PAYMENT_HANDLER: 5
 };
-
 /**
  * Types of buy flow activity modes.
  *
  * @enum {number}
  */
+
+exports.BuyFlowActivityMode = BuyFlowActivityMode;
 var PublicErrorCode = {
   UNKNOWN_ERROR_TYPE: 0,
   INTERNAL_ERROR: 1,
@@ -18249,349 +20095,368 @@ var PublicErrorCode = {
   UNSUPPORTED_API_VERSION: 5,
   BUYER_CANCEL: 6
 };
-
 /**
  * The presentation mode of the buy flow
  *
  * @enum {number}
  */
+
+exports.PublicErrorCode = PublicErrorCode;
 var BuyFlowMode = {
   PAY_WITH_GOOGLE: 5,
   SUBSCRIBE_WITH_GOOGLE: 6
 };
-
 /**
  * Iframe used for logging and prefetching.
  *
  * @type {?Element}
  */
+
+exports.BuyFlowMode = BuyFlowMode;
 var iframe = null;
-
 /** @type {?PostMessageService} */
+
 var postMessageService = null;
-
 /** @type {?string} */
+
 var environment = null;
-
 /** @type {?string} */
+
 var googleTransactionId = null;
-
 /** @type {number} */
+
 var originTimeMs = Date.now();
-
 /** @type {?BuyFlowActivityMode} */
+
 var buyFlowActivityMode = null;
-
 /** @type {boolean} */
-var _iframeLoaded = false;
 
+var _iframeLoaded = false;
 /** @type {!Array<!Object>} */
+
 var buffer = [];
 
-var PayFrameHelper = (function () {
+var PayFrameHelper =
+/*#__PURE__*/
+function () {
   function PayFrameHelper() {
-    babelHelpers.classCallCheck(this, PayFrameHelper);
+    _classCallCheck(this, PayFrameHelper);
   }
 
-  // Start loading pay frame early
+  _createClass(PayFrameHelper, null, [{
+    key: "load",
 
-  /**
-   * Creates a hidden iframe for logging and appends it to the top level
-   * document.
-   */
+    /**
+     * Creates a hidden iframe for logging and appends it to the top level
+     * document.
+     */
+    value: function load() {
+      if (iframe) {
+        return;
+      }
 
-  PayFrameHelper.load = function load() {
-    if (iframe) {
-      return;
-    }
-    var initOptions =
-    /** @type {!PaymentOptions} */window['gpayInitParams'] || {};
-    environment = initOptions.environment || _constantsJs.Constants.Environment.PRODUCTION;
-    iframe = document.createElement('iframe');
-    // Pass in origin because document.referrer inside iframe is empty in
-    // certain cases
-    // Can be replaced by iframe.src=... in non Google context.
-    iframe.src = PayFrameHelper.getIframeUrl_(window.location.origin, initOptions.merchantInfo && initOptions.merchantInfo.merchantId);
-    PayFrameHelper.postMessage({
-      'eventType': PostMessageEventType.LOG_PAY_FRAME_REQUESTED,
-      'clientLatencyStartMs': Date.now()
-    });
-    iframe.height = '0';
-    iframe.width = '0';
-    iframe.style.display = 'none';
-    iframe.style.visibility = 'hidden';
-    iframe.onload = function () {
+      var initOptions =
+      /** @type {!PaymentOptions} */
+      window['gpayInitParams'] || {};
+      environment = initOptions.environment || _constants.Constants.Environment.PRODUCTION;
+      iframe = document.createElement('iframe'); // Pass in origin because document.referrer inside iframe is empty in
+      // certain cases
+      // Can be replaced by iframe.src=... in non Google context.
+
+      iframe.src = PayFrameHelper.getIframeUrl_(window.location.origin, initOptions.merchantInfo && initOptions.merchantInfo.merchantId);
       PayFrameHelper.postMessage({
-        'eventType': PostMessageEventType.LOG_PAY_FRAME_LOADED_WITH_ALL_JS,
+        'eventType': PostMessageEventType.LOG_PAY_FRAME_REQUESTED,
         'clientLatencyStartMs': Date.now()
       });
-      PayFrameHelper.iframeLoaded();
-    };
-    // If the body is already loaded, just append the iframe. Otherwise, we wait
-    // until the DOM has loaded to append the iframe, otherwise document.body is
-    // null.
-    if (document.body) {
-      PayFrameHelper.initialize_();
-    } else {
-      document.addEventListener('DOMContentLoaded', function () {
-        return PayFrameHelper.initialize_();
-      });
-    }
-  };
+      iframe.height = '0';
+      iframe.width = '0';
+      iframe.style.display = 'none';
+      iframe.style.visibility = 'hidden';
 
-  /**
-   * Appends the iframe to the DOM and updates the post message service.
-   * @private
-   */
+      iframe.onload = function () {
+        PayFrameHelper.postMessage({
+          'eventType': PostMessageEventType.LOG_PAY_FRAME_LOADED_WITH_ALL_JS,
+          'clientLatencyStartMs': Date.now()
+        });
+        PayFrameHelper.iframeLoaded();
+      }; // If the body is already loaded, just append the iframe. Otherwise, we wait
+      // until the DOM has loaded to append the iframe, otherwise document.body is
+      // null.
 
-  PayFrameHelper.initialize_ = function initialize_() {
-    document.body.appendChild(iframe);
-    postMessageService = new _post_message_serviceJs.PostMessageService(iframe.contentWindow);
-  };
 
-  /**
-   * Sends a message to the iframe and wait for a response.
-   * Uses the responseHandler specified only if the responseType is a match.
-   *
-   * @param {!Object} data
-   * @param {!PostMessageEventType} eventType
-   * @param {string} responseType
-   * @param {function(!Event)} responseHandler
-   */
-
-  PayFrameHelper.sendAndWaitForResponse = function sendAndWaitForResponse(data, eventType, responseType, responseHandler) {
-    function callback(event) {
-      if (event.data[responseType]) {
-        responseHandler(event);
-        // We only want to process the response from the payframe once.
-        // so stop listening to the event once processed.
-        PayFrameHelper.removeMessageEventListener_(callback);
+      if (document.body) {
+        PayFrameHelper.initialize_();
+      } else {
+        document.addEventListener('DOMContentLoaded', function () {
+          return PayFrameHelper.initialize_();
+        });
       }
     }
+    /**
+     * Appends the iframe to the DOM and updates the post message service.
+     * @private
+     */
 
-    PayFrameHelper.addMessageEventListener_(callback);
-
-    var postMessageData = Object.assign({ 'eventType': eventType }, data);
-    PayFrameHelper.postMessage(postMessageData);
-  };
-
-  /**
-   * Add an event listener for listening to messages received.
-   *
-   * @param {function(!Event)} callback
-   * @private
-   */
-
-  PayFrameHelper.addMessageEventListener_ = function addMessageEventListener_(callback) {
-    window.addEventListener('message', callback);
-  };
-
-  /**
-   * Remove the event listener for listening to messages.
-   *
-   * @param {function(!Event)} callback
-   * @private
-   */
-
-  PayFrameHelper.removeMessageEventListener_ = function removeMessageEventListener_(callback) {
-    window.removeEventListener('message', callback);
-  };
-
-  /**
-   * Posts a message to the iframe with the given data.
-   *
-   * @param {!Object} data
-   */
-
-  PayFrameHelper.postMessage = function postMessage(data) {
-    if (!_iframeLoaded) {
-      buffer.push(data);
-      return;
+  }, {
+    key: "initialize_",
+    value: function initialize_() {
+      document.body.appendChild(iframe);
+      postMessageService = new _post_message_service.PostMessageService(iframe.contentWindow);
     }
-    var postMessageData = Object.assign({
-      'buyFlowActivityMode': buyFlowActivityMode,
-      'googleTransactionId': googleTransactionId,
-      'originTimeMs': originTimeMs
-    }, data);
-    postMessageService.postMessage(postMessageData, PayFrameHelper.getIframeOrigin_());
-  };
+    /**
+     * Sends a message to the iframe and wait for a response.
+     * Uses the responseHandler specified only if the responseType is a match.
+     *
+     * @param {!Object} data
+     * @param {!PostMessageEventType} eventType
+     * @param {string} responseType
+     * @param {function(!Event)} responseHandler
+     */
 
-  /**
-   * Sets the activity mode.
-   *
-   * @param {!BuyFlowActivityMode} mode
-   */
+  }, {
+    key: "sendAndWaitForResponse",
+    value: function sendAndWaitForResponse(data, eventType, responseType, responseHandler) {
+      function callback(event) {
+        if (event.data[responseType]) {
+          responseHandler(event); // We only want to process the response from the payframe once.
+          // so stop listening to the event once processed.
 
-  PayFrameHelper.setBuyFlowActivityMode = function setBuyFlowActivityMode(mode) {
-    buyFlowActivityMode = mode;
-  };
+          PayFrameHelper.removeMessageEventListener_(callback);
+        }
+      }
 
-  /**
-   * Sets the google transaction id.
-   *
-   * @param {string} txnId
-   */
-
-  PayFrameHelper.setGoogleTransactionId = function setGoogleTransactionId(txnId) {
-    googleTransactionId = txnId;
-  };
-
-  /**
-   * Sets the originTimeMs. To be used only for tests.
-   *
-   * @param {number} originTimeMsTemp
-   */
-
-  PayFrameHelper.setOriginTimeMs = function setOriginTimeMs(originTimeMsTemp) {
-    originTimeMs = originTimeMsTemp;
-  };
-
-  /**
-   * Override postMessageService for testing.
-   *
-   * @param {!PostMessageService} messageService
-   */
-
-  PayFrameHelper.setPostMessageService = function setPostMessageService(messageService) {
-    postMessageService = messageService;
-  };
-
-  /**
-   * Clears the singleton variables.
-   */
-
-  PayFrameHelper.reset = function reset() {
-    iframe = null;
-    buffer.length = 0;
-    _iframeLoaded = false;
-    buyFlowActivityMode = null;
-  };
-
-  /**
-   * Sets whether the iframe has been loaded or not.
-   *
-   * @param {boolean} loaded
-   */
-
-  PayFrameHelper.setIframeLoaded = function setIframeLoaded(loaded) {
-    _iframeLoaded = loaded;
-  };
-
-  /**
-   * Called whenever the iframe is loaded.
-   */
-
-  PayFrameHelper.iframeLoaded = function iframeLoaded() {
-    _iframeLoaded = true;
-    buffer.forEach(function (data) {
-      PayFrameHelper.postMessage(data);
-    });
-    buffer.length = 0;
-  };
-
-  /**
-   * Returns the events that have been buffered.
-   *
-   * @return {!Array<!Object>}
-   */
-
-  PayFrameHelper.getBuffer = function getBuffer() {
-    return buffer;
-  };
-
-  /**
-   * Mocks the iframe as an arbitrary html element instead of actually injecting
-   * it for testing.
-   */
-
-  PayFrameHelper.injectIframeForTesting = function injectIframeForTesting() {
-    PayFrameHelper.reset();
-    iframe = document.createElement('p');
-    PayFrameHelper.iframeLoaded();
-  };
-
-  /**
-   * Returns the payframe origin based on the environment.
-   *
-   * @return {string}
-   * @private
-   */
-
-  PayFrameHelper.getIframeOrigin_ = function getIframeOrigin_() {
-    var iframeUrl = 'https://pay';
-    if (environment == _constantsJs.Constants.Environment.SANDBOX) {
-      iframeUrl += '.sandbox';
-    } else if (environment == _constantsJs.Constants.Environment.PREPROD) {
-      iframeUrl += '-preprod.sandbox';
+      PayFrameHelper.addMessageEventListener_(callback);
+      var postMessageData = Object.assign({
+        'eventType': eventType
+      }, data);
+      PayFrameHelper.postMessage(postMessageData);
     }
-    return iframeUrl + '.google.com';
-  };
+    /**
+     * Add an event listener for listening to messages received.
+     *
+     * @param {function(!Event)} callback
+     * @private
+     */
 
-  /**
-   * Returns the payframe URL based on the environment.
-   *
-   * @param {string} origin The origin that is opening the payframe.
-   * @param {string|null=} merchantId The merchant id.
-   * @return {string}
-   * @private
-   */
+  }, {
+    key: "addMessageEventListener_",
+    value: function addMessageEventListener_(callback) {
+      window.addEventListener('message', callback);
+    }
+    /**
+     * Remove the event listener for listening to messages.
+     *
+     * @param {function(!Event)} callback
+     * @private
+     */
 
-  PayFrameHelper.getIframeUrl_ = function getIframeUrl_(origin, merchantId) {
-    // TrustedResourceUrl header needs to start with https or '//'.
-    var iframeUrl = 'https://pay' + (environment == _constantsJs.Constants.Environment.PREPROD ? '-preprod.sandbox' : environment == _constantsJs.Constants.Environment.SANDBOX ? '.sandbox' : '') + '.google.com/gp/p/ui/payframe?origin=' + origin + '&mid=%{merchantId}';
-    return iframeUrl;
-  };
+  }, {
+    key: "removeMessageEventListener_",
+    value: function removeMessageEventListener_(callback) {
+      window.removeEventListener('message', callback);
+    }
+    /**
+     * Posts a message to the iframe with the given data.
+     *
+     * @param {!Object} data
+     */
+
+  }, {
+    key: "postMessage",
+    value: function postMessage(data) {
+      if (!_iframeLoaded) {
+        buffer.push(data);
+        return;
+      }
+
+      var postMessageData = Object.assign({
+        'buyFlowActivityMode': buyFlowActivityMode,
+        'googleTransactionId': googleTransactionId,
+        'originTimeMs': originTimeMs
+      }, data);
+      postMessageService.postMessage(postMessageData, PayFrameHelper.getIframeOrigin_());
+    }
+    /**
+     * Sets the activity mode.
+     *
+     * @param {!BuyFlowActivityMode} mode
+     */
+
+  }, {
+    key: "setBuyFlowActivityMode",
+    value: function setBuyFlowActivityMode(mode) {
+      buyFlowActivityMode = mode;
+    }
+    /**
+     * Sets the google transaction id.
+     *
+     * @param {string} txnId
+     */
+
+  }, {
+    key: "setGoogleTransactionId",
+    value: function setGoogleTransactionId(txnId) {
+      googleTransactionId = txnId;
+    }
+    /**
+     * Sets the originTimeMs. To be used only for tests.
+     *
+     * @param {number} originTimeMsTemp
+     */
+
+  }, {
+    key: "setOriginTimeMs",
+    value: function setOriginTimeMs(originTimeMsTemp) {
+      originTimeMs = originTimeMsTemp;
+    }
+    /**
+     * Override postMessageService for testing.
+     *
+     * @param {!PostMessageService} messageService
+     */
+
+  }, {
+    key: "setPostMessageService",
+    value: function setPostMessageService(messageService) {
+      postMessageService = messageService;
+    }
+    /**
+     * Clears the singleton variables.
+     */
+
+  }, {
+    key: "reset",
+    value: function reset() {
+      iframe = null;
+      buffer.length = 0;
+      _iframeLoaded = false;
+      buyFlowActivityMode = null;
+    }
+    /**
+     * Sets whether the iframe has been loaded or not.
+     *
+     * @param {boolean} loaded
+     */
+
+  }, {
+    key: "setIframeLoaded",
+    value: function setIframeLoaded(loaded) {
+      _iframeLoaded = loaded;
+    }
+    /**
+     * Called whenever the iframe is loaded.
+     */
+
+  }, {
+    key: "iframeLoaded",
+    value: function iframeLoaded() {
+      _iframeLoaded = true;
+      buffer.forEach(function (data) {
+        PayFrameHelper.postMessage(data);
+      });
+      buffer.length = 0;
+    }
+    /**
+     * Returns the events that have been buffered.
+     *
+     * @return {!Array<!Object>}
+     */
+
+  }, {
+    key: "getBuffer",
+    value: function getBuffer() {
+      return buffer;
+    }
+    /**
+     * Mocks the iframe as an arbitrary html element instead of actually injecting
+     * it for testing.
+     */
+
+  }, {
+    key: "injectIframeForTesting",
+    value: function injectIframeForTesting() {
+      PayFrameHelper.reset();
+      iframe = document.createElement('p');
+      PayFrameHelper.iframeLoaded();
+    }
+    /**
+     * Returns the payframe origin based on the environment.
+     *
+     * @return {string}
+     * @private
+     */
+
+  }, {
+    key: "getIframeOrigin_",
+    value: function getIframeOrigin_() {
+      var iframeUrl = 'https://pay';
+
+      if (environment == _constants.Constants.Environment.SANDBOX) {
+        iframeUrl += '.sandbox';
+      } else if (environment == _constants.Constants.Environment.PREPROD) {
+        iframeUrl += '-preprod.sandbox';
+      }
+
+      return iframeUrl + '.google.com';
+    }
+    /**
+     * Returns the payframe URL based on the environment.
+     *
+     * @param {string} origin The origin that is opening the payframe.
+     * @param {string|null=} merchantId The merchant id.
+     * @return {string}
+     * @private
+     */
+
+  }, {
+    key: "getIframeUrl_",
+    value: function getIframeUrl_(origin, merchantId) {
+      // TrustedResourceUrl header needs to start with https or '//'.
+      var iframeUrl = "https://pay".concat(environment == _constants.Constants.Environment.PREPROD ? '-preprod.sandbox' : environment == _constants.Constants.Environment.SANDBOX ? '.sandbox' : '', ".google.com/gp/p/ui/payframe?origin=").concat(origin, "&mid=%{merchantId}");
+      return iframeUrl;
+    }
+  }]);
 
   return PayFrameHelper;
-})();
+}(); // Start loading pay frame early
 
+
+exports.PayFrameHelper = PayFrameHelper;
 PayFrameHelper.load();
 
-exports.BuyFlowActivityMode = BuyFlowActivityMode;
-exports.BuyFlowMode = BuyFlowMode;
-exports.PayFrameHelper = PayFrameHelper;
-exports.PostMessageEventType = PostMessageEventType;
-exports.PublicErrorCode = PublicErrorCode;
+},{"./constants.js":82,"./post_message_service.js":90}],86:[function(require,module,exports){
+"use strict";
 
-},{"./constants.js":84,"./post_message_service.js":92}],88:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PaymentsAsyncClient = void 0;
 
-var _constantsJs = require('./constants.js');
+var _constants = require("./constants.js");
 
-var _payments_client_delegate_interfaceJs = require('./payments_client_delegate_interface.js');
+var _payments_client_delegate_interface = require("./payments_client_delegate_interface.js");
 
-var _payments_request_delegateJs = require('./payments_request_delegate.js');
+var _payments_request_delegate = require("./payments_request_delegate.js");
 
-var _payments_web_activity_delegateJs = require('./payments_web_activity_delegate.js');
+var _payments_web_activity_delegate = require("./payments_web_activity_delegate.js");
 
-var _upi_handlerJs = require('./upi_handler.js');
+var _upi_handler = require("./upi_handler.js");
 
-var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+var _activityPorts = require("web-activities/activity-ports");
 
-var _pay_frame_helperJs = require('./pay_frame_helper.js');
+var _pay_frame_helper = require("./pay_frame_helper.js");
 
-var _validatorJs = require('./validator.js');
+var _validator = require("./validator.js");
 
-var _utilsJs = require('./utils.js');
+var _utils = require("./utils.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var TRUSTED_DOMAINS = ['actions.google.com', 'amp-actions.sandbox.google.com', 'amp-actions-staging.sandbox.google.com', 'amp-actions-autopush.sandbox.google.com', 'payments.developers.google.com', 'payments.google.com'];
-
 /**
  * The client for interacting with the Google Payment APIs.
  * <p>
@@ -18605,65 +20470,66 @@ var TRUSTED_DOMAINS = ['actions.google.com', 'amp-actions.sandbox.google.com', '
  * @final
  */
 
-var PaymentsAsyncClient = (function () {
+var PaymentsAsyncClient =
+/*#__PURE__*/
+function () {
   /**
    * @param {!PaymentOptions} paymentOptions
    * @param {function(!Promise<!PaymentData>)} onPaymentResponse
-   * @param {boolean=} opt_useIframe
-   * @param {!ActivityPorts=} opt_activities Can be used to provide a shared
+   * @param {boolean=} useIframe
+   * @param {!ActivityPorts=} activities Can be used to provide a shared
    *   activities manager. By default, the new manager is created.
    */
-
-  function PaymentsAsyncClient(paymentOptions, onPaymentResponse, opt_useIframe, opt_activities) {
+  function PaymentsAsyncClient(paymentOptions, onPaymentResponse, useIframe, activities) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, PaymentsAsyncClient);
+    _classCallCheck(this, PaymentsAsyncClient);
 
     this.onPaymentResponse_ = onPaymentResponse;
-
-    _validatorJs.validatePaymentOptions(paymentOptions);
-
+    (0, _validator.validatePaymentOptions)(paymentOptions);
     /** @private {?number} */
-    this.loadPaymentDataApiStartTimeMs_ = null;
 
+    this.loadPaymentDataApiStartTimeMs_ = null;
     /** @private @const {string} */
-    this.environment_ = paymentOptions.environment || _constantsJs.Constants.Environment.TEST;
+
+    this.environment_ = paymentOptions.environment || _constants.Constants.Environment.TEST;
+
     if (!PaymentsAsyncClient.googleTransactionId_) {
       PaymentsAsyncClient.googleTransactionId_ =
-      /** @type {string} */this.isInTrustedDomain_() && paymentOptions['i'] && paymentOptions['i']['googleTransactionId'] ? paymentOptions['i']['googleTransactionId'] : _utilsJs.createGoogleTransactionId(this.environment_);
+      /** @type {string} */
+      this.isInTrustedDomain_() && paymentOptions['i'] && paymentOptions['i']['googleTransactionId'] ? paymentOptions['i']['googleTransactionId'] : (0, _utils.createGoogleTransactionId)(this.environment_);
     }
-
     /** @private @const {!PaymentOptions} */
+
+
     this.paymentOptions_ = paymentOptions;
-
     /** @private @const {!PaymentsClientDelegateInterface} */
-    this.webActivityDelegate_ = new _payments_web_activity_delegateJs.PaymentsWebActivityDelegate(this.environment_, PaymentsAsyncClient.googleTransactionId_, opt_useIframe, opt_activities, paymentOptions['i'] && paymentOptions['i']['redirectKey']);
 
+    this.webActivityDelegate_ = new _payments_web_activity_delegate.PaymentsWebActivityDelegate(this.environment_, PaymentsAsyncClient.googleTransactionId_, useIframe, activities, paymentOptions['i'] && paymentOptions['i']['redirectKey']);
     /** @private {number} */
-    this.buyFlowMode_ = _pay_frame_helperJs.BuyFlowMode.PAY_WITH_GOOGLE;
 
-    var paymentRequestSupported = _validatorJs.chromeSupportsPaymentRequest();
-    // TODO: Remove the temporary hack that disable payments
+    this.buyFlowMode_ = _pay_frame_helper.BuyFlowMode.PAY_WITH_GOOGLE;
+    var paymentRequestSupported = (0, _validator.chromeSupportsPaymentRequest)(); // TODO: Remove the temporary hack that disable payments
     // request for inline flow.
+
     /** @private @const {?PaymentsClientDelegateInterface} */
-    this.delegate_ = paymentRequestSupported && !opt_useIframe ? new _payments_request_delegateJs.PaymentsRequestDelegate(this.environment_) : this.webActivityDelegate_;
 
-    this.upiHandler_ = new _upi_handlerJs.UpiHandler();
-
+    this.delegate_ = paymentRequestSupported && !useIframe ? new _payments_request_delegate.PaymentsRequestDelegate(this.environment_) : this.webActivityDelegate_;
+    this.upiHandler_ = new _upi_handler.UpiHandler();
     this.webActivityDelegate_.onResult(this.onResult_.bind(this));
-    this.delegate_.onResult(this.onResult_.bind(this));
-
-    // If web delegate is used anyway then this is overridden in the web
+    this.delegate_.onResult(this.onResult_.bind(this)); // If web delegate is used anyway then this is overridden in the web
     // activity delegate when load payment data is called.
-    if (_validatorJs.chromeSupportsPaymentHandler()) {
-      _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helperJs.BuyFlowActivityMode.PAYMENT_HANDLER);
+
+    if ((0, _validator.chromeSupportsPaymentHandler)()) {
+      _pay_frame_helper.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helper.BuyFlowActivityMode.PAYMENT_HANDLER);
     } else if (paymentRequestSupported) {
-      _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helperJs.BuyFlowActivityMode.ANDROID_NATIVE);
+      _pay_frame_helper.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helper.BuyFlowActivityMode.ANDROID_NATIVE);
     }
 
-    _pay_frame_helperJs.PayFrameHelper.setGoogleTransactionId(PaymentsAsyncClient.googleTransactionId_);
-    _pay_frame_helperJs.PayFrameHelper.postMessage({
-      'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_INITIALIZE_PAYMENTS_CLIENT,
+    _pay_frame_helper.PayFrameHelper.setGoogleTransactionId(PaymentsAsyncClient.googleTransactionId_);
+
+    _pay_frame_helper.PayFrameHelper.postMessage({
+      'eventType': _pay_frame_helper.PostMessageEventType.LOG_INITIALIZE_PAYMENTS_CLIENT,
       'clientLatencyStartMs': Date.now()
     });
 
@@ -18671,9 +20537,6 @@ var PaymentsAsyncClient = (function () {
       return _this.handleMessageEvent_(event);
     });
   }
-
-  /** @const {?string} */
-
   /**
    * Check whether the user can make payments using the Payment API.
    *
@@ -18683,350 +20546,398 @@ var PaymentsAsyncClient = (function () {
    * @export
    */
 
-  PaymentsAsyncClient.prototype.isReadyToPay = function isReadyToPay(isReadyToPayRequest) {
-    // Merge with paymentOptions, preferring values from isReadyToPayRequest
-    if (isReadyToPayRequest) {
-      isReadyToPayRequest = Object.assign({}, this.paymentOptions_, isReadyToPayRequest);
-    }
-    var startTimeMs = Date.now();
-    /** @type {?string} */
-    var errorMessage = _validatorJs.validateSecureContext() || _validatorJs.validateIsReadyToPayRequest(isReadyToPayRequest);
-    if (errorMessage) {
-      return new Promise(function (resolve, reject) {
-        PaymentsAsyncClient.logDevErrorToConsole_('isReadyToPay', errorMessage);
-        _pay_frame_helperJs.PayFrameHelper.postMessage({
-          'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_IS_READY_TO_PAY_API,
-          'error': _pay_frame_helperJs.PublicErrorCode.DEVELOPER_ERROR
+
+  _createClass(PaymentsAsyncClient, [{
+    key: "isReadyToPay",
+    value: function isReadyToPay(isReadyToPayRequest) {
+      // Merge with paymentOptions, preferring values from isReadyToPayRequest
+      if (isReadyToPayRequest) {
+        isReadyToPayRequest = Object.assign({}, this.paymentOptions_, isReadyToPayRequest);
+      }
+
+      var startTimeMs = Date.now();
+      /** @type {?string} */
+
+      var errorMessage = (0, _validator.validateSecureContext)() || (0, _validator.validateIsReadyToPayRequest)(isReadyToPayRequest);
+
+      if (errorMessage) {
+        return new Promise(function (resolve, reject) {
+          PaymentsAsyncClient.logDevErrorToConsole_('isReadyToPay', errorMessage);
+
+          _pay_frame_helper.PayFrameHelper.postMessage({
+            'eventType': _pay_frame_helper.PostMessageEventType.LOG_IS_READY_TO_PAY_API,
+            'error': _pay_frame_helper.PublicErrorCode.DEVELOPER_ERROR
+          });
+
+          reject({
+            'statusCode': _constants.Constants.ResponseStatus.DEVELOPER_ERROR,
+            'statusMessage': errorMessage
+          });
         });
-        reject({
-          'statusCode': _constantsJs.Constants.ResponseStatus.DEVELOPER_ERROR,
-          'statusMessage': errorMessage
+      }
+
+      var isReadyToPayPromise = this.isReadyToPay_(isReadyToPayRequest);
+      isReadyToPayPromise.then(function (response) {
+        _pay_frame_helper.PayFrameHelper.postMessage({
+          'eventType': _pay_frame_helper.PostMessageEventType.LOG_IS_READY_TO_PAY_API,
+          'clientLatencyStartMs': startTimeMs,
+          'isReadyToPayApiResponse': response
         });
+
+        return response;
       });
+      return isReadyToPayPromise;
     }
+    /**
+     * Actual implementation of isReadyToPay in a private method so that
+     * we can add callbacks to the promise to measure latencies.
+     *
+     * @param {!IsReadyToPayRequest} isReadyToPayRequest
+     * @return {!Promise} The promise will contain the boolean result and error
+     *     message when possible.
+     * @private
+     */
 
-    var isReadyToPayPromise = this.isReadyToPay_(isReadyToPayRequest);
+  }, {
+    key: "isReadyToPay_",
+    value: function isReadyToPay_(isReadyToPayRequest) {
+      if (this.upiHandler_.isUpiRequest(isReadyToPayRequest)) {
+        return this.upiHandler_.isReadyToPay(isReadyToPayRequest);
+      }
 
-    isReadyToPayPromise.then(function (response) {
-      _pay_frame_helperJs.PayFrameHelper.postMessage({
-        'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_IS_READY_TO_PAY_API,
-        'clientLatencyStartMs': startTimeMs,
-        'isReadyToPayApiResponse': response
-      });
-      return response;
-    });
-    return isReadyToPayPromise;
-  };
-
-  /**
-   * Actual implementation of isReadyToPay in a private method so that
-   * we can add callbacks to the promise to measure latencies.
-   *
-   * @param {!IsReadyToPayRequest} isReadyToPayRequest
-   * @return {!Promise} The promise will contain the boolean result and error
-   *     message when possible.
-   * @private
-   */
-
-  PaymentsAsyncClient.prototype.isReadyToPay_ = function isReadyToPay_(isReadyToPayRequest) {
-    var _this2 = this;
-
-    if (this.upiHandler_.isUpiRequest(isReadyToPayRequest)) {
-      return this.upiHandler_.isReadyToPay(isReadyToPayRequest);
-    }
-    if (_validatorJs.chromeSupportsPaymentRequest() && !isNativeDisabledInRequest(isReadyToPayRequest)) {
-      if (isReadyToPayRequest.apiVersion >= 2) {
-        return this.isReadyToPayApiV2ForChromePaymentRequest_(isReadyToPayRequest);
-      } else {
-        var _ret = (function () {
+      if ((0, _validator.chromeSupportsPaymentRequest)() && !isNativeDisabledInRequest(isReadyToPayRequest)) {
+        if (isReadyToPayRequest.apiVersion >= 2) {
+          return this.isReadyToPayApiV2ForChromePaymentRequest_(isReadyToPayRequest);
+        } else {
           // This is the apiVersion 1 branch.
           // If the merchant supports only Tokenized cards then just rely on
           // delegate to give us the result.
           // This will need to change once b/78519188 is fixed.
-          var webPromise = _this2.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
-          var nativePromise = _this2.delegate_.isReadyToPay(isReadyToPayRequest);
-          if (_validatorJs.doesMerchantSupportOnlyTokenizedCards(isReadyToPayRequest) && !_validatorJs.chromeSupportsPaymentHandler()) {
-            return {
-              v: nativePromise
-            };
-          }
-          // Return webIsReadyToPay only if delegateIsReadyToPay has been
+          var _webPromise = this.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
+
+          var nativePromise = this.delegate_.isReadyToPay(isReadyToPayRequest);
+
+          if ((0, _validator.doesMerchantSupportOnlyTokenizedCards)(isReadyToPayRequest) && !(0, _validator.chromeSupportsPaymentHandler)()) {
+            return nativePromise;
+          } // Return webIsReadyToPay only if delegateIsReadyToPay has been
           // executed.
-          return {
-            v: nativePromise.then(function () {
-              return webPromise;
-            })
-          };
-        })();
 
-        if (typeof _ret === 'object') return _ret.v;
-      }
-    }
-    var webPromise = this.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
-    return webPromise;
-  };
 
-  /**
-   * Handle is ready to pay for api v2.
-   *
-   * @param {!IsReadyToPayRequest} isReadyToPayRequest
-   * @return {!Promise} The promise will contain the boolean result and error
-   *     message when possible.
-   * @private
-   */
-
-  PaymentsAsyncClient.prototype.isReadyToPayApiV2ForChromePaymentRequest_ = function isReadyToPayApiV2ForChromePaymentRequest_(isReadyToPayRequest) {
-    var defaultPromise = Promise.resolve({ 'result': false });
-    if (isReadyToPayRequest.existingPaymentMethodRequired) {
-      defaultPromise = Promise.resolve({ 'result': false, 'paymentMethodPresent': false });
-    }
-
-    var nativePromise = defaultPromise;
-    if (_validatorJs.apiV2DoesMerchantSupportSpecifiedCardType(isReadyToPayRequest, _constantsJs.Constants.AuthMethod.CRYPTOGRAM_3DS)) {
-      // If the merchant supports tokenized cards.
-      // Make a separate call to gms core to check if the user isReadyToPay
-      // with just tokenized cards. We can't pass in PAN_ONLY here
-      // because gms core always returns true for PAN_ONLY.
-      // Leave other payment methods as is.
-      var nativeRtpRequest = /** @type {!IsReadyToPayRequest} */
-      JSON.parse(JSON.stringify(isReadyToPayRequest));
-      for (var i = 0; i < nativeRtpRequest.allowedPaymentMethods.length; i++) {
-        if (nativeRtpRequest.allowedPaymentMethods[i].type == _constantsJs.Constants.PaymentMethod.CARD) {
-          nativeRtpRequest.allowedPaymentMethods[i].parameters['allowedAuthMethods'] = [_constantsJs.Constants.AuthMethod.CRYPTOGRAM_3DS];
+          return nativePromise.then(function () {
+            return _webPromise;
+          });
         }
       }
 
-      nativePromise = this.delegate_.isReadyToPay(nativeRtpRequest);
+      var webPromise = this.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
+      return webPromise;
     }
+    /**
+     * Handle is ready to pay for api v2.
+     *
+     * @param {!IsReadyToPayRequest} isReadyToPayRequest
+     * @return {!Promise} The promise will contain the boolean result and error
+     *     message when possible.
+     * @private
+     */
 
-    var webPromise = defaultPromise;
-    if (_validatorJs.apiV2DoesMerchantSupportSpecifiedCardType(isReadyToPayRequest, _constantsJs.Constants.AuthMethod.PAN_ONLY)) {
-      webPromise = this.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
-    }
+  }, {
+    key: "isReadyToPayApiV2ForChromePaymentRequest_",
+    value: function isReadyToPayApiV2ForChromePaymentRequest_(isReadyToPayRequest) {
+      var defaultPromise = Promise.resolve({
+        'result': false
+      });
 
-    // Update session storage with payment handler canMakePayment result but
-    // rely on web delegate for actual response
-    if (_validatorJs.chromeSupportsPaymentHandler()) {
-      return nativePromise.then(function () {
+      if (isReadyToPayRequest.existingPaymentMethodRequired) {
+        defaultPromise = Promise.resolve({
+          'result': false,
+          'paymentMethodPresent': false
+        });
+      }
+
+      var nativePromise = defaultPromise;
+
+      if ((0, _validator.apiV2DoesMerchantSupportSpecifiedCardType)(isReadyToPayRequest, _constants.Constants.AuthMethod.CRYPTOGRAM_3DS)) {
+        // If the merchant supports tokenized cards.
+        // Make a separate call to gms core to check if the user isReadyToPay
+        // with just tokenized cards. We can't pass in PAN_ONLY here
+        // because gms core always returns true for PAN_ONLY.
+        // Leave other payment methods as is.
+        var nativeRtpRequest
+        /** @type {!IsReadyToPayRequest} */
+        = JSON.parse(JSON.stringify(isReadyToPayRequest));
+
+        for (var i = 0; i < nativeRtpRequest.allowedPaymentMethods.length; i++) {
+          if (nativeRtpRequest.allowedPaymentMethods[i].type == _constants.Constants.PaymentMethod.CARD) {
+            nativeRtpRequest.allowedPaymentMethods[i].parameters['allowedAuthMethods'] = [_constants.Constants.AuthMethod.CRYPTOGRAM_3DS];
+          }
+        }
+
+        nativePromise = this.delegate_.isReadyToPay(nativeRtpRequest);
+      }
+
+      var webPromise = defaultPromise;
+
+      if ((0, _validator.apiV2DoesMerchantSupportSpecifiedCardType)(isReadyToPayRequest, _constants.Constants.AuthMethod.PAN_ONLY)) {
+        webPromise = this.webActivityDelegate_.isReadyToPay(isReadyToPayRequest);
+      } // Update session storage with payment handler canMakePayment result but
+      // rely on web delegate for actual response
+
+
+      if ((0, _validator.chromeSupportsPaymentHandler)()) {
+        return nativePromise.then(function () {
+          return webPromise;
+        });
+      }
+
+      return nativePromise.then(function (nativeResult) {
+        if ((nativeResult && nativeResult['result']) == true) {
+          return nativeResult;
+        }
+
         return webPromise;
       });
     }
+    /**
+     * Prefetch paymentData to speed up loadPaymentData call. Note the provided
+     * paymentDataRequest should exactly be the same as provided in
+     * loadPaymentData to make the loadPaymentData call fast since current
+     * web flow prefetching is based on the full request parameters.
+     *
+     * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+     *     information to support a payment.
+     * @export
+     */
 
-    return nativePromise.then(function (nativeResult) {
-      if ((nativeResult && nativeResult['result']) == true) {
-        return nativeResult;
+  }, {
+    key: "prefetchPaymentData",
+    value: function prefetchPaymentData(paymentDataRequest) {
+      /** @type {?string} */
+      var errorMessage = (0, _validator.validateSecureContext)() || (0, _validator.validatePaymentDataRequest)(paymentDataRequest);
+
+      if (errorMessage) {
+        PaymentsAsyncClient.logDevErrorToConsole_('prefetchPaymentData', errorMessage);
+        return;
       }
-      return webPromise;
-    });
-  };
 
-  /**
-   * Prefetch paymentData to speed up loadPaymentData call. Note the provided
-   * paymentDataRequest should exactly be the same as provided in
-   * loadPaymentData to make the loadPaymentData call fast since current
-   * web flow prefetching is based on the full request parameters.
-   *
-   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
-   *     information to support a payment.
-   * @export
-   */
+      this.assignInternalParams_(paymentDataRequest);
 
-  PaymentsAsyncClient.prototype.prefetchPaymentData = function prefetchPaymentData(paymentDataRequest) {
-    /** @type {?string} */
-    var errorMessage = _validatorJs.validateSecureContext() || _validatorJs.validatePaymentDataRequest(paymentDataRequest);
-    if (errorMessage) {
-      PaymentsAsyncClient.logDevErrorToConsole_('prefetchPaymentData', errorMessage);
-      return;
+      if ((0, _validator.chromeSupportsPaymentRequest)() && !isNativeDisabledInRequest(paymentDataRequest)) {
+        this.delegate_.prefetchPaymentData(paymentDataRequest);
+      } else {
+        // For non chrome supports always use the hosting page.
+        this.webActivityDelegate_.prefetchPaymentData(paymentDataRequest);
+      }
     }
-    this.assignInternalParams_(paymentDataRequest);
-    if (_validatorJs.chromeSupportsPaymentRequest() && !isNativeDisabledInRequest(paymentDataRequest)) {
-      this.delegate_.prefetchPaymentData(paymentDataRequest);
-    } else {
-      // For non chrome supports always use the hosting page.
-      this.webActivityDelegate_.prefetchPaymentData(paymentDataRequest);
+    /**
+     * Request PaymentData, which contains necessary infomartion to complete a
+     * payment.
+     *
+     * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+     *     information to support a payment.
+     * @export
+     */
+
+  }, {
+    key: "loadPaymentData",
+    value: function loadPaymentData(paymentDataRequest) {
+      var _this2 = this;
+
+      _pay_frame_helper.PayFrameHelper.postMessage({
+        'eventType': _pay_frame_helper.PostMessageEventType.LOG_BUTTON_CLICK
+      });
+
+      var errorMessage = (0, _validator.validateSecureContext)() || (0, _validator.validatePaymentDataRequest)(paymentDataRequest);
+      this.buyFlowMode_ = paymentDataRequest && paymentDataRequest.swg ? _pay_frame_helper.BuyFlowMode.SUBSCRIBE_WITH_GOOGLE : _pay_frame_helper.BuyFlowMode.PAY_WITH_GOOGLE;
+
+      if (errorMessage) {
+        this.onPaymentResponse_(new Promise(function (resolve, reject) {
+          _pay_frame_helper.PayFrameHelper.postMessage({
+            'eventType': _pay_frame_helper.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
+            'error': _pay_frame_helper.PublicErrorCode.DEVELOPER_ERROR,
+            'buyFlowMode': _this2.buyFlowMode_
+          });
+
+          PaymentsAsyncClient.logDevErrorToConsole_('loadPaymentData', errorMessage);
+          reject({
+            'statusCode': _constants.Constants.ResponseStatus.DEVELOPER_ERROR,
+            'statusMessage': errorMessage
+          });
+        }));
+        return;
+      } // Handler for UPI PaymentMethod
+      // Currently we don't support UPI along with other payment methods, if
+      // UPI is in payment methods then we assume it is UPI only.
+
+
+      var upiPaymentMethod = (0, _validator.getUpiPaymentMethod)(paymentDataRequest);
+
+      if (upiPaymentMethod) {
+        this.upiHandler_.loadPaymentData(paymentDataRequest, upiPaymentMethod, this.onResult_.bind(this));
+        return;
+      }
+
+      var isReadyToPayResult = window.sessionStorage.getItem(_constants.Constants.IS_READY_TO_PAY_RESULT_KEY);
+      this.loadPaymentDataApiStartTimeMs_ = Date.now();
+      this.assignInternalParams_(paymentDataRequest); // We want to fall back to the web delegate if payment handler is supported
+      // and isReadyToPay bit is not explicitly set to true (fallback to web if
+      // isReadyToPay wasn't called for PH)
+
+      if ((0, _validator.chromeSupportsPaymentHandler)() && isReadyToPayResult !== 'true' || isNativeDisabledInRequest(paymentDataRequest)) {
+        this.webActivityDelegate_.loadPaymentData(paymentDataRequest);
+      } else {
+        this.delegate_.loadPaymentData(paymentDataRequest);
+      }
     }
-  };
+    /**
+     * Log developer error to console.
+     *
+     * @param {string} apiName
+     * @param {?string} errorMessage
+     * @private
+     */
 
-  /**
-   * Request PaymentData, which contains necessary infomartion to complete a
-   * payment.
-   *
-   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
-   *     information to support a payment.
-   * @export
-   */
+  }, {
+    key: "createButton",
 
-  PaymentsAsyncClient.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest) {
-    var _this3 = this;
+    /**
+     * Return a <div> element containing a Google Pay payment button.
+     *
+     * @param {!ButtonOptions=} options
+     * @return {!Element}
+     * @export
+     */
+    value: function createButton() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var button = null; // Only log if button was created successfully
 
-    _pay_frame_helperJs.PayFrameHelper.postMessage({
-      'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_BUTTON_CLICK
-    });
-    var errorMessage = _validatorJs.validateSecureContext() || _validatorJs.validatePaymentDataRequest(paymentDataRequest);
-    this.buyFlowMode_ = paymentDataRequest && paymentDataRequest.swg ? _pay_frame_helperJs.BuyFlowMode.SUBSCRIBE_WITH_GOOGLE : _pay_frame_helperJs.BuyFlowMode.PAY_WITH_GOOGLE;
-    if (errorMessage) {
-      this.onPaymentResponse_(new Promise(function (resolve, reject) {
-        _pay_frame_helperJs.PayFrameHelper.postMessage({
-          'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
-          'error': _pay_frame_helperJs.PublicErrorCode.DEVELOPER_ERROR,
+      var startTimeMs = Date.now();
+
+      _pay_frame_helper.PayFrameHelper.postMessage({
+        'eventType': _pay_frame_helper.PostMessageEventType.LOG_RENDER_BUTTON,
+        'clientLatencyStartMs': startTimeMs
+      });
+
+      return button;
+    }
+    /**
+     * @param {!Event} e postMessage event from the AMP page.
+     * @private
+     */
+
+  }, {
+    key: "handleMessageEvent_",
+    value: function handleMessageEvent_(e) {
+      if (this.isInTrustedDomain_()) {
+        // Only handles the event right now if loaded in trusted domain.
+        if (e.data['name'] === 'logPaymentData') {
+          _pay_frame_helper.PayFrameHelper.postMessage(e.data['data']);
+        }
+      }
+    }
+    /**
+     * @private
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isInTrustedDomain_",
+    value: function isInTrustedDomain_() {
+      return TRUSTED_DOMAINS.indexOf(window.location.hostname) != -1;
+    }
+    /**
+     * Called when load payment data result is returned. This triggers the payment
+     * response callback passed to the client.
+     *
+     * @private
+     */
+
+  }, {
+    key: "onResult_",
+    value: function onResult_(response) {
+      var _this3 = this;
+
+      response.then(function (result) {
+        _pay_frame_helper.PayFrameHelper.postMessage({
+          'eventType': _pay_frame_helper.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
+          'clientLatencyStartMs': _this3.loadPaymentDataApiStartTimeMs_,
           'buyFlowMode': _this3.buyFlowMode_
         });
-        PaymentsAsyncClient.logDevErrorToConsole_('loadPaymentData', errorMessage);
-        reject({
-          'statusCode': _constantsJs.Constants.ResponseStatus.DEVELOPER_ERROR,
-          'statusMessage': errorMessage
-        });
-      }));
-      return;
-    }
-
-    // Handler for UPI PaymentMethod
-    // Currently we don't support UPI along with other payment methods, if
-    // UPI is in payment methods then we assume it is UPI only.
-    var upiPaymentMethod = _validatorJs.getUpiPaymentMethod(paymentDataRequest);
-    if (upiPaymentMethod) {
-      this.upiHandler_.loadPaymentData(paymentDataRequest, upiPaymentMethod, this.onResult_.bind(this));
-      return;
-    }
-
-    var isReadyToPayResult = window.sessionStorage.getItem(_constantsJs.Constants.IS_READY_TO_PAY_RESULT_KEY);
-    this.loadPaymentDataApiStartTimeMs_ = Date.now();
-    this.assignInternalParams_(paymentDataRequest);
-    // We want to fall back to the web delegate if payment handler is supported
-    // and isReadyToPay bit is not explicitly set to true (fallback to web if
-    // isReadyToPay wasn't called for PH)
-    if (_validatorJs.chromeSupportsPaymentHandler() && isReadyToPayResult !== 'true' || isNativeDisabledInRequest(paymentDataRequest)) {
-      this.webActivityDelegate_.loadPaymentData(paymentDataRequest);
-    } else {
-      this.delegate_.loadPaymentData(paymentDataRequest);
-    }
-  };
-
-  /**
-   * Log developer error to console.
-   *
-   * @param {string} apiName
-   * @param {?string} errorMessage
-   * @private
-   */
-
-  PaymentsAsyncClient.logDevErrorToConsole_ = function logDevErrorToConsole_(apiName, errorMessage) {
-    console.error('DEVELOPER_ERROR in ' + apiName + ' : ' + errorMessage);
-  };
-
-  /**
-   * Return a <div> element containing a Google Pay payment button.
-   *
-   * @param {!ButtonOptions=} options
-   * @return {!Element}
-   * @export
-   */
-
-  PaymentsAsyncClient.prototype.createButton = function createButton() {
-    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-    var button = null;
-    // Only log if button was created successfully
-    var startTimeMs = Date.now();
-    _pay_frame_helperJs.PayFrameHelper.postMessage({
-      'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_RENDER_BUTTON,
-      'clientLatencyStartMs': startTimeMs
-    });
-    return button;
-  };
-
-  /**
-   * @param {!Event} e postMessage event from the AMP page.
-   * @private
-   */
-
-  PaymentsAsyncClient.prototype.handleMessageEvent_ = function handleMessageEvent_(e) {
-    if (this.isInTrustedDomain_()) {
-      // Only handles the event right now if loaded in trusted domain.
-      if (e.data['name'] === 'logPaymentData') {
-        _pay_frame_helperJs.PayFrameHelper.postMessage(e.data['data']);
-      }
-    }
-  };
-
-  /**
-   * @private
-   * @return {boolean}
-   */
-
-  PaymentsAsyncClient.prototype.isInTrustedDomain_ = function isInTrustedDomain_() {
-    return TRUSTED_DOMAINS.indexOf(window.location.hostname) != -1;
-  };
-
-  /**
-   * Called when load payment data result is returned. This triggers the payment
-   * response callback passed to the client.
-   *
-   * @private
-   */
-
-  PaymentsAsyncClient.prototype.onResult_ = function onResult_(response) {
-    var _this4 = this;
-
-    response.then(function (result) {
-      _pay_frame_helperJs.PayFrameHelper.postMessage({
-        'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
-        'clientLatencyStartMs': _this4.loadPaymentDataApiStartTimeMs_,
-        'buyFlowMode': _this4.buyFlowMode_
+      })["catch"](function (result) {
+        if (result['errorCode']) {
+          _pay_frame_helper.PayFrameHelper.postMessage({
+            'eventType': _pay_frame_helper.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
+            'error':
+            /** @type {!PublicErrorCode} */
+            result['errorCode'],
+            'buyFlowMode': _this3.buyFlowMode_
+          });
+        } else {
+          // If user closes window we don't get a error code
+          _pay_frame_helper.PayFrameHelper.postMessage({
+            'eventType': _pay_frame_helper.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
+            'error': _pay_frame_helper.PublicErrorCode.BUYER_CANCEL,
+            'buyFlowMode': _this3.buyFlowMode_
+          });
+        }
       });
-    })['catch'](function (result) {
-      if (result['errorCode']) {
-        _pay_frame_helperJs.PayFrameHelper.postMessage({
-          'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
-          'error': /** @type {!PublicErrorCode} */result['errorCode'],
-          'buyFlowMode': _this4.buyFlowMode_
-        });
-      } else {
-        // If user closes window we don't get a error code
-        _pay_frame_helperJs.PayFrameHelper.postMessage({
-          'eventType': _pay_frame_helperJs.PostMessageEventType.LOG_LOAD_PAYMENT_DATA_API,
-          'error': _pay_frame_helperJs.PublicErrorCode.BUYER_CANCEL,
-          'buyFlowMode': _this4.buyFlowMode_
-        });
-      }
-    });
-    this.onPaymentResponse_(response);
-  };
+      this.onPaymentResponse_(response);
+    }
+    /**
+     * @param {!PaymentDataRequest} paymentDataRequest
+     * @return {!PaymentDataRequest}
+     * @private
+     */
 
-  /**
-   * @param {!PaymentDataRequest} paymentDataRequest
-   * @return {!PaymentDataRequest}
-   * @private
-   */
-
-  PaymentsAsyncClient.prototype.assignInternalParams_ = function assignInternalParams_(paymentDataRequest) {
-    var internalParam = {
-      'startTimeMs': Date.now(),
-      'googleTransactionId': PaymentsAsyncClient.googleTransactionId_
-    };
-    paymentDataRequest['i'] = paymentDataRequest['i'] ? Object.assign(internalParam, paymentDataRequest['i']) : internalParam;
-    return paymentDataRequest;
-  };
+  }, {
+    key: "assignInternalParams_",
+    value: function assignInternalParams_(paymentDataRequest) {
+      var internalParam = {
+        'startTimeMs': Date.now(),
+        'googleTransactionId': PaymentsAsyncClient.googleTransactionId_
+      };
+      paymentDataRequest['i'] = paymentDataRequest['i'] ? Object.assign(internalParam, paymentDataRequest['i']) : internalParam;
+      return paymentDataRequest;
+    }
+  }], [{
+    key: "logDevErrorToConsole_",
+    value: function logDevErrorToConsole_(apiName, errorMessage) {
+      console.error('DEVELOPER_ERROR in ' + apiName + ' : ' + errorMessage);
+    }
+  }]);
 
   return PaymentsAsyncClient;
-})();
+}();
+/** @const {?string} */
 
+
+exports.PaymentsAsyncClient = PaymentsAsyncClient;
 PaymentsAsyncClient.googleTransactionId_;
-
 /**
  * Whether the request specifies that the native support has to be disabled.
  *
  * @param {!IsReadyToPayRequest|!PaymentDataRequest} request
  * @return {boolean}
  */
+
 function isNativeDisabledInRequest(request) {
   return (request['i'] && request['i']['disableNative']) === true;
 }
 
-exports.PaymentsAsyncClient = PaymentsAsyncClient;
+},{"./constants.js":82,"./pay_frame_helper.js":85,"./payments_client_delegate_interface.js":87,"./payments_request_delegate.js":88,"./payments_web_activity_delegate.js":89,"./upi_handler.js":91,"./utils.js":92,"./validator.js":93,"web-activities/activity-ports":4}],87:[function(require,module,exports){
+"use strict";
 
-},{"./constants.js":84,"./pay_frame_helper.js":87,"./payments_client_delegate_interface.js":89,"./payments_request_delegate.js":90,"./payments_web_activity_delegate.js":91,"./upi_handler.js":93,"./utils.js":94,"./validator.js":95,"web-activities/activity-ports":4}],89:[function(require,module,exports){
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PaymentsClientDelegateInterface = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
@@ -19048,288 +20959,293 @@ exports.__esModule = true;
  * An interface which captures what we need to start up buyflow across surfaces.
  * @interface
  */
-
-var PaymentsClientDelegateInterface = (function () {
+var PaymentsClientDelegateInterface =
+/*#__PURE__*/
+function () {
   function PaymentsClientDelegateInterface() {
-    babelHelpers.classCallCheck(this, PaymentsClientDelegateInterface);
+    _classCallCheck(this, PaymentsClientDelegateInterface);
   }
 
-  /**
-   * Check whether the user can make payments using the Payment API.
-   *
-   * @param {!IsReadyToPayRequest} isReadyToPayRequest
-   * @return {!Promise} The promise will contain the boolean result and error
-   *     message when possible.
-   */
+  _createClass(PaymentsClientDelegateInterface, [{
+    key: "isReadyToPay",
 
-  PaymentsClientDelegateInterface.prototype.isReadyToPay = function isReadyToPay(isReadyToPayRequest) {};
+    /**
+     * Check whether the user can make payments using the Payment API.
+     *
+     * @param {!IsReadyToPayRequest} isReadyToPayRequest
+     * @return {!Promise} The promise will contain the boolean result and error
+     *     message when possible.
+     */
+    value: function isReadyToPay(isReadyToPayRequest) {}
+    /**
+     * Prefetch paymentData to speed up loadPaymentData call. Note the provided
+     * paymentDataRequest should exactly be the same as provided in
+     * loadPaymentData to make the loadPaymentData call fast.
+     *
+     * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+     *     information to support a payment.
+     */
 
-  /**
-   * Prefetch paymentData to speed up loadPaymentData call. Note the provided
-   * paymentDataRequest should exactly be the same as provided in
-   * loadPaymentData to make the loadPaymentData call fast.
-   *
-   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
-   *     information to support a payment.
-   */
+  }, {
+    key: "prefetchPaymentData",
+    value: function prefetchPaymentData(paymentDataRequest) {}
+    /**
+     * Request PaymentData, which contains necessary infomartion to complete a
+     * payment.
+     *
+     * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+     *     information to support a payment.
+     */
 
-  PaymentsClientDelegateInterface.prototype.prefetchPaymentData = function prefetchPaymentData(paymentDataRequest) {};
+  }, {
+    key: "loadPaymentData",
+    value: function loadPaymentData(paymentDataRequest) {}
+    /**
+     * @param {function(!Promise<!PaymentData>)} callback
+     */
 
-  /**
-   * Request PaymentData, which contains necessary infomartion to complete a
-   * payment.
-   *
-   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
-   *     information to support a payment.
-   */
-
-  PaymentsClientDelegateInterface.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest) {};
-
-  /**
-   * @param {function(!Promise<!PaymentData>)} callback
-   */
-
-  PaymentsClientDelegateInterface.prototype.onResult = function onResult(callback) {};
+  }, {
+    key: "onResult",
+    value: function onResult(callback) {}
+  }]);
 
   return PaymentsClientDelegateInterface;
-})();
+}();
 
 exports.PaymentsClientDelegateInterface = PaymentsClientDelegateInterface;
 
-},{}],90:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{}],88:[function(require,module,exports){
+"use strict";
 
-/**
- * @fileoverview Description of this file.
- */
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PaymentsRequestDelegate = void 0;
 
-var _constantsJs = require('./constants.js');
+var _constants = require("./constants.js");
 
-var _payments_client_delegate_interfaceJs = require('./payments_client_delegate_interface.js');
+var _payments_client_delegate_interface = require("./payments_client_delegate_interface.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
  * An implementation of PaymentsClientDelegateInterface that leverages payment
  * request.
  * @implements {PaymentsClientDelegateInterface}
  */
-
-var PaymentsRequestDelegate = (function () {
+var PaymentsRequestDelegate =
+/*#__PURE__*/
+function () {
   /**
    * @param {string} environment
    */
-
   function PaymentsRequestDelegate(environment) {
-    babelHelpers.classCallCheck(this, PaymentsRequestDelegate);
+    _classCallCheck(this, PaymentsRequestDelegate);
 
     this.environment_ = environment;
-
     /** @private {?function(!Promise<!PaymentData>)} */
+
     this.callback_ = null;
   }
-
   /** @override */
 
-  PaymentsRequestDelegate.prototype.onResult = function onResult(callback) {
-    this.callback_ = callback;
-  };
 
-  /** @override */
+  _createClass(PaymentsRequestDelegate, [{
+    key: "onResult",
+    value: function onResult(callback) {
+      this.callback_ = callback;
+    }
+    /** @override */
 
-  PaymentsRequestDelegate.prototype.isReadyToPay = function isReadyToPay(isReadyToPayRequest) {
-    /** @type{!PaymentRequest} */
-    var paymentRequest = this.createPaymentRequest_(isReadyToPayRequest);
-    return new Promise(function (resolve, reject) {
-      paymentRequest.canMakePayment().then(function (result) {
-        window.sessionStorage.setItem(_constantsJs.Constants.IS_READY_TO_PAY_RESULT_KEY, result.toString());
-        var response = { 'result': result };
-        if (isReadyToPayRequest.apiVersion >= 2 && isReadyToPayRequest.existingPaymentMethodRequired) {
-          // For apiVersion 2, we always use native to only check for
-          // tokenized cards.
-          // For tokenized cards native always does a presence check so
-          // we can say that if canMakePayment is true for native for
-          // tokenizedCards then the user has a payment method which is
-          // present.
-          response['paymentMethodPresent'] = result;
-        }
-        resolve(response);
-      })['catch'](function (err) {
-        if (window.sessionStorage.getItem(_constantsJs.Constants.IS_READY_TO_PAY_RESULT_KEY)) {
-          resolve({
-            'result': window.sessionStorage.getItem(_constantsJs.Constants.IS_READY_TO_PAY_RESULT_KEY) == 'true'
-          });
-        } else {
-          resolve({ 'result': false });
-        }
+  }, {
+    key: "isReadyToPay",
+    value: function isReadyToPay(isReadyToPayRequest) {
+      /** @type{!PaymentRequest} */
+      var paymentRequest = this.createPaymentRequest_(isReadyToPayRequest);
+      return new Promise(function (resolve, reject) {
+        paymentRequest.canMakePayment().then(function (result) {
+          window.sessionStorage.setItem(_constants.Constants.IS_READY_TO_PAY_RESULT_KEY, result.toString());
+          var response = {
+            'result': result
+          };
+
+          if (isReadyToPayRequest.apiVersion >= 2 && isReadyToPayRequest.existingPaymentMethodRequired) {
+            // For apiVersion 2, we always use native to only check for
+            // tokenized cards.
+            // For tokenized cards native always does a presence check so
+            // we can say that if canMakePayment is true for native for
+            // tokenizedCards then the user has a payment method which is
+            // present.
+            response['paymentMethodPresent'] = result;
+          }
+
+          resolve(response);
+        })["catch"](function (err) {
+          if (window.sessionStorage.getItem(_constants.Constants.IS_READY_TO_PAY_RESULT_KEY)) {
+            resolve({
+              'result': window.sessionStorage.getItem(_constants.Constants.IS_READY_TO_PAY_RESULT_KEY) == 'true'
+            });
+          } else {
+            resolve({
+              'result': false
+            });
+          }
+        });
       });
-    });
-  };
-
-  /** @override */
-
-  PaymentsRequestDelegate.prototype.prefetchPaymentData = function prefetchPaymentData(paymentDataRequest) {
-    // Creating PaymentRequest instance will call
-    // Gcore isReadyToPay internally which will prefetch tempaltes.
-    this.createPaymentRequest_(paymentDataRequest, this.environment_, paymentDataRequest.transactionInfo.currencyCode, paymentDataRequest.transactionInfo.totalPrice);
-  };
-
-  /** @override */
-
-  PaymentsRequestDelegate.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest) {
-    this.loadPaymentDataThroughPaymentRequest_(paymentDataRequest);
-  };
-
-  /**
-   * Create PaymentRequest instance.
-   *
-   * @param {!IsReadyToPayRequest|!PaymentDataRequest} request The necessary information to check if user is
-   *     ready to pay or to support a payment from merchants.
-   * @param {?string=} environment (optional)
-   * @param {?string=} currencyCode (optional)
-   * @param {?string=} totalPrice (optional)
-   * @return {!PaymentRequest} PaymentRequest instance.
-   * @private
-   */
-
-  PaymentsRequestDelegate.prototype.createPaymentRequest_ = function createPaymentRequest_(request, environment, currencyCode, totalPrice) {
-    var data = {};
-    if (request) {
-      data = JSON.parse(JSON.stringify(request));
     }
+    /** @override */
 
-    // Only set the apiVersion if the merchant doesn't set it.
-    if (!data['apiVersion']) {
-      data['apiVersion'] = 1;
+  }, {
+    key: "prefetchPaymentData",
+    value: function prefetchPaymentData(paymentDataRequest) {
+      // Creating PaymentRequest instance will call
+      // Gcore isReadyToPay internally which will prefetch tempaltes.
+      this.createPaymentRequest_(paymentDataRequest, this.environment_, paymentDataRequest.transactionInfo.currencyCode, paymentDataRequest.transactionInfo.totalPrice);
     }
+    /** @override */
 
-    // Add allowedPaymentMethods for swg to get through gms core validation.
-    if (data['swg']) {
-      data['allowedPaymentMethods'] = [_constantsJs.Constants.PaymentMethod.CARD];
+  }, {
+    key: "loadPaymentData",
+    value: function loadPaymentData(paymentDataRequest) {
+      this.loadPaymentDataThroughPaymentRequest_(paymentDataRequest);
     }
-
-    if (environment && environment == _constantsJs.Constants.Environment.TEST) {
-      data['environment'] = environment;
-    }
-
-    var supportedInstruments = [{
-      'supportedMethods': ['https://google.com/pay'],
-      'data': data
-    }];
-
-    var details = {
-      'total': {
-        'label': 'Estimated Total Price',
-        'amount': {
-          // currency and value are required fields in PaymentRequest, but these
-          // fields will never be used since PaymentRequest UI is skipped when
-          // we're the only payment method, so default to some value to by pass
-          // this requirement.
-          'currency': currencyCode || 'USD',
-          'value': totalPrice || '0'
-        }
-      }
-    };
-
-    return new PaymentRequest(supportedInstruments, details);
-  };
-
-  /**
-   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
-   *     information to support a payment.
-   * @private
-   */
-
-  PaymentsRequestDelegate.prototype.loadPaymentDataThroughPaymentRequest_ = function loadPaymentDataThroughPaymentRequest_(paymentDataRequest) {
-    var currencyCode = paymentDataRequest.transactionInfo && paymentDataRequest.transactionInfo.currencyCode || undefined;
-    var totalPrice = paymentDataRequest.transactionInfo && paymentDataRequest.transactionInfo.totalPrice || undefined;
-    var paymentRequest = this.createPaymentRequest_(paymentDataRequest, this.environment_, currencyCode, totalPrice);
-    this.callback_(
-    /** @type{!Promise<!PaymentData>} */
-    paymentRequest.show().then(
     /**
-     * @param {!PaymentResponse} paymentResponse
-     * @return {!PaymentData}
+     * Create PaymentRequest instance.
+     *
+     * @param {!IsReadyToPayRequest|!PaymentDataRequest} request The necessary information to check if user is
+     *     ready to pay or to support a payment from merchants.
+     * @param {?string=} environment (optional)
+     * @param {?string=} currencyCode (optional)
+     * @param {?string=} totalPrice (optional)
+     * @return {!PaymentRequest} PaymentRequest instance.
+     * @private
      */
-    function (paymentResponse) {
-      // Should be called to dismiss any remaining UI
-      paymentResponse.complete('success');
-      return paymentResponse.details;
-    })['catch'](function (err) {
-      err['statusCode'] = _constantsJs.Constants.ResponseStatus.CANCELED;
-      throw err;
-    }));
-  };
+
+  }, {
+    key: "createPaymentRequest_",
+    value: function createPaymentRequest_(request, environment, currencyCode, totalPrice) {
+      var data = {};
+
+      if (request) {
+        data = JSON.parse(JSON.stringify(request));
+      } // Only set the apiVersion if the merchant doesn't set it.
+
+
+      if (!data['apiVersion']) {
+        data['apiVersion'] = 1;
+      } // Add allowedPaymentMethods for swg to get through gms core validation.
+
+
+      if (data['swg']) {
+        data['allowedPaymentMethods'] = [_constants.Constants.PaymentMethod.CARD];
+      }
+
+      if (environment && environment == _constants.Constants.Environment.TEST) {
+        data['environment'] = environment;
+      }
+
+      var supportedInstruments = [{
+        'supportedMethods': ['https://google.com/pay'],
+        'data': data
+      }];
+      var details = {
+        'total': {
+          'label': 'Estimated Total Price',
+          'amount': {
+            // currency and value are required fields in PaymentRequest, but these
+            // fields will never be used since PaymentRequest UI is skipped when
+            // we're the only payment method, so default to some value to by pass
+            // this requirement.
+            'currency': currencyCode || 'USD',
+            'value': totalPrice || '0'
+          }
+        }
+      };
+      return new PaymentRequest(supportedInstruments, details);
+    }
+    /**
+     * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+     *     information to support a payment.
+     * @private
+     */
+
+  }, {
+    key: "loadPaymentDataThroughPaymentRequest_",
+    value: function loadPaymentDataThroughPaymentRequest_(paymentDataRequest) {
+      var currencyCode = paymentDataRequest.transactionInfo && paymentDataRequest.transactionInfo.currencyCode || undefined;
+      var totalPrice = paymentDataRequest.transactionInfo && paymentDataRequest.transactionInfo.totalPrice || undefined;
+      var paymentRequest = this.createPaymentRequest_(paymentDataRequest, this.environment_, currencyCode, totalPrice);
+      this.callback_(
+      /** @type{!Promise<!PaymentData>} */
+      paymentRequest.show().then(
+      /**
+       * @param {!PaymentResponse} paymentResponse
+       * @return {!PaymentData}
+       */
+      function (paymentResponse) {
+        // Should be called to dismiss any remaining UI
+        paymentResponse.complete('success');
+        return paymentResponse.details;
+      })["catch"](function (err) {
+        err['statusCode'] = _constants.Constants.ResponseStatus.CANCELED;
+        throw err;
+      }));
+    }
+  }]);
 
   return PaymentsRequestDelegate;
-})();
+}();
 
 exports.PaymentsRequestDelegate = PaymentsRequestDelegate;
 
-},{"./constants.js":84,"./payments_client_delegate_interface.js":89}],91:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{"./constants.js":82,"./payments_client_delegate_interface.js":87}],89:[function(require,module,exports){
+"use strict";
 
-var _constantsJs = require('./constants.js');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PaymentsWebActivityDelegate = void 0;
 
-var _graypaneJs = require('./graypane.js');
+var _constants = require("./constants.js");
 
-var _payments_client_delegate_interfaceJs = require('./payments_client_delegate_interface.js');
+var _graypane = require("./graypane.js");
 
-var _webActivitiesActivityPorts = require('web-activities/activity-ports');
+var _payments_client_delegate_interface = require("./payments_client_delegate_interface.js");
 
-var _pay_frame_helperJs = require('./pay_frame_helper.js');
+var _activityPorts = require("web-activities/activity-ports");
 
-var _validatorJs = require('./validator.js');
+var _pay_frame_helper = require("./pay_frame_helper.js");
 
-var _element_injectorJs = require('./element_injector.js');
+var _validator = require("./validator.js");
+
+var _element_injector = require("./element_injector.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var GPAY_ACTIVITY_REQUEST = 'GPAY';
 var IFRAME_CLOSE_DURATION_IN_MS = 250;
 var IFRAME_SHOW_UP_DURATION_IN_MS = 250;
-var IFRAME_SMOOTH_HEIGHT_TRANSITION = 'height ' + IFRAME_SHOW_UP_DURATION_IN_MS + 'ms';
+var IFRAME_SMOOTH_HEIGHT_TRANSITION = "height ".concat(IFRAME_SHOW_UP_DURATION_IN_MS, "ms");
 var ERROR_PREFIX = 'Error: ';
-
 /**
  * Supported browser user agent keys.
  *
  * @enum {string}
  */
+
 var BrowserUserAgent = {
   CHROME: 'Chrome',
   FIREFOX: 'Firefox',
   SAFARI: 'Safari'
 };
-
 /**
  * Resizing payload including resize height and transition style.
  *
@@ -19338,35 +21254,39 @@ var BrowserUserAgent = {
  *   transition: string,
  * }}
  */
-var ResizePayload = undefined;
 
+var ResizePayload;
 /**
  * An implementation of PaymentsClientDelegateInterface that uses the custom
  * hosting page along with web activities to actually get to the hosting page.
  * @implements {PaymentsClientDelegateInterface}
  */
 
-var PaymentsWebActivityDelegate = (function () {
+var PaymentsWebActivityDelegate =
+/*#__PURE__*/
+function () {
   /**
    * @param {string} environment
    * @param {string} googleTransactionId
-   * @param {boolean=} opt_useIframe
-   * @param {!ActivityPorts=} opt_activities Can be used to provide a shared
+   * @param {boolean=} useIframe
+   * @param {!ActivityPorts=} activities Can be used to provide a shared
    *   activities manager. By default, the new manager is created.
-   * @param {?string=} opt_redirectKey The redirect key used for redirect mode.
+   * @param {?string=} redirectKey The redirect key used for redirect mode.
    */
-
-  function PaymentsWebActivityDelegate(environment, googleTransactionId, opt_useIframe, opt_activities, opt_redirectKey) {
-    babelHelpers.classCallCheck(this, PaymentsWebActivityDelegate);
+  function PaymentsWebActivityDelegate(environment, googleTransactionId, useIframe, activities, redirectKey) {
+    _classCallCheck(this, PaymentsWebActivityDelegate);
 
     this.environment_ = environment;
     /** @private @const {boolean} */
 
     /** @const {!ActivityPorts} */
-    this.activities = opt_activities || new _webActivitiesActivityPorts.ActivityPorts(window);
+
+    this.activities = activities || new _activityPorts.ActivityPorts(window);
     /** @const @private {!Graypane} */
-    this.graypane_ = new _graypaneJs.Graypane(window.document);
+
+    this.graypane_ = new _graypane.Graypane(window.document);
     /** @private {?function(!Promise<!PaymentData>)} */
+
     this.callback_ = null;
     /**
      * @private {?{
@@ -19375,562 +21295,672 @@ var PaymentsWebActivityDelegate = (function () {
      *             request:!PaymentDataRequest,
      *             dataPromise:?Promise<!PaymentData>}}
      */
+
     this.prefetchedObjects_ = null;
     /** @private {boolean} */
+
     this.shouldHandleResizing_ = false;
     /** @private {?ActivityIframePort} */
+
     this.port_ = null;
     /** @private {?function(!Promise<void>)} */
+
     this.dismissPromiseResolver_ = null;
     /** @const @private {string} */
+
     this.googleTransactionId_ = googleTransactionId;
     /** @const @private {?string} */
-    this.redirectKey_ = opt_redirectKey || null;
 
+    this.redirectKey_ = redirectKey || null;
     /**
      * @private {?ResizePayload}
      */
-    this.savedResizePayload_ = null;
 
-    // Only install dialog styles when iframing is allowed.
+    this.savedResizePayload_ = null; // Only install dialog styles when iframing is allowed.
+
     if (null) {
-      _element_injectorJs.injectStyleSheet(_constantsJs.Constants.IFRAME_STYLE);
+      (0, _element_injector.injectStyleSheet)(_constants.Constants.IFRAME_STYLE);
+
       if (null) {
-        _element_injectorJs.injectStyleSheet(_constantsJs.Constants.IFRAME_STYLE_CENTER);
+        (0, _element_injector.injectStyleSheet)(_constants.Constants.IFRAME_STYLE_CENTER);
       }
     }
   }
-
   /** @override */
 
-  PaymentsWebActivityDelegate.prototype.onResult = function onResult(callback) {
-    if (this.callback_) {
-      return;
+
+  _createClass(PaymentsWebActivityDelegate, [{
+    key: "onResult",
+    value: function onResult(callback) {
+      if (this.callback_) {
+        return;
+      }
+
+      this.callback_ = callback;
+      this.activities.onResult(GPAY_ACTIVITY_REQUEST, this.onActivityResult_.bind(this));
     }
-    this.callback_ = callback;
-    this.activities.onResult(GPAY_ACTIVITY_REQUEST, this.onActivityResult_.bind(this));
-  };
+    /**
+     * @param {!ActivityPort} port
+     * @private
+     */
 
-  /**
-   * @param {!ActivityPort} port
-   * @private
-   */
+  }, {
+    key: "onActivityResult_",
+    value: function onActivityResult_(port) {
+      var _this = this;
 
-  PaymentsWebActivityDelegate.prototype.onActivityResult_ = function onActivityResult_(port) {
-    var _this = this;
+      // Hide the graypane.
+      this.graypane_.hide(); // Only verified origins are allowed.
 
-    // Hide the graypane.
-    this.graypane_.hide();
-    // Only verified origins are allowed.
-    this.callback_(port.acceptResult().then(function (result) {
-      // Origin must always match: popup, iframe or redirect.
-      if (result.origin != _this.getOrigin_()) {
-        throw new Error('channel mismatch');
-      }
-      var data = /** @type {!PaymentData} */result.data;
-      if (data['redirectEncryptedCallbackData']) {
-        _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helperJs.BuyFlowActivityMode.REDIRECT);
-        return _this.fetchRedirectResponse_(data['redirectEncryptedCallbackData']).then(function (decrypedJson) {
-          // Merge other non-encrypted fields into the final response.
-          var clone = Object.assign({}, data);
-          delete clone['redirectEncryptedCallbackData'];
-          return Object.assign(clone, decrypedJson);
-        });
-      }
-      // Unencrypted data supplied: must be a verified and secure channel.
-      if (!result.originVerified || !result.secureChannel) {
-        throw new Error('channel mismatch');
-      }
-      return data;
-    }, function (error) {
-      // TODO: Log the original and the inferred error to eye3.
-      var originalError = error['message'];
-      var inferredError = error['message'];
-      try {
-        // Try to parse the error message to a structured error, if it's
-        // not possible, fallback to use the error message string.
-        inferredError = JSON.parse(originalError.substring(ERROR_PREFIX.length));
-      } catch (e) {}
-      if (inferredError['statusCode'] && ['DEVELOPER_ERROR', 'MERCHANT_ACCOUNT_ERROR'].indexOf(inferredError['statusCode']) == -1) {
-        inferredError = {
-          'statusCode': 'CANCELED'
-        };
-      }
-      if (inferredError == 'AbortError') {
-        inferredError = {
-          'statusCode': 'CANCELED'
-        };
-      }
-      return Promise.reject(inferredError);
-    }));
-  };
-
-  /**
-   * @param {string} redirectEncryptedCallbackData
-   * @return {!PaymentData}
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.fetchRedirectResponse_ = function fetchRedirectResponse_(redirectEncryptedCallbackData) {
-    var _this2 = this;
-
-    // This method has to rely on the legacy XHR API because the redirect
-    // functionality is, in part, aimed at older browsers.
-    return new Promise(function (resolve, reject) {
-      var url = _this2.getDecryptionUrl_();
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', url, true);
-      if ('withCredentials' in xhr) {
-        // It's fine to proceed in a non-redirect mode because redirectVerifier
-        // plays the part of CORS propagation.
-        xhr.withCredentials = true;
-      }
-
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState < /* STATUS_RECEIVED */2) {
-          return;
+      this.callback_(port.acceptResult().then(function (result) {
+        // Origin must always match: popup, iframe or redirect.
+        if (result.origin != _this.getOrigin_()) {
+          throw new Error('channel mismatch');
         }
-        if (xhr.status < 100 || xhr.status > 599) {
-          xhr.onreadystatechange = null;
-          reject(new Error('Unknown HTTP status ' + xhr.status));
-          return;
+
+        var data =
+        /** @type {!PaymentData} */
+        result.data;
+
+        if (data['redirectEncryptedCallbackData']) {
+          _pay_frame_helper.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helper.BuyFlowActivityMode.REDIRECT);
+
+          return _this.fetchRedirectResponse_(data['redirectEncryptedCallbackData']).then(function (decrypedJson) {
+            // Merge other non-encrypted fields into the final response.
+            var clone = Object.assign({}, data);
+            delete clone['redirectEncryptedCallbackData'];
+            return Object.assign(clone, decrypedJson);
+          });
+        } // Unencrypted data supplied: must be a verified and secure channel.
+
+
+        if (!result.originVerified || !result.secureChannel) {
+          throw new Error('channel mismatch');
         }
-        if (xhr.readyState == /* COMPLETE */4) {
-          try {
-            resolve(JSON.parse(xhr.responseText));
-          } catch (e) {
-            // JSON parsing error is expected here.
-            reject(e);
-          }
-        }
-      };
-      xhr.onerror = function () {
-        reject(new Error('Network failure'));
-      };
-      xhr.onabort = function () {
-        reject(new Error('Request aborted'));
-      };
 
-      // Send POST.
-      xhr.send(redirectEncryptedCallbackData);
-    });
-  };
+        return data;
+      }, function (error) {
+        // TODO: Log the original and the inferred error to eye3.
+        var originalError = error['message'];
+        var inferredError = error['message'];
 
-  /** @override */
+        try {
+          // Try to parse the error message to a structured error, if it's
+          // not possible, fallback to use the error message string.
+          inferredError = JSON.parse(originalError.substring(ERROR_PREFIX.length));
+        } catch (e) {}
 
-  PaymentsWebActivityDelegate.prototype.isReadyToPay = function isReadyToPay(isReadyToPayRequest) {
-    var _this3 = this;
-
-    return new Promise(function (resolve, reject) {
-      if (_validatorJs.doesMerchantSupportOnlyTokenizedCards(isReadyToPayRequest)) {
-        resolve({ 'result': false });
-        return;
-      }
-      var userAgent = window.navigator.userAgent;
-      var isIosGsa = userAgent.indexOf('GSA/') > 0 && userAgent.indexOf(BrowserUserAgent.SAFARI) > 0;
-      // pop up in IGSA doesn't work.
-      if (isIosGsa && !null) {
-        resolve({ 'result': false });
-        return;
-      }
-      var isFirefoxIos = userAgent.indexOf('FxiOS') > 0;
-      if (isFirefoxIos) {
-        resolve({ 'result': false });
-        return;
-      }
-      var isSupported = userAgent.indexOf(BrowserUserAgent.CHROME) > 0 || userAgent.indexOf(BrowserUserAgent.FIREFOX) > 0 || userAgent.indexOf(BrowserUserAgent.SAFARI) > 0;
-      if (isSupported && isReadyToPayRequest.apiVersion >= 2 && isReadyToPayRequest.existingPaymentMethodRequired) {
-        isReadyToPayRequest.environment = _this3.environment_;
-        _pay_frame_helperJs.PayFrameHelper.sendAndWaitForResponse(isReadyToPayRequest, _pay_frame_helperJs.PostMessageEventType.IS_READY_TO_PAY, 'isReadyToPayResponse', function (event) {
-          var response = {
-            'result': isSupported
+        if (inferredError['statusCode'] && ['DEVELOPER_ERROR', 'MERCHANT_ACCOUNT_ERROR'].indexOf(inferredError['statusCode']) == -1) {
+          inferredError = {
+            'statusCode': 'CANCELED'
           };
-          if (isReadyToPayRequest.existingPaymentMethodRequired) {
-            response['paymentMethodPresent'] = event.data['isReadyToPayResponse'] == 'READY_TO_PAY';
-          }
-          resolve(response);
-        });
-      } else {
-        resolve({ 'result': isSupported });
-      }
-    });
-  };
-
-  /** @override */
-
-  PaymentsWebActivityDelegate.prototype.prefetchPaymentData = function prefetchPaymentData(paymentDataRequest) {
-    // Only handles prefetch for iframe for now.
-    if (!null) {
-      return;
-    }
-    var containerAndFrame = this.injectIframe_(paymentDataRequest);
-    var paymentDataPromise = this.openIframe_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
-    this.prefetchedObjects_ = {
-      'container': containerAndFrame['container'],
-      'iframe': containerAndFrame['iframe'],
-      'request': paymentDataRequest,
-      'dataPromise': paymentDataPromise
-    };
-  };
-
-  /** @override */
-
-  PaymentsWebActivityDelegate.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest) {
-    var _this4 = this;
-
-    if (!paymentDataRequest.swg) {
-      // Only set the apiVersion if the merchant is not setting it.
-      if (!paymentDataRequest.apiVersion) {
-        paymentDataRequest.apiVersion = 1;
-      }
-    }
-    paymentDataRequest.environment = this.environment_;
-    if (null) {
-      var _ret = (function () {
-        _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helperJs.BuyFlowActivityMode.IFRAME);
-        // TODO: Compare the request with prefetched request.
-        var containerAndFrame = undefined;
-        var paymentDataPromise = undefined;
-        if (_this4.prefetchedObjects_) {
-          // Rendering prefetched frame and container.
-          containerAndFrame = _this4.prefetchedObjects_;
-          paymentDataPromise = _this4.prefetchedObjects_['dataPromise'];
-          _this4.prefetchedObjects_ = null;
-        } else {
-          containerAndFrame = _this4.injectIframe_(paymentDataRequest);
-          paymentDataPromise = _this4.openIframe_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
         }
-        _this4.showContainerAndIframeWithAnimation_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
+
+        if (inferredError == 'AbortError') {
+          inferredError = {
+            'statusCode': 'CANCELED'
+          };
+        }
+
+        return Promise.reject(inferredError);
+      }));
+    }
+    /**
+     * @param {string} redirectEncryptedCallbackData
+     * @return {!PaymentData}
+     * @private
+     */
+
+  }, {
+    key: "fetchRedirectResponse_",
+    value: function fetchRedirectResponse_(redirectEncryptedCallbackData) {
+      var _this2 = this;
+
+      // This method has to rely on the legacy XHR API because the redirect
+      // functionality is, in part, aimed at older browsers.
+      return new Promise(function (resolve, reject) {
+        var url = _this2.getDecryptionUrl_();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+
+        if ('withCredentials' in xhr) {
+          // It's fine to proceed in a non-redirect mode because redirectVerifier
+          // plays the part of CORS propagation.
+          xhr.withCredentials = true;
+        }
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState <
+          /* STATUS_RECEIVED */
+          2) {
+            return;
+          }
+
+          if (xhr.status < 100 || xhr.status > 599) {
+            xhr.onreadystatechange = null;
+            reject(new Error("Unknown HTTP status ".concat(xhr.status)));
+            return;
+          }
+
+          if (xhr.readyState ==
+          /* COMPLETE */
+          4) {
+            try {
+              resolve(JSON.parse(xhr.responseText));
+            } catch (e) {
+              // JSON parsing error is expected here.
+              reject(e);
+            }
+          }
+        };
+
+        xhr.onerror = function () {
+          reject(new Error('Network failure'));
+        };
+
+        xhr.onabort = function () {
+          reject(new Error('Request aborted'));
+        }; // Send POST.
+
+
+        xhr.send(redirectEncryptedCallbackData);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "isReadyToPay",
+    value: function isReadyToPay(isReadyToPayRequest) {
+      var _this3 = this;
+
+      return new Promise(function (resolve, reject) {
+        if ((0, _validator.doesMerchantSupportOnlyTokenizedCards)(isReadyToPayRequest)) {
+          resolve({
+            'result': false
+          });
+          return;
+        }
+
+        var userAgent = window.navigator.userAgent;
+        var isIosGsa = userAgent.indexOf('GSA/') > 0 && userAgent.indexOf(BrowserUserAgent.SAFARI) > 0; // pop up in IGSA doesn't work.
+
+        if (isIosGsa && !null) {
+          resolve({
+            'result': false
+          });
+          return;
+        }
+
+        var isFirefoxIos = userAgent.indexOf('FxiOS') > 0;
+
+        if (isFirefoxIos) {
+          resolve({
+            'result': false
+          });
+          return;
+        }
+
+        var isSupported = userAgent.indexOf(BrowserUserAgent.CHROME) > 0 || userAgent.indexOf(BrowserUserAgent.FIREFOX) > 0 || userAgent.indexOf(BrowserUserAgent.SAFARI) > 0;
+
+        if (isSupported && isReadyToPayRequest.apiVersion >= 2 && isReadyToPayRequest.existingPaymentMethodRequired) {
+          isReadyToPayRequest.environment = _this3.environment_;
+
+          _pay_frame_helper.PayFrameHelper.sendAndWaitForResponse(isReadyToPayRequest, _pay_frame_helper.PostMessageEventType.IS_READY_TO_PAY, 'isReadyToPayResponse', function (event) {
+            var response = {
+              'result': isSupported
+            };
+
+            if (isReadyToPayRequest.existingPaymentMethodRequired) {
+              response['paymentMethodPresent'] = event.data['isReadyToPayResponse'] == 'READY_TO_PAY';
+            }
+
+            resolve(response);
+          });
+        } else {
+          resolve({
+            'result': isSupported
+          });
+        }
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "prefetchPaymentData",
+    value: function prefetchPaymentData(paymentDataRequest) {
+      // Only handles prefetch for iframe for now.
+      if (!null) {
+        return;
+      }
+
+      var containerAndFrame = this.injectIframe_(paymentDataRequest);
+      var paymentDataPromise = this.openIframe_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
+      this.prefetchedObjects_ = {
+        'container': containerAndFrame['container'],
+        'iframe': containerAndFrame['iframe'],
+        'request': paymentDataRequest,
+        'dataPromise': paymentDataPromise
+      };
+    }
+    /** @override */
+
+  }, {
+    key: "loadPaymentData",
+    value: function loadPaymentData(paymentDataRequest) {
+      var _this4 = this;
+
+      if (!paymentDataRequest.swg) {
+        // Only set the apiVersion if the merchant is not setting it.
+        if (!paymentDataRequest.apiVersion) {
+          paymentDataRequest.apiVersion = 1;
+        }
+      }
+
+      paymentDataRequest.environment = this.environment_;
+
+      if (null) {
+        _pay_frame_helper.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helper.BuyFlowActivityMode.IFRAME); // TODO: Compare the request with prefetched request.
+
+
+        var containerAndFrame;
+        var paymentDataPromise;
+
+        if (this.prefetchedObjects_) {
+          // Rendering prefetched frame and container.
+          containerAndFrame = this.prefetchedObjects_;
+          paymentDataPromise = this.prefetchedObjects_['dataPromise'];
+          this.prefetchedObjects_ = null;
+        } else {
+          containerAndFrame = this.injectIframe_(paymentDataRequest);
+          paymentDataPromise = this.openIframe_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
+        }
+
+        this.showContainerAndIframeWithAnimation_(containerAndFrame['container'], containerAndFrame['iframe'], paymentDataRequest);
         history.pushState({}, '', '');
-        var onPopState = function (e) {
+
+        var onPopState = function onPopState(e) {
           e.preventDefault();
+
           _this4.backButtonHandler_(containerAndFrame);
+
           window.removeEventListener('popstate', onPopState);
         };
+
         window.addEventListener('popstate', onPopState);
         var dismissPromise = new Promise(function (resolve) {
           _this4.dismissPromiseResolver_ = resolve;
         });
-        _this4.callback_(Promise.race([paymentDataPromise, dismissPromise]));
-        return {
-          v: undefined
-        };
-      })();
-
-      if (typeof _ret === 'object') return _ret.v;
-    }
-    _pay_frame_helperJs.PayFrameHelper.setBuyFlowActivityMode(paymentDataRequest['forceRedirect'] ? _pay_frame_helperJs.BuyFlowActivityMode.REDIRECT : _pay_frame_helperJs.BuyFlowActivityMode.POPUP);
-    var opener = this.activities.open(GPAY_ACTIVITY_REQUEST, this.getHostingPageUrl_(), this.getRenderMode_(paymentDataRequest), paymentDataRequest, { 'width': 600, 'height': 600 });
-    this.graypane_.show(opener && opener.targetWin);
-  };
-
-  /**
-   * Returns the render mode whether need to force redirect.
-   *
-   * @param {!PaymentDataRequest} paymentDataRequest
-   * @return {string}
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.getRenderMode_ = function getRenderMode_(paymentDataRequest) {
-    return paymentDataRequest['forceRedirect'] ? '_top' : 'gp-js-popup';
-  };
-
-  /**
-   * Returns the server origin based on the environment.
-   *
-   * @private
-   * @return {string}
-   */
-
-  PaymentsWebActivityDelegate.prototype.getOrigin_ = function getOrigin_() {
-    if (this.environment_ == _constantsJs.Constants.Environment.LOCAL) {
-      return '';
-    }
-
-    var baseDomain;
-    if (this.environment_ == _constantsJs.Constants.Environment.PREPROD) {
-      baseDomain = 'pay-preprod.sandbox';
-    } else if (this.environment_ == _constantsJs.Constants.Environment.SANDBOX) {
-      baseDomain = 'pay.sandbox';
-    } else {
-      baseDomain = 'pay';
-    }
-    return 'https://' + baseDomain + '.google.com';
-  };
-
-  /**
-   * Returns the base path based on the environment.
-   *
-   * @private
-   * @return {string} The base path
-   */
-
-  PaymentsWebActivityDelegate.prototype.getBasePath_ = function getBasePath_() {
-    return this.getOrigin_() + '/gp/p';
-  };
-
-  /**
-   * Returns the decryption url to be used to decrypt the encrypted payload.
-   *
-   * @private
-   * @return {string} The decryption url
-   */
-
-  PaymentsWebActivityDelegate.prototype.getDecryptionUrl_ = function getDecryptionUrl_() {
-    var url = this.getBasePath_() + '/apis/buyflow/process';
-    if (this.redirectKey_) {
-      url += '?rk=' + encodeURIComponent(this.redirectKey_);
-    }
-    return url;
-  };
-
-  /**
-   * Returns the hosting page url.
-   *
-   * @private
-   * @return {string} The hosting page url
-   */
-
-  PaymentsWebActivityDelegate.prototype.getHostingPageUrl_ = function getHostingPageUrl_() {
-    // In Tin tests, the hosting page is requested from
-    // /testing/buyflow/merchantdemo.html and is accessed relatively since the
-    // base path is unknown ahead of time.
-    if (this.environment_ == _constantsJs.Constants.Environment.TIN) {
-      // There is no /gp/p prefix since multilogin prefixes is broken in Tin:
-      // http://yaqs/4912322941550592
-      return '/ui/pay';
-    }
-    return this.getBasePath_() + '/ui/pay';
-  };
-
-  /**
-   * Returns the iframe pwg url to be used to be used for amp.
-   *
-   * @param {string} environment
-   * @param {string} origin
-   * @return {string} The iframe url
-   */
-
-  PaymentsWebActivityDelegate.prototype.getIframeUrl = function getIframeUrl(environment, origin) {
-    // TODO: These should be compile time constants and not dependent
-    // on the environment.
-    var iframeUrl = 'https://pay.google.com/gp/p/ui/pay?origin=' + origin;
-    if (environment == _constantsJs.Constants.Environment.SANDBOX || environment == _constantsJs.Constants.Environment.PREPROD) {
-      iframeUrl = 'https://pay\'+  (environment == Constants.Environment.PREPROD ? \'-preprod\' : \'\')+  \'.sandbox.google.com/gp/p/ui/pay?origin=' + origin;
-    }
-    return iframeUrl;
-  };
-
-  /**
-   * Close iframe with animation.
-   *
-   * @param {!Element} container
-   * @param {!HTMLIFrameElement} iframe
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.removeIframeAndContainer_ = function removeIframeAndContainer_(container, iframe) {
-    var transitionStyle = 'all ' + IFRAME_CLOSE_DURATION_IN_MS + 'ms ease 0s';
-    this.setTransition_(iframe, transitionStyle);
-    iframe.height = '0px';
-    // TODO: This should be replaced by listening to TransitionEnd event
-    setTimeout(function () {
-      if (container.parentNode) {
-        container.parentNode.removeChild(container);
+        this.callback_(Promise.race([paymentDataPromise, dismissPromise]));
+        return;
       }
-    }, IFRAME_CLOSE_DURATION_IN_MS);
-  };
 
-  /**
-   * @param {!PaymentDataRequest} paymentDataRequest
-   * @return {{container: !Element, iframe:!HTMLIFrameElement}}
-   * @private
-   */
+      _pay_frame_helper.PayFrameHelper.setBuyFlowActivityMode(paymentDataRequest['forceRedirect'] ? _pay_frame_helper.BuyFlowActivityMode.REDIRECT : _pay_frame_helper.BuyFlowActivityMode.POPUP);
 
-  PaymentsWebActivityDelegate.prototype.injectIframe_ = function injectIframe_(paymentDataRequest) {
-    var containerAndFrame = _element_injectorJs.injectIframe(this.isVerticalCenterExperimentEnabled_(paymentDataRequest) ? _constantsJs.Constants.IFRAME_STYLE_CENTER_CLASS : _constantsJs.Constants.IFRAME_STYLE_CLASS);
-    var iframe = containerAndFrame['iframe'];
-    var container = containerAndFrame['container'];
-    container.addEventListener('click', this.closeActionHandler_.bind(this, containerAndFrame));
-    // Hide iframe and disable resize at initialize.
-    container.style.display = 'none';
-    iframe.style.display = 'none';
-    iframe.height = '0px';
-    var transitionStyle = 'all ' + IFRAME_SHOW_UP_DURATION_IN_MS + 'ms ease 0s';
-    this.setTransition_(iframe, transitionStyle);
-    this.shouldHandleResizing_ = false;
-    return containerAndFrame;
-  };
-
-  /**
-   * Handler when back button is triggered, should dismiss iframe if present.
-   * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.backButtonHandler_ = function backButtonHandler_(containerAndFrame) {
-    this.dismissIframe_(containerAndFrame);
-  };
-
-  /**
-   * Handler when close action is triggered, will pop history state to close
-   * the iframe.
-   * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.closeActionHandler_ = function closeActionHandler_(containerAndFrame) {
-    if (containerAndFrame['container'].parentNode) {
-      // Close action only when container is still attached to the page.
-      history.back();
-    }
-  };
-
-  /**
-   * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.dismissIframe_ = function dismissIframe_(containerAndFrame) {
-    // Dismiss iframe only when container is still attached in the page.
-    if (containerAndFrame['container'].parentNode) {
-      // TODO: Think about whether this could be just hide instead of
-      // disconnect and remove, the tricky part is how to handle the case where
-      // payment data request is not the same.
-      this.dismissPromiseResolver_(Promise.reject({ 'errorCode': 'CANCELED' }));
-      this.removeIframeAndContainer_(containerAndFrame['container'], containerAndFrame['iframe']);
-      this.port_ && this.port_.disconnect();
-    }
-  };
-
-  /**
-   * @param {!PaymentDataRequest} paymentDataRequest
-   * @return {boolean}
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.isVerticalCenterExperimentEnabled_ = function isVerticalCenterExperimentEnabled_(paymentDataRequest) {
-    return null && paymentDataRequest['i'] && paymentDataRequest['i'].renderContainerCenter;
-  };
-
-  /**
-   * @param {!Element} container
-   * @param {!HTMLIFrameElement} iframe
-   * @param {!PaymentDataRequest} paymentDataRequest
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.showContainerAndIframeWithAnimation_ = function showContainerAndIframeWithAnimation_(container, iframe, paymentDataRequest) {
-    var _this5 = this;
-
-    container.style.display = 'block';
-    iframe.style.display = 'block';
-    setTimeout(function () {
-      // Hard code the apprx height here, it will be resize to expected height
-      // later.
-      iframe.height = '280px';
-      if (_this5.isVerticalCenterExperimentEnabled_(paymentDataRequest)) {
-        iframe.classList.add(_constantsJs.Constants.IFRAME_ACTIVE_CONTAINER_CLASS);
-      }
-      // TODO: This should be handles properly by listening to
-      // TransitionEnd event.
-      setTimeout(function () {
-        _this5.shouldHandleResizing_ = true;
-        // TODO: Add browser test that catches this.
-        if (_this5.savedResizePayload_) {
-          _this5.setTransition_(iframe, _this5.savedResizePayload_['transition']);
-          iframe.height = _this5.savedResizePayload_['height'];
-          _this5.savedResizePayload_ = null;
-        }
-      }, IFRAME_SHOW_UP_DURATION_IN_MS);
-    }, 1);
-  };
-
-  /**
-   * @param {!HTMLIFrameElement} iframe
-   * @param {string} transitionStyle
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.setTransition_ = function setTransition_(iframe, transitionStyle) {
-    iframe.style.setProperty('transition', transitionStyle);
-    // For safari.
-    iframe.style.setProperty('-webkit-transition', transitionStyle);
-  };
-
-  /**
-   * Use WebActivitiy to open iframe that's in given container.
-   *
-   * @param {!Element} container
-   * @param {!HTMLIFrameElement} iframe
-   * @param {!PaymentDataRequest} paymentDataRequest
-   * @return {!Promise<!PaymentData>}
-   * @private
-   */
-
-  PaymentsWebActivityDelegate.prototype.openIframe_ = function openIframe_(container, iframe, paymentDataRequest) {
-    var _this6 = this;
-
-    if (!paymentDataRequest.swg) {
-      if (!paymentDataRequest.apiVersion) {
-        paymentDataRequest.apiVersion = 1;
-      }
-    }
-    paymentDataRequest.environment = this.environment_;
-    var iframeLoadStartTime = undefined;
-    var trustedUrl = this.getIframeUrl(this.environment_, window.location.origin);
-    return this.activities.openIframe(iframe, trustedUrl, paymentDataRequest).then(function (port) {
-      // Handle custom resize message.
-      _this6.port_ = port;
-      port.onMessage(function (payload) {
-        if (payload['type'] !== 'resize' || !_this6.shouldHandleResizing_) {
-          // Save the resize event later after initial animation is finished
-          _this6.savedResizePayload_ = {
-            'height': payload['height'],
-            'transition': payload['transition']
-          };
-          return;
-        }
-        // b/111310899: Smooth out initial iFrame loading
-        if (!iframeLoadStartTime) {
-          iframeLoadStartTime = Date.now();
-        }
-        if (Date.now() < iframeLoadStartTime + IFRAME_SHOW_UP_DURATION_IN_MS) {
-          _this6.setTransition_(iframe, payload['transition'] + ', ' + IFRAME_SMOOTH_HEIGHT_TRANSITION);
-        } else {
-          _this6.setTransition_(iframe, payload['transition']);
-        }
-        iframe.height = payload['height'];
+      var opener = this.activities.open(GPAY_ACTIVITY_REQUEST, this.getHostingPageUrl_(), this.getRenderMode_(paymentDataRequest), paymentDataRequest, {
+        'width': 600,
+        'height': 600
       });
-      return (/** @type {!Promise<!Object>} */port.acceptResult()
-      );
-    }).then(
+      this.graypane_.show(opener && opener.targetWin);
+    }
     /**
-     * @param {!Object} result
-     * @return {!PaymentData}
+     * Returns the render mode whether need to force redirect.
+     *
+     * @param {!PaymentDataRequest} paymentDataRequest
+     * @return {string}
+     * @private
      */
-    function (result) {
-      _this6.removeIframeAndContainer_(container, iframe);
-      // This is only for popping the state we pushed earlier.
-      history.back();
-      var data = /** @type {!PaymentData} */result['data'];
-      return data;
-    }, function (error) {
-      _this6.removeIframeAndContainer_(container, iframe);
-      // This is only for popping the state we pushed earlier.
-      history.back();
-      return Promise.reject(error);
-    });
-  };
+
+  }, {
+    key: "getRenderMode_",
+    value: function getRenderMode_(paymentDataRequest) {
+      return paymentDataRequest['forceRedirect'] ? '_top' : 'gp-js-popup';
+    }
+    /**
+     * Returns the server origin based on the environment.
+     *
+     * @private
+     * @return {string}
+     */
+
+  }, {
+    key: "getOrigin_",
+    value: function getOrigin_() {
+      if (this.environment_ == _constants.Constants.Environment.LOCAL) {
+        return '';
+      }
+
+      var baseDomain;
+
+      if (this.environment_ == _constants.Constants.Environment.PREPROD) {
+        baseDomain = 'pay-preprod.sandbox';
+      } else if (this.environment_ == _constants.Constants.Environment.SANDBOX) {
+        baseDomain = 'pay.sandbox';
+      } else {
+        baseDomain = 'pay';
+      }
+
+      return 'https://' + baseDomain + '.google.com';
+    }
+    /**
+     * Returns the base path based on the environment.
+     *
+     * @private
+     * @return {string} The base path
+     */
+
+  }, {
+    key: "getBasePath_",
+    value: function getBasePath_() {
+      return this.getOrigin_() + '/gp/p';
+    }
+    /**
+     * Returns the decryption url to be used to decrypt the encrypted payload.
+     *
+     * @private
+     * @return {string} The decryption url
+     */
+
+  }, {
+    key: "getDecryptionUrl_",
+    value: function getDecryptionUrl_() {
+      var url = this.getBasePath_() + '/apis/buyflow/process';
+
+      if (this.redirectKey_) {
+        url += '?rk=' + encodeURIComponent(this.redirectKey_);
+      }
+
+      return url;
+    }
+    /**
+     * Returns the hosting page url.
+     *
+     * @private
+     * @return {string} The hosting page url
+     */
+
+  }, {
+    key: "getHostingPageUrl_",
+    value: function getHostingPageUrl_() {
+      // In Tin tests, the hosting page is requested from
+      // /testing/buyflow/merchantdemo.html and is accessed relatively since the
+      // base path is unknown ahead of time.
+      if (this.environment_ == _constants.Constants.Environment.TIN) {
+        // There is no /gp/p prefix since multilogin prefixes is broken in Tin:
+        // http://yaqs/4912322941550592
+        return '/ui/pay';
+      }
+
+      return this.getBasePath_() + '/ui/pay';
+    }
+    /**
+     * Returns the iframe pwg url to be used to be used for amp.
+     *
+     * @param {string} environment
+     * @param {string} origin
+     * @return {string} The iframe url
+     */
+
+  }, {
+    key: "getIframeUrl",
+    value: function getIframeUrl(environment, origin) {
+      // TODO: These should be compile time constants and not dependent
+      // on the environment.
+      var iframeUrl = "https://pay.google.com/gp/p/ui/pay?origin=".concat(origin);
+
+      if (environment == _constants.Constants.Environment.SANDBOX || environment == _constants.Constants.Environment.PREPROD) {
+        iframeUrl = "https://pay'+  (environment == Constants.Environment.PREPROD ? '-preprod' : '')+  '.sandbox.google.com/gp/p/ui/pay?origin=".concat(origin);
+      }
+
+      return iframeUrl;
+    }
+    /**
+     * Close iframe with animation.
+     *
+     * @param {!Element} container
+     * @param {!HTMLIFrameElement} iframe
+     * @private
+     */
+
+  }, {
+    key: "removeIframeAndContainer_",
+    value: function removeIframeAndContainer_(container, iframe) {
+      var transitionStyle = 'all ' + IFRAME_CLOSE_DURATION_IN_MS + 'ms ease 0s';
+      this.setTransition_(iframe, transitionStyle);
+      iframe.height = '0px'; // TODO: This should be replaced by listening to TransitionEnd event
+
+      setTimeout(function () {
+        if (container.parentNode) {
+          container.parentNode.removeChild(container);
+        }
+      }, IFRAME_CLOSE_DURATION_IN_MS);
+    }
+    /**
+     * @param {!PaymentDataRequest} paymentDataRequest
+     * @return {{container: !Element, iframe:!HTMLIFrameElement}}
+     * @private
+     */
+
+  }, {
+    key: "injectIframe_",
+    value: function injectIframe_(paymentDataRequest) {
+      var containerAndFrame = (0, _element_injector.injectIframe)(this.isVerticalCenterExperimentEnabled_(paymentDataRequest) ? _constants.Constants.IFRAME_STYLE_CENTER_CLASS : _constants.Constants.IFRAME_STYLE_CLASS);
+      var iframe = containerAndFrame['iframe'];
+      var container = containerAndFrame['container'];
+      container.addEventListener('click', this.closeActionHandler_.bind(this, containerAndFrame)); // Hide iframe and disable resize at initialize.
+
+      container.style.display = 'none';
+      iframe.style.display = 'none';
+      iframe.height = '0px';
+      var transitionStyle = 'all ' + IFRAME_SHOW_UP_DURATION_IN_MS + 'ms ease 0s';
+      this.setTransition_(iframe, transitionStyle);
+      this.shouldHandleResizing_ = false;
+      return containerAndFrame;
+    }
+    /**
+     * Handler when back button is triggered, should dismiss iframe if present.
+     * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
+     * @private
+     */
+
+  }, {
+    key: "backButtonHandler_",
+    value: function backButtonHandler_(containerAndFrame) {
+      this.dismissIframe_(containerAndFrame);
+    }
+    /**
+     * Handler when close action is triggered, will pop history state to close
+     * the iframe.
+     * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
+     * @private
+     */
+
+  }, {
+    key: "closeActionHandler_",
+    value: function closeActionHandler_(containerAndFrame) {
+      if (containerAndFrame['container'].parentNode) {
+        // Close action only when container is still attached to the page.
+        history.back();
+      }
+    }
+    /**
+     * @param {{container: !Element, iframe:!HTMLIFrameElement}} containerAndFrame
+     * @private
+     */
+
+  }, {
+    key: "dismissIframe_",
+    value: function dismissIframe_(containerAndFrame) {
+      // Dismiss iframe only when container is still attached in the page.
+      if (containerAndFrame['container'].parentNode) {
+        // TODO: Think about whether this could be just hide instead of
+        // disconnect and remove, the tricky part is how to handle the case where
+        // payment data request is not the same.
+        this.dismissPromiseResolver_(Promise.reject({
+          'errorCode': 'CANCELED'
+        }));
+        this.removeIframeAndContainer_(containerAndFrame['container'], containerAndFrame['iframe']);
+        this.port_ && this.port_.disconnect();
+      }
+    }
+    /**
+     * @param {!PaymentDataRequest} paymentDataRequest
+     * @return {boolean}
+     * @private
+     */
+
+  }, {
+    key: "isVerticalCenterExperimentEnabled_",
+    value: function isVerticalCenterExperimentEnabled_(paymentDataRequest) {
+      return null && paymentDataRequest['i'] && paymentDataRequest['i'].renderContainerCenter;
+    }
+    /**
+     * @param {!Element} container
+     * @param {!HTMLIFrameElement} iframe
+     * @param {!PaymentDataRequest} paymentDataRequest
+     * @private
+     */
+
+  }, {
+    key: "showContainerAndIframeWithAnimation_",
+    value: function showContainerAndIframeWithAnimation_(container, iframe, paymentDataRequest) {
+      var _this5 = this;
+
+      container.style.display = 'block';
+      iframe.style.display = 'block';
+      setTimeout(function () {
+        // Hard code the apprx height here, it will be resize to expected height
+        // later.
+        iframe.height = '280px';
+
+        if (_this5.isVerticalCenterExperimentEnabled_(paymentDataRequest)) {
+          iframe.classList.add(_constants.Constants.IFRAME_ACTIVE_CONTAINER_CLASS);
+        } // TODO: This should be handles properly by listening to
+        // TransitionEnd event.
+
+
+        setTimeout(function () {
+          _this5.shouldHandleResizing_ = true; // TODO: Add browser test that catches this.
+
+          if (_this5.savedResizePayload_) {
+            _this5.setTransition_(iframe, _this5.savedResizePayload_['transition']);
+
+            iframe.height = _this5.savedResizePayload_['height'];
+            _this5.savedResizePayload_ = null;
+          }
+        }, IFRAME_SHOW_UP_DURATION_IN_MS);
+      }, 1);
+    }
+    /**
+     * @param {!HTMLIFrameElement} iframe
+     * @param {string} transitionStyle
+     * @private
+     */
+
+  }, {
+    key: "setTransition_",
+    value: function setTransition_(iframe, transitionStyle) {
+      iframe.style.setProperty('transition', transitionStyle); // For safari.
+
+      iframe.style.setProperty('-webkit-transition', transitionStyle);
+    }
+    /**
+     * Use WebActivitiy to open iframe that's in given container.
+     *
+     * @param {!Element} container
+     * @param {!HTMLIFrameElement} iframe
+     * @param {!PaymentDataRequest} paymentDataRequest
+     * @return {!Promise<!PaymentData>}
+     * @private
+     */
+
+  }, {
+    key: "openIframe_",
+    value: function openIframe_(container, iframe, paymentDataRequest) {
+      var _this6 = this;
+
+      if (!paymentDataRequest.swg) {
+        if (!paymentDataRequest.apiVersion) {
+          paymentDataRequest.apiVersion = 1;
+        }
+      }
+
+      paymentDataRequest.environment = this.environment_;
+      var iframeLoadStartTime;
+      var trustedUrl = this.getIframeUrl(this.environment_, window.location.origin);
+      return this.activities.openIframe(iframe, trustedUrl, paymentDataRequest).then(function (port) {
+        // Handle custom resize message.
+        _this6.port_ = port;
+        port.onMessage(function (payload) {
+          if (payload['type'] !== 'resize' || !_this6.shouldHandleResizing_) {
+            // Save the resize event later after initial animation is finished
+            _this6.savedResizePayload_ = {
+              'height': payload['height'],
+              'transition': payload['transition']
+            };
+            return;
+          } // b/111310899: Smooth out initial iFrame loading
+
+
+          if (!iframeLoadStartTime) {
+            iframeLoadStartTime = Date.now();
+          }
+
+          if (Date.now() < iframeLoadStartTime + IFRAME_SHOW_UP_DURATION_IN_MS) {
+            _this6.setTransition_(iframe, payload['transition'] + ', ' + IFRAME_SMOOTH_HEIGHT_TRANSITION);
+          } else {
+            _this6.setTransition_(iframe, payload['transition']);
+          }
+
+          iframe.height = payload['height'];
+        });
+        return (
+          /** @type {!Promise<!Object>} */
+          port.acceptResult()
+        );
+      }).then(
+      /**
+       * @param {!Object} result
+       * @return {!PaymentData}
+       */
+      function (result) {
+        _this6.removeIframeAndContainer_(container, iframe); // This is only for popping the state we pushed earlier.
+
+
+        history.back();
+        var data =
+        /** @type {!PaymentData} */
+        result['data'];
+        return data;
+      }, function (error) {
+        _this6.removeIframeAndContainer_(container, iframe); // This is only for popping the state we pushed earlier.
+
+
+        history.back();
+        return Promise.reject(error);
+      });
+    }
+  }]);
 
   return PaymentsWebActivityDelegate;
-})();
+}();
 
 exports.PaymentsWebActivityDelegate = PaymentsWebActivityDelegate;
 
-},{"./constants.js":84,"./element_injector.js":85,"./graypane.js":86,"./pay_frame_helper.js":87,"./payments_client_delegate_interface.js":89,"./validator.js":95,"web-activities/activity-ports":4}],92:[function(require,module,exports){
-exports.__esModule = true;
+},{"./constants.js":82,"./element_injector.js":83,"./graypane.js":84,"./pay_frame_helper.js":85,"./payments_client_delegate_interface.js":87,"./validator.js":93,"web-activities/activity-ports":4}],90:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PostMessageService = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
@@ -19952,15 +21982,15 @@ exports.__esModule = true;
  * Service wrapping window.parent.postMessage. This enables
  * window.postMessage to be swapped out in unit tests.
  */
-
-var PostMessageService = (function () {
+var PostMessageService =
+/*#__PURE__*/
+function () {
   function PostMessageService(window) {
-    babelHelpers.classCallCheck(this, PostMessageService);
+    _classCallCheck(this, PostMessageService);
 
     /** @private @const {!Window} */
     this.window_ = window;
   }
-
   /**
    * Passthrough to Window#postMessage. See Window#postMessage DOM API
    * documentation for more information about arguments.
@@ -19969,45 +21999,45 @@ var PostMessageService = (function () {
    * @param {string} targetOrigin
    */
 
-  PostMessageService.prototype.postMessage = function postMessage(message, targetOrigin) {
-    this.window_.postMessage(message, targetOrigin);
-  };
+
+  _createClass(PostMessageService, [{
+    key: "postMessage",
+    value: function postMessage(message, targetOrigin) {
+      this.window_.postMessage(message, targetOrigin);
+    }
+  }]);
 
   return PostMessageService;
-})();
+}();
 
 exports.PostMessageService = PostMessageService;
 
-},{}],93:[function(require,module,exports){
-exports.__esModule = true;
-/**
- * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+},{}],91:[function(require,module,exports){
+"use strict";
 
-var _constantsJs = require('./constants.js');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.UpiHandler = void 0;
 
-var _pay_frame_helperJs = require('./pay_frame_helper.js');
+var _constants = require("./constants.js");
 
-var _validatorJs = require('./validator.js');
+var _pay_frame_helper = require("./pay_frame_helper.js");
 
-var UpiHandler = (function () {
+var _validator = require("./validator.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var UpiHandler =
+/*#__PURE__*/
+function () {
   function UpiHandler() {
-    babelHelpers.classCallCheck(this, UpiHandler);
+    _classCallCheck(this, UpiHandler);
   }
-
   /**
    * Returns upi payment method object if it exists in allowed payment methods
    * or null if it doesn't
@@ -20016,253 +22046,288 @@ var UpiHandler = (function () {
    * @return {boolean}
    */
 
-  UpiHandler.prototype.isUpiRequest = function isUpiRequest(request) {
-    return !!_validatorJs.getUpiPaymentMethod(request);
-  };
 
-  /**
-   * Returns upi payment method object if it exists in allowed payment methods
-   * or null if it doesn't
-   *
-   * @param {!IsReadyToPayRequest|!PaymentDataRequest} request
-   * @return {!Promise} The promise will contain the boolean result and error
-   *     message when possible.
-   */
-
-  UpiHandler.prototype.isReadyToPay = function isReadyToPay(request) {
-    // Always return true for UPI if api version is 2 and chrome supports
-    // payment request
-    if (_validatorJs.getUpiPaymentMethod(request)) {
-      if (request.existingPaymentMethodRequired) {
-        return Promise.resolve({ 'result': true, 'paymentMethodPresent': true });
-      } else {
-        return Promise.resolve({ 'result': true });
-      }
+  _createClass(UpiHandler, [{
+    key: "isUpiRequest",
+    value: function isUpiRequest(request) {
+      return !!(0, _validator.getUpiPaymentMethod)(request);
     }
-    throw new Error('No Upi payment method found in handler');
-  };
+    /**
+     * Returns upi payment method object if it exists in allowed payment methods
+     * or null if it doesn't
+     *
+     * @param {!IsReadyToPayRequest|!PaymentDataRequest} request
+     * @return {!Promise} The promise will contain the boolean result and error
+     *     message when possible.
+     */
 
-  /**
-   * Request payment data when payment method is UPI
-   *
-   * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
-   *     information to support a payment.
-   * @param {!Object} upiPaymentMethod UPI paymentmethod in
-   *     allowedPaymentMethods array.
-   * @param {!Function} onResultCallback Function to call when everything is
-   *     done.
-   */
-
-  UpiHandler.prototype.loadPaymentData = function loadPaymentData(paymentDataRequest, upiPaymentMethod, onResultCallback) {
-    var _this = this;
-
-    var parameters = upiPaymentMethod['parameters'];
-    var transactionInfo = paymentDataRequest['transactionInfo'];
-    var supportedInstruments = null ? [{
-      // This is the url for Tez teamfood release.
-      'supportedMethods': ['https://pwp-server.appspot.com/pay-teamfood'],
-      'data': {
-        'pa': 'redbus@axisbank',
-        'pn': parameters['payeeName'],
-        'tr': parameters['transactionReferenceId'],
-        'url': parameters['referenceUrl'],
-        'mc': '4131',
-        'tn': 'Purchase in Merchant'
-      }
-    }] : [{
-      'supportedMethods': ['https://tez.google.com/pay'],
-      'data': {
-        'pa': parameters['payeeVpa'],
-        'pn': parameters['payeeName'],
-        'tr': parameters['transactionReferenceId'],
-        'url': parameters['referenceUrl'],
-        'mc': parameters['mcc'],
-        'tn': transactionInfo['transactionNote']
-      }
-    }];
-
-    if (parameters['transactionId']) {
-      supportedInstruments[0]['data']['tid'] = parameters['transactionId'];
-    }
-
-    var details = {
-      'total': {
-        'label': 'Total',
-        'amount': {
-          'currency': transactionInfo['currencyCode'],
-          'value': transactionInfo['totalPrice']
+  }, {
+    key: "isReadyToPay",
+    value: function isReadyToPay(request) {
+      // Always return true for UPI if api version is 2 and chrome supports
+      // payment request
+      if ((0, _validator.getUpiPaymentMethod)(request)) {
+        if (request.existingPaymentMethodRequired) {
+          return Promise.resolve({
+            'result': true,
+            'paymentMethodPresent': true
+          });
+        } else {
+          return Promise.resolve({
+            'result': true
+          });
         }
-      },
-      'displayItems': [{
-        'label': 'Original Amount',
-        'amount': {
-          'currency': transactionInfo['currencyCode'],
-          'value': transactionInfo['totalPrice']
+      }
+
+      throw new Error('No Upi payment method found in handler');
+    }
+    /**
+     * Request payment data when payment method is UPI
+     *
+     * @param {!PaymentDataRequest} paymentDataRequest Provides necessary
+     *     information to support a payment.
+     * @param {!Object} upiPaymentMethod UPI paymentmethod in
+     *     allowedPaymentMethods array.
+     * @param {!Function} onResultCallback Function to call when everything is
+     *     done.
+     */
+
+  }, {
+    key: "loadPaymentData",
+    value: function loadPaymentData(paymentDataRequest, upiPaymentMethod, onResultCallback) {
+      var _this = this;
+
+      var parameters = upiPaymentMethod['parameters'];
+      var transactionInfo = paymentDataRequest['transactionInfo'];
+      var supportedInstruments = null ? [{
+        // This is the url for Tez teamfood release.
+        'supportedMethods': ['https://pwp-server.appspot.com/pay-teamfood'],
+        'data': {
+          'pa': 'redbus@axisbank',
+          'pn': parameters['payeeName'],
+          'tr': parameters['transactionReferenceId'],
+          'url': parameters['referenceUrl'],
+          'mc': '4131',
+          'tn': 'Purchase in Merchant'
         }
-      }]
-    };
+      }] : [{
+        'supportedMethods': ['https://tez.google.com/pay'],
+        'data': {
+          'pa': parameters['payeeVpa'],
+          'pn': parameters['payeeName'],
+          'tr': parameters['transactionReferenceId'],
+          'url': parameters['referenceUrl'],
+          'mc': parameters['mcc'],
+          'tn': transactionInfo['transactionNote']
+        }
+      }];
 
-    var request = new PaymentRequest(supportedInstruments, details);
-
-    onResultCallback(this.checkCanMakePayment_(request).then(function (result) {
-      if (result) {
-        return _this.showUi_(request);
-      } else {
-        return _this.redirectToGooglePlay_();
+      if (parameters['transactionId']) {
+        supportedInstruments[0]['data']['tid'] = parameters['transactionId'];
       }
-    }).then(function (paymentData) {
-      return _this.processData_(paymentData, paymentDataRequest, upiPaymentMethod);
-    })['catch'](function (error) {
-      error['statusCode'] = _constantsJs.Constants.ResponseStatus.CANCELED;
-      return Promise.reject(error);
-    }));
-  };
 
-  /**
-   * Show the Tez payment request UI.
-   *
-   * @private
-   * @param {!PaymentRequest} request The payment request object.
-   * @return {!Promise<!PaymentData>} A promise containing payment response.
-   */
-
-  UpiHandler.prototype.showUi_ = function showUi_(request) {
-    return request.show().then(function (paymentResponse) {
-      paymentResponse.complete('success');
-      return paymentResponse.details;
-    });
-  };
-
-  /**
-   * Checks whether can make a payment with Tez on this device.
-   *
-   * @private
-   * @param {!PaymentRequest} request The payment request object.
-   * @return {!Promise<boolean>} a promise containing the result of whether can
-   *     make payment.
-   */
-
-  UpiHandler.prototype.checkCanMakePayment_ = function checkCanMakePayment_(request) {
-    // Checks canMakePayment cache, and use the cache result if it exists.
-    var cacheResult = window.sessionStorage.getItem(_constantsJs.Constants.UPI_CAN_MAKE_PAYMENT_CACHE_KEY);
-    if (cacheResult) {
-      return Promise.resolve(cacheResult === 'true');
+      var details = {
+        'total': {
+          'label': 'Total',
+          'amount': {
+            'currency': transactionInfo['currencyCode'],
+            'value': transactionInfo['totalPrice']
+          }
+        },
+        'displayItems': [{
+          'label': 'Original Amount',
+          'amount': {
+            'currency': transactionInfo['currencyCode'],
+            'value': transactionInfo['totalPrice']
+          }
+        }]
+      };
+      var request = new PaymentRequest(supportedInstruments, details);
+      onResultCallback(this.checkCanMakePayment_(request).then(function (result) {
+        if (result) {
+          return _this.showUi_(request);
+        } else {
+          return _this.redirectToGooglePlay_();
+        }
+      }).then(function (paymentData) {
+        return _this.processData_(paymentData, paymentDataRequest, upiPaymentMethod);
+      })["catch"](function (error) {
+        error['statusCode'] = _constants.Constants.ResponseStatus.CANCELED;
+        return Promise.reject(error);
+      }));
     }
+    /**
+     * Show the Tez payment request UI.
+     *
+     * @private
+     * @param {!PaymentRequest} request The payment request object.
+     * @return {!Promise<!PaymentData>} A promise containing payment response.
+     */
 
-    // Feature detect canMakePayment().
-    if (!request.canMakePayment) {
-      return Promise.resolve(true);
+  }, {
+    key: "showUi_",
+    value: function showUi_(request) {
+      return request.show().then(function (paymentResponse) {
+        paymentResponse.complete('success');
+        return paymentResponse.details;
+      });
     }
+    /**
+     * Checks whether can make a payment with Tez on this device.
+     *
+     * @private
+     * @param {!PaymentRequest} request The payment request object.
+     * @return {!Promise<boolean>} a promise containing the result of whether can
+     *     make payment.
+     */
 
-    var canMakePaymentPromise = request.canMakePayment();
+  }, {
+    key: "checkCanMakePayment_",
+    value: function checkCanMakePayment_(request) {
+      // Checks canMakePayment cache, and use the cache result if it exists.
+      var cacheResult = window.sessionStorage.getItem(_constants.Constants.UPI_CAN_MAKE_PAYMENT_CACHE_KEY);
 
-    return canMakePaymentPromise.then(function (result) {
-      // Store the result in cache if the result is true to avoid quota error
-      // caused by querying multiple times with different data.
-      // Doesn't store false because if we do so, user will be redirected to
-      // Google Play again after installing Google Pay if Chrome is not closed.
-      if (result) {
-        window.sessionStorage.setItem(_constantsJs.Constants.UPI_CAN_MAKE_PAYMENT_CACHE_KEY, result.toString());
+      if (cacheResult) {
+        return Promise.resolve(cacheResult === 'true');
+      } // Feature detect canMakePayment().
+
+
+      if (!request.canMakePayment) {
+        return Promise.resolve(true);
       }
-      return result;
-    });
-  };
 
-  /**
-   * Redirect user to Google Pay app in Google Play store
-   *
-   * @private
-   * @returns {!Promise<!Object>} Rejected promise with error message
-   */
+      var canMakePaymentPromise = request.canMakePayment();
+      return canMakePaymentPromise.then(function (result) {
+        // Store the result in cache if the result is true to avoid quota error
+        // caused by querying multiple times with different data.
+        // Doesn't store false because if we do so, user will be redirected to
+        // Google Play again after installing Google Pay if Chrome is not closed.
+        if (result) {
+          window.sessionStorage.setItem(_constants.Constants.UPI_CAN_MAKE_PAYMENT_CACHE_KEY, result.toString());
+        }
 
-  UpiHandler.prototype.redirectToGooglePlay_ = function redirectToGooglePlay_() {
-    window.location.replace(null ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user.teamfood ' : // NOLINT
-    'https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user'); // NOLINT
-    return Promise.reject({ 'errorMessage': 'Cannot redirect to Tez page in Google Play.' });
-  };
-
-  /**
-   * Convert Tez payment data to GPay payment data if payment succeeded, or
-   * reject if payment failed
-   *
-   * @private
-   * @param {!PaymentData} tezPaymentData The payment data object from Tez.
-   * @param {!PaymentDataRequest} paymentDataRequest The payment data request.
-   * @param {!Object} upiPaymentMethod UPI paymentmethod in
-   * allowedPaymentMethods array
-   * @returns {!Promise<PaymentData>} A promise containing payment data or
-   *     error message.
-   */
-
-  UpiHandler.prototype.processData_ = function processData_(tezPaymentData, paymentDataRequest, upiPaymentMethod) {
-    var tezResponse = JSON.parse(tezPaymentData['tezResponse']);
-    if (tezResponse['Status'] === 'FAILURE') {
-      var error = undefined;
-      switch (tezResponse['responseCode']) {
-        case 'ZM':
-          // payment failure due to invalid MPIN
-          error = {
-            'errorCode': _pay_frame_helperJs.PublicErrorCode.BUYER_ACCOUNT_ERROR,
-            'errorMessage': 'Payment failure due to invalid MPIN.'
-          };
-          break;
-        case 'Z9':
-          // payment failure due to insufficient funds
-          error = {
-            'errorCode': _pay_frame_helperJs.PublicErrorCode.BUYER_ACCOUNT_ERROR,
-            'errorMessage': 'Payment failure due to insufficient funds.'
-          };
-          break;
-        case '91':
-          // payment failure due to transaction timeout or connection issue
-          error = {
-            'errorCode': _pay_frame_helperJs.PublicErrorCode.INTERNAL_ERROR,
-            'errorMessage': 'Payment failure due to transaction timeout or connection' + ' issue.'
-          };
-          break;
-        default:
-          // payment failure due to user cancel or other issues
-          error = { 'errorMessage': 'Payment cancelled.' };
-      }
-      return Promise.reject(error);
+        return result;
+      });
     }
+    /**
+     * Redirect user to Google Pay app in Google Play store
+     *
+     * @private
+     * @returns {!Promise<!Object>} Rejected promise with error message
+     */
 
-    var signedMessage = {
-      'paymentMethodType': 'UPI',
-      'payeeVpa': upiPaymentMethod['parameters']['payeeVpa'],
-      'status': tezResponse['Status'],
-      'transactionReferenceId': upiPaymentMethod['parameters']['transactionReferenceId'],
-      'transactionId': upiPaymentMethod['parameters']['transactionId'] ? upiPaymentMethod['parameters']['transactionId'] : tezResponse['txnId'],
-      'transactionInfo': paymentDataRequest['transactionInfo']
-    };
+  }, {
+    key: "redirectToGooglePlay_",
+    value: function redirectToGooglePlay_() {
+      window.location.replace(null ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user.teamfood ' : // NOLINT
+      'https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user'); // NOLINT
 
-    var paymentData = {
-      'apiVersion': paymentDataRequest['apiVersion'],
-      'apiVersionMinor': paymentDataRequest['apiVersionMinor'],
-      'paymentMethodData': {
-        'type': upiPaymentMethod['type'],
-        'tokenizationData': {
-          'type': 'DIRECT',
-          'token': {
-            'protocolVersion': 'ECv1',
-            // TODO: Verify that response comes from tez and
-            // add signature and encrypt signed message here
-            'signature': '',
-            'signedMessage': signedMessage
+      return Promise.reject({
+        'errorMessage': 'Cannot redirect to Tez page in Google Play.'
+      });
+    }
+    /**
+     * Convert Tez payment data to GPay payment data if payment succeeded, or
+     * reject if payment failed
+     *
+     * @private
+     * @param {!PaymentData} tezPaymentData The payment data object from Tez.
+     * @param {!PaymentDataRequest} paymentDataRequest The payment data request.
+     * @param {!Object} upiPaymentMethod UPI paymentmethod in
+     * allowedPaymentMethods array
+     * @returns {!Promise<PaymentData>} A promise containing payment data or
+     *     error message.
+     */
+
+  }, {
+    key: "processData_",
+    value: function processData_(tezPaymentData, paymentDataRequest, upiPaymentMethod) {
+      var tezResponse = JSON.parse(tezPaymentData['tezResponse']);
+
+      if (tezResponse['Status'] === 'FAILURE') {
+        var error;
+
+        switch (tezResponse['responseCode']) {
+          case 'ZM':
+            // payment failure due to invalid MPIN
+            error = {
+              'errorCode': _pay_frame_helper.PublicErrorCode.BUYER_ACCOUNT_ERROR,
+              'errorMessage': 'Payment failure due to invalid MPIN.'
+            };
+            break;
+
+          case 'Z9':
+            // payment failure due to insufficient funds
+            error = {
+              'errorCode': _pay_frame_helper.PublicErrorCode.BUYER_ACCOUNT_ERROR,
+              'errorMessage': 'Payment failure due to insufficient funds.'
+            };
+            break;
+
+          case '91':
+            // payment failure due to transaction timeout or connection issue
+            error = {
+              'errorCode': _pay_frame_helper.PublicErrorCode.INTERNAL_ERROR,
+              'errorMessage': 'Payment failure due to transaction timeout or connection' + ' issue.'
+            };
+            break;
+
+          default:
+            // payment failure due to user cancel or other issues
+            error = {
+              'errorMessage': 'Payment cancelled.'
+            };
+        }
+
+        return Promise.reject(error);
+      }
+
+      var signedMessage = {
+        'paymentMethodType': 'UPI',
+        'payeeVpa': upiPaymentMethod['parameters']['payeeVpa'],
+        'status': tezResponse['Status'],
+        'transactionReferenceId': upiPaymentMethod['parameters']['transactionReferenceId'],
+        'transactionId': upiPaymentMethod['parameters']['transactionId'] ? upiPaymentMethod['parameters']['transactionId'] : tezResponse['txnId'],
+        'transactionInfo': paymentDataRequest['transactionInfo']
+      };
+      var paymentData = {
+        'apiVersion': paymentDataRequest['apiVersion'],
+        'apiVersionMinor': paymentDataRequest['apiVersionMinor'],
+        'paymentMethodData': {
+          'type': upiPaymentMethod['type'],
+          'tokenizationData': {
+            'type': 'DIRECT',
+            'token': {
+              'protocolVersion': 'ECv1',
+              // TODO: Verify that response comes from tez and
+              // add signature and encrypt signed message here
+              'signature': '',
+              'signedMessage': signedMessage
+            }
           }
         }
-      }
-    };
-    return Promise.resolve(paymentData);
-  };
+      };
+      return Promise.resolve(paymentData);
+    }
+  }]);
 
   return UpiHandler;
-})();
+}();
 
 exports.UpiHandler = UpiHandler;
 
-},{"./constants.js":84,"./pay_frame_helper.js":87,"./validator.js":95}],94:[function(require,module,exports){
-exports.__esModule = true;
+},{"./constants.js":82,"./pay_frame_helper.js":85,"./validator.js":93}],92:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createGoogleTransactionId = createGoogleTransactionId;
+
+var _RandomUuid = _interopRequireDefault(require("../third_party/random_uuid/Random.uuid.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 /**
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
@@ -20279,10 +22344,6 @@ exports.__esModule = true;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var _third_partyRandom_uuidRandomUuidJs = require('../third_party/random_uuid/Random.uuid.js');
-
-var _third_partyRandom_uuidRandomUuidJs2 = babelHelpers.interopRequireDefault(_third_partyRandom_uuidRandomUuidJs);
 
 /**
  * Returns a google transaction id.
@@ -20291,13 +22352,28 @@ var _third_partyRandom_uuidRandomUuidJs2 = babelHelpers.interopRequireDefault(_t
  * @return {string}
  */
 function createGoogleTransactionId(environment) {
-  return _third_partyRandom_uuidRandomUuidJs2['default'].uuidFast() + '.' + environment;
+  return _RandomUuid["default"].uuidFast() + '.' + environment;
 }
 
-exports.createGoogleTransactionId = createGoogleTransactionId;
+},{"../third_party/random_uuid/Random.uuid.js":94}],93:[function(require,module,exports){
+"use strict";
 
-},{"../third_party/random_uuid/Random.uuid.js":96}],95:[function(require,module,exports){
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.apiV2DoesMerchantSupportSpecifiedCardType = apiV2DoesMerchantSupportSpecifiedCardType;
+exports.chromeSupportsPaymentHandler = chromeSupportsPaymentHandler;
+exports.chromeSupportsPaymentRequest = chromeSupportsPaymentRequest;
+exports.doesMerchantSupportOnlyTokenizedCards = doesMerchantSupportOnlyTokenizedCards;
+exports.getUpiPaymentMethod = getUpiPaymentMethod;
+exports.isPaymentMethodValid = isPaymentMethodValid;
+exports.validateIsReadyToPayRequest = validateIsReadyToPayRequest;
+exports.validatePaymentOptions = validatePaymentOptions;
+exports.validatePaymentDataRequest = validatePaymentDataRequest;
+exports.validateSecureContext = validateSecureContext;
+
+var _constants = require("./constants.js");
+
 /**
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
@@ -20315,8 +22391,6 @@ exports.__esModule = true;
  * limitations under the License.
  */
 
-var _constantsJs = require('./constants.js');
-
 /**
  * @return {boolean} true if this version of Chrome supports PaymentHandler.
  */
@@ -20324,10 +22398,11 @@ function chromeSupportsPaymentHandler() {
   // Check if feature is enabled for user
   if (typeof google == 'undefined' || !null) {
     return false;
-  }
+  } // Payment handler isn't supported on mobile
 
-  // Payment handler isn't supported on mobile
+
   var mobilePlatform = window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|BlackBerry|IEMobile/i);
+
   if (mobilePlatform != null) {
     return false;
   }
@@ -20335,61 +22410,69 @@ function chromeSupportsPaymentHandler() {
   var chromeVersion = window.navigator.userAgent.match(/Chrome\/([0-9]+)\./i);
   return 'PaymentRequest' in window && chromeVersion != null && Number(chromeVersion[1]) >= 68 && window.navigator.vendor == 'Google Inc.';
 }
-
 /**
  * @return {boolean} true if this version of Chrome supports PaymentRequest.
  */
+
+
 function chromeSupportsPaymentRequest() {
   // Opera uses chrome as rendering engine and sends almost the exact same
   // user agent as chrome thereby fooling us on android.
   var isOpera = window.navigator.userAgent.indexOf('OPR/') != -1;
+
   if (isOpera) {
     return false;
   }
+
   if (chromeSupportsPaymentHandler()) {
     return true;
   }
 
   var androidPlatform = window.navigator.userAgent.match(/Android/i);
   var chromeVersion = window.navigator.userAgent.match(/Chrome\/([0-9]+)\./i);
-  return androidPlatform != null && 'PaymentRequest' in window &&
-  // Make sure skipping PaymentRequest UI when only one PaymentMethod is
+  return androidPlatform != null && 'PaymentRequest' in window && // Make sure skipping PaymentRequest UI when only one PaymentMethod is
   // supported (starts on Google Chrome 59).
   window.navigator.vendor == 'Google Inc.' && chromeVersion != null && Number(chromeVersion[1]) >= 59;
 }
-
 /**
  * @param {!IsReadyToPayRequest} isReadyToPayRequest
  *
  * @return {boolean} true if the merchant only supports tokenized cards.
  */
+
+
 function doesMerchantSupportOnlyTokenizedCards(isReadyToPayRequest) {
   if (isReadyToPayRequest.apiVersion >= 2) {
     var allowedAuthMethods = extractAllowedAuthMethodsForCards_(isReadyToPayRequest);
-    if (allowedAuthMethods && allowedAuthMethods.length == 1 && allowedAuthMethods[0] == _constantsJs.Constants.AuthMethod.CRYPTOGRAM_3DS) {
+
+    if (allowedAuthMethods && allowedAuthMethods.length == 1 && allowedAuthMethods[0] == _constants.Constants.AuthMethod.CRYPTOGRAM_3DS) {
       return true;
     }
   }
-  return isReadyToPayRequest.allowedPaymentMethods.length == 1 && isReadyToPayRequest.allowedPaymentMethods[0] == _constantsJs.Constants.PaymentMethod.TOKENIZED_CARD;
-}
 
+  return isReadyToPayRequest.allowedPaymentMethods.length == 1 && isReadyToPayRequest.allowedPaymentMethods[0] == _constants.Constants.PaymentMethod.TOKENIZED_CARD;
+}
 /**
  * @param {!IsReadyToPayRequest} isReadyToPayRequest
  * @param {Constants.AuthMethod} apiV2AuthMethod
  *
  * @return {boolean} true if the merchant supports pan cards.
  */
+
+
 function apiV2DoesMerchantSupportSpecifiedCardType(isReadyToPayRequest, apiV2AuthMethod) {
   if (isReadyToPayRequest.apiVersion >= 2) {
     var allowedAuthMethods = extractAllowedAuthMethodsForCards_(isReadyToPayRequest);
+
     if (allowedAuthMethods && allowedAuthMethods.includes(apiV2AuthMethod)) {
       return true;
     }
+
     return false;
   }
+
   return false;
 }
-
 /**
  * Validate if is secure context. Returns null if context is secure, otherwise
  * return error message.
@@ -20399,36 +22482,42 @@ function apiV2DoesMerchantSupportSpecifiedCardType(isReadyToPayRequest, apiV2Aut
  * @return {?string} null if current context is secure, otherwise return error
  * message.
  */
+
+
 function validateSecureContext() {
-  if (window.location.hostname.endsWith(_constantsJs.Constants.TRUSTED_DOMAIN)) {
+  if (window.location.hostname.endsWith(_constants.Constants.TRUSTED_DOMAIN)) {
     // This is for local development.
     return null;
   }
+
   if (window.isSecureContext === undefined) {
     // Browser not support isSecureContext, figure out a way to validate this
     // for the unsupported browser.
     return null;
   }
+
   return window.isSecureContext ? null : 'Google Pay APIs should be called in secure context!';
 }
-
 /**
  * Validate PaymentOptions.
  *
  * @param {!PaymentOptions} paymentOptions
  */
+
+
 function validatePaymentOptions(paymentOptions) {
-  if (paymentOptions.environment && !Object.values(_constantsJs.Constants.Environment).includes(paymentOptions.environment)) {
+  if (paymentOptions.environment && !Object.values(_constants.Constants.Environment).includes(paymentOptions.environment)) {
     throw new Error('Parameter environment in PaymentOptions can optionally be set to ' + 'PRODUCTION, otherwise it defaults to TEST.');
   }
 }
-
 /**
  * Validate IsReadyToPayRequest.
  *
  * @param {!IsReadyToPayRequest} isReadyToPayRequest
  * @return {?string} errorMessage if the request is invalid.
  */
+
+
 function validateIsReadyToPayRequest(isReadyToPayRequest) {
   if (!isReadyToPayRequest) {
     return 'isReadyToPayRequest must be set!';
@@ -20436,82 +22525,97 @@ function validateIsReadyToPayRequest(isReadyToPayRequest) {
     if (!('apiVersionMinor' in isReadyToPayRequest)) {
       return 'apiVersionMinor must be set!';
     }
+
     if (!isReadyToPayRequest.allowedPaymentMethods || !Array.isArray(isReadyToPayRequest.allowedPaymentMethods) || isReadyToPayRequest.allowedPaymentMethods.length == 0) {
       return 'for v2 allowedPaymentMethods must be set to an array containing a list of accepted payment methods';
     }
+
     for (var i = 0; i < isReadyToPayRequest.allowedPaymentMethods.length; i++) {
       var allowedPaymentMethod = isReadyToPayRequest.allowedPaymentMethods[i];
-      if (allowedPaymentMethod['type'] == _constantsJs.Constants.PaymentMethod.CARD) {
+
+      if (allowedPaymentMethod['type'] == _constants.Constants.PaymentMethod.CARD) {
         if (!allowedPaymentMethod['parameters']) {
           return 'Field parameters must be setup in each allowedPaymentMethod';
         }
+
         var allowedCardNetworks = allowedPaymentMethod['parameters']['allowedCardNetworks'];
+
         if (!allowedCardNetworks || !Array.isArray(allowedCardNetworks) || allowedCardNetworks.length == 0) {
           return 'allowedCardNetworks must be setup in parameters for type CARD';
         }
+
         var allowedAuthMethods = allowedPaymentMethod['parameters']['allowedAuthMethods'];
+
         if (!allowedAuthMethods || !Array.isArray(allowedAuthMethods) || allowedAuthMethods.length == 0 || !allowedAuthMethods.every(isAuthMethodValid)) {
           return 'allowedAuthMethods must be setup in parameters for type \'CARD\' ' + ' and must contain \'CRYPTOGRAM_3DS\' and/or \'PAN_ONLY\'';
         }
       }
     }
+
     return null;
   } else if (!isReadyToPayRequest.allowedPaymentMethods || !Array.isArray(isReadyToPayRequest.allowedPaymentMethods) || isReadyToPayRequest.allowedPaymentMethods.length == 0 || !isReadyToPayRequest.allowedPaymentMethods.every(isPaymentMethodValid)) {
     return 'allowedPaymentMethods must be set to an array containing \'CARD\' ' + 'and/or \'TOKENIZED_CARD\'!';
   }
+
   return null;
 }
-
 /**
  * Validate the payment method.
  *
  * @param {string} paymentMethod
  * @return {boolean} if the current payment method is valid.
  */
-function isPaymentMethodValid(paymentMethod) {
-  return Object.values(_constantsJs.Constants.PaymentMethod).includes(paymentMethod);
-}
 
+
+function isPaymentMethodValid(paymentMethod) {
+  return Object.values(_constants.Constants.PaymentMethod).includes(paymentMethod);
+}
 /**
  * Validate the auth method.
  *
  * @param {string} authMethod
  * @return {boolean} if the current auth method is valid.
  */
-function isAuthMethodValid(authMethod) {
-  return Object.values(_constantsJs.Constants.AuthMethod).includes(authMethod);
-}
 
+
+function isAuthMethodValid(authMethod) {
+  return Object.values(_constants.Constants.AuthMethod).includes(authMethod);
+}
 /**
  * Validate PaymentDataRequest.
  *
  * @param {!PaymentDataRequest} paymentDataRequest
  * @return {?string} errorMessage if the request is invalid.
  */
+
+
 function validatePaymentDataRequest(paymentDataRequest) {
   if (!paymentDataRequest) {
     return 'paymentDataRequest must be set!';
   }
+
   if (paymentDataRequest.swg) {
     return validatePaymentDataRequestForSwg(paymentDataRequest.swg);
   } else if (!paymentDataRequest.transactionInfo) {
     return 'transactionInfo must be set!';
   } else if (!paymentDataRequest.transactionInfo.currencyCode) {
     return 'currencyCode in transactionInfo must be set!';
-  } else if (!paymentDataRequest.transactionInfo.totalPriceStatus || !Object.values(_constantsJs.Constants.TotalPriceStatus).includes(paymentDataRequest.transactionInfo.totalPriceStatus)) {
+  } else if (!paymentDataRequest.transactionInfo.totalPriceStatus || !Object.values(_constants.Constants.TotalPriceStatus).includes(paymentDataRequest.transactionInfo.totalPriceStatus)) {
     return 'totalPriceStatus in transactionInfo must be set to one of' + ' NOT_CURRENTLY_KNOWN, ESTIMATED or FINAL!';
   } else if (paymentDataRequest.transactionInfo.totalPriceStatus !== 'NOT_CURRENTLY_KNOWN' && !paymentDataRequest.transactionInfo.totalPrice) {
     return 'totalPrice in transactionInfo must be set when' + ' totalPriceStatus is ESTIMATED or FINAL!';
-  }
+  } // Validate payment data request for UPI payment method
 
-  // Validate payment data request for UPI payment method
+
   var allowedPaymentMethod = getUpiPaymentMethod(paymentDataRequest);
+
   if (allowedPaymentMethod) {
     if (!allowedPaymentMethod['parameters']) {
       return 'parameters must be set in allowedPaymentMethod!';
     }
 
     var parameters = allowedPaymentMethod['parameters'];
+
     if (!parameters['payeeVpa']) {
       return 'payeeVpa in allowedPaymentMethod parameters must be set!';
     } else if (!parameters['payeeName']) {
@@ -20532,9 +22636,9 @@ function validatePaymentDataRequest(paymentDataRequest) {
       return 'transactionNote in transactionInfo must be set!';
     }
   }
+
   return null;
 }
-
 /**
  * Returns upi payment method object if it exists in allowed payment methods
  * or null if it doesn't
@@ -20542,29 +22646,34 @@ function validatePaymentDataRequest(paymentDataRequest) {
  * @param {!IsReadyToPayRequest|!PaymentDataRequest} request
  * @return {?Object}
  */
+
+
 function getUpiPaymentMethod(request) {
   if (!chromeSupportsPaymentRequest() || request.apiVersion < 2 || !request.allowedPaymentMethods) {
     return null;
   }
-  return getAllowedPaymentMethodForType_(request, _constantsJs.Constants.PaymentMethod.UPI);
-}
 
+  return getAllowedPaymentMethodForType_(request, _constants.Constants.PaymentMethod.UPI);
+}
 /**
  * Validate parameters for swg.
  *
  * @param {?SwgParameters} swgParameters
  * @return {?string} errorMessage if the request is invalid.
  */
+
+
 function validatePaymentDataRequestForSwg(swgParameters) {
   if (!swgParameters) {
     return 'Swg parameters must be provided';
   }
+
   if (!swgParameters.skuId || !swgParameters.publicationId) {
     return 'Both skuId and publicationId must be provided';
   }
+
   return null;
 }
-
 /**
  * Returns the allowedAuthMethods for a card from the request.
  *
@@ -20572,16 +22681,19 @@ function validatePaymentDataRequestForSwg(swgParameters) {
  * @return {?Array<string>}
  * @private
  */
+
+
 function extractAllowedAuthMethodsForCards_(isReadyToPayRequest) {
   if (isReadyToPayRequest.allowedPaymentMethods) {
-    var allowedPaymentMethod = getAllowedPaymentMethodForType_(isReadyToPayRequest, _constantsJs.Constants.PaymentMethod.CARD);
+    var allowedPaymentMethod = getAllowedPaymentMethodForType_(isReadyToPayRequest, _constants.Constants.PaymentMethod.CARD);
+
     if (allowedPaymentMethod && allowedPaymentMethod.parameters) {
       return allowedPaymentMethod.parameters['allowedAuthMethods'];
     }
   }
+
   return null;
 }
-
 /**
  * @param {!IsReadyToPayRequest} isReadyToPayRequest
  * @param {string} paymentMethodType
@@ -20589,29 +22701,30 @@ function extractAllowedAuthMethodsForCards_(isReadyToPayRequest) {
  *     return null if not found.
  * @private
  */
+
+
 function getAllowedPaymentMethodForType_(isReadyToPayRequest, paymentMethodType) {
   for (var i = 0; i < isReadyToPayRequest.allowedPaymentMethods.length; i++) {
     var allowedPaymentMethod = isReadyToPayRequest.allowedPaymentMethods[i];
+
     if (allowedPaymentMethod.type == paymentMethodType) {
       return allowedPaymentMethod;
     }
   }
+
   return null;
 }
 
-exports.apiV2DoesMerchantSupportSpecifiedCardType = apiV2DoesMerchantSupportSpecifiedCardType;
-exports.chromeSupportsPaymentHandler = chromeSupportsPaymentHandler;
-exports.chromeSupportsPaymentRequest = chromeSupportsPaymentRequest;
-exports.doesMerchantSupportOnlyTokenizedCards = doesMerchantSupportOnlyTokenizedCards;
-exports.getUpiPaymentMethod = getUpiPaymentMethod;
-exports.isPaymentMethodValid = isPaymentMethodValid;
-exports.validateIsReadyToPayRequest = validateIsReadyToPayRequest;
-exports.validatePaymentOptions = validatePaymentOptions;
-exports.validatePaymentDataRequest = validatePaymentDataRequest;
-exports.validateSecureContext = validateSecureContext;
+},{"./constants.js":82}],94:[function(require,module,exports){
+"use strict";
 
-},{"./constants.js":84}],96:[function(require,module,exports){
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /** @license
 Math.uuid.js (v1.4)
 http://www.broofa.com
@@ -20644,14 +22757,13 @@ Dual licensed under the MIT and GPL licenses.
  *   >>> Math.uuid(8, 16) // 8 character ID (base=16)
  *   "098F4D35"
  */
-
 var Random_uuid = function Random_uuid() {
-  babelHelpers.classCallCheck(this, Random_uuid);
+  _classCallCheck(this, Random_uuid);
 };
 
-exports['default'] = Random_uuid;
-;
-// Private array of chars to use
+exports["default"] = Random_uuid;
+; // Private array of chars to use
+
 var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
 
 Random_uuid.uuid = function (len, radix) {
@@ -20662,17 +22774,17 @@ Random_uuid.uuid = function (len, radix) {
 
   if (len) {
     // Compact form
-    for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+    for (i = 0; i < len; i++) {
+      uuid[i] = chars[0 | Math.random() * radix];
+    }
   } else {
     // rfc4122, version 4 form
-    var r;
+    var r; // rfc4122 requires these characters
 
-    // rfc4122 requires these characters
     uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-    uuid[14] = '4';
-
-    // Fill in random data.  At i==19 set the high bits of clock sequence as
+    uuid[14] = '4'; // Fill in random data.  At i==19 set the high bits of clock sequence as
     // per rfc4122, sec. 4.1.5
+
     for (i = 0; i < 36; i++) {
       if (!uuid[i]) {
         r = 0 | Math.random() * 16;
@@ -20682,15 +22794,16 @@ Random_uuid.uuid = function (len, radix) {
   }
 
   return uuid.join('');
-};
-
-// A more performant, but slightly bulkier, RFC4122v4 solution.  We boost performance
+}; // A more performant, but slightly bulkier, RFC4122v4 solution.  We boost performance
 // by minimizing calls to random()
+
+
 Random_uuid.uuidFast = function () {
   var chars = CHARS,
       uuid = new Array(36),
       rnd = 0,
       r;
+
   for (var i = 0; i < 36; i++) {
     if (i == 8 || i == 13 || i == 18 || i == 23) {
       uuid[i] = '-';
@@ -20703,10 +22816,11 @@ Random_uuid.uuidFast = function () {
       uuid[i] = chars[i == 19 ? r & 0x3 | 0x8 : r];
     }
   }
-  return uuid.join('');
-};
 
-// A more compact, but less performant, RFC4122v4 solution:
+  return uuid.join('');
+}; // A more compact, but less performant, RFC4122v4 solution:
+
+
 Random_uuid.uuidCompact = function () {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = Math.random() * 16 | 0,
@@ -20714,7 +22828,6 @@ Random_uuid.uuidCompact = function () {
     return v.toString(16);
   });
 };
-module.exports = exports['default'];
 
 },{}]},{},[20])
 
