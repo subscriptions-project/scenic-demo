@@ -27,7 +27,7 @@ gulp
 
 ## How to update swg.js for local mode
 
-After the server starts to run in localhost, you can select local mode to
+After the server starts to run in localhost, you can select `local` mode to
 inspect swg.js served from ./swgjs directory. The way to update ./swgjs is
 
 - In your swg-js local repo, run `gulp build`
@@ -45,6 +45,10 @@ inspect swg.js served from ./swgjs directory. The way to update ./swgjs is
   cp $SWG_HOME/dist/subscriptions.max.js swgjs/swg.max.js &
   cp $SWG_HOME/dist/subscriptions.max.js.map swgjs/swg.max.js.map
   ```
+
+Then you can create a PR and merge. Now you can visit http://scenic-2017.appspot.com/setup
+and select `local` mode. http://scenic-2017.appspot.com will then serve swgjs
+from `./swgjs` directory.
 
 ## How to deploy the demo
 
