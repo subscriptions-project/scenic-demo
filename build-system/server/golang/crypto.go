@@ -1,5 +1,3 @@
-package golang
-
 import (
 	"encoding/base64"
 	"encoding/json"
@@ -21,7 +19,7 @@ type swgEncryptionKey struct {
 }
 
 
-func Decrypt(input string) string {
+func GenerateAndEncryptKeyset(input string) string {
 	keyURI := fmt.Sprintf(
 		"gcp-kms://projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s",
 		*project,
