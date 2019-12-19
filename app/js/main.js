@@ -164,17 +164,22 @@ function startFlowAuto() {
           () => {
             subscriptions.getEntitlements().then(entitlements => {
               if (entitlements.entitlements.length) {
-                subscriptions.showUpdateOffers({
-                  isClosable: true,
-                  oldSku: JSON.parse(
-                      entitlements.entitlements[0].subscriptionToken
-                  ).productId,
-                  skus:
-                    [
-                      'basic_1', 'premium_1', 'quarterly_offer_1', 'annual_1', //qual skus
-                      'basic', 'basic_monthly', 'premium', 'premium_monthly', //prod skus
-                    ],
-                });
+		const entitlement = entitlements.entitlements[0];
+		if (entitlement.source === 'google') {
+                  subscriptions.showUpdateOffers({
+                    isClosable: true,
+                    oldSku: JSON.parse(
+                        entitlement.subscriptionToken
+                    ).productId,
+                    skus:
+                      [
+                        'basic_1', 'premium_1', 'quarterly_offer_1', 'annual_1', //qual skus
+                        'basic', 'basic_monthly', 'premium', 'premium_monthly', //prod skus
+                      ],
+                  });
+		} else {
+                  log(flow + ' failed:', "user doesn't have SwG entitlements");
+		}
               } else {
                 log(flow + ' failed:', "user doesn't have entitlements yet");
               }
