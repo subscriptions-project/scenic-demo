@@ -164,8 +164,8 @@ function startFlowAuto() {
           () => {
             subscriptions.getEntitlements().then(entitlements => {
               if (entitlements.entitlements.length) {
-		const entitlement = entitlements.entitlements[0];
-		if (entitlement.source === 'google') {
+                const entitlement = entitlements.entitlements[0];
+                if (entitlement.source === 'google') {
                   subscriptions.showUpdateOffers({
                     isClosable: true,
                     oldSku: JSON.parse(
@@ -177,9 +177,9 @@ function startFlowAuto() {
                         'basic', 'basic_monthly', 'premium', 'premium_monthly', //prod skus
                       ],
                   });
-		} else {
+                } else {
                   log(flow + ' failed:', "user doesn't have SwG entitlements");
-		}
+                }
               } else {
                 log(flow + ' failed:', "user doesn't have entitlements yet");
               }
