@@ -165,12 +165,11 @@ function startFlowAuto() {
             subscriptions.getEntitlements().then(entitlements => {
               if (entitlements.entitlements.length) {
                 const entitlement = entitlements.entitlements[0];
-                if (entitlement.source === 'google') {
+                const sku = entitlement.getSku();
+                if (sku) {
                   subscriptions.showUpdateOffers({
                     isClosable: true,
-                    oldSku: JSON.parse(
-                        entitlement.subscriptionToken
-                    ).productId,
+                    oldSku: sku,
                     skus:
                       [
                         'basic_1', 'premium_1', 'quarterly_offer_1', 'annual_1', //qual skus
