@@ -233,7 +233,6 @@ app.get('/amp-entitlements', (req, res) => {
     res.json({
       'products': [pubId + ':news'],
       'subscriptionToken': 'subtok-' + pubId + '-' + toBase64(encrypt(email)),
-      'decryptedDocumentKey': 'yNzyxzN9YCREJtkrCtY0Zg==',
     });
   } else if (req.query.meter == '1') {
     const meter = getMeterFromCookies(req);
@@ -244,7 +243,6 @@ app.get('/amp-entitlements', (req, res) => {
           'left': meter,
           'total': MAX_METER,
         },
-        'decryptedDocumentKey': 'yNzyxzN9YCREJtkrCtY0Zg==',
       });
     } else {
       res.json({});
