@@ -15,6 +15,7 @@
 dispatch:
   - url: "*/entitlements"
     service: entitlements
+
   - url: "scenic-2017.appspot.com/"
     service: default
 # [END dispatch_yaml]
