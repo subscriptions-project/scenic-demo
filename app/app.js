@@ -22,6 +22,7 @@ const {
   fromBase64,
   toBase64,
 } = require('./crypto');
+const https = require('https');
 
 const app = module.exports = require('express').Router();
 app.use(require('cookie-parser')());
@@ -230,9 +231,30 @@ app.get('/amp-entitlements', (req, res) => {
   }
   const email = getUserInfoFromCookies(req);
   if (email) {
-    res.json({
-      'products': [pubId + ':news'],
-      'subscriptionToken': 'subtok-' + pubId + '-' + toBase64(encrypt(email)),
+    const options = {
+      hostname: req.baseUrl,
+      port: 8080,
+      path: '/decryptDocumentKey?crypt=' + req.query.crypt + '&product=' + pubId + ':news',
+      method: 'GET'
+    }
+    https.request(options, (response) => {
+      let data = '';
+      response.on('data', (chunk) => {
+        data += chunk;
+      });
+      response.on('end', () => {
+        const keyJson = JSON.parse(data);
+        res.json({
+          'products': [pubId + ':news'],
+          'subscriptionToken': 'subtok-' + pubId + '-' + toBase64(encrypt(email)),
+          'decryptedDocumentKey': keyJson['decryptedDocumentKey'],
+        });
+      });
+    }).on('error', () => {
+      res.json({
+        'products': [pubId + ':news'],
+        'subscriptionToken': 'subtok-' + pubId + '-' + toBase64(encrypt(email)),
+      });
     });
   } else if (req.query.meter == '1') {
     const meter = getMeterFromCookies(req);

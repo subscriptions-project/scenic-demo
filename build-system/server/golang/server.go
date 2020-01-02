@@ -10,7 +10,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 )
 
@@ -27,56 +26,18 @@ type swgEncryptionKey struct {
 }
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	http.HandleFunc("/entitlements", entitlements)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	http.HandleFunc("/decryptDocumentKey", decryptDocumentKey)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-// Gets entitlements from SwG backend, decrypts document key if access granted.
-func entitlements(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	swgReq, err := http.NewRequest(r.Method, swgEntitlementsUrl, ioutil.NopCloser(bytes.NewReader(body)))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	swgReq.Header = r.Header
-	client := &http.Client{}
-	resp, err := client.Do(swgReq)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadGateway)
-		return
-	}
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	var entitlementsResponse map[string]interface{}
-	if err := json.Unmarshal(respBody, &entitlementsResponse); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	if _, ok := entitlementsResponse["decryptedDocumentKey"]; ok {
-		// Although we could use this decryptedDocumentKey, we will decrypt
-		// the key in the original request for demonstration.
-		key, err := getDecryptedDocumentKey(r.URL)
+func decryptDocumentKey(w http.ResponseWriter, r *http.Request) {
+	key, err := getDecryptedDocumentKey(r.URL)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		if key != "" {
-			entitlementsResponse["decryptedDocumentKey"] = key
-		}
-	}
-	json, _ := json.Marshal(entitlementsResponse)
+    resp := map[string]string{"decryptedDocumentKey": key}
+	json, _ := json.Marshal(resp)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(json)
 }
@@ -86,6 +47,9 @@ func getDecryptedDocumentKey(urlStr string) (string, error) {
 	u, err := url.Parse(urlStr)
 	if err != nil {
 		return "", err
+	}
+	if product, ok := u.Query()["product"]; !ok {
+		return "", nil
 	}
 	if encKey, ok := u.Query()["crypt"]; ok {
 		// Passing empty string as credentials so that the application default is used.
@@ -124,7 +88,7 @@ func getDecryptedDocumentKey(urlStr string) (string, error) {
 			return "", err
 		}
 		for _, ar := range decKeys.AccessRequirements {
-			if strings.Contains(ar, "scenic-2017.appspot.com:news") {
+			if strings.Contains(ar, product) {
 				return decKeys.Key, nil
 			}
 		}
