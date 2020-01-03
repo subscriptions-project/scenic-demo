@@ -15,6 +15,8 @@ import (
 
 const swgEntitlementsUrl string = "https://news.google.com/swg/_/api/v1/publication/scenic-2017.appspot.com/entitlements"
 const gcpProject string = "scenic-2017"
+const gcpBucket string = "scenic-2017.appspot.com"
+const gcpPrivateKeyObject string = "scenic_private_key_gcs.txt"
 const gcpLocation string = "us-central1"
 const gcpKeyring string = "swg-cryptokeys-1"
 const gcpKey string = "tink-crypter-1"
@@ -65,8 +67,7 @@ func getDecryptedDocumentKey(urlStr string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		// TODO: upload encrypted private key to Cloud Storage, change names here
-		rc, err := client.Bucket(gcpProject).Object("encryptedPrivateKey").NewReader(ctx)
+		rc, err := client.Bucket(gcpBucket).Object(gcpPrivateKeyObject).NewReader(ctx)
 		if err != nil {
 			return "", err
 		}
