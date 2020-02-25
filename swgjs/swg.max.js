@@ -4652,7 +4652,7 @@ function () {
         'analyticsContext': context.toArray(),
         'publicationId': pageConfig.getPublicationId(),
         'productId': pageConfig.getProductId(),
-        '_client': 'SwG 0.1.22-1582657191599',
+        '_client': 'SwG 0.1.22-1582667865102',
         'supportsEventManager': true
       }, args || {});
     }
@@ -5955,7 +5955,7 @@ var _log = require("./utils/log");
  * @fileoverview
  * The entry point for runtime (swg.js).
  */
-(0, _log.log)('Subscriptions Runtime: 0.1.22-1582657191599');
+(0, _log.log)('Subscriptions Runtime: 0.1.22-1582667865102');
 (0, _runtime.installRuntime)(self);
 
 },{"./polyfills":24,"./runtime/runtime":56,"./utils/log":73}],21:[function(require,module,exports){
@@ -9482,7 +9482,7 @@ function () {
 
       context.setTransactionId((0, _string.getUuid)());
       context.setReferringOrigin((0, _url.parseUrl)(this.getReferrer_()).origin);
-      context.setClientVersion('SwG 0.1.22-1582657191599');
+      context.setClientVersion('SwG 0.1.22-1582667865102');
       var utmParams = (0, _url.parseQueryString)(this.getQueryString_());
       var campaign = utmParams['utm_campaign'];
       var medium = utmParams['utm_medium'];
@@ -16215,7 +16215,7 @@ function feCached(url) {
 
 function feArgs(args) {
   return Object.assign(args, {
-    '_client': 'SwG 0.1.22-1582657191599'
+    '_client': 'SwG 0.1.22-1582667865102'
   });
 }
 /**
