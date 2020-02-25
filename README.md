@@ -30,7 +30,8 @@ gulp
 After the server starts to run in localhost, you can select `local` mode to
 inspect swg.js served from ./swgjs directory. The way to update ./swgjs is
 
-- In your swg-js local repo, run `gulp build`
+- In your swg-js local repo, run `gulp dist` to generate the minified swg js and
+  then run `gulp build` to generate the unminified swg js.
 - In dist directory, you should be able to see 4 files:
   - subscriptions.js
   - subscriptions.js.map
@@ -46,7 +47,9 @@ inspect swg.js served from ./swgjs directory. The way to update ./swgjs is
   cp $SWG_HOME/dist/subscriptions.max.js.map swgjs/swg.max.js.map
   ```
 
-Then you can create a PR and merge. Now you can visit http://scenic-2017.appspot.com/setup
+Then you can create a PR with these 4 files and merge.
+
+Now you can visit http://scenic-2017.appspot.com/setup
 and select `local` mode. http://scenic-2017.appspot.com will then serve swgjs
 from `./swgjs` directory.
 
