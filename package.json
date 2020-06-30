@@ -65,7 +65,7 @@
     "nodemon": "2.0.4",
     "plugin-error": "1.0.1",
     "promise-pjs": "1.1.5",
-    "through2": "3.0.2",
+    "through2": "4.0.2",
     "vinyl-buffer": "1.0.1",
     "vinyl-source-stream": "2.0.0",
     "watchify": "3.11.1"
