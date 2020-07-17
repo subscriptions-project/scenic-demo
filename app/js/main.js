@@ -90,7 +90,7 @@ function startFlow(flow, var_args) {
  */
 function startFlowAuto() {
   const flow = ((window.location.search || '')
-                .split('?')[1] || '').split('&')[0] || 'demo';
+      .split('?')[1] || '').split('&')[0] || 'demo';
   if (flow == 'none') {
     return;
   }
