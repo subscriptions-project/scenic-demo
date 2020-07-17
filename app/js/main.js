@@ -89,7 +89,8 @@ function startFlow(flow, var_args) {
  * and 'updateSubscription'.
  */
 function startFlowAuto() {
-  const flow = (window.location.search || '').split('?')[1] || 'demo';
+  const flow = ((window.location.search || '')
+      .split('?')[1] || '').split('&')[0] || 'demo';
   if (flow == 'none') {
     return;
   }
@@ -117,6 +118,20 @@ function startFlowAuto() {
       controller.start();
     });
     return;
+  }
+  if (flow === 'swgButton') {
+    whenReady(subscriptions => {
+      // Create button element.
+      const swgButton = document.createElement('button');
+      swgButton.className = 'swg-button';
+      swgButton.onclick = () => {
+        const controller = new DemoPaywallController(subscriptions);
+        controller.start();
+      };
+      const firstParagraph = document.querySelector('.text');
+      const container = firstParagraph.parentNode;
+      container.insertBefore(swgButton, firstParagraph);
+    });
   }
   if (flow === 'smartbutton') {
     whenReady(subscriptions => {
