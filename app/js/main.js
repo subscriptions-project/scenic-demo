@@ -269,6 +269,7 @@ function startFlowAuto() {
           } else {
             // Show a publisher paywall for demo purposes.
             startFlow('showOffers');
+            console.log('Metering entitlements are missing.');
           }
         });
     });
