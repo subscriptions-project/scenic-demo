@@ -91,7 +91,7 @@ function startFlow(flow, var_args) {
  * and 'updateSubscription'.
  */
 function startFlowAuto() {
-  const flow = ((window.location.search || '')
+  let flow = ((window.location.search || '')
       .split('?')[1] || '').split('&')[0] || 'demo';
 
   // Check for Google Article Access (GAA) param.
