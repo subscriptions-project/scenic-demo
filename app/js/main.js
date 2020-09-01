@@ -83,6 +83,7 @@ function startFlow(flow, var_args) {
 
 /**
  * Selects the flow based on the URL query parameter.
+ * (ex: http://localhost:8000/examples/sample-pub/1?metering)
  * The query parameter is the name of the function defined in runtime.
  * Defaults to 'showOffers'.
  * Current valid values are: 'showOffers', 'linkAccount', 'getEntitlements',
@@ -92,6 +93,14 @@ function startFlow(flow, var_args) {
 function startFlowAuto() {
   const flow = ((window.location.search || '')
       .split('?')[1] || '').split('&')[0] || 'demo';
+
+  // Check for Google Article Access (GAA) param.
+  const queryParams = getQueryParams();
+  if (queryParams.gaa_at) {
+    console.log('The "gaa_at" param triggered the "metering" flow.');
+    flow = 'metering';
+  }
+
   if (flow == 'none') {
     return;
   }
@@ -278,6 +287,22 @@ function startFlowAuto() {
   }
 
   startFlow(flow);
+}
+
+/**
+ * Returns query params from URL.
+ * @return {!Object<string, string>}
+ */
+function getQueryParams() {
+  const queryParams = {};
+  location.search
+      .substring(1)
+      .split('&')
+      .forEach(pair => {
+        const parts = pair.split('=');
+        queryParams[parts[0]] = parts[1];
+      });
+  return queryParams;
 }
 
 // Initiates the flow, if valid.
