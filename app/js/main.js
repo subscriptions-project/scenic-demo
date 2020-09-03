@@ -315,7 +315,8 @@ function isGaa() {
   }
   if (parseInt(params.gaa_ts, 16) < Date.now() / 1000) {
     console.error(
-        'SwG Entitlements: The `gaa_ts` URL param should contain a hex string timestamp which points to the future.'
+        'SwG Entitlements: The `gaa_ts` URL param should ' +
+        'contain a hex string timestamp which points to the future.'
     );
     return false;
   }
@@ -331,7 +332,9 @@ function isGaa() {
     // Real publications should bail if this referrer check fails.
     // This script is only logging a warning for metering demo purposes.
     console.warn(
-        `SwG Entitlements: This page's referrer ("${referrer.origin}") can't grant Google Article Access. Real publications should bail if this referrer check fails.`
+        `SwG Entitlements: This page's referrer ("${referrer.origin}") can't ' +
+        'grant Google Article Access. Real publications should bail if this ' +
+        'referrer check fails.`
     );
   }
 
