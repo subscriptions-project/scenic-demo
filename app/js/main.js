@@ -332,9 +332,9 @@ function isGaa() {
     // Real publications should bail if this referrer check fails.
     // This script is only logging a warning for metering demo purposes.
     console.warn(
-        `SwG Entitlements: This page's referrer ("${referrer.origin}") can't ' +
+        `SwG Entitlements: This page's referrer ("${referrer.origin}") can't ` +
         'grant Google Article Access. Real publications should bail if this ' +
-        'referrer check fails.`
+        'referrer check fails.'
     );
   }
 
