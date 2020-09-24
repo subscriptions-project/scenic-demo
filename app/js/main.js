@@ -225,6 +225,12 @@ function startFlowAuto() {
 
       // Set up metering demo controls.
       MeteringDemo.setupControls();
+      
+      // Set native response to a subscribe request. Required for metering toast.
+      subscriptions.setOnNativeSubscribeRequest(() => {
+        console.log('Starting native subscribe flow');
+        startFlow('showOffers');
+      });
 
       // Example of a timestamp representing when a given action was taken.
       const timestamp = 1597686771;
