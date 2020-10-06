@@ -35,11 +35,21 @@ const BASE_URL = process.env.NODE_ENV == 'production' ?
 
 const SWG_JS_URLS = {
   local: '/swgjs/swg.max.js',
+  /* eslint-disable-next-line google-camelcase/google-camelcase */
   local_min: '/swgjs/swg.js',
   prod: 'https://news.google.com/swg/js/v1/swg.js',
   autopush: 'https://news.google.com/swg/js/v1/swg-autopush.js',
   tt: 'https://news.google.com/swg/js/v1/swg-tt.js',
   qual: 'https://news.google.com/swg/js/v1/swg-qual.js',
+};
+
+const SWG_GAA_JS_URLS = {
+  local: '/swgjs/swg-gaa.max.js',
+  /* eslint-disable-next-line google-camelcase/google-camelcase */
+  local_min: '/swgjs/swg-gaa.js',
+  prod: 'https://news.google.com/swg/js/v1/swg-gaa.js',
+  autopush: 'https://news.google.com/swg/js/v1/swg-gaa-autopush.js',
+  tt: 'https://news.google.com/swg/js/v1/swg-gaa-tt.js',
 };
 
 const AUTH_COOKIE = 'SCENIC_AUTH';
@@ -95,6 +105,7 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   const setup = getSetup(req);
   res.render('../app/views/article', {
     swgJsUrl: SWG_JS_URLS[setup.script],
+    swgGaaJsUrl: SWG_GAA_JS_URLS[setup.script],
     setup,
     config: getConfig(req.params.configId),
     id,
@@ -269,6 +280,17 @@ app.post('/amp-pingback', (req, res) => {
   }
   decMeterInCookies(req, res);
   res.json({});
+});
+
+
+/**
+ * GSI iframe for metering demo.
+ */
+app.get('/gsi-iframe', (req, res) => {
+  const setup = getSetup(req);
+  res.render('../app/views/gsi-iframe', {
+    swgGaaJsUrl: SWG_GAA_JS_URLS[setup.script],
+  });
 });
 
 
