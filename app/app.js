@@ -87,7 +87,7 @@ app.get(['/','/config/:configId'], (req, res) => {
 });
 
 app.get(['/config/:configId/landing.html', '/landing.html'], (req, res) => {
-  script = req.cookies && req.cookies['script'] || 'prod';
+  const script = req.cookies && req.cookies['script'] || 'prod';
   res.render('../app/views/landing.html', {
     config: getConfig(req.params.configId),
     swgJsUrl: SWG_JS_URLS[script],
@@ -268,7 +268,6 @@ app.get('/amp-entitlements', (req, res) => {
  * AMP pingback request.
  */
 app.post('/amp-pingback', (req, res) => {
-  const pubId = req.query.pubid;
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.setHeader('Access-Control-Expose-Headers',
@@ -284,11 +283,11 @@ app.post('/amp-pingback', (req, res) => {
 
 
 /**
- * GSI iframe for metering demo.
+ * GSI redirect page for metering demo.
  */
-app.get('/gsi-iframe', (req, res) => {
+app.get('/gsi-redirect', (req, res) => {
   const setup = getSetup(req);
-  res.render('../app/views/gsi-iframe', {
+  res.render('../app/views/gsi-signed-in-redirect', {
     swgGaaJsUrl: SWG_GAA_JS_URLS[setup.script],
   });
 });
