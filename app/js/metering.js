@@ -43,7 +43,7 @@ export const MeteringDemo = {
     delete localStorage.meteringUsername;
 
     // Sign out of Google Sign-In.
-    GaaMeteringRegwall.signOut().then(() => void location.reload());
+    self.GaaMeteringRegwall.signOut().then(() => void location.reload());
   },
 
   /** Returns a new Publisher Provided ID (PPID) suitable for demo purposes. */
