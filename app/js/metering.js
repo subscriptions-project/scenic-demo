@@ -13,7 +13,7 @@ export const MeteringDemo = {
     '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com',
 
   /** Google Sign-In redirect URI, where users are sent after signing in. */
-  GOOGLE_SIGN_IN_REDIRECT_URI: 'http://localhost:8000/gsi-redirect',
+  GOOGLE_SIGN_IN_REDIRECT_URI: 'https://scenic-2017.appspot.com/gsi-redirect',
 
   /** Sets up controls for the metering demo. */
   setupControls: () => {
