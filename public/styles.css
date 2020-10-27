@@ -334,3 +334,27 @@ body:not(.metering) #metering-controls {
   border-bottom: 4px solid rgb(2, 133, 69);
   border-top: 4px solid rgb(74, 250, 165);
 }
+
+#metering-controls .ppid {
+  animation: fadeIn 0.5s forwards;
+  background-color: rgb(41 108 79);
+  border-radius: 0 0 0 8px;
+  color: #fff;
+  display: none;
+  font-family: monospace;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  position: fixed;
+  right: 0px;
+  top: 50px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

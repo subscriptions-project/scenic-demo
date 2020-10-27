@@ -44,14 +44,20 @@ export const MeteringDemo = {
   },
 
   /** Returns a new Publisher Provided ID (PPID) suitable for demo purposes. */
-  createPpid: () => 'ppid' + Math.round(Math.random() * 9999999999999999),
+  createPpid: () => 'ppid' + Math.round(Math.random() * 999999),
 
   /** Returns a Publisher Provided ID (PPID) suitable for demo purposes. */
   getPpid: () => {
     if (!localStorage.meteringPpid) {
       localStorage.meteringPpid = MeteringDemo.createPpid();
     }
+
+    // Log and render PPID for demo purposes.
     console.log('Metering PPID: ' + localStorage.meteringPpid);
+    const ppidEl = document.querySelector('#metering-controls .ppid');
+    ppidEl.textContent = localStorage.meteringPpid;
+    ppidEl.style.display = 'block';
+
     return localStorage.meteringPpid;
   },
 
