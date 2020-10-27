@@ -5,9 +5,6 @@
  * define their own JS and backend code to provide the same functionality securely.
  */
 export const MeteringDemo = {
-  /** Publisher name for the metering demo. */
-  PUBLISHER_NAME: 'The Scenic',
-
   /** Google Sign-In Client ID for the metering demo. */
   GOOGLE_SIGN_IN_CLIENT_ID:
     '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com',
@@ -47,14 +44,20 @@ export const MeteringDemo = {
   },
 
   /** Returns a new Publisher Provided ID (PPID) suitable for demo purposes. */
-  createPpid: () => 'ppid' + Math.round(Math.random() * 9999999999999999),
+  createPpid: () => 'ppid' + Math.round(Math.random() * 999999),
 
   /** Returns a Publisher Provided ID (PPID) suitable for demo purposes. */
   getPpid: () => {
     if (!localStorage.meteringPpid) {
       localStorage.meteringPpid = MeteringDemo.createPpid();
     }
+
+    // Log and render PPID for demo purposes.
     console.log('Metering PPID: ' + localStorage.meteringPpid);
+    const ppidEl = document.querySelector('#metering-controls .ppid');
+    ppidEl.textContent = localStorage.meteringPpid;
+    ppidEl.style.display = 'block';
+
     return localStorage.meteringPpid;
   },
 
