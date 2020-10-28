@@ -61,6 +61,24 @@ export const MeteringDemo = {
     return localStorage.meteringPpid;
   },
 
+  /**
+   * Mocks registration of a user, given data from Google Sign-In.
+   *
+   * This is suitable for a demo. For real integrations, we
+   * advise setting a 1st party, secure, HTTP-only cookie,
+   * so it lives past 7 days in Safari.
+   * https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
+   */
+  registerUser: googleSignInUser => {
+    // Record the registration timestamp in seconds (not milliseconds).
+    localStorage.meteringRegistrationTimestamp = Math.floor(Date.now() / 1000);
+
+    // Record the user's name, for the metering demo.
+    localStorage.meteringUsername = googleSignInUser
+        .getBasicProfile()
+        .getName();
+  },
+
   /** Opens the paywall for demo purposes. */
   openPaywall: () => {
     document.documentElement.classList.add('open-paywall');
