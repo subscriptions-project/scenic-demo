@@ -10,7 +10,7 @@ export const MeteringDemo = {
     '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com',
 
   /** URL of iframe containing a Google Sign-In button. */
-  GOOGLE_SIGN_IN_IFRAME_URL: 'http://localhost:8000/examples/sample-pub/gsi-iframe',
+  GOOGLE_SIGN_IN_IFRAME_URL: 'https://scenic-2017.appspot.com/gsi-iframe',
 
   /** Sets up controls for the metering demo. */
   setupControls: () => {
