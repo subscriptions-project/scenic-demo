@@ -2414,9 +2414,7 @@ var ClientEvent;
 
 exports.ClientEvent = ClientEvent;
 
-var ClientEventManagerApi =
-/*#__PURE__*/
-function () {
+var ClientEventManagerApi = /*#__PURE__*/function () {
   function ClientEventManagerApi() {
     _classCallCheck(this, ClientEventManagerApi);
   }
@@ -2459,7 +2457,7 @@ function () {
 
 exports.ClientEventManagerApi = ClientEventManagerApi;
 
-},{"../proto/api_messages":32}],6:[function(require,module,exports){
+},{"../proto/api_messages":33}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2496,9 +2494,7 @@ var DeferredAccountCreationRequest;
 
 exports.DeferredAccountCreationRequest = DeferredAccountCreationRequest;
 
-var DeferredAccountCreationResponse =
-/*#__PURE__*/
-function () {
+var DeferredAccountCreationResponse = /*#__PURE__*/function () {
   /**
    * @param {!Entitlements} entitlements
    * @param {!UserData} userData
@@ -2577,15 +2573,19 @@ function () {
 
 exports.DeferredAccountCreationResponse = DeferredAccountCreationResponse;
 
-},{"./entitlements":7,"./subscribe-response":11,"./user-data":13}],7:[function(require,module,exports){
+},{"./entitlements":7,"./subscribe-response":12,"./user-data":14}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Entitlement = exports.Entitlements = void 0;
+exports.Entitlement = exports.Entitlements = exports.GOOGLE_METERING_SOURCE = void 0;
+
+var _object = require("../utils/object");
 
 var _json = require("../utils/json");
+
+var _log = require("../utils/log");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2593,22 +2593,26 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/** Source for Google-provided metering entitlements. */
+var GOOGLE_METERING_SOURCE = 'google:metering';
 /**
  * The holder of the entitlements for a service.
  */
-var Entitlements =
-/*#__PURE__*/
-function () {
+
+exports.GOOGLE_METERING_SOURCE = GOOGLE_METERING_SOURCE;
+
+var Entitlements = /*#__PURE__*/function () {
   /**
    * @param {string} service
    * @param {string} raw
    * @param {!Array<!Entitlement>} entitlements
    * @param {?string} currentProduct
    * @param {function(!Entitlements)} ackHandler
+   * @param {function(!Entitlements, ?Function=)} consumeHandler
    * @param {?boolean|undefined} isReadyToPay
    * @param {?string|undefined} decryptedDocumentKey
    */
-  function Entitlements(service, raw, entitlements, currentProduct, ackHandler, isReadyToPay, decryptedDocumentKey) {
+  function Entitlements(service, raw, entitlements, currentProduct, ackHandler, consumeHandler, isReadyToPay, decryptedDocumentKey) {
     _classCallCheck(this, Entitlements);
 
     /** @const {string} */
@@ -2631,6 +2635,9 @@ function () {
     /** @private @const {function(!Entitlements)} */
 
     this.ackHandler_ = ackHandler;
+    /** @private @const {function(!Entitlements, ?Function=)} */
+
+    this.consumeHandler_ = consumeHandler;
   }
   /**
    * @return {!Entitlements}
@@ -2642,7 +2649,7 @@ function () {
     value: function clone() {
       return new Entitlements(this.service, this.raw, this.entitlements.map(function (ent) {
         return ent.clone();
-      }), this.product_, this.ackHandler_, this.isReadyToPay, this.decryptedDocumentKey);
+      }), this.product_, this.ackHandler_, this.consumeHandler_, this.isReadyToPay, this.decryptedDocumentKey);
     }
     /**
      * @return {!Object}
@@ -2658,6 +2665,35 @@ function () {
         }),
         'isReadyToPay': this.isReadyToPay
       };
+    }
+    /**
+     * Returns true if the current article is unlocked by a
+     * cacheable entitlement. Metering entitlements aren't cacheable,
+     * because each metering entitlement is meant to be used for one article.
+     * Subscription entitlements are cacheable, because subscription entitlements
+     * are meant to be used across multiple articles on a publication.
+     * @return {boolean}
+     */
+
+  }, {
+    key: "enablesThisWithCacheableEntitlements",
+    value: function enablesThisWithCacheableEntitlements() {
+      var entitlement = this.getEntitlementForThis();
+      return !!entitlement && entitlement.source !== GOOGLE_METERING_SOURCE;
+    }
+    /**
+     * Returns true if the current article is unlocked by a
+     * Google metering entitlement. These entitlements come
+     * from Google News Intiative's licensing program to support news.
+     * https://www.blog.google/outreach-initiatives/google-news-initiative/licensing-program-support-news-industry-/
+     * @return {boolean}
+     */
+
+  }, {
+    key: "enablesThisWithGoogleMetering",
+    value: function enablesThisWithGoogleMetering() {
+      var entitlement = this.getEntitlementForThis();
+      return !!entitlement && entitlement.source === GOOGLE_METERING_SOURCE;
     }
     /**
      * @param {string=} source
@@ -2717,6 +2753,10 @@ function () {
     /**
      * Returns the first matching entitlement for the specified product,
      * optionally also matching the specified source.
+     *
+     * Returns non-metering entitlements if possible, to avoid consuming
+     * metered reads unnecessarily.
+     *
      * @param {?string} product
      * @param {string=} source
      * @return {?Entitlement}
@@ -2725,15 +2765,26 @@ function () {
   }, {
     key: "getEntitlementFor",
     value: function getEntitlementFor(product, source) {
-      if (product && this.entitlements.length > 0) {
-        for (var i = 0; i < this.entitlements.length; i++) {
-          if (this.entitlements[i].enables(product) && (!source || source == this.entitlements[i].source)) {
-            return this.entitlements[i];
-          }
-        }
-      }
+      if (!product) {
+        return null;
+      } // Prefer subscription entitlements over metering entitlements.
+      // Metering entitlements are a limited resource. When a metering entitlement
+      // unlocks an article, that depletes the user's remaining "free reads".
+      // Subscription entitlements are *not* depleted when they unlock articles.
+      // They are essentially unlimited if the subscription remains valid.
+      // For this reason, subscription entitlements are preferred.
 
-      return null;
+
+      var entitlementsThatUnlockArticle = this.entitlements.filter(function (entitlement) {
+        return entitlement.enables(product) && (!source || source === entitlement.source);
+      });
+      var subscriptionEntitlement = (0, _object.findInArray)(entitlementsThatUnlockArticle, function (entitlement) {
+        return entitlement.source !== GOOGLE_METERING_SOURCE;
+      });
+      var meteringEntitlement = (0, _object.findInArray)(entitlementsThatUnlockArticle, function (entitlement) {
+        return entitlement.source === GOOGLE_METERING_SOURCE;
+      });
+      return subscriptionEntitlement || meteringEntitlement || null;
     }
     /**
      * Returns the first matching entitlement for the specified source w/o
@@ -2765,6 +2816,19 @@ function () {
     value: function ack() {
       this.ackHandler_(this);
     }
+    /**
+     * A 3p site should call this method to consume a Google metering entitlement.
+     * When a metering entitlement is consumed, SwG shows the user a metering dialog.
+     * When the user closes the dialog, SwG depletes one of the user's remaining
+     * "free reads".
+     * @param {?Function=} onCloseDialog Called after the user closes the dialog.
+     */
+
+  }, {
+    key: "consume",
+    value: function consume(onCloseDialog) {
+      this.consumeHandler_(this, onCloseDialog);
+    }
   }]);
 
   return Entitlements;
@@ -2776,9 +2840,7 @@ function () {
 
 exports.Entitlements = Entitlements;
 
-var Entitlement =
-/*#__PURE__*/
-function () {
+var Entitlement = /*#__PURE__*/function () {
   /**
    * @param {string} source
    * @param {!Array<string>} products
@@ -2853,10 +2915,19 @@ function () {
      * @return {?string}
      */
     value: function getSku() {
-      return (
-        /** @type {?string} */
-        (0, _json.getPropertyFromJsonString)(this.subscriptionToken, 'productId') || null
-      );
+      if (this.source !== 'google') {
+        return null;
+      }
+
+      var sku =
+      /** @type {?string} */
+      (0, _json.getPropertyFromJsonString)(this.subscriptionToken, 'productId') || null;
+
+      if (!sku) {
+        (0, _log.warn)('Unable to retrieve SKU from SwG subscription token');
+      }
+
+      return sku;
     }
   }], [{
     key: "parseFromJson",
@@ -2895,7 +2966,7 @@ function () {
 
 exports.Entitlement = Entitlement;
 
-},{"../utils/json":71}],8:[function(require,module,exports){
+},{"../utils/json":76,"../utils/log":78,"../utils/object":79}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3146,9 +3217,7 @@ var PublisherEvent;
 
 exports.PublisherEvent = PublisherEvent;
 
-var LoggerApi =
-/*#__PURE__*/
-function () {
+var LoggerApi = /*#__PURE__*/function () {
   function LoggerApi() {
     _classCallCheck(this, LoggerApi);
   }
@@ -3191,6 +3260,37 @@ function () {
 exports.LoggerApi = LoggerApi;
 
 },{}],9:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MeterClientTypes = void 0;
+
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** @enum {number}  */
+var MeterClientTypes = {
+  /** Meter client type for content licensed by Google. */
+  LICENSED_BY_GOOGLE: 1
+};
+exports.MeterClientTypes = MeterClientTypes;
+
+},{}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3243,7 +3343,7 @@ function Offer(skuId, title, description, price) {
 
 exports.Offer = Offer;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3257,7 +3357,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3265,15 +3365,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * @enum {string}
@@ -3402,15 +3506,15 @@ var SubscriptionState = LoggerApi.SubscriptionState;
 
 exports.SubscriptionState = SubscriptionState;
 
-var PropensityApi =
-/*#__PURE__*/
-function (_LoggerApi$LoggerApi) {
+var PropensityApi = /*#__PURE__*/function (_LoggerApi$LoggerApi) {
   _inherits(PropensityApi, _LoggerApi$LoggerApi);
+
+  var _super = _createSuper(PropensityApi);
 
   function PropensityApi() {
     _classCallCheck(this, PropensityApi);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(PropensityApi).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(PropensityApi, [{
@@ -3431,7 +3535,7 @@ function (_LoggerApi$LoggerApi) {
 
 exports.PropensityApi = PropensityApi;
 
-},{"./logger-api":8}],11:[function(require,module,exports){
+},{"./logger-api":8}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3451,9 +3555,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /**
  */
-var SubscribeResponse =
-/*#__PURE__*/
-function () {
+var SubscribeResponse = /*#__PURE__*/function () {
   /**
    * @param {string} raw
    * @param {!PurchaseData} purchaseData
@@ -3462,9 +3564,11 @@ function () {
    * @param {!string} productType
    * @param {function():!Promise} completeHandler
    * @param {?string=} oldSku
+   * @param {?number=} paymentRecurrence
    */
   function SubscribeResponse(raw, purchaseData, userData, entitlements, productType, completeHandler) {
     var oldSku = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
+    var paymentRecurrence = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : null;
 
     _classCallCheck(this, SubscribeResponse);
 
@@ -3488,6 +3592,9 @@ function () {
     /** @const {?string} */
 
     this.oldSku = oldSku;
+    /** @const {?number} */
+
+    this.paymentRecurrence = paymentRecurrence;
   }
   /**
    * @return {!SubscribeResponse}
@@ -3543,9 +3650,7 @@ function () {
 
 exports.SubscribeResponse = SubscribeResponse;
 
-var PurchaseData =
-/*#__PURE__*/
-function () {
+var PurchaseData = /*#__PURE__*/function () {
   /**
    * @param {string} raw
    * @param {string} signature
@@ -3591,26 +3696,28 @@ function () {
 
 exports.PurchaseData = PurchaseData;
 
-},{"./entitlements":7,"./user-data":13}],12:[function(require,module,exports){
+},{"./entitlements":7,"./user-data":14}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.defaultConfig = defaultConfig;
-exports.SubscriptionRequest = exports.SmartButtonOptions = exports.ButtonOptions = exports.SaveSubscriptionRequestCallback = exports.SaveSubscriptionRequest = exports.LoginRequest = exports.OffersRequest = exports.ProductType = exports.ReplaceSkuProrationMode = exports.WindowOpenMode = exports.AnalyticsMode = exports.Config = exports.SubscriptionFlows = exports.Subscriptions = void 0;
+exports.SubscriptionRequest = exports.SmartButtonOptions = exports.ButtonOptions = exports.SaveSubscriptionRequestCallback = exports.SaveSubscriptionRequest = exports.LoginRequest = exports.OffersRequest = exports.ProductType = exports.ReplaceSkuProrationMode = exports.WindowOpenMode = exports.AnalyticsMode = exports.GetEntitlementsMeteringParamsExternal = exports.GetEntitlementsParamsExternalDef = exports.GetEntitlementsMeteringParamsInternal = exports.GetEntitlementsEncryptionParams = exports.GetEntitlementsParamsInternalDef = exports.Config = exports.SubscriptionFlows = exports.Subscriptions = void 0;
 
-var _entitlements = require("./entitlements");
-
-var _offer = require("./offer");
+var _clientEventManagerApi = require("./client-event-manager-api");
 
 var _deferredAccountCreation = require("./deferred-account-creation");
 
-var _subscribeResponse = require("./subscribe-response");
+var _entitlements = require("./entitlements");
+
+var _loggerApi = require("./logger-api");
+
+var _offer = require("./offer");
 
 var _propensityApi = require("./propensity-api");
 
-var _loggerApi = require("./logger-api");
+var _subscribeResponse = require("./subscribe-response");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3621,9 +3728,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @interface
  */
-var Subscriptions =
-/*#__PURE__*/
-function () {
+var Subscriptions = /*#__PURE__*/function () {
   function Subscriptions() {
     _classCallCheck(this, Subscriptions);
   }
@@ -3669,13 +3774,13 @@ function () {
     key: "clear",
     value: function clear() {}
     /**
-     * @param {?string=} encryptedDocumentKey
+     * @param {!GetEntitlementsParamsExternalDef=} params
      * @return {!Promise<!Entitlements>}
      */
 
   }, {
     key: "getEntitlements",
-    value: function getEntitlements(encryptedDocumentKey) {}
+    value: function getEntitlements(params) {}
     /**
      * Set the subscribe callback.
      * @param {function(!Promise<!Entitlements>)} callback
@@ -3815,6 +3920,13 @@ function () {
     key: "setOnLoginRequest",
     value: function setOnLoginRequest(callback) {}
     /**
+     * @param {!LoginRequest} request
+     */
+
+  }, {
+    key: "triggerLoginRequest",
+    value: function triggerLoginRequest(request) {}
+    /**
      * Starts the login prompt flow.
      * @return {!Promise}
      */
@@ -3845,6 +3957,15 @@ function () {
   }, {
     key: "waitForSubscriptionLookup",
     value: function waitForSubscriptionLookup(accountPromise) {}
+    /**
+     * Starts the metered registration wall flow.
+     * @param {{ gsiUrl: string, alreadyRegisteredUrl: string}} params
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "showMeterRegwall",
+    value: function showMeterRegwall(params) {}
     /**
      * Starts the Account linking flow.
      * TODO(dparikh): decide if it's only exposed for testing or PROD purposes.
@@ -3944,6 +4065,11 @@ function () {
   }, {
     key: "getLogger",
     value: function getLogger() {}
+    /** @return {!Promise<ClientEventManagerApi>} */
+
+  }, {
+    key: "getEventManager",
+    value: function getEventManager() {}
   }]);
 
   return Subscriptions;
@@ -3962,7 +4088,9 @@ var SubscriptionFlows = {
   COMPLETE_DEFERRED_ACCOUNT_CREATION: 'completeDeferredAccountCreation',
   LINK_ACCOUNT: 'linkAccount',
   SHOW_LOGIN_PROMPT: 'showLoginPrompt',
-  SHOW_LOGIN_NOTIFICATION: 'showLoginNotification'
+  SHOW_METER_REGWALL: 'showMeterRegwall',
+  SHOW_LOGIN_NOTIFICATION: 'showLoginNotification',
+  SHOW_METER_TOAST: 'showMeterToast'
 };
 /**
  * Configuration properties:
@@ -3990,10 +4118,86 @@ var SubscriptionFlows = {
 exports.SubscriptionFlows = SubscriptionFlows;
 var Config;
 /**
- * @enum {number}
+ * Params for GetEntitlements requests to SwG Client.
+ * swg-js constructs objects of this type, but publisher JS won't.
+ * swg-js converts these params to a Base64 JSON string
+ * before sending them to SwG Client.
+ * @typedef {{
+ *   metering: (!GetEntitlementsMeteringParamsInternal|undefined),
+ * }}
  */
 
 exports.Config = Config;
+var GetEntitlementsParamsInternalDef;
+/**
+ * Encryption params for GetEntitlements requests.
+ * @typedef {{
+ *   encryptedDocumentKey: string,
+ * }}
+ */
+
+exports.GetEntitlementsParamsInternalDef = GetEntitlementsParamsInternalDef;
+var GetEntitlementsEncryptionParams;
+/**
+ * Metering params for GetEntitlements requests to SwG Client.
+ * swg-js constructs objects of this type, but publisher JS won't.
+ * @typedef {{
+ *   clientTypes: !Array<number>,
+ *   owner: string,
+ *   state: {
+ *     id: string,
+ *     attributes: !Array<{
+ *       name: string,
+ *       timestamp: number,
+ *     }>,
+ *   },
+ *   resource: {
+ *     hashedCanonicalUrl: string,
+ *   },
+ * }}
+ */
+
+exports.GetEntitlementsEncryptionParams = GetEntitlementsEncryptionParams;
+var GetEntitlementsMeteringParamsInternal;
+/**
+ * Params for `getEntitlements` calls from publisher JS.
+ * swg-js converts objects of this type to GetEntitlementsParamsInternal.
+ * @typedef {{
+ *   encryption: (!GetEntitlementsEncryptionParams|undefined),
+ *   metering: (!GetEntitlementsMeteringParamsExternal|undefined),
+ * }}
+ */
+
+exports.GetEntitlementsMeteringParamsInternal = GetEntitlementsMeteringParamsInternal;
+var GetEntitlementsParamsExternalDef;
+/**
+ * Params for `getEntitlements` calls from publisher JS.
+ * swg-js converts objects of this type to GetEntitlementsMeteringParamsInternal.
+ * @typedef {{
+ *   clientTypes: !Array<number>,
+ *   owner: string,
+ *   state: {
+ *     id: string,
+ *     standardAttributes: !Object<string, {
+ *       timestamp: number,
+ *     }>,
+ *     customAttributes: !Object<string, {
+ *       timestamp: number,
+ *     }>,
+ *   },
+ *   resource: {
+ *     hashedCanonicalUrl: string,
+ *   },
+ * }}
+ */
+
+exports.GetEntitlementsParamsExternalDef = GetEntitlementsParamsExternalDef;
+var GetEntitlementsMeteringParamsExternal;
+/**
+ * @enum {number}
+ */
+
+exports.GetEntitlementsMeteringParamsExternal = GetEntitlementsMeteringParamsExternal;
 var AnalyticsMode = {
   DEFAULT: 0,
   IMPRESSIONS: 1
@@ -4143,7 +4347,7 @@ exports.SmartButtonOptions = SmartButtonOptions;
 var SubscriptionRequest;
 exports.SubscriptionRequest = SubscriptionRequest;
 
-},{"./deferred-account-creation":6,"./entitlements":7,"./logger-api":8,"./offer":9,"./propensity-api":10,"./subscribe-response":11}],13:[function(require,module,exports){
+},{"./client-event-manager-api":5,"./deferred-account-creation":6,"./entitlements":7,"./logger-api":8,"./offer":10,"./propensity-api":11,"./subscribe-response":12}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4175,9 +4379,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /**
  */
-var UserData =
-/*#__PURE__*/
-function () {
+var UserData = /*#__PURE__*/function () {
   /**
    * @param {string} idToken
    * @param {!Object} data
@@ -4246,7 +4448,7 @@ function () {
 
 exports.UserData = UserData;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4254,21 +4456,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ActivityPorts = exports.ActivityIframePort = exports.ActivityPort = exports.ActivityPortDef = void 0;
 
-var _activityPorts = require("web-activities/activity-ports");
-
 var _api_messages = require("../proto/api_messages");
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _activityPorts = require("web-activities/activity-ports");
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4279,9 +4485,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @interface
  */
-var ActivityPortDef =
-/*#__PURE__*/
-function () {
+var ActivityPortDef = /*#__PURE__*/function () {
   function ActivityPortDef() {
     _classCallCheck(this, ActivityPortDef);
   }
@@ -4304,15 +4508,15 @@ function () {
 
 exports.ActivityPortDef = ActivityPortDef;
 
-var ActivityPort =
-/*#__PURE__*/
-function (_ActivityPortDef) {
+var ActivityPort = /*#__PURE__*/function (_ActivityPortDef) {
   _inherits(ActivityPort, _ActivityPortDef);
+
+  var _super = _createSuper(ActivityPort);
 
   function ActivityPort() {
     _classCallCheck(this, ActivityPort);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ActivityPort).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(ActivityPort, [{
@@ -4406,9 +4610,7 @@ function (_ActivityPortDef) {
 
 exports.ActivityPort = ActivityPort;
 
-var ActivityPortDeprecated =
-/*#__PURE__*/
-function () {
+var ActivityPortDeprecated = /*#__PURE__*/function () {
   /**
    * @param {!web-activities/activity-ports.ActivityPort} port
    */
@@ -4437,15 +4639,14 @@ function () {
  */
 
 
-var ActivityIframePort =
-/*#__PURE__*/
-function () {
+var ActivityIframePort = /*#__PURE__*/function () {
   /**
    * @param {!HTMLIFrameElement} iframe
    * @param {string} url
+   * @param {!../runtime/deps.DepsDef} deps
    * @param {?Object=} args
    */
-  function ActivityIframePort(iframe, url, args) {
+  function ActivityIframePort(iframe, url, deps, args) {
     _classCallCheck(this, ActivityIframePort);
 
     /** @private @const {!web-activities/activity-ports.ActivityIframePort} */
@@ -4453,9 +4654,9 @@ function () {
     /** @private @const {!Object<string, function(!Object)>} */
 
     this.callbackMap_ = {};
-    /** @private {?function(!../proto/api_messages.Message)} */
+    /** @private @const {../runtime/deps.DepsDef} */
 
-    this.callbackOriginal_ = null;
+    this.deps_ = deps;
   }
   /**
    * Returns a promise that yields when the iframe is ready to be interacted
@@ -4482,10 +4683,6 @@ function () {
       return this.iframePort_.connect().then(function () {
         // Attach a callback to receive messages after connection complete
         _this.iframePort_.onMessage(function (data) {
-          if (_this.callbackOriginal_) {
-            _this.callbackOriginal_(data);
-          }
-
           var response = data && data['RESPONSE'];
 
           if (!response) {
@@ -4498,6 +4695,17 @@ function () {
             cb((0, _api_messages.deserialize)(response));
           }
         });
+
+        if (_this.deps_ && _this.deps_.eventManager()) {
+          _this.on(_api_messages.AnalyticsRequest, function (request) {
+            _this.deps_.eventManager().logEvent({
+              eventType: request.getEvent(),
+              eventOriginator: _api_messages.EventOriginator.SWG_SERVER,
+              isFromUserAction: request.getMeta().getIsFromUserAction(),
+              additionalParameters: request.getParams()
+            });
+          });
+        }
       });
     }
     /**
@@ -4567,7 +4775,14 @@ function () {
   }, {
     key: "on",
     value: function on(message, callback) {
-      var label = (0, _api_messages.getLabel)(message);
+      var label = null;
+
+      try {
+        label = (0, _api_messages.getLabel)(message);
+      } catch (ex) {
+        // Thrown if message is not a proto object and has no label
+        label = null;
+      }
 
       if (!label) {
         throw new Error('Invalid data type');
@@ -4594,9 +4809,7 @@ function () {
 
 exports.ActivityIframePort = ActivityIframePort;
 
-var ActivityPorts =
-/*#__PURE__*/
-function () {
+var ActivityPorts = /*#__PURE__*/function () {
   /**
    * @param {!../runtime/deps.DepsDef} deps
    */
@@ -4626,7 +4839,8 @@ function () {
         'analyticsContext': context.toArray(),
         'publicationId': pageConfig.getPublicationId(),
         'productId': pageConfig.getProductId(),
-        '_client': 'SwG 0.1.22-1576261074655'
+        '_client': 'SwG 0.1.22-1602710098364',
+        'supportsEventManager': true
       }, args || {});
     }
     /*
@@ -4640,7 +4854,7 @@ function () {
   }, {
     key: "openActivityIframePort_",
     value: function openActivityIframePort_(iframe, url, args) {
-      var activityPort = new ActivityIframePort(iframe, url, args);
+      var activityPort = new ActivityIframePort(iframe, url, this.deps_, args);
       return activityPort.connect().then(function () {
         return activityPort;
       });
@@ -4767,7 +4981,7 @@ function () {
 
 exports.ActivityPorts = ActivityPorts;
 
-},{"../proto/api_messages":32,"web-activities/activity-ports":4}],15:[function(require,module,exports){
+},{"../proto/api_messages":33,"web-activities/activity-ports":4}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4793,9 +5007,7 @@ var POPUP_Z_INDEX = 2147483647;
  * @final
  */
 
-var DialogManager =
-/*#__PURE__*/
-function () {
+var DialogManager = /*#__PURE__*/function () {
   /**
    * @param {!../model/doc.Doc} doc
    */
@@ -4942,7 +5154,7 @@ function () {
 
 exports.DialogManager = DialogManager;
 
-},{"../utils/errors":69,"./dialog":16,"./graypane":18}],16:[function(require,module,exports){
+},{"../utils/errors":74,"./dialog":17,"./graypane":19}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5027,9 +5239,7 @@ var PositionAt = {
  * @final
  */
 
-var Dialog =
-/*#__PURE__*/
-function () {
+var Dialog = /*#__PURE__*/function () {
   /**
    * Create a dialog for the provided doc.
    * @param {!../model/doc.Doc} doc
@@ -5537,7 +5747,7 @@ function () {
 
 exports.Dialog = Dialog;
 
-},{"../../build/css/ui/ui.css":2,"../model/doc":21,"../ui/loading-view":62,"../utils/animation":65,"../utils/dom":68,"../utils/style":78,"./friendly-iframe":17,"./graypane":18}],17:[function(require,module,exports){
+},{"../../build/css/ui/ui.css":2,"../model/doc":22,"../ui/loading-view":65,"../utils/animation":68,"../utils/dom":72,"../utils/style":83,"./friendly-iframe":18,"./graypane":19}],18:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5565,9 +5775,7 @@ var friendlyIframeAttributes = {
  * The class for building friendly iframe.
  */
 
-var FriendlyIframe =
-/*#__PURE__*/
-function () {
+var FriendlyIframe = /*#__PURE__*/function () {
   /**
    * @param {!Document} doc
    * @param {!Object<string, string|number>=} attrs
@@ -5660,7 +5868,7 @@ function () {
 
 exports.FriendlyIframe = FriendlyIframe;
 
-},{"../utils/dom":68,"../utils/style":78}],18:[function(require,module,exports){
+},{"../utils/dom":72,"../utils/style":83}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5678,9 +5886,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Graypane =
-/*#__PURE__*/
-function () {
+var Graypane = /*#__PURE__*/function () {
   /**
    * @param {!../model/doc.Doc} doc
    * @param {number} zIndex
@@ -5796,7 +6002,7 @@ function () {
 
 exports.Graypane = Graypane;
 
-},{"../utils/animation":65,"../utils/style":78}],19:[function(require,module,exports){
+},{"../utils/animation":68,"../utils/style":83}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5831,9 +6037,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * extended class has actual content.
  * @abstract
  */
-var View =
-/*#__PURE__*/
-function () {
+var View = /*#__PURE__*/function () {
   /**
    * Empty constructor.
    */
@@ -5865,8 +6069,8 @@ function () {
 
   }, {
     key: "resized",
-    value: function resized() {} // Do nothing by default. Override if needed.
-
+    value: function resized() {// Do nothing by default. Override if needed.
+    }
     /**
      * Accept the result.
      * @return {!Promise}
@@ -5899,7 +6103,7 @@ function () {
 
 exports.View = View;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 require("./polyfills");
@@ -5928,10 +6132,10 @@ var _log = require("./utils/log");
  * @fileoverview
  * The entry point for runtime (swg.js).
  */
-(0, _log.log)('Subscriptions Runtime: 0.1.22-1576261074655');
+(0, _log.log)('Subscriptions Runtime: 0.1.22-1602710098364');
 (0, _runtime.installRuntime)(self);
 
-},{"./polyfills":24,"./runtime/runtime":56,"./utils/log":73}],21:[function(require,module,exports){
+},{"./polyfills":25,"./runtime/runtime":59,"./utils/log":78}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5951,9 +6155,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @interface
  */
-var Doc =
-/*#__PURE__*/
-function () {
+var Doc = /*#__PURE__*/function () {
   function Doc() {
     _classCallCheck(this, Doc);
   }
@@ -6035,9 +6237,7 @@ function () {
 
 exports.Doc = Doc;
 
-var GlobalDoc =
-/*#__PURE__*/
-function () {
+var GlobalDoc = /*#__PURE__*/function () {
   /**
    * @param {!Window|!Document} winOrDoc
    */
@@ -6162,7 +6362,7 @@ function resolveDoc(input) {
   );
 }
 
-},{"../utils/document-ready":67}],22:[function(require,module,exports){
+},{"../utils/document-ready":71}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6180,9 +6380,9 @@ var _log = require("../utils/log");
 
 var _dom = require("../utils/dom");
 
-var _types = require("../utils/types");
-
 var _json = require("../utils/json");
+
+var _errorLogger = require("../utils/error-logger");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6198,9 +6398,7 @@ var RE_ALLOWED_TYPES = new RegExp(ALLOWED_TYPES.join('|'));
 /**
  */
 
-var PageConfigResolver =
-/*#__PURE__*/
-function () {
+var PageConfigResolver = /*#__PURE__*/function () {
   /**
    * @param {!Window|!Document|!Doc} winOrDoc
    */
@@ -6269,7 +6467,7 @@ function () {
         this.configResolver_(config);
         this.configResolver_ = null;
       } else if (this.doc_.isReady()) {
-        this.configResolver_(Promise.reject(new Error('No config could be discovered in the page')));
+        this.configResolver_(Promise.reject((0, _errorLogger.user)().createError('No config could be discovered in the page')));
         this.configResolver_ = null;
       }
 
@@ -6283,9 +6481,7 @@ function () {
 
 exports.PageConfigResolver = PageConfigResolver;
 
-var TypeChecker =
-/*#__PURE__*/
-function () {
+var TypeChecker = /*#__PURE__*/function () {
   function TypeChecker() {
     _classCallCheck(this, TypeChecker);
   }
@@ -6346,16 +6542,14 @@ function () {
   }, {
     key: "toArray_",
     value: function toArray_(value) {
-      return (0, _types.isArray)(value) ? value : [value];
+      return Array.isArray(value) ? value : [value];
     }
   }]);
 
   return TypeChecker;
 }();
 
-var MetaParser =
-/*#__PURE__*/
-function () {
+var MetaParser = /*#__PURE__*/function () {
   /**
    * @param {!Doc} doc
    */
@@ -6395,9 +6589,7 @@ function () {
   return MetaParser;
 }();
 
-var JsonLdParser =
-/*#__PURE__*/
-function () {
+var JsonLdParser = /*#__PURE__*/function () {
   /**
    * @param {!Doc} doc
    */
@@ -6556,7 +6748,7 @@ function () {
         return null;
       }
 
-      return (0, _types.isArray)(value) ? value : [value];
+      return Array.isArray(value) ? value : [value];
     }
     /**
      * @param {!Object} json
@@ -6576,9 +6768,7 @@ function () {
   return JsonLdParser;
 }();
 
-var MicrodataParser =
-/*#__PURE__*/
-function () {
+var MicrodataParser = /*#__PURE__*/function () {
   /**
    * @param {!Doc} doc
    */
@@ -6823,13 +7013,15 @@ function getDocClassForTesting() {
   return _doc.Doc;
 }
 
-},{"../utils/dom":68,"../utils/json":71,"../utils/log":73,"../utils/types":79,"./doc":21,"./page-config":23}],23:[function(require,module,exports){
+},{"../utils/dom":72,"../utils/error-logger":73,"../utils/json":76,"../utils/log":78,"./doc":22,"./page-config":24}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PageConfig = void 0;
+
+var _errorLogger = require("../utils/error-logger");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6838,26 +7030,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
- * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
-
-/**
- */
-var PageConfig =
-/*#__PURE__*/
-function () {
+var PageConfig = /*#__PURE__*/function () {
   /**
    * @param {string} productOrPublicationId
    * @param {boolean} locked
@@ -6875,7 +7049,7 @@ function () {
       label = productId.substring(div + 1);
 
       if (label == '*') {
-        throw new Error('wildcard disallowed');
+        (0, _errorLogger.user)().expectedError('wildcard disallowed');
       }
     } else {
       // The argument is a publication id.
@@ -6941,7 +7115,7 @@ function () {
 
 exports.PageConfig = PageConfig;
 
-},{}],24:[function(require,module,exports){
+},{"../utils/error-logger":73}],25:[function(require,module,exports){
 "use strict";
 
 var _arrayIncludes = require("./polyfills/array-includes");
@@ -6986,12 +7160,13 @@ var _promise = require("./polyfills/promise");
 (0, _documentContains.install)(self);
 (0, _arrayIncludes.install)(self);
 
-},{"./polyfills/array-includes":25,"./polyfills/document-contains":26,"./polyfills/domtokenlist-toggle":27,"./polyfills/math-sign":28,"./polyfills/object-assign":29,"./polyfills/object-values":30,"./polyfills/promise":31}],25:[function(require,module,exports){
+},{"./polyfills/array-includes":26,"./polyfills/document-contains":27,"./polyfills/domtokenlist-toggle":28,"./polyfills/math-sign":29,"./polyfills/object-assign":30,"./polyfills/object-values":31,"./polyfills/promise":32}],26:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.includes = includes;
 exports.install = install;
 
 /**
@@ -7052,12 +7227,13 @@ function install(win) {
   }
 }
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.contains = contains;
 exports.install = install;
 
 /**
@@ -7084,7 +7260,7 @@ exports.install = install;
  * @return {boolean}
  * @this {Node}
  */
-function documentContainsPolyfill(node) {
+function contains(node) {
   // Per spec, "contains" method is inclusionary
   // i.e. `node.contains(node) == true`. However, we still need to test
   // equality to the document itself.
@@ -7102,17 +7278,18 @@ function install(win) {
       enumerable: false,
       configurable: true,
       writable: true,
-      value: documentContainsPolyfill
+      value: contains
     });
   }
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.toggle = toggle;
 exports.install = install;
 
 /**
@@ -7140,7 +7317,7 @@ exports.install = install;
  * @this {DOMTokenList}
  * @return {boolean}
  */
-function domTokenListTogglePolyfill(token, force) {
+function toggle(token, force) {
   var remove = force === undefined ? this.contains(token) : !force;
 
   if (remove) {
@@ -7163,7 +7340,7 @@ function install(win) {
       enumerable: false,
       configurable: true,
       writable: true,
-      value: domTokenListTogglePolyfill
+      value: toggle
     });
   }
 }
@@ -7178,7 +7355,7 @@ function isIe(win) {
   return /Trident|MSIE|IEMobile/i.test(win.navigator.userAgent);
 }
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7237,7 +7414,7 @@ function install(win) {
   }
 }
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7309,7 +7486,7 @@ function install(win) {
   }
 }
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7374,10 +7551,10 @@ function install(win) {
   }
 }
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -7430,7 +7607,7 @@ function install(win) {
   }
 }
 
-},{"promise-pjs/promise":3}],32:[function(require,module,exports){
+},{"promise-pjs/promise":3}],33:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7438,7 +7615,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.deserialize = deserialize;
 exports.getLabel = getLabel;
-exports.ViewSubscriptionsResponse = exports.SubscribeResponse = exports.SmartBoxMessage = exports.SkuSelectedResponse = exports.Message = exports.LinkingInfoResponse = exports.LinkSaveTokenRequest = exports.EventParams = exports.EventOriginator = exports.EntitlementsResponse = exports.AnalyticsRequest = exports.AnalyticsEventMeta = exports.AnalyticsEvent = exports.AnalyticsContext = exports.AlreadySubscribedResponse = exports.AccountCreationRequest = void 0;
+exports.ViewSubscriptionsResponse = exports.Timestamp = exports.SubscribeResponse = exports.SmartBoxMessage = exports.SkuSelectedResponse = exports.Message = exports.LinkingInfoResponse = exports.LinkSaveTokenRequest = exports.FinishedLoggingResponse = exports.EventParams = exports.EventOriginator = exports.EntitlementsResponse = exports.EntitlementsRequest = exports.EntitlementJwt = exports.AnalyticsRequest = exports.AnalyticsEventMeta = exports.AnalyticsEvent = exports.AnalyticsContext = exports.AlreadySubscribedResponse = exports.AccountCreationRequest = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7465,9 +7642,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @interface
  */
-var Message =
-/*#__PURE__*/
-function () {
+var Message = /*#__PURE__*/function () {
   function Message() {
     _classCallCheck(this, Message);
   }
@@ -7480,12 +7655,15 @@ function () {
      */
     value: function label() {}
     /**
-     * @return {!Array}
+     * @param {boolean=} unusedIncludeLabel
+     * @return {!Array<*>}
      */
 
   }, {
     key: "toArray",
-    value: function toArray() {}
+    value: function toArray() {
+      var unusedIncludeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+    }
   }]);
 
   return Message;
@@ -7514,6 +7692,8 @@ var AnalyticsEvent = {
   IMPRESSION_SHOW_OFFERS_SWG_BUTTON: 16,
   IMPRESSION_SELECT_OFFER_SMARTBOX: 17,
   IMPRESSION_SELECT_OFFER_SWG_BUTTON: 18,
+  IMPRESSION_SHOW_CONTRIBUTIONS_SWG_BUTTON: 19,
+  IMPRESSION_SELECT_CONTRIBUTION_SWG_BUTTON: 20,
   ACTION_SUBSCRIBE: 1000,
   ACTION_PAYMENT_COMPLETE: 1001,
   ACTION_ACCOUNT_CREATED: 1002,
@@ -7533,6 +7713,12 @@ var AnalyticsEvent = {
   ACTION_SAVE_SUBSCR_TO_GOOGLE_CANCEL: 1016,
   ACTION_SWG_BUTTON_SHOW_OFFERS_CLICK: 1017,
   ACTION_SWG_BUTTON_SELECT_OFFER_CLICK: 1018,
+  ACTION_SWG_BUTTON_SHOW_CONTRIBUTIONS_CLICK: 1019,
+  ACTION_SWG_BUTTON_SELECT_CONTRIBUTION_CLICK: 1020,
+  ACTION_USER_CONSENT_DEFERRED_ACCOUNT: 1021,
+  ACTION_USER_DENY_DEFERRED_ACCOUNT: 1022,
+  ACTION_DEFERRED_ACCOUNT_REDIRECT: 1023,
+  ACTION_GET_ENTITLEMENTS: 1024,
   EVENT_PAYMENT_FAILED: 2000,
   EVENT_CUSTOM: 3000,
   EVENT_CONFIRM_TX_ID: 3001,
@@ -7540,6 +7726,11 @@ var AnalyticsEvent = {
   EVENT_GPAY_NO_TX_ID: 3003,
   EVENT_GPAY_CANNOT_CONFIRM_TX_ID: 3004,
   EVENT_GOOGLE_UPDATED: 3005,
+  EVENT_NEW_TX_ID: 3006,
+  EVENT_UNLOCKED_BY_SUBSCRIPTION: 3007,
+  EVENT_UNLOCKED_BY_METER: 3008,
+  EVENT_NO_ENTITLEMENTS: 3009,
+  EVENT_HAS_METERING_ENTITLEMENTS: 3010,
   EVENT_SUBSCRIPTION_STATE: 4000
 };
 /** @enum {number} */
@@ -7559,19 +7750,21 @@ var EventOriginator = {
 
 exports.EventOriginator = EventOriginator;
 
-var AccountCreationRequest =
-/*#__PURE__*/
-function () {
+var AccountCreationRequest = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function AccountCreationRequest() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, AccountCreationRequest);
 
+    var base = includesLabel ? 1 : 0;
     /** @private {?boolean} */
-    this.complete_ = data[1] == null ? null : data[1];
+
+    this.complete_ = data[base] == null ? null : data[base];
   }
   /**
    * @return {?boolean}
@@ -7593,16 +7786,23 @@ function () {
       this.complete_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.complete_ // field 1 - complete
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.complete_ // field 1 - complete
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -7625,22 +7825,24 @@ function () {
 
 exports.AccountCreationRequest = AccountCreationRequest;
 
-var AlreadySubscribedResponse =
-/*#__PURE__*/
-function () {
+var AlreadySubscribedResponse = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function AlreadySubscribedResponse() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, AlreadySubscribedResponse);
 
-    /** @private {?boolean} */
-    this.subscriberOrMember_ = data[1] == null ? null : data[1];
+    var base = includesLabel ? 1 : 0;
     /** @private {?boolean} */
 
-    this.linkRequested_ = data[2] == null ? null : data[2];
+    this.subscriberOrMember_ = data[base] == null ? null : data[base];
+    /** @private {?boolean} */
+
+    this.linkRequested_ = data[1 + base] == null ? null : data[1 + base];
   }
   /**
    * @return {?boolean}
@@ -7680,17 +7882,24 @@ function () {
       this.linkRequested_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.subscriberOrMember_, // field 1 - subscriber_or_member
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.subscriberOrMember_, // field 1 - subscriber_or_member
       this.linkRequested_ // field 2 - link_requested
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -7713,46 +7922,51 @@ function () {
 
 exports.AlreadySubscribedResponse = AlreadySubscribedResponse;
 
-var AnalyticsContext =
-/*#__PURE__*/
-function () {
+var AnalyticsContext = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function AnalyticsContext() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, AnalyticsContext);
 
-    /** @private {?string} */
-    this.embedderOrigin_ = data[1] == null ? null : data[1];
-    /** @private {?string} */
-
-    this.transactionId_ = data[2] == null ? null : data[2];
+    var base = includesLabel ? 1 : 0;
     /** @private {?string} */
 
-    this.referringOrigin_ = data[3] == null ? null : data[3];
+    this.embedderOrigin_ = data[base] == null ? null : data[base];
     /** @private {?string} */
 
-    this.utmSource_ = data[4] == null ? null : data[4];
+    this.transactionId_ = data[1 + base] == null ? null : data[1 + base];
     /** @private {?string} */
 
-    this.utmCampaign_ = data[5] == null ? null : data[5];
+    this.referringOrigin_ = data[2 + base] == null ? null : data[2 + base];
     /** @private {?string} */
 
-    this.utmMedium_ = data[6] == null ? null : data[6];
+    this.utmSource_ = data[3 + base] == null ? null : data[3 + base];
     /** @private {?string} */
 
-    this.sku_ = data[7] == null ? null : data[7];
+    this.utmCampaign_ = data[4 + base] == null ? null : data[4 + base];
+    /** @private {?string} */
+
+    this.utmMedium_ = data[5 + base] == null ? null : data[5 + base];
+    /** @private {?string} */
+
+    this.sku_ = data[6 + base] == null ? null : data[6 + base];
     /** @private {?boolean} */
 
-    this.readyToPay_ = data[8] == null ? null : data[8];
+    this.readyToPay_ = data[7 + base] == null ? null : data[7 + base];
     /** @private {!Array<string>} */
 
-    this.label_ = data[9] || [];
+    this.label_ = data[8 + base] || [];
     /** @private {?string} */
 
-    this.clientVersion_ = data[10] == null ? null : data[10];
+    this.clientVersion_ = data[9 + base] == null ? null : data[9 + base];
+    /** @private {?string} */
+
+    this.url_ = data[10 + base] == null ? null : data[10 + base];
   }
   /**
    * @return {?string}
@@ -7936,15 +8150,34 @@ function () {
       this.clientVersion_ = value;
     }
     /**
-     * @return {!Array}
+     * @return {?string}
+     */
+
+  }, {
+    key: "getUrl",
+    value: function getUrl() {
+      return this.url_;
+    }
+    /**
+     * @param {string} value
+     */
+
+  }, {
+    key: "setUrl",
+    value: function setUrl(value) {
+      this.url_ = value;
+    }
+    /**
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.embedderOrigin_, // field 1 - embedder_origin
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.embedderOrigin_, // field 1 - embedder_origin
       this.transactionId_, // field 2 - transaction_id
       this.referringOrigin_, // field 3 - referring_origin
       this.utmSource_, // field 4 - utm_source
@@ -7953,8 +8186,15 @@ function () {
       this.sku_, // field 7 - sku
       this.readyToPay_, // field 8 - ready_to_pay
       this.label_, // field 9 - label
-      this.clientVersion_ // field 10 - client_version
+      this.clientVersion_, // field 10 - client_version
+      this.url_ // field 11 - url
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -7977,22 +8217,24 @@ function () {
 
 exports.AnalyticsContext = AnalyticsContext;
 
-var AnalyticsEventMeta =
-/*#__PURE__*/
-function () {
+var AnalyticsEventMeta = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function AnalyticsEventMeta() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, AnalyticsEventMeta);
 
+    var base = includesLabel ? 1 : 0;
     /** @private {?EventOriginator} */
-    this.eventOriginator_ = data[1] == null ? null : data[1];
+
+    this.eventOriginator_ = data[base] == null ? null : data[base];
     /** @private {?boolean} */
 
-    this.isFromUserAction_ = data[2] == null ? null : data[2];
+    this.isFromUserAction_ = data[1 + base] == null ? null : data[1 + base];
   }
   /**
    * @return {?EventOriginator}
@@ -8032,17 +8274,24 @@ function () {
       this.isFromUserAction_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.eventOriginator_, // field 1 - event_originator
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.eventOriginator_, // field 1 - event_originator
       this.isFromUserAction_ // field 2 - is_from_user_action
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8065,28 +8314,30 @@ function () {
 
 exports.AnalyticsEventMeta = AnalyticsEventMeta;
 
-var AnalyticsRequest =
-/*#__PURE__*/
-function () {
+var AnalyticsRequest = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function AnalyticsRequest() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, AnalyticsRequest);
 
+    var base = includesLabel ? 1 : 0;
     /** @private {?AnalyticsContext} */
-    this.context_ = data[1] == null || data[1] == undefined ? null : new AnalyticsContext(data[1]);
+
+    this.context_ = data[base] == null || data[base] == undefined ? null : new AnalyticsContext(data[base], includesLabel);
     /** @private {?AnalyticsEvent} */
 
-    this.event_ = data[2] == null ? null : data[2];
+    this.event_ = data[1 + base] == null ? null : data[1 + base];
     /** @private {?AnalyticsEventMeta} */
 
-    this.meta_ = data[3] == null || data[3] == undefined ? null : new AnalyticsEventMeta(data[3]);
+    this.meta_ = data[2 + base] == null || data[2 + base] == undefined ? null : new AnalyticsEventMeta(data[2 + base], includesLabel);
     /** @private {?EventParams} */
 
-    this.params_ = data[4] == null || data[4] == undefined ? null : new EventParams(data[4]);
+    this.params_ = data[3 + base] == null || data[3 + base] == undefined ? null : new EventParams(data[3 + base], includesLabel);
   }
   /**
    * @return {?AnalyticsContext}
@@ -8162,19 +8413,26 @@ function () {
       this.params_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.context_ ? this.context_.toArray() : [], // field 1 - context
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.context_ ? this.context_.toArray(includeLabel) : [], // field 1 - context
       this.event_, // field 2 - event
-      this.meta_ ? this.meta_.toArray() : [], // field 3 - meta
-      this.params_ ? this.params_.toArray() : [] // field 4 - params
+      this.meta_ ? this.meta_.toArray(includeLabel) : [], // field 3 - meta
+      this.params_ ? this.params_.toArray(includeLabel) : [] // field 4 - params
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8197,19 +8455,215 @@ function () {
 
 exports.AnalyticsRequest = AnalyticsRequest;
 
-var EntitlementsResponse =
-/*#__PURE__*/
-function () {
+var EntitlementJwt = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
+   */
+  function EntitlementJwt() {
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+    _classCallCheck(this, EntitlementJwt);
+
+    var base = includesLabel ? 1 : 0;
+    /** @private {?string} */
+
+    this.jwt_ = data[base] == null ? null : data[base];
+    /** @private {?string} */
+
+    this.source_ = data[1 + base] == null ? null : data[1 + base];
+  }
+  /**
+   * @return {?string}
+   */
+
+
+  _createClass(EntitlementJwt, [{
+    key: "getJwt",
+    value: function getJwt() {
+      return this.jwt_;
+    }
+    /**
+     * @param {string} value
+     */
+
+  }, {
+    key: "setJwt",
+    value: function setJwt(value) {
+      this.jwt_ = value;
+    }
+    /**
+     * @return {?string}
+     */
+
+  }, {
+    key: "getSource",
+    value: function getSource() {
+      return this.source_;
+    }
+    /**
+     * @param {string} value
+     */
+
+  }, {
+    key: "setSource",
+    value: function setSource(value) {
+      this.source_ = value;
+    }
+    /**
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
+     * @override
+     */
+
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.jwt_, // field 1 - jwt
+      this.source_ // field 2 - source
+      ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
+    }
+    /**
+     * @return {string}
+     * @override
+     */
+
+  }, {
+    key: "label",
+    value: function label() {
+      return 'EntitlementJwt';
+    }
+  }]);
+
+  return EntitlementJwt;
+}();
+/**
+ * @implements {Message}
+ */
+
+
+exports.EntitlementJwt = EntitlementJwt;
+
+var EntitlementsRequest = /*#__PURE__*/function () {
+  /**
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
+   */
+  function EntitlementsRequest() {
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+    _classCallCheck(this, EntitlementsRequest);
+
+    var base = includesLabel ? 1 : 0;
+    /** @private {?EntitlementJwt} */
+
+    this.usedEntitlement_ = data[base] == null || data[base] == undefined ? null : new EntitlementJwt(data[base], includesLabel);
+    /** @private {?Timestamp} */
+
+    this.clientEventTime_ = data[1 + base] == null || data[1 + base] == undefined ? null : new Timestamp(data[1 + base], includesLabel);
+  }
+  /**
+   * @return {?EntitlementJwt}
+   */
+
+
+  _createClass(EntitlementsRequest, [{
+    key: "getUsedEntitlement",
+    value: function getUsedEntitlement() {
+      return this.usedEntitlement_;
+    }
+    /**
+     * @param {!EntitlementJwt} value
+     */
+
+  }, {
+    key: "setUsedEntitlement",
+    value: function setUsedEntitlement(value) {
+      this.usedEntitlement_ = value;
+    }
+    /**
+     * @return {?Timestamp}
+     */
+
+  }, {
+    key: "getClientEventTime",
+    value: function getClientEventTime() {
+      return this.clientEventTime_;
+    }
+    /**
+     * @param {!Timestamp} value
+     */
+
+  }, {
+    key: "setClientEventTime",
+    value: function setClientEventTime(value) {
+      this.clientEventTime_ = value;
+    }
+    /**
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
+     * @override
+     */
+
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.usedEntitlement_ ? this.usedEntitlement_.toArray(includeLabel) : [], // field 1 - used_entitlement
+      this.clientEventTime_ ? this.clientEventTime_.toArray(includeLabel) : [] // field 2 - client_event_time
+      ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
+    }
+    /**
+     * @return {string}
+     * @override
+     */
+
+  }, {
+    key: "label",
+    value: function label() {
+      return 'EntitlementsRequest';
+    }
+  }]);
+
+  return EntitlementsRequest;
+}();
+/**
+ * @implements {Message}
+ */
+
+
+exports.EntitlementsRequest = EntitlementsRequest;
+
+var EntitlementsResponse = /*#__PURE__*/function () {
+  /**
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function EntitlementsResponse() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, EntitlementsResponse);
 
+    var base = includesLabel ? 1 : 0;
     /** @private {?string} */
-    this.jwt_ = data[1] == null ? null : data[1];
+
+    this.jwt_ = data[base] == null ? null : data[base];
   }
   /**
    * @return {?string}
@@ -8231,16 +8685,23 @@ function () {
       this.jwt_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.jwt_ // field 1 - jwt
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.jwt_ // field 1 - jwt
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8263,28 +8724,33 @@ function () {
 
 exports.EntitlementsResponse = EntitlementsResponse;
 
-var EventParams =
-/*#__PURE__*/
-function () {
+var EventParams = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function EventParams() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, EventParams);
 
-    /** @private {?string} */
-    this.smartboxMessage_ = data[1] == null ? null : data[1];
+    var base = includesLabel ? 1 : 0;
     /** @private {?string} */
 
-    this.gpayTransactionId_ = data[2] == null ? null : data[2];
+    this.smartboxMessage_ = data[base] == null ? null : data[base];
+    /** @private {?string} */
+
+    this.gpayTransactionId_ = data[1 + base] == null ? null : data[1 + base];
     /** @private {?boolean} */
 
-    this.hadLogged_ = data[3] == null ? null : data[3];
+    this.hadLogged_ = data[2 + base] == null ? null : data[2 + base];
     /** @private {?string} */
 
-    this.sku_ = data[4] == null ? null : data[4];
+    this.sku_ = data[3 + base] == null ? null : data[3 + base];
+    /** @private {?string} */
+
+    this.oldTransactionId_ = data[4 + base] == null ? null : data[4 + base];
   }
   /**
    * @return {?string}
@@ -8360,19 +8826,45 @@ function () {
       this.sku_ = value;
     }
     /**
-     * @return {!Array}
+     * @return {?string}
+     */
+
+  }, {
+    key: "getOldTransactionId",
+    value: function getOldTransactionId() {
+      return this.oldTransactionId_;
+    }
+    /**
+     * @param {string} value
+     */
+
+  }, {
+    key: "setOldTransactionId",
+    value: function setOldTransactionId(value) {
+      this.oldTransactionId_ = value;
+    }
+    /**
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.smartboxMessage_, // field 1 - smartbox_message
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.smartboxMessage_, // field 1 - smartbox_message
       this.gpayTransactionId_, // field 2 - gpay_transaction_id
       this.hadLogged_, // field 3 - had_logged
-      this.sku_ // field 4 - sku
+      this.sku_, // field 4 - sku
+      this.oldTransactionId_ // field 5 - old_transaction_id
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8395,22 +8887,121 @@ function () {
 
 exports.EventParams = EventParams;
 
-var LinkSaveTokenRequest =
-/*#__PURE__*/
-function () {
+var FinishedLoggingResponse = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
+   */
+  function FinishedLoggingResponse() {
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+    _classCallCheck(this, FinishedLoggingResponse);
+
+    var base = includesLabel ? 1 : 0;
+    /** @private {?boolean} */
+
+    this.complete_ = data[base] == null ? null : data[base];
+    /** @private {?string} */
+
+    this.error_ = data[1 + base] == null ? null : data[1 + base];
+  }
+  /**
+   * @return {?boolean}
+   */
+
+
+  _createClass(FinishedLoggingResponse, [{
+    key: "getComplete",
+    value: function getComplete() {
+      return this.complete_;
+    }
+    /**
+     * @param {boolean} value
+     */
+
+  }, {
+    key: "setComplete",
+    value: function setComplete(value) {
+      this.complete_ = value;
+    }
+    /**
+     * @return {?string}
+     */
+
+  }, {
+    key: "getError",
+    value: function getError() {
+      return this.error_;
+    }
+    /**
+     * @param {string} value
+     */
+
+  }, {
+    key: "setError",
+    value: function setError(value) {
+      this.error_ = value;
+    }
+    /**
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
+     * @override
+     */
+
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.complete_, // field 1 - complete
+      this.error_ // field 2 - error
+      ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
+    }
+    /**
+     * @return {string}
+     * @override
+     */
+
+  }, {
+    key: "label",
+    value: function label() {
+      return 'FinishedLoggingResponse';
+    }
+  }]);
+
+  return FinishedLoggingResponse;
+}();
+/**
+ * @implements {Message}
+ */
+
+
+exports.FinishedLoggingResponse = FinishedLoggingResponse;
+
+var LinkSaveTokenRequest = /*#__PURE__*/function () {
+  /**
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function LinkSaveTokenRequest() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, LinkSaveTokenRequest);
 
-    /** @private {?string} */
-    this.authCode_ = data[1] == null ? null : data[1];
+    var base = includesLabel ? 1 : 0;
     /** @private {?string} */
 
-    this.token_ = data[2] == null ? null : data[2];
+    this.authCode_ = data[base] == null ? null : data[base];
+    /** @private {?string} */
+
+    this.token_ = data[1 + base] == null ? null : data[1 + base];
   }
   /**
    * @return {?string}
@@ -8450,17 +9041,24 @@ function () {
       this.token_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.authCode_, // field 1 - auth_code
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.authCode_, // field 1 - auth_code
       this.token_ // field 2 - token
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8483,19 +9081,21 @@ function () {
 
 exports.LinkSaveTokenRequest = LinkSaveTokenRequest;
 
-var LinkingInfoResponse =
-/*#__PURE__*/
-function () {
+var LinkingInfoResponse = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function LinkingInfoResponse() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, LinkingInfoResponse);
 
+    var base = includesLabel ? 1 : 0;
     /** @private {?boolean} */
-    this.requested_ = data[1] == null ? null : data[1];
+
+    this.requested_ = data[base] == null ? null : data[base];
   }
   /**
    * @return {?boolean}
@@ -8517,16 +9117,23 @@ function () {
       this.requested_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.requested_ // field 1 - requested
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.requested_ // field 1 - requested
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8549,31 +9156,33 @@ function () {
 
 exports.LinkingInfoResponse = LinkingInfoResponse;
 
-var SkuSelectedResponse =
-/*#__PURE__*/
-function () {
+var SkuSelectedResponse = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function SkuSelectedResponse() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, SkuSelectedResponse);
 
-    /** @private {?string} */
-    this.sku_ = data[1] == null ? null : data[1];
+    var base = includesLabel ? 1 : 0;
     /** @private {?string} */
 
-    this.oldSku_ = data[2] == null ? null : data[2];
+    this.sku_ = data[base] == null ? null : data[base];
+    /** @private {?string} */
+
+    this.oldSku_ = data[1 + base] == null ? null : data[1 + base];
     /** @private {?boolean} */
 
-    this.oneTime_ = data[3] == null ? null : data[3];
+    this.oneTime_ = data[2 + base] == null ? null : data[2 + base];
     /** @private {?string} */
 
-    this.playOffer_ = data[4] == null ? null : data[4];
+    this.playOffer_ = data[3 + base] == null ? null : data[3 + base];
     /** @private {?string} */
 
-    this.oldPlayOffer_ = data[5] == null ? null : data[5];
+    this.oldPlayOffer_ = data[4 + base] == null ? null : data[4 + base];
   }
   /**
    * @return {?string}
@@ -8667,20 +9276,27 @@ function () {
       this.oldPlayOffer_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.sku_, // field 1 - sku
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.sku_, // field 1 - sku
       this.oldSku_, // field 2 - old_sku
       this.oneTime_, // field 3 - one_time
       this.playOffer_, // field 4 - play_offer
       this.oldPlayOffer_ // field 5 - old_play_offer
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8703,19 +9319,21 @@ function () {
 
 exports.SkuSelectedResponse = SkuSelectedResponse;
 
-var SmartBoxMessage =
-/*#__PURE__*/
-function () {
+var SmartBoxMessage = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function SmartBoxMessage() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, SmartBoxMessage);
 
+    var base = includesLabel ? 1 : 0;
     /** @private {?boolean} */
-    this.isClicked_ = data[1] == null ? null : data[1];
+
+    this.isClicked_ = data[base] == null ? null : data[base];
   }
   /**
    * @return {?boolean}
@@ -8737,16 +9355,23 @@ function () {
       this.isClicked_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.isClicked_ // field 1 - is_clicked
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.isClicked_ // field 1 - is_clicked
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8769,19 +9394,21 @@ function () {
 
 exports.SmartBoxMessage = SmartBoxMessage;
 
-var SubscribeResponse =
-/*#__PURE__*/
-function () {
+var SubscribeResponse = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function SubscribeResponse() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, SubscribeResponse);
 
+    var base = includesLabel ? 1 : 0;
     /** @private {?boolean} */
-    this.subscribe_ = data[1] == null ? null : data[1];
+
+    this.subscribe_ = data[base] == null ? null : data[base];
   }
   /**
    * @return {?boolean}
@@ -8803,16 +9430,23 @@ function () {
       this.subscribe_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.subscribe_ // field 1 - subscribe
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.subscribe_ // field 1 - subscribe
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8835,19 +9469,118 @@ function () {
 
 exports.SubscribeResponse = SubscribeResponse;
 
-var ViewSubscriptionsResponse =
-/*#__PURE__*/
-function () {
+var Timestamp = /*#__PURE__*/function () {
   /**
-   * @param {!Array=} data
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
+   */
+  function Timestamp() {
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+    _classCallCheck(this, Timestamp);
+
+    var base = includesLabel ? 1 : 0;
+    /** @private {?number} */
+
+    this.seconds_ = data[base] == null ? null : data[base];
+    /** @private {?number} */
+
+    this.nanos_ = data[1 + base] == null ? null : data[1 + base];
+  }
+  /**
+   * @return {?number}
+   */
+
+
+  _createClass(Timestamp, [{
+    key: "getSeconds",
+    value: function getSeconds() {
+      return this.seconds_;
+    }
+    /**
+     * @param {number} value
+     */
+
+  }, {
+    key: "setSeconds",
+    value: function setSeconds(value) {
+      this.seconds_ = value;
+    }
+    /**
+     * @return {?number}
+     */
+
+  }, {
+    key: "getNanos",
+    value: function getNanos() {
+      return this.nanos_;
+    }
+    /**
+     * @param {number} value
+     */
+
+  }, {
+    key: "setNanos",
+    value: function setNanos(value) {
+      this.nanos_ = value;
+    }
+    /**
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
+     * @override
+     */
+
+  }, {
+    key: "toArray",
+    value: function toArray() {
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.seconds_, // field 1 - seconds
+      this.nanos_ // field 2 - nanos
+      ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
+    }
+    /**
+     * @return {string}
+     * @override
+     */
+
+  }, {
+    key: "label",
+    value: function label() {
+      return 'Timestamp';
+    }
+  }]);
+
+  return Timestamp;
+}();
+/**
+ * @implements {Message}
+ */
+
+
+exports.Timestamp = Timestamp;
+
+var ViewSubscriptionsResponse = /*#__PURE__*/function () {
+  /**
+   * @param {!Array<*>=} data
+   * @param {boolean=} includesLabel
    */
   function ViewSubscriptionsResponse() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var includesLabel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
     _classCallCheck(this, ViewSubscriptionsResponse);
 
+    var base = includesLabel ? 1 : 0;
     /** @private {?boolean} */
-    this.native_ = data[1] == null ? null : data[1];
+
+    this.native_ = data[base] == null ? null : data[base];
   }
   /**
    * @return {?boolean}
@@ -8869,16 +9602,23 @@ function () {
       this.native_ = value;
     }
     /**
-     * @return {!Array}
+     * @param {boolean} includeLabel
+     * @return {!Array<?>}
      * @override
      */
 
   }, {
     key: "toArray",
     value: function toArray() {
-      return [this.label(), // message label
-      this.native_ // field 1 - native
+      var includeLabel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var arr = [this.native_ // field 1 - native
       ];
+
+      if (includeLabel) {
+        arr.unshift(this.label());
+      }
+
+      return arr;
     }
     /**
      * @return {string}
@@ -8902,18 +9642,22 @@ var PROTO_MAP = {
   'AnalyticsContext': AnalyticsContext,
   'AnalyticsEventMeta': AnalyticsEventMeta,
   'AnalyticsRequest': AnalyticsRequest,
+  'EntitlementJwt': EntitlementJwt,
+  'EntitlementsRequest': EntitlementsRequest,
   'EntitlementsResponse': EntitlementsResponse,
   'EventParams': EventParams,
+  'FinishedLoggingResponse': FinishedLoggingResponse,
   'LinkSaveTokenRequest': LinkSaveTokenRequest,
   'LinkingInfoResponse': LinkingInfoResponse,
   'SkuSelectedResponse': SkuSelectedResponse,
   'SmartBoxMessage': SmartBoxMessage,
   'SubscribeResponse': SubscribeResponse,
+  'Timestamp': Timestamp,
   'ViewSubscriptionsResponse': ViewSubscriptionsResponse
 };
 /**
  * Utility to deserialize a buffer
- * @param {!Array} data
+ * @param {!Array<*>} data
  * @return {!Message}
  */
 
@@ -8945,7 +9689,7 @@ function getLabel(messageType) {
   return message.label();
 }
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8957,15 +9701,19 @@ var _api_messages = require("../proto/api_messages");
 
 var _clientEventManager = require("./client-event-manager");
 
+var _experimentFlags = require("./experiment-flags");
+
 var _dom = require("../utils/dom");
 
 var _services = require("./services");
+
+var _url = require("../utils/url");
 
 var _experiments = require("./experiments");
 
 var _string = require("../utils/string");
 
-var _url = require("../utils/url");
+var _log = require("../utils/log");
 
 var _style = require("../utils/style");
 
@@ -8977,19 +9725,45 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /** @const {!Object<string, string>} */
 var iframeStyles = {
-  display: 'none'
-};
+  opacity: '0',
+  position: 'absolute',
+  top: '-10px',
+  left: '-10px',
+  height: '1px',
+  width: '1px'
+}; // The initial iframe load takes ~500 ms.  We will wait at least that long
+// before a page redirect.  Subsequent logs are much faster.  We will wait at
+// most 100 ms.
 
-var AnalyticsService =
-/*#__PURE__*/
-function () {
+var MAX_FIRST_WAIT = 500;
+var MAX_WAIT = 200; // If we logged and rapidly redirected, we will add a short delay in case
+// a message hasn't been transmitted yet.
+
+var TIMEOUT_ERROR = 'AnalyticsService timed out waiting for a response';
+/**
+ *
+ * @param {!string} error
+ */
+
+function createErrorResponse(error) {
+  var response = new _api_messages.FinishedLoggingResponse();
+  response.setComplete(false);
+  response.setError(error);
+  return response;
+}
+
+var AnalyticsService = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
+   * @param {!./fetcher.Fetcher} fetcher
    */
-  function AnalyticsService(deps) {
+  function AnalyticsService(deps, fetcher) {
     _classCallCheck(this, AnalyticsService);
 
+    /** @private @const {!./fetcher.Fetcher} */
+    this.fetcher_ = fetcher;
     /** @private @const {!../model/doc.Doc} */
+
     this.doc_ = deps.doc();
     /** @private @const {!./deps.DepsDef} */
 
@@ -9003,24 +9777,16 @@ function () {
     /** @type {!HTMLIFrameElement} */
     (0, _dom.createElement)(this.doc_.getWin().document, 'iframe', {});
     (0, _style.setImportantStyles)(this.iframe_, iframeStyles);
-    /** @private @const {string} */
-
-    this.src_ = (0, _services.feUrl)('/serviceiframe');
-    /** @private @const {string} */
-
-    this.publicationId_ = deps.pageConfig().getPublicationId();
-    this.args_ = (0, _services.feArgs)({
-      publicationId: this.publicationId_
-    });
+    this.doc_.getBody().appendChild(this.getElement());
     /** @private @type {!boolean} */
 
-    this.everLogged_ = false;
+    this.everFinishedLog_ = false;
     /**
      * @private @const {!AnalyticsContext}
      */
 
     this.context_ = new _api_messages.AnalyticsContext();
-    this.context_.setTransactionId((0, _string.getUuid)());
+    this.setStaticContext_();
     /** @private {?Promise<!web-activities/activity-ports.ActivityIframePort>} */
 
     this.serviceReady_ = null;
@@ -9030,7 +9796,27 @@ function () {
     /** @private @const {!ClientEventManager} */
 
     this.eventManager_ = deps.eventManager();
-    this.eventManager_.registerEventListener(this.handleClientEvent_.bind(this));
+    this.eventManager_.registerEventListener(this.handleClientEvent_.bind(this)); // This code creates a 'promise to log' that we can use to ensure all
+    // logging is finished prior to redirecting the page.
+
+    /** @private {!number} */
+
+    this.unfinishedLogs_ = 0;
+    /** @private {?function(boolean)} */
+
+    this.loggingResolver_ = null;
+    /** @private {?Promise} */
+
+    this.promiseToLog_ = null; // If logging doesn't work don't force the user to wait
+
+    /** @private {!boolean} */
+
+    this.loggingBroken_ = false; // If logging exceeds the timeouts (see const comments above) don't make
+    // the user wait too long.
+
+    /** @private {?number} */
+
+    this.timeout_ = null;
   }
   /**
    * @param {string} transactionId
@@ -9040,7 +9826,17 @@ function () {
   _createClass(AnalyticsService, [{
     key: "setTransactionId",
     value: function setTransactionId(transactionId) {
+      var oldTransactionId = this.context_.getTransactionId();
       this.context_.setTransactionId(transactionId);
+
+      if (oldTransactionId != null && oldTransactionId != transactionId) {
+        var eventType = _api_messages.AnalyticsEvent.EVENT_NEW_TX_ID;
+        var eventParams = new _api_messages.EventParams();
+        eventParams.setOldTransactionId(oldTransactionId);
+        this.eventManager_.logSwgEvent(eventType,
+        /* isFromUserAction= */
+        true, eventParams);
+      }
     }
     /**
      * @return {string}
@@ -9071,6 +9867,15 @@ function () {
     key: "setSku",
     value: function setSku(sku) {
       this.context_.setSku(sku);
+    }
+    /**
+     * @param {string} url
+     */
+
+  }, {
+    key: "setUrl",
+    value: function setUrl(url) {
+      this.context_.setUrl(url);
     }
     /**
      * @param {!Array<string>} labels
@@ -9123,28 +9928,35 @@ function () {
      */
 
   }, {
-    key: "setContext_",
-    value: function setContext_() {
+    key: "setStaticContext_",
+    value: function setStaticContext_() {
+      var context = this.context_; // These values should all be available during page load.
+
+      if ((0, _experiments.isExperimentOn)(this.doc_.getWin(), _experimentFlags.ExperimentFlags.UPDATE_GOOGLE_TRANSACTION_ID)) {
+        context.setTransactionId((0, _string.getSwgTransactionId)());
+      } else {
+        context.setTransactionId((0, _string.getUuid)());
+      }
+
+      context.setReferringOrigin((0, _url.parseUrl)(this.getReferrer_()).origin);
+      context.setClientVersion('SwG 0.1.22-1602710098364');
+      context.setUrl((0, _url.getCanonicalUrl)(this.doc_));
       var utmParams = (0, _url.parseQueryString)(this.getQueryString_());
-      this.context_.setReferringOrigin((0, _url.parseUrl)(this.getReferrer_()).origin);
       var campaign = utmParams['utm_campaign'];
       var medium = utmParams['utm_medium'];
       var source = utmParams['utm_source'];
 
       if (campaign) {
-        this.context_.setUtmCampaign(campaign);
+        context.setUtmCampaign(campaign);
       }
 
       if (medium) {
-        this.context_.setUtmMedium(medium);
+        context.setUtmMedium(medium);
       }
 
       if (source) {
-        this.context_.setUtmSource(source);
+        context.setUtmSource(source);
       }
-
-      this.context_.setClientVersion('SwG 0.1.22-1576261074655');
-      this.addLabels((0, _experiments.getOnExperiments)(this.doc_.getWin()));
     }
     /**
      * @return {!Promise<!../components/activities.ActivityIframePort>}
@@ -9156,14 +9968,27 @@ function () {
       var _this = this;
 
       if (!this.serviceReady_) {
-        // TODO(sohanirao): Potentially do this even earlier
-        this.doc_.getBody().appendChild(this.getElement());
-        this.serviceReady_ = this.activityPorts_.openIframe(this.iframe_, this.src_, this.args_).then(function (port) {
-          _this.setContext_();
-
+        // Please note that currently openIframe reads the current analytics
+        // context and that it may not contain experiments activated late during
+        // the publishers code lifecycle.
+        this.addLabels((0, _experiments.getOnExperiments)(this.doc_.getWin()));
+        this.serviceReady_ = this.activityPorts_.openIframe(this.iframe_, (0, _services.feUrl)('/serviceiframe'), null, true).then(function (port) {
+          // Register a listener for the logging to code indicate it is
+          // finished logging.
+          port.on(_api_messages.FinishedLoggingResponse, _this.afterLogging_.bind(_this));
           return port.whenReady().then(function () {
+            // The publisher should be done setting experiments but runtime
+            // will forward them here if they aren't.
+            _this.addLabels((0, _experiments.getOnExperiments)(_this.doc_.getWin()));
+
             return port;
           });
+        }, function (message) {
+          // If the port doesn't open register that logging is broken so
+          // nothing is just waiting.
+          _this.loggingBroken_ = true;
+
+          _this.afterLogging_(createErrorResponse('Could not connect [' + message + ']'));
         });
       }
 
@@ -9194,16 +10019,6 @@ function () {
     key: "getContext",
     value: function getContext() {
       return this.context_;
-    }
-    /**
-     * Returns true if any logs have already be sent to the analytics server.
-     * @return {boolean}
-     */
-
-  }, {
-    key: "getHasLogged",
-    value: function getHasLogged() {
-      return this.everLogged_;
     }
     /**
      * @param {!../api/client-event-manager-api.ClientEvent} event
@@ -9271,14 +10086,102 @@ function () {
 
       if (_clientEventManager.ClientEventManager.isPublisherEvent(event) && !this.shouldLogPublisherEvents_() && !this.shouldAlwaysLogEvent_(event)) {
         return;
+      } // Register we sent a log, the port will call this.afterLogging_ when done.
+
+
+      this.unfinishedLogs_++;
+      this.lastAction_ = this.start().then(function (port) {
+        var analyticsRequest = _this2.createLogRequest_(event);
+
+        port.execute(analyticsRequest);
+
+        if ((0, _experiments.isExperimentOn)(_this2.doc_.getWin(), _experimentFlags.ExperimentFlags.LOGGING_BEACON)) {
+          _this2.sendBeacon_(analyticsRequest);
+        }
+      });
+    }
+    /**
+     * This function is called by the iframe after it sends the log to the server.
+     * @param {FinishedLoggingResponse=} response
+     */
+
+  }, {
+    key: "afterLogging_",
+    value: function afterLogging_(response) {
+      var success = response && response.getComplete() || false;
+      var error = response && response.getError() || 'Unknown logging Error';
+      var isTimeout = error === TIMEOUT_ERROR;
+
+      if (!success) {
+        (0, _log.log)('Error when logging: ' + error);
       }
 
-      this.lastAction_ = this.start().then(function (port) {
-        var request = _this2.createLogRequest_(event);
+      this.unfinishedLogs_--;
 
-        _this2.everLogged_ = true;
-        port.execute(request);
-      });
+      if (!isTimeout) {
+        this.everFinishedLog_ = true;
+      } // Nothing is waiting
+
+
+      if (this.loggingResolver_ === null) {
+        return;
+      }
+
+      if (this.unfinishedLogs_ === 0 || this.loggingBroken_ || isTimeout) {
+        if (this.timeout_ !== null) {
+          clearTimeout(this.timeout_);
+          this.timeout_ = null;
+        }
+
+        this.loggingResolver_(success);
+        this.promiseToLog_ = null;
+        this.loggingResolver_ = null;
+      }
+    }
+    /**
+     * Please note that logs sent after getLoggingPromise is called are not
+     * guaranteed to be finished when the promise is resolved.  You should call
+     * this function just prior to redirecting the page after SwG is finished
+     * logging.
+     * @return {!Promise}
+     */
+
+  }, {
+    key: "getLoggingPromise",
+    value: function getLoggingPromise() {
+      var _this3 = this;
+
+      if (this.unfinishedLogs_ === 0 || this.loggingBroken_) {
+        return Promise.resolve(true);
+      }
+
+      if (this.promiseToLog_ === null) {
+        this.promiseToLog_ = new Promise(function (resolve) {
+          _this3.loggingResolver_ = resolve;
+        }); // The promise above should not wait forever if things go wrong.  Let
+        // the user proceed!
+
+        var whenDone = this.afterLogging_.bind(this);
+        this.timeout_ = setTimeout(function () {
+          _this3.timeout_ = null;
+          whenDone(createErrorResponse(TIMEOUT_ERROR));
+        }, this.everFinishedLog_ ? MAX_WAIT : MAX_FIRST_WAIT);
+      }
+
+      return this.promiseToLog_;
+    }
+    /**
+     * A beacon is a rapid fire browser request that does not wait for a response
+     * from the server.  It is guaranteed to go out before the page redirects.
+     * @param {!AnalyticsRequest} analyticsRequest
+     */
+
+  }, {
+    key: "sendBeacon_",
+    value: function sendBeacon_(analyticsRequest) {
+      var pubId = encodeURIComponent(this.deps_.pageConfig().getPublicationId());
+      var url = (0, _services.serviceUrl)('/publication/' + pubId + '/clientlogs');
+      this.fetcher_.sendBeacon(url, analyticsRequest);
     }
   }]);
 
@@ -9287,7 +10190,7 @@ function () {
 
 exports.AnalyticsService = AnalyticsService;
 
-},{"../proto/api_messages":32,"../utils/dom":68,"../utils/string":77,"../utils/style":78,"../utils/url":80,"./client-event-manager":36,"./experiments":43,"./services":57}],34:[function(require,module,exports){
+},{"../proto/api_messages":33,"../utils/dom":72,"../utils/log":78,"../utils/string":82,"../utils/style":83,"../utils/url":85,"./client-event-manager":37,"./experiment-flags":43,"./experiments":44,"./services":60}],35:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9360,9 +10263,7 @@ var ButtonParams;
 
 exports.ButtonParams = ButtonParams;
 
-var ButtonApi =
-/*#__PURE__*/
-function () {
+var ButtonApi = /*#__PURE__*/function () {
   /**
    * @param {!../model/doc.Doc} doc
    * @param {!Promise<!./runtime.ConfiguredRuntime>} configuredRuntimePromise
@@ -9541,13 +10442,15 @@ function () {
 
 exports.ButtonApi = ButtonApi;
 
-},{"../proto/api_messages":32,"../utils/dom":68,"../utils/i18n":70,"./smart-button-api":58}],35:[function(require,module,exports){
+},{"../proto/api_messages":33,"../utils/dom":72,"../utils/i18n":75,"./smart-button-api":61}],36:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Callbacks = void 0;
+
+var _errors = require("../utils/errors");
 
 var _log = require("../utils/log");
 
@@ -9571,9 +10474,7 @@ var CallbackId = {
 /**
  */
 
-var Callbacks =
-/*#__PURE__*/
-function () {
+var Callbacks = /*#__PURE__*/function () {
   /**
    */
   function Callbacks() {
@@ -9584,6 +10485,9 @@ function () {
     /** @private @const {!Object<CallbackId, *>} */
 
     this.resultBuffer_ = {};
+    /** @private {?Promise} */
+
+    this.paymentResponsePromise_ = null;
   }
   /**
    * @param {function(!Promise<!../api/entitlements.Entitlements>)} callback
@@ -9751,9 +10655,18 @@ function () {
   }, {
     key: "triggerPaymentResponse",
     value: function triggerPaymentResponse(responsePromise) {
-      return this.trigger_(CallbackId.PAYMENT_RESPONSE, responsePromise.then(function (res) {
-        return res.clone();
-      }));
+      var _this = this;
+
+      this.paymentResponsePromise_ = responsePromise.then(function (res) {
+        _this.trigger_(CallbackId.PAYMENT_RESPONSE, Promise.resolve(res.clone()));
+      }, function (reason) {
+        if ((0, _errors.isCancelError)(reason)) {
+          return;
+        }
+
+        throw reason;
+      });
+      return !!this.callbacks_[CallbackId.PAYMENT_RESPONSE];
     }
     /**
      * @return {boolean}
@@ -9872,13 +10785,13 @@ function () {
   }, {
     key: "executeCallback_",
     value: function executeCallback_(id, callback, data) {
-      var _this = this;
+      var _this2 = this;
 
       // Always execute callbacks in a microtask.
       Promise.resolve().then(function () {
         callback(data);
 
-        _this.resetCallback_(id);
+        _this2.resetCallback_(id);
       });
     }
   }]);
@@ -9888,7 +10801,7 @@ function () {
 
 exports.Callbacks = Callbacks;
 
-},{"../utils/log":73}],36:[function(require,module,exports){
+},{"../utils/errors":74,"../utils/log":78}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9949,9 +10862,7 @@ function validateEvent(event) {
 /** @implements {../api/client-event-manager-api.ClientEventManagerApi} */
 
 
-var ClientEventManager =
-/*#__PURE__*/
-function () {
+var ClientEventManager = /*#__PURE__*/function () {
   _createClass(ClientEventManager, null, [{
     key: "isPublisherEvent",
 
@@ -10062,6 +10973,13 @@ function () {
         additionalParameters: eventParams
       });
     }
+    /** @return {!Promise<null>} */
+
+  }, {
+    key: "getReadyPromise",
+    value: function getReadyPromise() {
+      return this.isReadyPromise_;
+    }
   }]);
 
   return ClientEventManager;
@@ -10069,7 +10987,7 @@ function () {
 
 exports.ClientEventManager = ClientEventManager;
 
-},{"../api/client-event-manager-api":5,"../proto/api_messages":32,"../utils/log":73,"../utils/types":79}],37:[function(require,module,exports){
+},{"../api/client-event-manager-api":5,"../proto/api_messages":33,"../utils/log":78,"../utils/types":84}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10096,9 +11014,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * The class for Contributions flow.
  */
-var ContributionsFlow =
-/*#__PURE__*/
-function () {
+var ContributionsFlow = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest|undefined} options
@@ -10159,17 +11075,17 @@ function () {
       var isOneTime = response.getOneTime();
 
       if (sku) {
+        var
+        /** @type {../api/subscriptions.SubscriptionRequest} */
+        contributionRequest = {
+          'skuId': sku
+        };
+
         if (isOneTime) {
-          var
-          /** @type {../api/subscriptions.SubscriptionRequest} */
-          contributionRequest = {
-            skuId: sku,
-            oneTime: isOneTime
-          };
-          new _payFlow.PayStartFlow(this.deps_, contributionRequest, _subscriptions.ProductType.UI_CONTRIBUTION).start();
-        } else {
-          new _payFlow.PayStartFlow(this.deps_, sku, _subscriptions.ProductType.UI_CONTRIBUTION).start();
+          contributionRequest['oneTime'] = isOneTime;
         }
+
+        new _payFlow.PayStartFlow(this.deps_, contributionRequest, _subscriptions.ProductType.UI_CONTRIBUTION).start();
       }
     }
     /**
@@ -10198,7 +11114,7 @@ function () {
 
 exports.ContributionsFlow = ContributionsFlow;
 
-},{"../api/subscriptions":12,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"./pay-flow":53,"./services":57}],38:[function(require,module,exports){
+},{"../api/subscriptions":13,"../proto/api_messages":33,"../ui/activity-iframe-view":64,"./pay-flow":56,"./services":60}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10236,9 +11152,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * The flow to initiate deferred account process.
  * See `Subscriptions.completeDeferredAccountCreation` API.
  */
-var DeferredAccountFlow =
-/*#__PURE__*/
-function () {
+var DeferredAccountFlow = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {?../api/deferred-account-creation.DeferredAccountCreationRequest} options
@@ -10363,7 +11277,7 @@ function () {
 
 exports.DeferredAccountFlow = DeferredAccountFlow;
 
-},{"../api/deferred-account-creation":6,"../api/subscribe-response":11,"../api/subscriptions":12,"../api/user-data":13,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"../utils/errors":69,"../utils/jwt":72,"./pay-flow":53,"./services":57}],39:[function(require,module,exports){
+},{"../api/deferred-account-creation":6,"../api/subscribe-response":12,"../api/subscriptions":13,"../api/user-data":14,"../proto/api_messages":33,"../ui/activity-iframe-view":64,"../utils/errors":74,"../utils/jwt":77,"./pay-flow":56,"./services":60}],40:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10394,9 +11308,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 
 /** @interface */
-var DepsDef =
-/*#__PURE__*/
-function () {
+var DepsDef = /*#__PURE__*/function () {
   function DepsDef() {
     _classCallCheck(this, DepsDef);
   }
@@ -10499,7 +11411,7 @@ function () {
 
 exports.DepsDef = DepsDef;
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10507,15 +11419,31 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.EntitlementsManager = void 0;
 
+var _api_messages = require("../proto/api_messages");
+
 var _entitlements = require("../api/entitlements");
 
+var _subscriptions = require("../api/subscriptions");
+
 var _jwt = require("../utils/jwt");
+
+var _metering = require("../api/metering");
+
+var _meterToastApi = require("./meter-toast-api");
 
 var _toast = require("../ui/toast");
 
 var _services = require("../runtime/services");
 
+var _url = require("../utils/url");
+
+var _string = require("../utils/string");
+
 var _services2 = require("./services");
+
+var _dateUtils = require("../utils/date-utils");
+
+var _log = require("../utils/log");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10530,9 +11458,7 @@ var IS_READY_TO_PAY_STORAGE_KEY = 'isreadytopay';
 /**
  */
 
-var EntitlementsManager =
-/*#__PURE__*/
-function () {
+var EntitlementsManager = /*#__PURE__*/function () {
   /**
    * @param {!Window} win
    * @param {!../model/page-config.PageConfig} pageConfig
@@ -10609,27 +11535,36 @@ function () {
       this.storage_.remove(IS_READY_TO_PAY_STORAGE_KEY);
     }
     /**
-     * @return {string}
-     * @private
-     */
-
-  }, {
-    key: "getQueryString_",
-    value: function getQueryString_() {
-      return this.win_.location.search;
-    }
-    /**
-     * @param {?string=} encryptedDocumentKey
+     * @param {!GetEntitlementsParamsExternalDef=} params
      * @return {!Promise<!Entitlements>}
      */
 
   }, {
     key: "getEntitlements",
-    value: function getEntitlements(encryptedDocumentKey) {
+    value: function getEntitlements(params) {
       var _this = this;
 
+      // Remain backwards compatible by accepting
+      // `encryptedDocumentKey` string as a first param.
+      if (typeof params === 'string') {
+        // TODO: Delete the fallback if nobody needs it. Use a log to verify.
+        if (Date.now() > 1600289016959) {
+          // TODO: Remove the conditional check for this warning
+          // after the AMP extension is updated to pass an object.
+          (0, _log.warn)("[swg.js:getEntitlements]: If present, the first param of getEntitlements() should be an object of type GetEntitlementsParamsExternalDef.");
+        }
+
+        params = {
+          encryption: {
+            encryptedDocumentKey:
+            /**@type {string} */
+            params
+          }
+        };
+      }
+
       if (!this.responsePromise_) {
-        this.responsePromise_ = this.getEntitlementsFlow_(encryptedDocumentKey);
+        this.responsePromise_ = this.getEntitlementsFlow_(params);
       }
 
       return this.responsePromise_.then(function (response) {
@@ -10661,38 +11596,64 @@ function () {
       return false;
     }
     /**
-     * @param {?string=} encryptedDocumentKey
+     * Sends a pingback that marks a metering entitlement as used.
+     * @param {!Entitlements} entitlements
+     */
+
+  }, {
+    key: "sendPingback_",
+    value: function sendPingback_(entitlements) {
+      var entitlement = entitlements.getEntitlementForThis();
+
+      if (!entitlement || entitlement.source !== _entitlements.GOOGLE_METERING_SOURCE) {
+        return;
+      }
+
+      this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.EVENT_UNLOCKED_BY_METER, false);
+      var jwt = new _api_messages.EntitlementJwt();
+      jwt.setSource(entitlement.source);
+      jwt.setJwt(entitlement.subscriptionToken);
+      var message = new _api_messages.EntitlementsRequest();
+      message.setUsedEntitlement(jwt);
+      message.setClientEventTime((0, _dateUtils.toTimestamp)(Date.now()));
+      var url = '/publication/' + encodeURIComponent(this.publicationId_) + '/entitlements';
+      this.fetcher_.sendPost((0, _services2.serviceUrl)(url), message);
+    }
+    /**
+     * @param {!GetEntitlementsParamsExternalDef=} params
      * @return {!Promise<!Entitlements>}
      * @private
      */
 
   }, {
     key: "getEntitlementsFlow_",
-    value: function getEntitlementsFlow_(encryptedDocumentKey) {
+    value: function getEntitlementsFlow_(params) {
       var _this2 = this;
 
-      return this.fetchEntitlementsWithCaching_(encryptedDocumentKey).then(function (entitlements) {
+      return this.fetchEntitlementsWithCaching_(params).then(function (entitlements) {
         _this2.onEntitlementsFetched_(entitlements);
 
         return entitlements;
       });
     }
     /**
-     * @param {?string=} encryptedDocumentKey
+     * @param {!GetEntitlementsParamsExternalDef=} params
      * @return {!Promise<!Entitlements>}
      * @private
      */
 
   }, {
     key: "fetchEntitlementsWithCaching_",
-    value: function fetchEntitlementsWithCaching_(encryptedDocumentKey) {
+    value: function fetchEntitlementsWithCaching_(params) {
       var _this3 = this;
 
       return Promise.all([this.storage_.get(ENTS_STORAGE_KEY), this.storage_.get(IS_READY_TO_PAY_STORAGE_KEY)]).then(function (cachedValues) {
         var raw = cachedValues[0];
         var irtp = cachedValues[1]; // Try cache first.
 
-        if (raw && !encryptedDocumentKey) {
+        var needsDecryption = !!(params && params.encryption);
+
+        if (raw && !needsDecryption) {
           var cached = _this3.getValidJwtEntitlements_(raw,
           /* requireNonExpired */
           true, irtpStringToBoolean(irtp));
@@ -10705,9 +11666,9 @@ function () {
         } // If cache didn't match, perform fetch.
 
 
-        return _this3.fetchEntitlements_(encryptedDocumentKey).then(function (ents) {
-          // If entitlements match the product, store them in cache.
-          if (ents && ents.enablesThis() && ents.raw) {
+        return _this3.fetchEntitlements_(params).then(function (ents) {
+          // If the product is enabled by cacheable entitlements, store them in cache.
+          if (ents && ents.enablesThisWithCacheableEntitlements() && ents.raw) {
             _this3.storage_.set(ENTS_STORAGE_KEY, ents.raw);
           }
 
@@ -10716,14 +11677,14 @@ function () {
       });
     }
     /**
-     * @param {?string=} encryptedDocumentKey
+     * @param {!GetEntitlementsParamsExternalDef=} params
      * @return {!Promise<!Entitlements>}
      * @private
      */
 
   }, {
     key: "fetchEntitlements_",
-    value: function fetchEntitlements_(encryptedDocumentKey) {
+    value: function fetchEntitlements_(params) {
       var _this4 = this;
 
       // TODO(dvoytenko): Replace retries with consistent fetch.
@@ -10732,7 +11693,7 @@ function () {
 
       var attempt = function attempt() {
         positiveRetries--;
-        return _this4.fetch_(encryptedDocumentKey).then(function (entitlements) {
+        return _this4.fetch_(params).then(function (entitlements) {
           if (entitlements.enablesThis() || positiveRetries <= 0) {
             return entitlements;
           }
@@ -10859,7 +11820,7 @@ function () {
   }, {
     key: "createEntitlements_",
     value: function createEntitlements_(raw, json, isReadyToPay, decryptedDocumentKey) {
-      return new _entitlements.Entitlements(SERVICE_ID, raw, _entitlements.Entitlement.parseListFromJson(json), this.pageConfig_.getProductId(), this.ack_.bind(this), isReadyToPay, decryptedDocumentKey);
+      return new _entitlements.Entitlements(SERVICE_ID, raw, _entitlements.Entitlement.parseListFromJson(json), this.pageConfig_.getProductId(), this.ack_.bind(this), this.consume_.bind(this), isReadyToPay, decryptedDocumentKey);
     }
     /**
      * @param {!Entitlements} entitlements
@@ -10879,53 +11840,49 @@ function () {
       } // Notify on the received entitlements.
 
 
-      this.deps_.callbacks().triggerEntitlementsResponse(Promise.resolve(entitlements)); // Show a toast if needed.
+      this.deps_.callbacks().triggerEntitlementsResponse(Promise.resolve(entitlements));
+      var entitlement = entitlements.getEntitlementForThis();
 
-      this.maybeShowToast_(entitlements);
+      if (!entitlement) {
+        this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.EVENT_NO_ENTITLEMENTS, false);
+        return;
+      }
+
+      this.maybeShowToast_(entitlement);
     }
     /**
-     * @param {!Entitlements} entitlements
+     * @param {!Entitlement} entitlement
      * @return {!Promise}
      * @private
      */
 
   }, {
     key: "maybeShowToast_",
-    value: function maybeShowToast_(entitlements) {
+    value: function maybeShowToast_(entitlement) {
       var _this5 = this;
 
-      var entitlement = entitlements.getEntitlementForThis();
-
-      if (!entitlement) {
+      // Don't show toast for metering entitlements.
+      if (entitlement.source === _entitlements.GOOGLE_METERING_SOURCE) {
+        this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.EVENT_HAS_METERING_ENTITLEMENTS, false);
         return Promise.resolve();
-      } // Check if storage bit is set. It's only set by the `Entitlements.ack`
-      // method.
+      }
 
+      this.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.EVENT_UNLOCKED_BY_SUBSCRIPTION, false); // Check if storage bit is set. It's only set by the `Entitlements.ack` method.
 
       return this.storage_.get(TOAST_STORAGE_KEY).then(function (value) {
-        if (value == '1') {
-          // Already shown;
+        var toastWasShown = value === '1';
+
+        if (toastWasShown) {
           return;
-        }
+        } // Show toast.
 
-        if (entitlement) {
-          _this5.showToast_(entitlement);
-        }
+
+        var source = entitlement.source || 'google';
+        return new _toast.Toast(_this5.deps_, (0, _services.feUrl)('/toastiframe'), (0, _services.feArgs)({
+          'publicationId': _this5.publicationId_,
+          'source': source
+        })).open();
       });
-    }
-    /**
-     * @param {!Entitlement} entitlement
-     * @private
-     */
-
-  }, {
-    key: "showToast_",
-    value: function showToast_(entitlement) {
-      var source = entitlement.source || 'google';
-      return new _toast.Toast(this.deps_, (0, _services.feUrl)('/toastiframe'), (0, _services.feArgs)({
-        'publicationId': this.publicationId_,
-        'source': source
-      })).open();
     }
     /**
      * @param {!Entitlements} entitlements
@@ -10940,25 +11897,112 @@ function () {
       }
     }
     /**
-     * @param {?string=} encryptedDocumentKey
+     * @param {!Entitlements} entitlements
+     * @param {?Function=} onCloseDialog Called after the user closes the dialog.
+     * @private
+     */
+
+  }, {
+    key: "consume_",
+    value: function consume_(entitlements, onCloseDialog) {
+      var _this6 = this;
+
+      if (entitlements.enablesThisWithGoogleMetering()) {
+        var meterToastApi = new _meterToastApi.MeterToastApi(this.deps_);
+        meterToastApi.setOnCancelCallback(function () {
+          if (onCloseDialog) {
+            onCloseDialog();
+          }
+
+          _this6.sendPingback_(entitlements);
+        });
+        return meterToastApi.start();
+      }
+    }
+    /**
+     * @param {!GetEntitlementsParamsExternalDef=} params
      * @return {!Promise<!Entitlements>}
      * @private
      */
 
   }, {
     key: "fetch_",
-    value: function fetch_(encryptedDocumentKey) {
-      var _this6 = this;
+    value: function fetch_(params) {
+      var _this7 = this;
 
-      var url = '/publication/' + encodeURIComponent(this.publicationId_) + '/entitlements';
+      return (0, _string.hash)((0, _url.getCanonicalUrl)(this.deps_.doc())).then(function (hashedCanonicalUrl) {
+        var urlParams = []; // Add encryption param.
 
-      if (encryptedDocumentKey) {
-        //TODO(chenshay): Make this a 'Post'.
-        url += '?crypt=' + encodeURIComponent(encryptedDocumentKey);
-      }
+        if (params && params.encryption) {
+          urlParams.push('crypt=' + encodeURIComponent(params.encryption.encryptedDocumentKey));
+        } // Add metering params.
 
-      return this.fetcher_.fetchCredentialedJson((0, _services2.serviceUrl)(url)).then(function (json) {
-        return _this6.parseEntitlements(json);
+
+        var productId = _this7.pageConfig_.getProductId();
+
+        if (productId && params && params.metering && params.metering.state) {
+          /** @type {!GetEntitlementsParamsInternalDef} */
+          var encodableParams = {
+            metering: {
+              clientTypes: [_metering.MeterClientTypes.LICENSED_BY_GOOGLE],
+              owner: productId,
+              resource: {
+                hashedCanonicalUrl: hashedCanonicalUrl
+              },
+              state: {
+                id: params.metering.state.id,
+                attributes: []
+              }
+            }
+          }; // Add attributes.
+
+          var standardAttributes = params.metering.state.standardAttributes;
+
+          if (standardAttributes) {
+            Object.keys(standardAttributes).forEach(function (key) {
+              encodableParams.metering.state.attributes.push({
+                name: 'standard_' + key,
+                timestamp: standardAttributes[key].timestamp
+              });
+            });
+          }
+
+          var customAttributes = params.metering.state.customAttributes;
+
+          if (customAttributes) {
+            Object.keys(customAttributes).forEach(function (key) {
+              encodableParams.metering.state.attributes.push({
+                name: 'custom_' + key,
+                timestamp: customAttributes[key].timestamp
+              });
+            });
+          } // Encode params.
+
+
+          var encodedParams = btoa(JSON.stringify(encodableParams));
+          urlParams.push('encodedParams=' + encodedParams);
+        } // Build URL.
+
+
+        var url = '/publication/' + encodeURIComponent(_this7.publicationId_) + '/entitlements';
+
+        if (urlParams.length > 0) {
+          url += '?' + urlParams.join('&');
+        }
+
+        return (0, _services2.serviceUrl)(url);
+      }).then(function (url) {
+        _this7.deps_.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_GET_ENTITLEMENTS, false);
+
+        return _this7.fetcher_.fetchCredentialedJson(url);
+      }).then(function (json) {
+        if (json.errorMessages && json.errorMessages.length > 0) {
+          json.errorMessages.forEach(function (errorMessage) {
+            (0, _log.warn)('SwG Entitlements: ' + errorMessage);
+          });
+        }
+
+        return _this7.parseEntitlements(json);
       });
     }
   }]);
@@ -10989,7 +12033,7 @@ function irtpStringToBoolean(value) {
   }
 }
 
-},{"../api/entitlements":7,"../runtime/services":57,"../ui/toast":63,"../utils/jwt":72,"./services":57}],41:[function(require,module,exports){
+},{"../api/entitlements":7,"../api/metering":9,"../api/subscriptions":13,"../proto/api_messages":33,"../runtime/services":60,"../ui/toast":66,"../utils/date-utils":70,"../utils/jwt":77,"../utils/log":78,"../utils/string":82,"../utils/url":85,"./meter-toast-api":52,"./services":60}],42:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11031,7 +12075,7 @@ function analyticsEventToPublisherEvent(analyticsEvent) {
   return AnalyticsEventToPublisherEvent[analyticsEvent];
 }
 
-},{"../api/logger-api":8,"../proto/api_messages":32}],42:[function(require,module,exports){
+},{"../api/logger-api":8,"../proto/api_messages":33}],43:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11060,18 +12104,6 @@ exports.ExperimentFlags = void 0;
  */
 var ExperimentFlags = {
   /**
-   * Enables GPay API in SwG.
-   * Cleanup issue: #406.
-   */
-  GPAY_API: 'gpay-api',
-
-  /**
-   * Enables GPay native support.
-   * Cleanup issue: #441.
-   */
-  GPAY_NATIVE: 'gpay-native',
-
-  /**
    * Enables the feature that allows you to replace one subscription
    * for another in the subscribe() API.
    */
@@ -11096,11 +12128,29 @@ var ExperimentFlags = {
   /**
    * Enables using new Activities APIs
    */
-  HEJIRA: 'hejira'
+  HEJIRA: 'hejira',
+
+  /** Enables logging to both the new SwG Clearcut service and the pre-existing
+   *  Clearcut iframe while we verify the new logging system works.
+   *  Publishers should not activate this experiment.
+   */
+  LOGGING_BEACON: 'logging-beacon',
+
+  /** Enables googleTransactionID change. With the experiment on the ID is
+   *  changed from '<uuid>' to '<uuid>.swg'.
+   */
+  UPDATE_GOOGLE_TRANSACTION_ID: 'update-google-transaction-id',
+
+  /**
+   * Enables PayClient to be instantiated within start() instead of upon instantiation.
+   * Also moves google preconnects to Runtime from PayClient, and runs Pay
+   * preloads upon start() instead of within the ctor.
+   */
+  PAY_CLIENT_LAZYLOAD: 'pay-client-lazyload'
 };
 exports.ExperimentFlags = ExperimentFlags;
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11362,7 +12412,7 @@ function getOnExperiments(win) {
   return experiments;
 }
 
-},{"../utils/errors":69,"../utils/url":80}],44:[function(require,module,exports){
+},{"../utils/errors":74,"../utils/url":85}],45:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11371,6 +12421,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.XhrFetcher = exports.Fetcher = void 0;
 
 var _xhr = require("../utils/xhr");
+
+var _url = require("../utils/url");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11381,9 +12433,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @interface
  */
-var Fetcher =
-/*#__PURE__*/
-function () {
+var Fetcher = /*#__PURE__*/function () {
   function Fetcher() {
     _classCallCheck(this, Fetcher);
   }
@@ -11405,6 +12455,25 @@ function () {
   }, {
     key: "fetch",
     value: function fetch(unusedUrl, unusedInit) {}
+    /**
+     * POST data to a URL endpoint, do not wait for a response.
+     * @param {!string} unusedUrl
+     * @param {!string|!Object} unusedData
+     */
+
+  }, {
+    key: "sendBeacon",
+    value: function sendBeacon(unusedUrl, unusedData) {}
+    /**
+     * POST data to a URL endpoint, get a Promise for a response
+     * @param {!string} unusedUrl
+     * @param {!string|!Object} unusedMessage
+     * @return {!Promise<!../utils/xhr.FetchResponse>}
+     */
+
+  }, {
+    key: "sendPost",
+    value: function sendPost(unusedUrl, unusedMessage) {}
   }]);
 
   return Fetcher;
@@ -11416,9 +12485,7 @@ function () {
 
 exports.Fetcher = Fetcher;
 
-var XhrFetcher =
-/*#__PURE__*/
-function () {
+var XhrFetcher = /*#__PURE__*/function () {
   /**
    * @param {!Window} win
    */
@@ -11443,8 +12510,25 @@ function () {
         },
         credentials: 'include'
       };
-      return this.xhr_.fetch(url, init).then(function (response) {
+      return this.fetch(url, init).then(function (response) {
         return response.json();
+      });
+    }
+  }, {
+    key: "sendPost",
+    value: function sendPost(url, message) {
+      var init =
+      /** @type {!../utils/xhr.FetchInitDef} */
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        credentials: 'include',
+        body: 'f.req=' + (0, _url.serializeProtoMessageForUrl)(message)
+      };
+      return this.fetch(url, init).then(function (response) {
+        return response && response.json() || {};
       });
     }
     /** @override */
@@ -11454,6 +12538,23 @@ function () {
     value: function fetch(url, init) {
       return this.xhr_.fetch(url, init);
     }
+    /** @override */
+
+  }, {
+    key: "sendBeacon",
+    value: function sendBeacon(url, data) {
+      if (navigator.sendBeacon) {
+        var headers = {
+          type: 'application/x-www-form-urlencoded;charset=UTF-8'
+        };
+        var blob = new Blob(['f.req=' + (0, _url.serializeProtoMessageForUrl)(data)], headers);
+        navigator.sendBeacon(url, blob);
+        return;
+      } // Only newer browsers support beacon.  Fallback to standard XHR POST.
+
+
+      this.sendPost(url, data);
+    }
   }]);
 
   return XhrFetcher;
@@ -11461,7 +12562,7 @@ function () {
 
 exports.XhrFetcher = XhrFetcher;
 
-},{"../utils/xhr":81}],45:[function(require,module,exports){
+},{"../utils/url":85,"../utils/xhr":86}],46:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11493,9 +12594,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /**
  */
-var JsError =
-/*#__PURE__*/
-function () {
+var JsError = /*#__PURE__*/function () {
   /**
    * @param {!../model/doc.Doc} doc
    */
@@ -11599,7 +12698,7 @@ function duplicateErrorIfNecessary(error) {
   return e;
 }
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11630,9 +12729,7 @@ var LINK_REQUEST_ID = 'swg-link';
  * The flow to link an existing publisher account to an existing google account.
  */
 
-var LinkbackFlow =
-/*#__PURE__*/
-function () {
+var LinkbackFlow = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
@@ -11688,9 +12785,7 @@ function () {
 
 exports.LinkbackFlow = LinkbackFlow;
 
-var LinkCompleteFlow =
-/*#__PURE__*/
-function () {
+var LinkCompleteFlow = /*#__PURE__*/function () {
   _createClass(LinkCompleteFlow, null, [{
     key: "configurePending",
 
@@ -11847,9 +12942,7 @@ function () {
 
 exports.LinkCompleteFlow = LinkCompleteFlow;
 
-var LinkSaveFlow =
-/*#__PURE__*/
-function () {
+var LinkSaveFlow = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.SaveSubscriptionRequestCallback} callback
@@ -12033,7 +13126,7 @@ function () {
 
 exports.LinkSaveFlow = LinkSaveFlow;
 
-},{"../api/subscriptions":12,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"../utils/activity-utils":64,"../utils/errors":69,"./services":57}],47:[function(require,module,exports){
+},{"../api/subscriptions":13,"../proto/api_messages":33,"../ui/activity-iframe-view":64,"../utils/activity-utils":67,"../utils/errors":74,"./services":60}],48:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12058,9 +13151,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @implements {../api/logger-api.LoggerApi}
  */
-var Logger =
-/*#__PURE__*/
-function () {
+var Logger = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
@@ -12119,8 +13210,7 @@ function () {
         if (!(0, _types.isObject)(userEvent.data)) {
           throw new Error('Event data must be an Object(' + userEvent.data + ')');
         } else {
-          data = {};
-          Object.assign(data, userEvent.data);
+          data = Object.assign({}, data, userEvent.data);
         }
       }
 
@@ -12150,7 +13240,7 @@ function () {
 
 exports.Logger = Logger;
 
-},{"../api/logger-api":8,"../proto/api_messages":32,"../utils/types":79,"./event-type-mapping":41}],48:[function(require,module,exports){
+},{"../api/logger-api":8,"../proto/api_messages":33,"../utils/types":84,"./event-type-mapping":42}],49:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12170,9 +13260,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var LoginNotificationApi =
-/*#__PURE__*/
-function () {
+var LoginNotificationApi = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
@@ -12199,8 +13287,7 @@ function () {
       publicationId: deps.pageConfig().getPublicationId(),
       productId: deps.pageConfig().getProductId(),
       // No need to ask the user. Just tell them you're logging them in.
-      userConsent: false // TODO(chenshay): Pass entitlements value here.
-
+      userConsent: false
     }),
     /* shouldFadeBody */
     true);
@@ -12234,7 +13321,7 @@ function () {
 
 exports.LoginNotificationApi = LoginNotificationApi;
 
-},{"../api/subscriptions":12,"../ui/activity-iframe-view":61,"./services":57}],49:[function(require,module,exports){
+},{"../api/subscriptions":13,"../ui/activity-iframe-view":64,"./services":60}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12256,9 +13343,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var LoginPromptApi =
-/*#__PURE__*/
-function () {
+var LoginPromptApi = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
@@ -12285,8 +13370,7 @@ function () {
       publicationId: deps.pageConfig().getPublicationId(),
       productId: deps.pageConfig().getProductId(),
       // First ask the user if they want us to log them in.
-      userConsent: true // TODO(chenshay): Pass entitlements value here.
-
+      userConsent: true
     }),
     /* shouldFadeBody */
     true);
@@ -12324,7 +13408,168 @@ function () {
 
 exports.LoginPromptApi = LoginPromptApi;
 
-},{"../api/subscriptions":12,"../ui/activity-iframe-view":61,"../utils/errors":69,"./services":57}],50:[function(require,module,exports){
+},{"../api/subscriptions":13,"../ui/activity-iframe-view":64,"../utils/errors":74,"./services":60}],51:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MeterRegwallApi = void 0;
+
+var _activityIframeView = require("../ui/activity-iframe-view");
+
+var _subscriptions = require("../api/subscriptions");
+
+var _services = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var MeterRegwallApi = /*#__PURE__*/function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   * @param {{ gsiUrl: string, alreadyRegisteredUrl: string}} params
+   */
+  function MeterRegwallApi(deps, params) {
+    _classCallCheck(this, MeterRegwallApi);
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+    /** @private @const {!Window} */
+
+    this.win_ = deps.win();
+    /** @private @const {!../components/activities.ActivityPorts} */
+
+    this.activityPorts_ = deps.activities();
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+
+    this.dialogManager_ = deps.dialogManager();
+    /** @private @const {!ActivityIframeView} */
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/meterregwalliframe'), (0, _services.feArgs)({
+      publicationId: deps.pageConfig().getPublicationId(),
+      productId: deps.pageConfig().getProductId(),
+      gsiUrl: params.gsiUrl,
+      alreadyRegisteredUrl: params.alreadyRegisteredUrl
+    }),
+    /* shouldFadeBody */
+    true);
+  }
+  /**
+   * Prompts the user to register to the meter.
+   * @return {!Promise}
+   */
+
+
+  _createClass(MeterRegwallApi, [{
+    key: "start",
+    value: function start() {
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SHOW_METER_REGWALL);
+      return this.dialogManager_.openView(this.activityIframeView_);
+    }
+  }]);
+
+  return MeterRegwallApi;
+}();
+
+exports.MeterRegwallApi = MeterRegwallApi;
+
+},{"../api/subscriptions":13,"../ui/activity-iframe-view":64,"./services":60}],52:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MeterToastApi = void 0;
+
+var _activityIframeView = require("../ui/activity-iframe-view");
+
+var _subscriptions = require("../api/subscriptions");
+
+var _api_messages = require("../proto/api_messages");
+
+var _services = require("./services");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var MeterToastApi = /*#__PURE__*/function () {
+  /**
+   * @param {!./deps.DepsDef} deps
+   */
+  function MeterToastApi(deps) {
+    _classCallCheck(this, MeterToastApi);
+
+    /** @private @const {!./deps.DepsDef} */
+    this.deps_ = deps;
+    /** @private @const {!Window} */
+
+    this.win_ = deps.win();
+    /** @private @const {!../components/activities.ActivityPorts} */
+
+    this.activityPorts_ = deps.activities();
+    /** @private @const {!../components/dialog-manager.DialogManager} */
+
+    this.dialogManager_ = deps.dialogManager();
+    /** @private @const {!ActivityIframeView} */
+
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/metertoastiframe'), (0, _services.feArgs)({
+      publicationId: deps.pageConfig().getPublicationId(),
+      productId: deps.pageConfig().getProductId(),
+      hasSubscriptionCallback: deps.callbacks().hasSubscribeRequestCallback()
+    }),
+    /* shouldFadeBody */
+    false);
+  }
+  /**
+   * Shows the user the metering toast.
+   * @return {!Promise}
+   */
+
+
+  _createClass(MeterToastApi, [{
+    key: "start",
+    value: function start() {
+      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SHOW_METER_TOAST);
+      this.activityIframeView_.on(_api_messages.ViewSubscriptionsResponse, this.startNativeFlow_.bind(this));
+      return this.dialogManager_.openView(this.activityIframeView_);
+    }
+    /**
+     * Sets a callback function to happen onCancel.
+     * @param {function()} onCancelCallback
+     */
+
+  }, {
+    key: "setOnCancelCallback",
+    value: function setOnCancelCallback(onCancelCallback) {
+      this.activityIframeView_.onCancel(onCancelCallback);
+    }
+    /**
+     * @param {ViewSubscriptionsResponse} response
+     * @private
+     */
+
+  }, {
+    key: "startNativeFlow_",
+    value: function startNativeFlow_(response) {
+      if (response.getNative()) {
+        this.deps_.callbacks().triggerSubscribeRequest();
+      }
+    }
+  }]);
+
+  return MeterToastApi;
+}();
+
+exports.MeterToastApi = MeterToastApi;
+
+},{"../api/subscriptions":13,"../proto/api_messages":33,"../ui/activity-iframe-view":64,"./services":60}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12340,9 +13585,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var OffersApi =
-/*#__PURE__*/
-function () {
+var OffersApi = /*#__PURE__*/function () {
   /**
    * @param {!../model/page-config.PageConfig} config
    * @param {!./fetcher.Fetcher} fetcher
@@ -12395,7 +13638,7 @@ function () {
 
 exports.OffersApi = OffersApi;
 
-},{"./services":57}],51:[function(require,module,exports){
+},{"./services":60}],54:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12441,9 +13684,7 @@ var ALL_SKUS = '*';
  * The class for Offers flow.
  */
 
-var OffersFlow =
-/*#__PURE__*/
-function () {
+var OffersFlow = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest|undefined} options
@@ -12471,23 +13712,16 @@ function () {
       isClosable = false; // Default is to hide Close button.
     }
 
-    var feArgsObj = {
-      'productId': deps.pageConfig().getProductId(),
-      'publicationId': deps.pageConfig().getPublicationId(),
+    var feArgsObj = deps.activities().addDefaultArguments({
       'showNative': deps.callbacks().hasSubscribeRequestCallback(),
       'productType': _subscriptions.ProductType.SUBSCRIPTION,
       'list': options && options.list || 'default',
       'skus': options && options.skus || null,
-      'isClosable': isClosable,
-      'analyticsContext': deps.analytics().getContext().toArray()
-    };
-    this.prorationMode = feArgsObj['replaceSkuProrationMode'] || undefined;
+      'isClosable': isClosable
+    });
 
     if (options && options.oldSku) {
       feArgsObj['oldSku'] = options.oldSku;
-    }
-
-    if (feArgsObj['oldSku']) {
       (0, _log.assert)(feArgsObj['skus'], 'Need a sku list if old sku is provided!'); // Remove old sku from offers if in list.
 
       var skuList = feArgsObj['skus'];
@@ -12511,11 +13745,10 @@ function () {
       // Otherwise we might accidentally block a regular subscription request.
 
       if (_oldSku) {
-        new _payFlow.PayStartFlow(this.deps_, {
-          skuId: sku,
-          oldSku: _oldSku,
-          replaceSkuProrationMode: this.prorationMode
-        }).start();
+        var skuSelectedResponse = new _api_messages.SkuSelectedResponse();
+        skuSelectedResponse.setSku(sku);
+        skuSelectedResponse.setOldSku(_oldSku);
+        this.startPayFlow_(skuSelectedResponse);
         return;
       }
     }
@@ -12525,7 +13758,7 @@ function () {
     this.skus_ = feArgsObj['skus'] || [ALL_SKUS];
     /** @private @const {!ActivityIframeView} */
 
-    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/offersiframe'), (0, _services.feArgs)(feArgsObj),
+    this.activityIframeView_ = new _activityIframeView.ActivityIframeView(this.win_, this.activityPorts_, (0, _services.feUrl)('/offersiframe'), feArgsObj,
     /* shouldFadeBody */
     true);
   }
@@ -12539,25 +13772,22 @@ function () {
     key: "startPayFlow_",
     value: function startPayFlow_(response) {
       var sku = response.getSku();
-      var oldSku = response.getOldSku();
 
       if (sku) {
+        var
+        /** @type {../api/subscriptions.SubscriptionRequest} */
+        subscriptionRequest = {
+          'skuId': sku
+        };
+        var oldSku = response.getOldSku();
+
         if (oldSku) {
+          subscriptionRequest['oldSku'] = oldSku;
           this.deps_.analytics().setSku(oldSku);
         }
 
         this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_OFFER_SELECTED, true, getEventParams(sku));
-        var skuOrSubscriptionRequest;
-
-        if (oldSku) {
-          skuOrSubscriptionRequest = {};
-          skuOrSubscriptionRequest['skuId'] = sku;
-          skuOrSubscriptionRequest['oldSku'] = oldSku;
-        } else {
-          skuOrSubscriptionRequest = sku;
-        }
-
-        new _payFlow.PayStartFlow(this.deps_, skuOrSubscriptionRequest).start();
+        new _payFlow.PayStartFlow(this.deps_, subscriptionRequest).start();
       }
     }
     /**
@@ -12611,7 +13841,6 @@ function () {
         this.activityIframeView_.on(_api_messages.SkuSelectedResponse, this.startPayFlow_.bind(this));
         this.activityIframeView_.on(_api_messages.AlreadySubscribedResponse, this.handleLinkRequest_.bind(this));
         this.activityIframeView_.on(_api_messages.ViewSubscriptionsResponse, this.startNativeFlow_.bind(this));
-        this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_OFFERS, null, getEventParams(this.skus_.join(',')));
         return this.dialogManager_.openView(this.activityIframeView_);
       }
 
@@ -12628,9 +13857,7 @@ function () {
 
 exports.OffersFlow = OffersFlow;
 
-var SubscribeOptionFlow =
-/*#__PURE__*/
-function () {
+var SubscribeOptionFlow = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest|undefined} options
@@ -12729,9 +13956,7 @@ function () {
 
 exports.SubscribeOptionFlow = SubscribeOptionFlow;
 
-var AbbrvOfferFlow =
-/*#__PURE__*/
-function () {
+var AbbrvOfferFlow = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!../api/subscriptions.OffersRequest=} options
@@ -12838,20 +14063,17 @@ function () {
 
 exports.AbbrvOfferFlow = AbbrvOfferFlow;
 
-},{"../api/subscriptions":12,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"../utils/log":73,"./pay-flow":53,"./services":57}],52:[function(require,module,exports){
+},{"../api/subscriptions":13,"../proto/api_messages":33,"../ui/activity-iframe-view":64,"../utils/log":78,"./pay-flow":56,"./services":60}],55:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPayjsBindingForTesting = getPayjsBindingForTesting;
-exports.RedirectVerifierHelper = exports.PayClientBindingPayjs = exports.PayClient = exports.PAY_ORIGIN = exports.PayOptionsDef = void 0;
-
-var _experimentFlags = require("./experiment-flags");
+exports.RedirectVerifierHelper = exports.PayClient = exports.PAY_ORIGIN = exports.PayOptionsDef = void 0;
 
 var _payjs_async = require("../../third_party/gpay/src/payjs_async");
 
-var _xhr = require("../utils/xhr");
+var _preconnect = require("../utils/preconnect");
 
 var _bytes = require("../utils/bytes");
 
@@ -12859,11 +14081,9 @@ var _errors = require("../utils/errors");
 
 var _services = require("./services");
 
-var _experiments = require("./experiments");
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12871,8 +14091,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var PAY_REQUEST_ID = 'swg-pay';
-var GPAY_ACTIVITY_REQUEST = 'GPAY';
 var REDIRECT_STORAGE_KEY = 'subscribe.google.com:rk';
 /**
  * @typedef {{
@@ -12895,28 +14113,14 @@ var PAY_ORIGIN = {
 
 exports.PAY_ORIGIN = PAY_ORIGIN;
 
-function payOrigin() {
-  return PAY_ORIGIN['SANDBOX'];
-}
-/** @return {string} */
-
-
 function payUrl() {
   return (0, _services.feCached)(PAY_ORIGIN['SANDBOX'] + '/gp/p/ui/pay');
-}
-/** @return {string} */
-
-
-function payDecryptUrl() {
-  return PAY_ORIGIN['SANDBOX'] + '/gp/p/apis/buyflow/process';
 }
 /**
  */
 
 
-var PayClient =
-/*#__PURE__*/
-function () {
+var PayClient = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    */
@@ -12928,274 +14132,43 @@ function () {
     /** @private @const {!../components/activities.ActivityPorts} */
 
     this.activityPorts_ = deps.activities();
-    /** @private @const {!../components/dialog-manager.DialogManager} */
-
-    this.dialogManager_ = deps.dialogManager();
-    /** @const @private {!PayClientBindingDef} */
-
-    this.binding_ = (0, _experiments.isExperimentOn)(this.win_, _experimentFlags.ExperimentFlags.GPAY_API) ? new PayClientBindingPayjs(this.win_, this.activityPorts_, // Generates a new Google Transaction ID.
-    deps.analytics().getTransactionId()) : new PayClientBindingSwg(this.win_, this.activityPorts_, this.dialogManager_);
-  }
-  /**
-   * @param {!../utils/preconnect.Preconnect} pre
-   */
-
-
-  _createClass(PayClient, [{
-    key: "preconnect",
-    value: function preconnect(pre) {
-      pre.prefetch(payUrl());
-      pre.prefetch('https://payments.google.com/payments/v4/js/integrator.js?ss=md');
-      pre.prefetch('https://clients2.google.com/gr/gr_full_2.0.6.js');
-      pre.preconnect('https://www.gstatic.com/');
-      pre.preconnect('https://fonts.googleapis.com/');
-      pre.preconnect('https://www.google.com/');
-    }
-    /**
-     * @return {string}
-     */
-
-  }, {
-    key: "getType",
-    value: function getType() {
-      // TODO(dvoytenko, #406): remove once GPay API is launched.
-      return this.binding_.getType();
-    }
-    /**
-     * @param {!Object} paymentRequest
-     * @param {!PayOptionsDef=} options
-     */
-
-  }, {
-    key: "start",
-    value: function start(paymentRequest) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      this.binding_.start(paymentRequest, options);
-    }
-    /**
-     * @param {function(!Promise<!Object>)} callback
-     */
-
-  }, {
-    key: "onResponse",
-    value: function onResponse(callback) {
-      this.binding_.onResponse(callback);
-    }
-  }]);
-
-  return PayClient;
-}();
-/**
- * TODO(dvoytenko, #406): remove delegated class once GPay launches.
- * @interface
- */
-
-
-exports.PayClient = PayClient;
-
-var PayClientBindingDef =
-/*#__PURE__*/
-function () {
-  function PayClientBindingDef() {
-    _classCallCheck(this, PayClientBindingDef);
-  }
-
-  _createClass(PayClientBindingDef, [{
-    key: "getType",
-
-    /**
-     * @return {string}
-     */
-    value: function getType() {}
-    /**
-     * @param {!Object} unusedPaymentRequest
-     * @param {!PayOptionsDef} unusedOptions
-     */
-
-  }, {
-    key: "start",
-    value: function start(unusedPaymentRequest, unusedOptions) {}
-    /**
-     * @param {function(!Promise<!Object>)} unusedCallback
-     */
-
-  }, {
-    key: "onResponse",
-    value: function onResponse(unusedCallback) {}
-  }]);
-
-  return PayClientBindingDef;
-}();
-/**
- * @implements {PayClientBindingDef}
- */
-
-
-var PayClientBindingSwg =
-/*#__PURE__*/
-function () {
-  /**
-   * @param {!Window} win
-   * @param {!../components/activities.ActivityPorts} activityPorts
-   * @param {!../components/dialog-manager.DialogManager} dialogManager
-   */
-  function PayClientBindingSwg(win, activityPorts, dialogManager) {
-    _classCallCheck(this, PayClientBindingSwg);
-
-    /** @private @const {!Window} */
-    this.win_ = win;
-    /** @private @const {!../components/activities.ActivityPorts} */
-
-    this.activityPorts_ = activityPorts;
-    /** @private @const {!../components/dialog-manager.DialogManager} */
-
-    this.dialogManager_ = dialogManager;
-  }
-  /** @override */
-
-
-  _createClass(PayClientBindingSwg, [{
-    key: "getType",
-    value: function getType() {
-      return 'SWG';
-    }
-    /** @override */
-
-  }, {
-    key: "start",
-    value: function start(paymentRequest, options) {
-      var opener = this.activityPorts_.open(GPAY_ACTIVITY_REQUEST, payUrl(), options.forceRedirect ? '_top' : '_blank', (0, _services.feArgs)(paymentRequest), {});
-      this.dialogManager_.popupOpened(opener && opener.targetWin || null);
-    }
-    /** @override */
-
-  }, {
-    key: "onResponse",
-    value: function onResponse(callback) {
-      var _this = this;
-
-      var responseCallback = function responseCallback(port) {
-        _this.dialogManager_.popupClosed();
-
-        callback(_this.validatePayResponse_(port));
-      };
-
-      this.activityPorts_.onResult(GPAY_ACTIVITY_REQUEST, responseCallback);
-      this.activityPorts_.onResult(PAY_REQUEST_ID, responseCallback);
-    }
-    /**
-     * @param {!../components/activities.ActivityPortDef} port
-     * @return {!Promise<!Object>}
-     * @private
-     */
-
-  }, {
-    key: "validatePayResponse_",
-    value: function validatePayResponse_(port) {
-      var _this2 = this;
-
-      // Do not require security immediately: it will be checked below.
-      return port.acceptResult().then(function (result) {
-        if (result.origin != payOrigin()) {
-          throw new Error('channel mismatch');
-        }
-
-        var data =
-        /** @type {!Object} */
-        result.data;
-
-        if (data['redirectEncryptedCallbackData']) {
-          // Data is supplied as an encrypted blob.
-          var xhr = new _xhr.Xhr(_this2.win_);
-          var url = payDecryptUrl();
-          var init =
-          /** @type {!../utils/xhr.FetchInitDef} */
-          {
-            method: 'post',
-            headers: {
-              'Accept': 'text/plain, application/json'
-            },
-            credentials: 'include',
-            body: data['redirectEncryptedCallbackData'],
-            mode: 'cors'
-          };
-          return xhr.fetch(url, init).then(function (response) {
-            return response.json();
-          }).then(function (response) {
-            var dataClone = Object.assign({}, data);
-            delete dataClone['redirectEncryptedCallbackData'];
-            return Object.assign(dataClone, response);
-          });
-        } // Data is supplied directly: must be a verified and secure channel.
-
-
-        if (result.originVerified && result.secureChannel) {
-          return data;
-        }
-
-        throw new Error('channel mismatch');
-      });
-    }
-  }]);
-
-  return PayClientBindingSwg;
-}();
-/**
- * Binding based on the https://github.com/google/payjs.
- * @implements {PayClientBindingDef}
- * @package Visible for testing only.
- */
-
-
-var PayClientBindingPayjs =
-/*#__PURE__*/
-function () {
-  /**
-   * @param {!Window} win
-   * @param {!../components/activities.ActivityPorts} activityPorts
-   * @param {!string} googleTransactionId
-   */
-  function PayClientBindingPayjs(win, activityPorts, googleTransactionId) {
-    _classCallCheck(this, PayClientBindingPayjs);
-
-    /** @private @const {!Window} */
-    this.win_ = win;
-    /** @private @const {!../components/activities.ActivityPorts} */
-
-    this.activityPorts_ = activityPorts;
-    /** @private {?function(!Promise<!Object>)} */
+    /** @private {?function(!Promise<!PaymentData>)} */
 
     this.responseCallback_ = null;
-    /** @private {?Object} */
+    /** @private {?PaymentDataRequest} */
 
     this.request_ = null;
-    /** @private {?Promise<!Object>} */
+    /** @private {?Promise<!PaymentData>} */
 
     this.response_ = null;
+    /** @private @const {!./analytics-service.AnalyticsService} */
+
+    this.analytics_ = deps.analytics();
     /** @private @const {!RedirectVerifierHelper} */
 
     this.redirectVerifierHelper_ = new RedirectVerifierHelper(this.win_);
-    /** @private @const {!PaymentsAsyncClient} */
+    /** @private {?PaymentsAsyncClient} */
 
-    this.client_ = this.createClient_({
-      environment: 'SANDBOX',
-      'i': {
-        'redirectKey': this.redirectVerifierHelper_.restoreKey()
-      }
-    }, googleTransactionId, this.handleResponse_.bind(this)); // Prepare new verifier pair.
+    this.client_ = null;
+    /** @private @const {!Preconnect} */
+
+    this.preconnect_ = new _preconnect.Preconnect(this.win_.document); // Prepare new verifier pair.
 
     this.redirectVerifierHelper_.prepare();
+    /** @private @const {!./client-event-manager.ClientEventManager} */
+
+    this.eventManager_ = deps.eventManager();
   }
   /**
-   * @param {!Object} options
+   * @param {!PaymentOptions} options
    * @param {string} googleTransactionId
-   * @param {function(!Promise<!Object>)} handler
+   * @param {function(!Promise<!PaymentData>)} handler
    * @return {!PaymentsAsyncClient}
    * @private
    */
 
 
-  _createClass(PayClientBindingPayjs, [{
+  _createClass(PayClient, [{
     key: "createClient_",
     value: function createClient_(options, googleTransactionId, handler) {
       // Assign Google Transaction ID to PaymentsAsyncClient.googleTransactionId_
@@ -13205,21 +14178,51 @@ function () {
       /* useIframe */
       false, this.activityPorts_.getOriginalWebActivityPorts());
     }
-    /** @override */
+    /**
+     * @param {!../utils/preconnect.Preconnect} pre
+     */
+
+  }, {
+    key: "preconnect",
+    value: function preconnect(pre) {
+      pre.prefetch(payUrl());
+      pre.prefetch('https://payments.google.com/payments/v4/js/integrator.js?ss=md');
+      pre.prefetch('https://clients2.google.com/gr/gr_full_2.0.6.js');
+    }
+    /**
+     * @return {string}
+     */
 
   }, {
     key: "getType",
     value: function getType() {
+      // TODO(alin04): remove once all references removed.
       return 'PAYJS';
     }
-    /** @override */
+    /**
+     * @param {!PaymentDataRequest} paymentRequest
+     * @param {!PayOptionsDef=} options
+     */
 
   }, {
     key: "start",
-    value: function start(paymentRequest, options) {
-      var _this3 = this;
+    value: function start(paymentRequest) {
+      var _this = this;
 
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       this.request_ = paymentRequest;
+
+      if (!this.client_) {
+        this.preconnect(this.preconnect_);
+        this.client_ = this.createClient_(
+        /** @type {!PaymentOptions} */
+        {
+          environment: 'SANDBOX',
+          'i': {
+            'redirectKey': this.redirectVerifierHelper_.restoreKey()
+          }
+        }, this.analytics_.getTransactionId(), this.handleResponse_.bind(this));
+      }
 
       if (options.forceRedirect) {
         paymentRequest = Object.assign(paymentRequest, {
@@ -13229,23 +14232,42 @@ function () {
 
       setInternalParam(paymentRequest, 'disableNative', // The page cannot be iframed at this time. May be relaxed later
       // for AMP and similar contexts.
-      this.win_ != this.top_() || // Experiment must be enabled.
-      !(0, _experiments.isExperimentOn)(this.win_, _experimentFlags.ExperimentFlags.GPAY_NATIVE)); // Notice that the callback for verifier may execute asynchronously.
+      this.win_ != this.top_());
+      var resolver = null;
+      var promise = new Promise(function (resolve) {
+        return resolver = resolve;
+      }); // Notice that the callback for verifier may execute asynchronously.
 
       this.redirectVerifierHelper_.useVerifier(function (verifier) {
         if (verifier) {
           setInternalParam(paymentRequest, 'redirectVerifier', verifier);
         }
 
-        _this3.client_.loadPaymentData(paymentRequest);
+        if (options.forceRedirect) {
+          var client = _this.client_;
+
+          _this.eventManager_.getReadyPromise().then(function () {
+            _this.analytics_.getLoggingPromise().then(function () {
+              client.loadPaymentData(paymentRequest);
+              resolver(true);
+            });
+          });
+        } else {
+          _this.client_.loadPaymentData(paymentRequest);
+
+          resolver(true);
+        }
       });
+      return promise;
     }
-    /** @override */
+    /**
+     * @param {function(!Promise<!PaymentData>)} callback
+     */
 
   }, {
     key: "onResponse",
     value: function onResponse(callback) {
-      var _this4 = this;
+      var _this2 = this;
 
       this.responseCallback_ = callback;
       var response = this.response_;
@@ -13253,13 +14275,13 @@ function () {
       if (response) {
         Promise.resolve().then(function () {
           if (response) {
-            callback(_this4.convertResponse_(response, _this4.request_));
+            callback(_this2.convertResponse_(response, _this2.request_));
           }
         });
       }
     }
     /**
-     * @param {!Promise<!Object>} responsePromise
+     * @param {!Promise<!PaymentData>} responsePromise
      * @private
      */
 
@@ -13273,16 +14295,16 @@ function () {
       }
     }
     /**
-     * @param {!Promise<!Object>} response
-     * @param {?Object} request
-     * @return {!Promise<!Object>}
+     * @param {!Promise<!PaymentData>} response
+     * @param {?PaymentDataRequest} request
+     * @return {!Promise<!PaymentData>}
      * @private
      */
 
   }, {
     key: "convertResponse_",
     value: function convertResponse_(response, request) {
-      var _this5 = this;
+      var _this3 = this;
 
       return response.then( // Temporary client side solution to remember the
       // input params. TODO: Remove this once server-side
@@ -13295,7 +14317,17 @@ function () {
         return res;
       })["catch"](function (reason) {
         if (_typeof(reason) == 'object' && reason['statusCode'] == 'CANCELED') {
-          return Promise.reject((0, _errors.createCancelError)(_this5.win_));
+          var error = (0, _errors.createCancelError)(_this3.win_);
+
+          if (request) {
+            error['productType'] =
+            /** @type {!PaymentDataRequest} */
+            request['i']['productType'];
+          } else {
+            error['productType'] = null;
+          }
+
+          return Promise.reject(error);
         }
 
         return Promise.reject(reason);
@@ -13314,7 +14346,7 @@ function () {
     }
   }]);
 
-  return PayClientBindingPayjs;
+  return PayClient;
 }();
 /**
  * @typedef {{
@@ -13324,7 +14356,7 @@ function () {
  */
 
 
-exports.PayClientBindingPayjs = PayClientBindingPayjs;
+exports.PayClient = PayClient;
 var RedirectVerifierPairDef;
 /**
  * This helper generates key/verifier pair for the redirect mode. When the
@@ -13337,9 +14369,7 @@ var RedirectVerifierPairDef;
  * @package Visible for testing only.
  */
 
-var RedirectVerifierHelper =
-/*#__PURE__*/
-function () {
+var RedirectVerifierHelper = /*#__PURE__*/function () {
   /**
    * @param {!Window} win
    */
@@ -13392,12 +14422,12 @@ function () {
   }, {
     key: "useVerifier",
     value: function useVerifier(callback) {
-      var _this6 = this;
+      var _this4 = this;
 
       this.getOrCreatePair_(function (pair) {
         if (pair) {
           try {
-            _this6.win_.localStorage.setItem(REDIRECT_STORAGE_KEY, pair.key);
+            _this4.win_.localStorage.setItem(REDIRECT_STORAGE_KEY, pair.key);
           } catch (e) {
             // If storage has failed, there's no point in using the verifer.
             // However, there are other ways to recover the redirect, so it's
@@ -13453,7 +14483,7 @@ function () {
   }, {
     key: "createPair_",
     value: function createPair_() {
-      var _this7 = this;
+      var _this5 = this;
 
       // Either already created or already started.
       if (this.pairCreated_ || this.pairPromise_) {
@@ -13466,9 +14496,18 @@ function () {
       // d. SHA284 (crypto.subtle.digest).
 
 
+      var supportsLocalStorage;
+
+      try {
+        supportsLocalStorage = !!this.win_.localStorage;
+      } catch (e) {
+        // Note: This can happen when cookies are disabled.
+        supportsLocalStorage = false;
+      }
+
       var crypto = this.win_.crypto;
 
-      if (this.win_.localStorage && crypto && crypto.getRandomValues && crypto.subtle && crypto.subtle.digest) {
+      if (supportsLocalStorage && crypto && crypto.getRandomValues && crypto.subtle && crypto.subtle.digest) {
         this.pairPromise_ = new Promise(function (resolve, reject) {
           // 1. Use crypto random to create a 128-bit (16 byte) redirect key.
           var keyBytes = new Uint8Array(16);
@@ -13494,8 +14533,8 @@ function () {
           // recoverable.
           return null;
         }).then(function (pair) {
-          _this7.pairCreated_ = true;
-          _this7.pair_ = pair;
+          _this5.pairCreated_ = true;
+          _this5.pair_ = pair;
           return pair;
         });
       } else {
@@ -13509,7 +14548,7 @@ function () {
   return RedirectVerifierHelper;
 }();
 /**
- * @param {!Object} paymentRequest
+ * @param {!PaymentDataRequest} paymentRequest
  * @param {string} param
  * @param {*} value
  */
@@ -13519,14 +14558,9 @@ exports.RedirectVerifierHelper = RedirectVerifierHelper;
 
 function setInternalParam(paymentRequest, param, value) {
   paymentRequest['i'] = Object.assign(paymentRequest['i'] || {}, _defineProperty({}, param, value));
-} // TODO(dvoytenko, #406): Remove once GPay API is supported.
-
-
-function getPayjsBindingForTesting() {
-  return PayClientBindingPayjs;
 }
 
-},{"../../third_party/gpay/src/payjs_async":86,"../utils/bytes":66,"../utils/errors":69,"../utils/xhr":81,"./experiment-flags":42,"./experiments":43,"./services":57}],53:[function(require,module,exports){
+},{"../../third_party/gpay/src/payjs_async":91,"../utils/bytes":69,"../utils/errors":74,"../utils/preconnect":80,"./services":60}],56:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13555,7 +14589,7 @@ var _json = require("../utils/json");
 
 var _errors = require("../utils/errors");
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13593,15 +14627,13 @@ function getEventParams(sku) {
  */
 
 
-var PayStartFlow =
-/*#__PURE__*/
-function () {
+var PayStartFlow = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
-   * @param {!../api/subscriptions.SubscriptionRequest|string} skuOrSubscriptionRequest
+   * @param {!../api/subscriptions.SubscriptionRequest} subscriptionRequest
    * @param {!../api/subscriptions.ProductType} productType
    */
-  function PayStartFlow(deps, skuOrSubscriptionRequest) {
+  function PayStartFlow(deps, subscriptionRequest) {
     var productType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _subscriptions.ProductType.SUBSCRIPTION;
 
     _classCallCheck(this, PayStartFlow);
@@ -13619,9 +14651,7 @@ function () {
     this.dialogManager_ = deps.dialogManager();
     /** @private @const {!../api/subscriptions.SubscriptionRequest} */
 
-    this.subscriptionRequest_ = typeof skuOrSubscriptionRequest == 'string' ? {
-      'skuId': skuOrSubscriptionRequest
-    } : skuOrSubscriptionRequest;
+    this.subscriptionRequest_ = subscriptionRequest;
     /**@private @const {!ProductType} */
 
     this.productType_ = productType;
@@ -13630,25 +14660,7 @@ function () {
     this.analyticsService_ = deps.analytics();
     /** @private @const {!../runtime/client-event-manager.ClientEventManager} */
 
-    this.eventManager_ = deps.eventManager(); // Map the proration mode to the enum value (if proration exists).
-
-    this.prorationMode = this.subscriptionRequest_.replaceSkuProrationMode;
-    this.prorationEnum = 0;
-
-    if (this.prorationMode) {
-      this.prorationEnum = ReplaceSkuProrationModeMapping[this.prorationMode];
-    } else if (this.subscriptionRequest_.oldSku) {
-      this.prorationEnum = ReplaceSkuProrationModeMapping['IMMEDIATE_WITH_TIME_PRORATION'];
-    } // Assign one-time recurrence enum if applicable
-
-
-    this.oneTimeContribution = false;
-    this.recurrenceEnum = 0;
-
-    if (this.subscriptionRequest_.oneTime) {
-      this.recurrenceEnum = RecurrenceMapping['ONE_TIME'];
-      delete this.subscriptionRequest_.oneTime;
-    }
+    this.eventManager_ = deps.eventManager();
   }
   /**
    * Starts the payments flow.
@@ -13659,29 +14671,38 @@ function () {
   _createClass(PayStartFlow, [{
     key: "start",
     value: function start() {
-      var req = this.subscriptionRequest_; // Add the 'publicationId' key to the subscriptionRequest_ object.
-
-      var swgPaymentRequest = Object.assign({}, req, {
+      // Add the 'publicationId' key to the subscriptionRequest_ object.
+      var swgPaymentRequest = Object.assign({}, this.subscriptionRequest_, {
         'publicationId': this.pageConfig_.getPublicationId()
-      });
+      }); // Map the proration mode to the enum value (if proration exists).
 
-      if (this.prorationEnum) {
-        swgPaymentRequest.replaceSkuProrationMode = this.prorationEnum;
-      }
+      var prorationMode = swgPaymentRequest['replaceSkuProrationMode'];
 
-      if (this.recurrenceEnum) {
-        swgPaymentRequest.paymentRecurrence = this.recurrenceEnum;
+      if (prorationMode) {
+        swgPaymentRequest['replaceSkuProrationMode'] = ReplaceSkuProrationModeMapping[prorationMode];
+      } else if (swgPaymentRequest['oldSku']) {
+        swgPaymentRequest['replaceSkuProrationMode'] = ReplaceSkuProrationModeMapping['IMMEDIATE_WITH_TIME_PRORATION'];
+      } // Assign one-time recurrence enum if applicable
+
+
+      if (swgPaymentRequest['oneTime']) {
+        swgPaymentRequest['paymentRecurrence'] = RecurrenceMapping['ONE_TIME'];
+        delete swgPaymentRequest['oneTime'];
       } // Start/cancel events.
 
 
-      this.deps_.callbacks().triggerFlowStarted(_subscriptions.SubscriptionFlows.SUBSCRIBE, req);
+      var flow = this.productType_ == _subscriptions.ProductType.UI_CONTRIBUTION ? _subscriptions.SubscriptionFlows.CONTRIBUTE : _subscriptions.SubscriptionFlows.SUBSCRIBE;
+      this.deps_.callbacks().triggerFlowStarted(flow, this.subscriptionRequest_);
 
-      if (req.oldSku) {
-        this.analyticsService_.setSku(req.oldSku);
+      if (swgPaymentRequest['oldSku']) {
+        this.analyticsService_.setSku(swgPaymentRequest['oldSku']);
       }
 
-      this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED, true, getEventParams(req.skuId));
-      this.payClient_.start({
+      this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.ACTION_PAYMENT_FLOW_STARTED, true, getEventParams(swgPaymentRequest['skuId']));
+      PayCompleteFlow.waitingForPayClient_ = true;
+      this.payClient_.start(
+      /** @type {!PaymentDataRequest} */
+      {
         'apiVersion': 1,
         'allowedPaymentMethods': ['CARD'],
         'environment': 'SANDBOX',
@@ -13707,9 +14728,7 @@ function () {
 
 exports.PayStartFlow = PayStartFlow;
 
-var PayCompleteFlow =
-/*#__PURE__*/
-function () {
+var PayCompleteFlow = /*#__PURE__*/function () {
   _createClass(PayCompleteFlow, null, [{
     key: "configurePending",
 
@@ -13731,14 +14750,19 @@ function () {
           flow.start(response);
         }, function (reason) {
           if ((0, _errors.isCancelError)(reason)) {
-            deps.callbacks().triggerFlowCanceled(_subscriptions.SubscriptionFlows.SUBSCRIBE);
+            var productType =
+            /** @type {!Object} */
+            reason['productType'];
+
+            var _flow = productType == _subscriptions.ProductType.UI_CONTRIBUTION ? _subscriptions.SubscriptionFlows.CONTRIBUTE : _subscriptions.SubscriptionFlows.SUBSCRIBE;
+
+            deps.callbacks().triggerFlowCanceled(_flow);
             deps.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.ACTION_USER_CANCELED_PAYFLOW, true);
           } else {
             deps.eventManager().logSwgEvent(_api_messages.AnalyticsEvent.EVENT_PAYMENT_FAILED, false);
             deps.jserror().error('Pay failed', reason);
+            throw reason;
           }
-
-          throw reason;
         });
       });
     }
@@ -13796,11 +14820,13 @@ function () {
       this.sku_ = parseSkuFromPurchaseDataSafe(response.purchaseData);
       this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_ACCOUNT_CHANGED, true, getEventParams(this.sku_ || ''));
       this.deps_.entitlementsManager().reset(true);
-      this.response_ = response;
+      this.response_ = response; // TODO(dianajing): future-proof isOneTime flag
+
       var args = {
         'publicationId': this.deps_.pageConfig().getPublicationId(),
         'productType': this.response_['productType'],
-        'isSubscriptionUpdate': !!this.response_['oldSku']
+        'isSubscriptionUpdate': !!this.response_['oldSku'],
+        'isOneTime': !!this.response_['paymentRecurrence']
       }; // TODO(dvoytenko, #400): cleanup once entitlements is launched everywhere.
 
       if (response.userData && response.entitlements) {
@@ -13863,6 +14889,11 @@ function () {
 
   return PayCompleteFlow;
 }();
+/** @private {boolean} */
+
+
+exports.PayCompleteFlow = PayCompleteFlow;
+PayCompleteFlow.waitingForPayClient_ = false;
 /**
  * @param {!./deps.DepsDef} deps
  * @param {!Promise<!Object>} payPromise
@@ -13870,16 +14901,14 @@ function () {
  * @return {!Promise<!SubscribeResponse>}
  */
 
-
-exports.PayCompleteFlow = PayCompleteFlow;
-
 function validatePayResponse(deps, payPromise, completeHandler) {
+  var wasRedirect = !PayCompleteFlow.waitingForPayClient_;
+  PayCompleteFlow.waitingForPayClient_ = false;
   return payPromise.then(function (data) {
     // 1) We log against a random TX ID which is how we track a specific user
     //    anonymously.
     // 2) If there was a redirect to gPay, we may have lost our stored TX ID.
     // 3) Pay service is supposed to give us the TX ID it logged against.
-    var hasLogged = deps.analytics().getHasLogged();
     var eventType = _api_messages.AnalyticsEvent.UNKNOWN;
     var eventParams = undefined;
 
@@ -13890,16 +14919,16 @@ function validatePayResponse(deps, payPromise, completeHandler) {
       // lost all connection to the events that preceded the payment event and
       // we at least want to know why that data was lost.
       eventParams = new _api_messages.EventParams();
-      eventParams.setHadLogged(hasLogged);
+      eventParams.setHadLogged(!wasRedirect);
       eventType = _api_messages.AnalyticsEvent.EVENT_GPAY_NO_TX_ID;
     } else {
       var oldTxId = deps.analytics().getTransactionId();
       var newTxId = data['googleTransactionId'];
 
-      if (!hasLogged) {
+      if (wasRedirect) {
         // This is the expected case for full redirects.  It may be happening
-        // unexpectedly at other times too though and we want to be aware of it
-        // if it does.
+        // unexpectedly at other times too though and we want to be aware of
+        // it if it does.
         deps.analytics().setTransactionId(newTxId);
         eventType = _api_messages.AnalyticsEvent.EVENT_GPAY_CANNOT_CONFIRM_TX_ID;
       } else {
@@ -13933,6 +14962,7 @@ function parseSubscriptionResponse(deps, data, completeHandler) {
   var raw = null;
   var productType = _subscriptions.ProductType.SUBSCRIPTION;
   var oldSku = null;
+  var paymentRecurrence = null;
 
   if (data) {
     if (typeof data == 'string') {
@@ -13956,6 +14986,7 @@ function parseSubscriptionResponse(deps, data, completeHandler) {
 
       if ('paymentRequest' in data) {
         oldSku = (data['paymentRequest']['swg'] || {})['oldSku'];
+        paymentRecurrence = (data['paymentRequest']['swg'] || {})['paymentRecurrence'];
         productType = (data['paymentRequest']['i'] || {})['productType'] || _subscriptions.ProductType.SUBSCRIPTION;
       }
     }
@@ -13977,7 +15008,7 @@ function parseSubscriptionResponse(deps, data, completeHandler) {
   raw = JSON.stringify(
   /** @type {!JsonObject} */
   swgData);
-  return new _subscribeResponse.SubscribeResponse(raw, parsePurchaseData(swgData), parseUserData(swgData), parseEntitlements(deps, swgData), productType, completeHandler, oldSku);
+  return new _subscribeResponse.SubscribeResponse(raw, parsePurchaseData(swgData), parseUserData(swgData), parseEntitlements(deps, swgData), productType, completeHandler, oldSku, paymentRecurrence);
 }
 /**
  * @param {!Object} swgData
@@ -14037,7 +15068,7 @@ function parseSkuFromPurchaseDataSafe(purchaseData) {
   );
 }
 
-},{"../api/subscribe-response":11,"../api/subscriptions":12,"../api/user-data":13,"../proto/api_messages":32,"../ui/activity-iframe-view":61,"../utils/errors":69,"../utils/json":71,"../utils/jwt":72,"./services":57}],54:[function(require,module,exports){
+},{"../api/subscribe-response":12,"../api/subscriptions":13,"../api/user-data":14,"../proto/api_messages":33,"../ui/activity-iframe-view":64,"../utils/errors":74,"../utils/json":76,"../utils/jwt":77,"./services":60}],57:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14046,6 +15077,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.PropensityServer = void 0;
 
 var _api_messages = require("../proto/api_messages");
+
+var _url = require("../utils/url");
 
 var _services = require("./services");
 
@@ -14062,9 +15095,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Implements interface to Propensity server
  */
-var PropensityServer =
-/*#__PURE__*/
-function () {
+var PropensityServer = /*#__PURE__*/function () {
   /**
    * Page configuration is known when Propensity API
    * is available, publication ID is therefore used
@@ -14134,14 +15165,15 @@ function () {
   }, {
     key: "propensityUrl_",
     value: function propensityUrl_(url) {
-      url = url + '&u_tz=240&v=' + this.version_;
+      url = (0, _url.addQueryParam)(url, 'u_tz', '240');
+      url = (0, _url.addQueryParam)(url, 'v', String(this.version_));
       var clientId = this.getClientId_();
 
       if (clientId) {
-        url = url + '&cookie=' + clientId;
+        url = (0, _url.addQueryParam)(url, 'cookie', clientId);
       }
 
-      url = url + '&cdm=' + this.win_.location.hostname;
+      url = (0, _url.addQueryParam)(url, 'cdm', this.win_.location.hostname);
       return url;
     }
     /**
@@ -14158,13 +15190,13 @@ function () {
         method: 'GET',
         credentials: 'include'
       };
-      var userState = this.publicationId_ + ':' + state;
+      var url = (0, _services.adsUrl)('/subopt/data');
+      url = (0, _url.addQueryParam)(url, 'states', this.publicationId_ + ':' + state);
 
       if (productsOrSkus) {
-        userState = userState + ':' + encodeURIComponent(productsOrSkus);
+        url = (0, _url.addQueryParam)(url, 'extrainfo', productsOrSkus);
       }
 
-      var url = (0, _services.adsUrl)('/subopt/data?states=') + encodeURIComponent(userState);
       return this.fetcher_.fetch(this.propensityUrl_(url), init);
     }
     /**
@@ -14182,13 +15214,13 @@ function () {
         method: 'GET',
         credentials: 'include'
       };
-      var eventInfo = this.publicationId_ + ':' + event;
+      var url = (0, _services.adsUrl)('/subopt/data');
+      url = (0, _url.addQueryParam)(url, 'events', this.publicationId_ + ':' + event);
 
       if (context) {
-        eventInfo = eventInfo + ':' + encodeURIComponent(context);
+        url = (0, _url.addQueryParam)(url, 'extrainfo', context);
       }
 
-      var url = (0, _services.adsUrl)('/subopt/data?events=') + encodeURIComponent(eventInfo);
       return this.fetcher_.fetch(this.propensityUrl_(url), init);
     }
     /**
@@ -14358,10 +15390,10 @@ function () {
 
 exports.PropensityServer = PropensityServer;
 
-},{"../proto/api_messages":32,"../utils/types":79,"./event-type-mapping":41,"./services":57}],55:[function(require,module,exports){
+},{"../proto/api_messages":33,"../utils/types":84,"../utils/url":85,"./event-type-mapping":42,"./services":60}],58:[function(require,module,exports){
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -14393,9 +15425,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @implements {PropensityApi.PropensityApi}
  */
-var Propensity =
-/*#__PURE__*/
-function () {
+var Propensity = /*#__PURE__*/function () {
   /**
    * @param {!Window} win
    * @param {!./deps.DepsDef} deps
@@ -14505,7 +15535,7 @@ function () {
 
 exports.Propensity = Propensity;
 
-},{"../api/logger-api":8,"../api/propensity-api":10,"../proto/api_messages":32,"../utils/types":79,"./event-type-mapping":41,"./propensity-server":54}],56:[function(require,module,exports){
+},{"../api/logger-api":8,"../api/propensity-api":11,"../proto/api_messages":33,"../utils/types":84,"./event-type-mapping":42,"./propensity-server":57}],59:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14559,6 +15589,8 @@ var _logger = require("./logger");
 var _loginNotificationApi = require("./login-notification-api");
 
 var _loginPromptApi = require("./login-prompt-api");
+
+var _meterRegwallApi = require("./meter-regwall-api");
 
 var _offersApi = require("./offers-api");
 
@@ -14622,7 +15654,7 @@ function getRuntime() {
 
 function installRuntime(win) {
   // Only install the SwG runtime once.
-  if (win[RUNTIME_PROP] && !(0, _types.isArray)(win[RUNTIME_PROP])) {
+  if (win[RUNTIME_PROP] && !Array.isArray(win[RUNTIME_PROP])) {
     return;
   } // Create a SwG runtime.
 
@@ -14663,9 +15695,7 @@ function installRuntime(win) {
  */
 
 
-var Runtime =
-/*#__PURE__*/
-function () {
+var Runtime = /*#__PURE__*/function () {
   /**
    * @param {!Window} win
    */
@@ -14836,9 +15866,9 @@ function () {
 
   }, {
     key: "getEntitlements",
-    value: function getEntitlements(encryptedDocumentKey) {
+    value: function getEntitlements(params) {
       return this.configured_(true).then(function (runtime) {
-        return runtime.getEntitlements(encryptedDocumentKey);
+        return runtime.getEntitlements(params);
       });
     }
     /** @override */
@@ -14911,6 +15941,15 @@ function () {
     value: function waitForSubscriptionLookup(accountPromise) {
       return this.configured_(true).then(function (runtime) {
         return runtime.waitForSubscriptionLookup(accountPromise);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "showMeterRegwall",
+    value: function showMeterRegwall(params) {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.showMeterRegwall(params);
       });
     }
     /** @override */
@@ -14992,6 +16031,15 @@ function () {
     value: function setOnLoginRequest(callback) {
       return this.configured_(false).then(function (runtime) {
         return runtime.setOnLoginRequest(callback);
+      });
+    }
+    /** @override */
+
+  }, {
+    key: "triggerLoginRequest",
+    value: function triggerLoginRequest(request) {
+      return this.configured_(false).then(function (runtime) {
+        return runtime.triggerLoginRequest(request);
       });
     }
     /** @override */
@@ -15099,6 +16147,15 @@ function () {
         return runtime.getLogger();
       });
     }
+    /** @override */
+
+  }, {
+    key: "getEventManager",
+    value: function getEventManager() {
+      return this.configured_(true).then(function (runtime) {
+        return runtime.getEventManager();
+      });
+    }
   }]);
 
   return Runtime;
@@ -15111,9 +16168,7 @@ function () {
 
 exports.Runtime = Runtime;
 
-var ConfiguredRuntime =
-/*#__PURE__*/
-function () {
+var ConfiguredRuntime = /*#__PURE__*/function () {
   /**
    * @param {!Window|!Document|!Doc} winOrDoc
    * @param {!../model/page-config.PageConfig} pageConfig
@@ -15143,7 +16198,7 @@ function () {
 
     this.config_ = (0, _subscriptions.defaultConfig)();
 
-    if ((0, _dom.isEdgeBrowser)(this.win_)) {
+    if ((0, _dom.isLegacyEdgeBrowser)(this.win_)) {
       // TODO(dvoytenko, b/120607343): Find a way to remove this restriction
       // or move it to Web Activities.
       this.config_.windowOpenMode = _subscriptions.WindowOpenMode.REDIRECT;
@@ -15181,7 +16236,8 @@ function () {
     this.activityPorts_ = new _activities.ActivityPorts(this);
     /** @private @const {!AnalyticsService} */
 
-    this.analyticsService_ = new _analyticsService.AnalyticsService(this);
+    this.analyticsService_ = new _analyticsService.AnalyticsService(this, this.fetcher_);
+    this.analyticsService_.start();
     /** @private @const {!PayClient} */
 
     this.payClient_ = new _payClient.PayClient(this);
@@ -15197,6 +16253,7 @@ function () {
     this.propensityModule_ = new _propensity.Propensity(this.win_, this, // See note about 'this' above
     this.fetcher_); // ALL CLEAR: DepsDef definition now complete.
 
+    this.eventManager_.logSwgEvent(_api_messages.AnalyticsEvent.IMPRESSION_PAGE_LOAD, false);
     /** @private @const {!OffersApi} */
 
     this.offersApi_ = new _offersApi.OffersApi(this.pageConfig_, this.fetcher_);
@@ -15205,12 +16262,14 @@ function () {
     this.buttonApi_ = new _buttonApi.ButtonApi(this.doc_, Promise.resolve(this));
     var preconnect = new _preconnect.Preconnect(this.win_.document);
     preconnect.prefetch('/assets/loader.svg');
+    preconnect.preconnect('https://www.gstatic.com/');
+    preconnect.preconnect('https://fonts.googleapis.com/');
+    preconnect.preconnect('https://www.google.com/');
 
     _linkAccountsFlow.LinkCompleteFlow.configurePending(this);
 
     _payFlow.PayCompleteFlow.configurePending(this);
 
-    this.payClient_.preconnect(preconnect);
     (0, _dom.injectStyleSheet)(this.doc_, _dialog.CSS); // Report redirect errors if any.
 
     this.activityPorts_.onRedirectError(function (error) {
@@ -15303,8 +16362,8 @@ function () {
 
   }, {
     key: "init",
-    value: function init() {} // Implemented by the `Runtime` class.
-
+    value: function init() {// Implemented by the `Runtime` class.
+    }
     /** @override */
 
   }, {
@@ -15341,6 +16400,13 @@ function () {
             v.forEach(function (experiment) {
               return (0, _experiments.setExperiment)(_this4.win_, experiment, true);
             });
+
+            if (this.analytics()) {
+              // If analytics service isn't set up yet, then it will get the
+              // experiments later.
+              this.analytics().addLabels(v);
+            }
+
             break;
 
           case 'analyticsMode':
@@ -15413,10 +16479,10 @@ function () {
 
   }, {
     key: "getEntitlements",
-    value: function getEntitlements(encryptedDocumentKey) {
+    value: function getEntitlements(params) {
       var _this5 = this;
 
-      return this.entitlementsManager_.getEntitlements(encryptedDocumentKey).then(function (entitlements) {
+      return this.entitlementsManager_.getEntitlements(params).then(function (entitlements) {
         // Auto update internal things tracking the user's current SKU.
         if (entitlements) {
           try {
@@ -15527,9 +16593,28 @@ function () {
     /** @override */
 
   }, {
+    key: "showMeterRegwall",
+    value: function showMeterRegwall(meterRegwallArgs) {
+      var _this12 = this;
+
+      return this.documentParsed_.then(function () {
+        var wait = new _meterRegwallApi.MeterRegwallApi(_this12, meterRegwallArgs);
+        return wait.start();
+      });
+    }
+    /** @override */
+
+  }, {
     key: "setOnLoginRequest",
     value: function setOnLoginRequest(callback) {
       this.callbacks_.setOnLoginRequest(callback);
+    }
+    /** @override */
+
+  }, {
+    key: "triggerLoginRequest",
+    value: function triggerLoginRequest(request) {
+      this.callbacks_.triggerLoginRequest(request);
     }
     /** @override */
 
@@ -15543,11 +16628,11 @@ function () {
   }, {
     key: "linkAccount",
     value: function linkAccount() {
-      var _this12 = this;
+      var _this13 = this;
 
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       return this.documentParsed_.then(function () {
-        return new _linkAccountsFlow.LinkbackFlow(_this12).start(params);
+        return new _linkAccountsFlow.LinkbackFlow(_this13).start(params);
       });
     }
     /** @override */
@@ -15555,10 +16640,10 @@ function () {
   }, {
     key: "saveSubscription",
     value: function saveSubscription(saveSubscriptionRequestCallback) {
-      var _this13 = this;
+      var _this14 = this;
 
       return this.documentParsed_.then(function () {
-        return new _linkAccountsFlow.LinkSaveFlow(_this13, saveSubscriptionRequestCallback).start();
+        return new _linkAccountsFlow.LinkSaveFlow(_this14, saveSubscriptionRequestCallback).start();
       });
     }
     /** @override */
@@ -15566,10 +16651,10 @@ function () {
   }, {
     key: "showLoginPrompt",
     value: function showLoginPrompt() {
-      var _this14 = this;
+      var _this15 = this;
 
       return this.documentParsed_.then(function () {
-        return new _loginPromptApi.LoginPromptApi(_this14).start();
+        return new _loginPromptApi.LoginPromptApi(_this15).start();
       });
     }
     /** @override */
@@ -15577,10 +16662,10 @@ function () {
   }, {
     key: "showLoginNotification",
     value: function showLoginNotification() {
-      var _this15 = this;
+      var _this16 = this;
 
       return this.documentParsed_.then(function () {
-        return new _loginNotificationApi.LoginNotificationApi(_this15).start();
+        return new _loginNotificationApi.LoginNotificationApi(_this16).start();
       });
     }
     /** @override */
@@ -15609,12 +16694,14 @@ function () {
   }, {
     key: "subscribe",
     value: function subscribe(sku) {
-      var _this16 = this;
+      var _this17 = this;
 
       var errorMessage = 'The subscribe() method can only take a sku as its parameter; ' + 'for subscription updates please use the updateSubscription() method';
       (0, _log.assert)(typeof sku === 'string', errorMessage);
       return this.documentParsed_.then(function () {
-        return new _payFlow.PayStartFlow(_this16, sku).start();
+        return new _payFlow.PayStartFlow(_this17, {
+          'skuId': sku
+        }).start();
       });
     }
     /** @override */
@@ -15622,13 +16709,13 @@ function () {
   }, {
     key: "updateSubscription",
     value: function updateSubscription(subscriptionRequest) {
-      var _this17 = this;
+      var _this18 = this;
 
       (0, _log.assert)((0, _experiments.isExperimentOn)(this.win_, _experimentFlags.ExperimentFlags.REPLACE_SUBSCRIPTION), 'Not yet launched!');
       var errorMessage = 'The updateSubscription() method should be used for subscription ' + 'updates; for new subscriptions please use the subscribe() method';
       (0, _log.assert)(subscriptionRequest ? subscriptionRequest['oldSku'] : false, errorMessage);
       return this.documentParsed_.then(function () {
-        return new _payFlow.PayStartFlow(_this17, subscriptionRequest).start();
+        return new _payFlow.PayStartFlow(_this18, subscriptionRequest).start();
       });
     }
     /** @override */
@@ -15643,10 +16730,14 @@ function () {
   }, {
     key: "contribute",
     value: function contribute(skuOrSubscriptionRequest) {
-      var _this18 = this;
+      var _this19 = this;
 
+      /** @type {!../api/subscriptions.SubscriptionRequest} */
+      var request = typeof skuOrSubscriptionRequest == 'string' ? {
+        'skuId': skuOrSubscriptionRequest
+      } : skuOrSubscriptionRequest;
       return this.documentParsed_.then(function () {
-        return new _payFlow.PayStartFlow(_this18, skuOrSubscriptionRequest, _subscriptions.ProductType.UI_CONTRIBUTION).start();
+        return new _payFlow.PayStartFlow(_this19, request, _subscriptions.ProductType.UI_CONTRIBUTION).start();
       });
     }
     /** @override */
@@ -15654,10 +16745,10 @@ function () {
   }, {
     key: "completeDeferredAccountCreation",
     value: function completeDeferredAccountCreation(options) {
-      var _this19 = this;
+      var _this20 = this;
 
       return this.documentParsed_.then(function () {
-        return new _deferredAccountFlow.DeferredAccountFlow(_this19, options || null).start();
+        return new _deferredAccountFlow.DeferredAccountFlow(_this20, options || null).start();
       });
     }
     /** @override */
@@ -15705,7 +16796,8 @@ function () {
     value: function getPropensityModule() {
       return Promise.resolve(this.propensityModule_);
     }
-    /** @override
+    /**
+     * This one exists as an internal helper so SwG logging doesn't require a promise.
      * @return {!ClientEventManager}
      */
 
@@ -15713,6 +16805,15 @@ function () {
     key: "eventManager",
     value: function eventManager() {
       return this.eventManager_;
+    }
+    /**
+     * This one exists as a public API so publishers can subscribe to SwG events.
+     * @override */
+
+  }, {
+    key: "getEventManager",
+    value: function getEventManager() {
+      return Promise.resolve(this.eventManager_);
     }
     /** @override */
 
@@ -15750,6 +16851,7 @@ function createPublicRuntime(runtime) {
       showOffers: runtime.showOffers.bind(runtime),
       showUpdateOffers: runtime.showUpdateOffers.bind(runtime),
       showAbbrvOffer: runtime.showAbbrvOffer.bind(runtime),
+      showMeterRegwall: runtime.showMeterRegwall.bind(runtime),
       showSubscribeOption: runtime.showSubscribeOption.bind(runtime),
       showContributionOptions: runtime.showContributionOptions.bind(runtime),
       waitForSubscriptionLookup: runtime.waitForSubscriptionLookup.bind(runtime),
@@ -15759,6 +16861,7 @@ function createPublicRuntime(runtime) {
       completeDeferredAccountCreation: runtime.completeDeferredAccountCreation.bind(runtime),
       setOnEntitlementsResponse: runtime.setOnEntitlementsResponse.bind(runtime),
       setOnLoginRequest: runtime.setOnLoginRequest.bind(runtime),
+      triggerLoginRequest: runtime.triggerLoginRequest.bind(runtime),
       setOnLinkComplete: runtime.setOnLinkComplete.bind(runtime),
       setOnNativeSubscribeRequest: runtime.setOnNativeSubscribeRequest.bind(runtime),
       setOnPaymentResponse: runtime.setOnPaymentResponse.bind(runtime),
@@ -15771,7 +16874,8 @@ function createPublicRuntime(runtime) {
       attachButton: runtime.attachButton.bind(runtime),
       attachSmartButton: runtime.attachSmartButton.bind(runtime),
       getPropensityModule: runtime.getPropensityModule.bind(runtime),
-      getLogger: runtime.getLogger.bind(runtime)
+      getLogger: runtime.getLogger.bind(runtime),
+      getEventManager: runtime.getEventManager.bind(runtime)
     }
   );
 }
@@ -15800,7 +16904,7 @@ function getDocClassForTesting() {
   return _doc.Doc;
 }
 
-},{"../../build/css/components/dialog.css":1,"../api/subscriptions":12,"../components/activities":14,"../components/dialog-manager":15,"../model/doc":21,"../model/page-config":23,"../model/page-config-resolver":22,"../proto/api_messages":32,"../utils/dom":68,"../utils/log":73,"../utils/preconnect":75,"../utils/types":79,"./analytics-service":33,"./button-api":34,"./callbacks":35,"./client-event-manager":36,"./contributions-flow":37,"./deferred-account-flow":38,"./deps":39,"./entitlements-manager":40,"./experiment-flags":42,"./experiments":43,"./fetcher":44,"./jserror":45,"./link-accounts-flow":46,"./logger":47,"./login-notification-api":48,"./login-prompt-api":49,"./offers-api":50,"./offers-flow":51,"./pay-client":52,"./pay-flow":53,"./propensity":55,"./storage":59,"./wait-for-subscription-lookup-api":60}],57:[function(require,module,exports){
+},{"../../build/css/components/dialog.css":1,"../api/subscriptions":13,"../components/activities":15,"../components/dialog-manager":16,"../model/doc":22,"../model/page-config":24,"../model/page-config-resolver":23,"../proto/api_messages":33,"../utils/dom":72,"../utils/log":78,"../utils/preconnect":80,"../utils/types":84,"./analytics-service":34,"./button-api":35,"./callbacks":36,"./client-event-manager":37,"./contributions-flow":38,"./deferred-account-flow":39,"./deps":40,"./entitlements-manager":41,"./experiment-flags":43,"./experiments":44,"./fetcher":45,"./jserror":46,"./link-accounts-flow":47,"./logger":48,"./login-notification-api":49,"./login-prompt-api":50,"./meter-regwall-api":51,"./offers-api":53,"./offers-flow":54,"./pay-client":55,"./pay-flow":56,"./propensity":58,"./storage":62,"./wait-for-subscription-lookup-api":63}],60:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15912,7 +17016,7 @@ function feCached(url) {
 
 function feArgs(args) {
   return Object.assign(args, {
-    '_client': 'SwG 0.1.22-1576261074655'
+    '_client': 'SwG 0.1.22-1602710098364'
   });
 }
 /**
@@ -15937,7 +17041,7 @@ function cacheParam(cacheKey) {
   return String(period <= 1 ? now : Math.floor(now / period));
 }
 
-},{"../utils/url":80}],58:[function(require,module,exports){
+},{"../utils/url":85}],61:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15978,9 +17082,7 @@ var Theme = {
 
 exports.Theme = Theme;
 
-var SmartSubscriptionButtonApi =
-/*#__PURE__*/
-function () {
+var SmartSubscriptionButtonApi = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {!Element} button
@@ -16085,7 +17187,7 @@ function () {
 
 exports.SmartSubscriptionButtonApi = SmartSubscriptionButtonApi;
 
-},{"../proto/api_messages":32,"../utils/dom":68,"../utils/style":78,"./services":57}],59:[function(require,module,exports){
+},{"../proto/api_messages":33,"../utils/dom":72,"../utils/style":83,"./services":60}],62:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16116,9 +17218,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 var PREFIX = 'subscribe.google.com';
 
-var Storage =
-/*#__PURE__*/
-function () {
+var Storage = /*#__PURE__*/function () {
   /**
    * @param {!Window} win
    */
@@ -16220,7 +17320,7 @@ function storageKey(key) {
   return PREFIX + ':' + key;
 }
 
-},{}],60:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16242,9 +17342,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var NO_PROMISE_ERR = 'No account promise provided';
 
-var WaitForSubscriptionLookupApi =
-/*#__PURE__*/
-function () {
+var WaitForSubscriptionLookupApi = /*#__PURE__*/function () {
   /**
    * @param {!./deps.DepsDef} deps
    * @param {?Promise} accountPromise
@@ -16310,7 +17408,7 @@ function () {
 
 exports.WaitForSubscriptionLookupApi = WaitForSubscriptionLookupApi;
 
-},{"../api/deferred-account-creation":6,"../ui/activity-iframe-view":61,"./services":57}],61:[function(require,module,exports){
+},{"../api/deferred-account-creation":6,"../ui/activity-iframe-view":64,"./services":60}],64:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16328,7 +17426,7 @@ var _dom = require("../utils/dom");
 
 var _errors = require("../utils/errors");
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16336,15 +17434,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /** @const {!Object<string, string>} */
 var iframeAttributes = {
@@ -16355,10 +17457,10 @@ var iframeAttributes = {
  * Class to build and render Activity iframe view.
  */
 
-var ActivityIframeView =
-/*#__PURE__*/
-function (_View) {
+var ActivityIframeView = /*#__PURE__*/function (_View) {
   _inherits(ActivityIframeView, _View);
+
+  var _super = _createSuper(ActivityIframeView);
 
   /**
    * @param {!Window} win
@@ -16376,7 +17478,7 @@ function (_View) {
 
     _classCallCheck(this, ActivityIframeView);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ActivityIframeView).call(this));
+    _this = _super.call(this);
     /** @private @const {!Window} */
 
     _this.win_ = win;
@@ -16581,7 +17683,7 @@ function (_View) {
 
 exports.ActivityIframeView = ActivityIframeView;
 
-},{"../components/view":19,"../proto/api_messages":32,"../utils/activity-utils":64,"../utils/dom":68,"../utils/errors":69}],62:[function(require,module,exports){
+},{"../components/view":20,"../proto/api_messages":33,"../utils/activity-utils":67,"../utils/dom":72,"../utils/errors":74}],65:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16602,9 +17704,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * parent element <iframe class="swg-dialog"> element. Provides methods to
  * show/hide loading indicator.
  */
-var LoadingView =
-/*#__PURE__*/
-function () {
+var LoadingView = /*#__PURE__*/function () {
   /**
    * @param {!Document} doc
    */
@@ -16675,7 +17775,7 @@ function () {
 
 exports.LoadingView = LoadingView;
 
-},{"../utils/dom":68}],63:[function(require,module,exports){
+},{"../utils/dom":72}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16719,9 +17819,7 @@ var iframeAttributes = {
  * The class Notification toast.
  */
 
-var Toast =
-/*#__PURE__*/
-function () {
+var Toast = /*#__PURE__*/function () {
   /**
    * @param {!../runtime/deps.DepsDef} deps
    * @param {string} src
@@ -16866,7 +17964,7 @@ function () {
 
 exports.Toast = Toast;
 
-},{"../utils/animation":65,"../utils/dom":68,"../utils/style":78}],64:[function(require,module,exports){
+},{"../utils/animation":68,"../utils/dom":72,"../utils/style":83}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16907,7 +18005,7 @@ function acceptPortResultData(port, requireOrigin, requireOriginVerified, requir
   });
 }
 
-},{}],65:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16959,7 +18057,7 @@ function transition(el, props, durationMillis, curve) {
   });
 }
 
-},{"./style":78}],66:[function(require,module,exports){
+},{"./style":83}],69:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17047,7 +18145,7 @@ function bytesToString(bytes) {
 }
 /**
  * Interpret a byte array as a UTF-8 string.
- * @param {!BufferSource} bytes
+ * @param {!Uint8Array} bytes
  * @return {string}
  */
 
@@ -17057,7 +18155,7 @@ function utf8DecodeSync(bytes) {
     return new TextDecoder('utf-8').decode(bytes);
   }
 
-  var asciiString = bytesToString(new Uint8Array(bytes.buffer || bytes));
+  var asciiString = bytesToString(new Uint8Array(bytes));
   return decodeURIComponent(escape(asciiString));
 }
 /**
@@ -17103,7 +18201,41 @@ function base64UrlEncodeFromBytes(bytes) {
   });
 }
 
-},{"./log":73}],67:[function(require,module,exports){
+},{"./log":78}],70:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.toTimestamp = toTimestamp;
+
+var _api_messages = require("../proto/api_messages");
+
+/**
+ * Copyright 2020 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @param {!number} millis
+ * @return {!Timestamp}
+ */
+function toTimestamp(millis) {
+  return new _api_messages.Timestamp([Math.floor(millis / 1000), millis % 1000 * 1000000], false);
+}
+
+},{"../proto/api_messages":33}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17172,32 +18304,32 @@ function onDocumentReady(doc, callback) {
   onDocumentState(doc, isDocumentReady, callback);
 }
 /**
- * Calls the callback when document's state satisfies the stateFn.
+ * Calls the callback once when document's state satisfies the condition.
  * @param {!Document} doc
- * @param {function(!Document):boolean} stateFn
+ * @param {function(!Document):boolean} condition
  * @param {function(!Document)} callback
  */
 
 
-function onDocumentState(doc, stateFn, callback) {
-  var ready = stateFn(doc);
-
-  if (ready) {
+function onDocumentState(doc, condition, callback) {
+  if (condition(doc)) {
+    // Execute callback right now.
     callback(doc);
-  } else {
-    var readyListener = function readyListener() {
-      if (stateFn(doc)) {
-        if (!ready) {
-          ready = true;
-          callback(doc);
-        }
+    return;
+  } // Execute callback (once!) after condition is satisfied.
 
-        doc.removeEventListener('readystatechange', readyListener);
-      }
-    };
 
-    doc.addEventListener('readystatechange', readyListener);
-  }
+  var callbackHasExecuted = false;
+
+  var readyListener = function readyListener() {
+    if (condition(doc) && !callbackHasExecuted) {
+      callback(doc);
+      callbackHasExecuted = true;
+      doc.removeEventListener('readystatechange', readyListener);
+    }
+  };
+
+  doc.addEventListener('readystatechange', readyListener);
 }
 /**
  * Returns a promise that is resolved when document is ready.
@@ -17224,7 +18356,7 @@ function whenDocumentComplete(doc) {
   });
 }
 
-},{}],68:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17237,7 +18369,7 @@ exports.removeChildren = removeChildren;
 exports.injectStyleSheet = injectStyleSheet;
 exports.hasNextNodeInDocumentOrder = hasNextNodeInDocumentOrder;
 exports.isConnected = isConnected;
-exports.isEdgeBrowser = isEdgeBrowser;
+exports.isLegacyEdgeBrowser = isLegacyEdgeBrowser;
 exports.styleExistsQuerySelector = exports.styleType = exports.styleLinkAttrs = void 0;
 
 var _log = require("./log");
@@ -17406,17 +18538,236 @@ function isConnected(node) {
   return root && root.contains(node) || false;
 }
 /**
+ * Returns true if current browser is a legacy version of Edge.
+ *
+ * Starting in January 2020, new versions of Edge will use the Chromium engine.
+ * These versions won't include the word "Edge" in their useragent.
+ * Instead, they'll include the word "Edg".
+ * So far, it seems safe to avoid detecting these new versions of Edge.
  * @param {!Window} win
  * @return {boolean}
  */
 
 
-function isEdgeBrowser(win) {
+function isLegacyEdgeBrowser(win) {
   var nav = win.navigator;
   return /Edge/i.test(nav && nav.userAgent);
 }
 
-},{"./log":73,"./style":78}],69:[function(require,module,exports){
+},{"./log":78,"./style":83}],73:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.dev = exports.user = exports.ErrorLogger = exports.AMP_USER_ERROR_SENTINEL = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Copyright 2020 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Triple zero width space.
+ *
+ * This is added to user error messages, so that we can later identify
+ * them, when the only thing that we have is the message. This is the
+ * case in many browsers when the global exception handler is invoked.
+ *
+ * @const {string}
+ */
+var AMP_USER_ERROR_SENTINEL = "\u200B\u200B\u200B";
+/**
+ * Some exceptions (DOMException, namely) have read-only message.
+ * @param {!Error} error
+ * @return {!Error}
+ */
+
+exports.AMP_USER_ERROR_SENTINEL = AMP_USER_ERROR_SENTINEL;
+
+function duplicateErrorIfNecessary(error) {
+  var messageProperty = Object.getOwnPropertyDescriptor(error, 'message');
+
+  if (messageProperty && messageProperty.writable) {
+    return error;
+  }
+
+  var message = error.message,
+      stack = error.stack;
+  var e = new Error(message); // Copy all the extraneous things we attach.
+
+  for (var prop in error) {
+    e[prop] = error[prop];
+  } // Ensure these are copied.
+
+
+  e.stack = stack;
+  return e;
+}
+/**
+ * @param {...*} var_args
+ * @return {!Error}
+ */
+
+
+function createErrorVargs(var_args) {
+  var error = null;
+  var message = '';
+
+  for (var i = 0; i < arguments.length; i++) {
+    var arg = arguments[i];
+
+    if (arg instanceof Error && !error) {
+      error = duplicateErrorIfNecessary(arg);
+    } else {
+      if (message) {
+        message += ' ';
+      }
+
+      message += arg;
+    }
+  }
+
+  if (!error) {
+    error = new Error(message);
+  } else if (message) {
+    error.message = message + ': ' + error.message;
+  }
+
+  return error;
+}
+/** Helper class for throwing standardized errors. */
+
+
+var ErrorLogger = /*#__PURE__*/function () {
+  /**
+   * Constructor.
+   *
+   * opt_suffix will be appended to error message to identify the type of the
+   * error message. We can't rely on the error object to pass along the type
+   * because some browsers do not have this param in its window.onerror API.
+   * See:
+   * https://blog.sentry.io/2016/01/04/client-javascript-reporting-window-onerror.html
+   *
+   * @param {string=} opt_suffix
+   */
+  function ErrorLogger() {
+    var opt_suffix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+    _classCallCheck(this, ErrorLogger);
+
+    /** @private @const {string} */
+    this.suffix_ = opt_suffix;
+  }
+  /**
+   * Modifies an error before reporting, such as to add metadata.
+   * @param {!Error} error
+   * @private
+   */
+
+
+  _createClass(ErrorLogger, [{
+    key: "prepareError_",
+    value: function prepareError_(error) {
+      if (this.suffix_) {
+        if (!error.message) {
+          error.message = this.suffix_;
+        } else if (error.message.indexOf(this.suffix_) === -1) {
+          error.message = this.suffix_;
+        }
+      }
+    }
+    /**
+     * Creates an error.
+     * @param {...*} var_args
+     * @return {!Error}
+     */
+
+  }, {
+    key: "createError",
+    value: function createError(var_args) {
+      var error = createErrorVargs.apply(null, Array.prototype.slice.call(arguments));
+      this.prepareError_(error);
+      return error;
+    }
+    /**
+     * Creates an error object with its expected property set to true. Used for
+     * expected failure states (ex. incorrect configuration, localStorage
+     * unavailable due to browser settings, etc.) as opposed to unexpected
+     * breakages/failures.
+     * @param {...*} var_args
+     * @return {!Error}
+     */
+
+  }, {
+    key: "createExpectedError",
+    value: function createExpectedError(var_args) {
+      var error = createErrorVargs.apply(null, Array.prototype.slice.call(arguments));
+      this.prepareError_(error);
+      error.expected = true;
+      return error;
+    }
+    /**
+     * Throws an error.
+     * @param {...*} var_args
+     * @throws {!Error}
+     */
+
+  }, {
+    key: "error",
+    value: function error(var_args) {
+      throw this.createError.apply(this, arguments);
+    }
+    /**
+     * Throws an error and marks with an expected property.
+     * @param {...*} var_args
+     * @throws {!Error}
+     */
+
+  }, {
+    key: "expectedError",
+    value: function expectedError(var_args) {
+      throw this.createExpectedError.apply(this, arguments);
+    }
+  }]);
+
+  return ErrorLogger;
+}();
+
+exports.ErrorLogger = ErrorLogger;
+var userLogger = new ErrorLogger(self.__AMP_TOP ? AMP_USER_ERROR_SENTINEL : '');
+var devLogger = new ErrorLogger();
+
+var user = function user() {
+  return userLogger;
+};
+
+exports.user = user;
+
+var dev = function dev() {
+  return devLogger;
+};
+
+exports.dev = dev;
+
+},{}],74:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17460,9 +18811,7 @@ function createCancelError(win, message) {
  */
 
 
-var ErrorUtils =
-/*#__PURE__*/
-function () {
+var ErrorUtils = /*#__PURE__*/function () {
   function ErrorUtils() {
     _classCallCheck(this, ErrorUtils);
   }
@@ -17485,13 +18834,103 @@ function () {
 
 exports.ErrorUtils = ErrorUtils;
 
-},{"web-activities/activity-ports":4}],70:[function(require,module,exports){
+},{"web-activities/activity-ports":4}],75:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.msg = msg;
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+/**
+ * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** English is the default language. */
+var DEFAULT_LANGUAGE_CODE = 'en';
+/**
+ * Gets a message for a given language code, from a map of messages.
+ * @param {!Object<string, string>} map
+ * @param {?string|?Element} languageCodeOrElement
+ * @return {?string}
+ */
+
+function msg(map, languageCodeOrElement) {
+  var defaultMsg = map[DEFAULT_LANGUAGE_CODE]; // Verify params.
+
+  if (_typeof(map) !== 'object' || !languageCodeOrElement) {
+    return defaultMsg;
+  } // Get language code.
+
+
+  var languageCode = typeof languageCodeOrElement === 'string' ? languageCodeOrElement : getLanguageCodeFromElement(languageCodeOrElement); // Normalize language code.
+
+  languageCode = languageCode.toLowerCase();
+  languageCode = languageCode.replace(/_/g, '-'); // Search for a message matching the language code.
+  // If a message can't be found, try again with a less specific language code.
+
+  var languageCodeSegments = languageCode.split('-');
+
+  while (languageCodeSegments.length) {
+    var key = languageCodeSegments.join('-');
+
+    if (key in map) {
+      return map[key];
+    } // Simplify language code.
+    // Ex: "en-US-SF" => "en-US"
+
+
+    languageCodeSegments.pop();
+  } // There was an attempt.
+
+
+  return defaultMsg;
+}
+/**
+ * Gets a language code (ex: "en-US") from a given Element.
+ * @param {!Element} element
+ * @return {string}
+ */
+
+
+function getLanguageCodeFromElement(element) {
+  if (element.lang) {
+    // Get language from element itself.
+    return element.lang;
+  }
+
+  if (element.ownerDocument && element.ownerDocument.documentElement.lang) {
+    // Get language from element's document.
+    return element.ownerDocument.documentElement.lang;
+  } // There was an attempt.
+
+
+  return DEFAULT_LANGUAGE_CODE;
+}
+
+},{}],76:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.parseJson = parseJson;
+exports.tryParseJson = tryParseJson;
+exports.getPropertyFromJsonString = getPropertyFromJsonString;
 
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -17510,105 +18949,10 @@ exports.msg = msg;
  */
 
 /**
- * @param {!Object<string, string>} map
- * @param {?string|?Element} langOrElement
- * @return {?string}
- */
-function msg(map, langOrElement) {
-  var lang = !langOrElement ? '' : typeof langOrElement == 'string' ? langOrElement : langOrElement.lang || langOrElement.ownerDocument && langOrElement.ownerDocument.documentElement.lang;
-  var search = (lang && lang.toLowerCase() || 'en').replace(/_/g, '-');
-
-  while (search) {
-    if (search in map) {
-      return map[search];
-    }
-
-    var dash = search.lastIndexOf('-');
-    search = dash != -1 ? search.substring(0, dash) : '';
-  } // "en" is always default.
-
-
-  return map['en'];
-}
-
-},{}],71:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.recreateNonProtoObject = recreateNonProtoObject;
-exports.getValueForExpr = getValueForExpr;
-exports.parseJson = parseJson;
-exports.tryParseJson = tryParseJson;
-exports.getPropertyFromJsonString = getPropertyFromJsonString;
-
-var _types = require("./types");
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-/**
- * Recreates objects with prototype-less copies.
- * @param {!JsonObject} obj
- * @return {!JsonObject}
- */
-function recreateNonProtoObject(obj) {
-  var copy = Object.create(null);
-
-  for (var k in obj) {
-    if (!hasOwnProperty(obj, k)) {
-      continue;
-    }
-
-    var v = obj[k];
-    copy[k] = (0, _types.isObject)(v) ? recreateNonProtoObject(v) : v;
-  }
-
-  return (
-    /** @type {!JsonObject} */
-    copy
-  );
-}
-/**
- * Returns a value from an object for a field-based expression. The expression
- * is a simple nested dot-notation of fields, such as `field1.field2`. If any
- * field in a chain does not exist or is not an object, the returned value will
- * be `undefined`.
- *
- * @param {!JsonObject} obj
- * @param {string} expr
- * @return {*}
+ * @fileoverview This module declares JSON types as defined in the
+ * {@link http://json.org/}.
  */
 
-
-function getValueForExpr(obj, expr) {
-  // The `.` indicates "the object itself".
-  if (expr == '.') {
-    return obj;
-  } // Otherwise, navigate via properties.
-
-
-  var parts = expr.split('.');
-  var value = obj;
-
-  for (var i = 0; i < parts.length; i++) {
-    var part = parts[i];
-
-    if (!part) {
-      value = undefined;
-      break;
-    }
-
-    if (!(0, _types.isObject)(value) || value[part] === undefined || !hasOwnProperty(value, part)) {
-      value = undefined;
-      break;
-    }
-
-    value = value[part];
-  }
-
-  return value;
-}
 /**
  * Simple wrapper around JSON.parse that casts the return value
  * to JsonObject.
@@ -17616,8 +18960,6 @@ function getValueForExpr(obj, expr) {
  * @param {*} json JSON string to parse
  * @return {?JsonObject|undefined} May be extend to parse arrays.
  */
-
-
 function parseJson(json) {
   return (
     /** @type {?JsonObject} */
@@ -17649,22 +18991,6 @@ function tryParseJson(json, onFailed) {
   }
 }
 /**
- * @param {*} obj
- * @param {string} key
- * @return {boolean}
- */
-
-
-function hasOwnProperty(obj, key) {
-  if (obj == null || _typeof(obj) != 'object') {
-    return false;
-  }
-
-  return Object.prototype.hasOwnProperty.call(
-  /** @type {!Object} */
-  obj, key);
-}
-/**
  * Converts the passed string into a JSON object (if possible) and returns the
  * value of the propertyName on that object.
  * @param {string} jsonString
@@ -17678,7 +19004,7 @@ function getPropertyFromJsonString(jsonString, propertyName) {
   return json && json[propertyName] || null;
 }
 
-},{"./types":79}],72:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17709,9 +19035,7 @@ var JwtTokenInternalDef;
  * Provides helper methods to decode and verify JWT tokens.
  */
 
-var JwtHelper =
-/*#__PURE__*/
-function () {
+var JwtHelper = /*#__PURE__*/function () {
   function JwtHelper() {
     _classCallCheck(this, JwtHelper);
   }
@@ -17770,7 +19094,7 @@ function () {
 
 exports.JwtHelper = JwtHelper;
 
-},{"./bytes":66,"./json":71}],73:[function(require,module,exports){
+},{"./bytes":69,"./json":76}],78:[function(require,module,exports){
 "use strict";
 
 /**
@@ -17903,7 +19227,7 @@ module.exports = {
   log: log
 };
 
-},{}],74:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17975,7 +19299,7 @@ function findInArray(array, predicate) {
   return null;
 }
 
-},{}],75:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17991,9 +19315,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Preconnect =
-/*#__PURE__*/
-function () {
+var Preconnect = /*#__PURE__*/function () {
   /**
    * @param {!Document} doc
    */
@@ -18070,7 +19392,7 @@ function () {
 
 exports.Preconnect = Preconnect;
 
-},{"./dom":68}],76:[function(require,module,exports){
+},{"./dom":72}],81:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18103,9 +19425,11 @@ exports.getRandomInts = getRandomInts;
 function getRandomInts(numInts, maxVal) {
   // Ensure array type is appropriate for the max value (performance)
   var arr = maxVal < 256 ? new Uint8Array(numInts) : maxVal < 32768 ? new Uint16Array(numInts) : new Uint32Array(numInts);
+  var isIE = !!self['msCrypto'];
+  var localCrypto = isIE ? self['msCrypto'] : self.crypto;
 
-  if (crypto && crypto.getRandomValues) {
-    crypto.getRandomValues(arr);
+  if (localCrypto && localCrypto.getRandomValues) {
+    localCrypto.getRandomValues(arr);
 
     for (var i = arr.length - 1; i > -1; i--) {
       arr[i] = arr[i] % maxVal;
@@ -18120,7 +19444,7 @@ function getRandomInts(numInts, maxVal) {
   return arr;
 }
 
-},{}],77:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18133,8 +19457,12 @@ exports.startsWith = startsWith;
 exports.expandTemplate = expandTemplate;
 exports.stringHash32 = stringHash32;
 exports.getUuid = getUuid;
+exports.getSwgTransactionId = getSwgTransactionId;
+exports.hash = hash;
 
 var _random = require("./random");
+
+var _bytes = require("./bytes");
 
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -18324,7 +19652,52 @@ function getUuid() {
   return uuid;
 }
 
-},{"./random":76}],78:[function(require,module,exports){
+function getSwgTransactionId() {
+  return getUuid() + '.swg';
+}
+/**
+ * Returns a string whose length matches the length of format.
+ * @param {string} str
+ * @param {string} format
+ * @return {string}
+ */
+
+
+function padString(str, format) {
+  return (format + str).slice(-format.length);
+}
+
+var PADDING = '00000000';
+
+function toHex(buffer) {
+  var hexCodes = [];
+  var view = new DataView(buffer);
+
+  for (var i = 0; i < view.byteLength; i += 4) {
+    // toString(16) will give the hex representation of the number without padding
+    var stringValue = view.getUint32(i).toString(16);
+    hexCodes.push(padString(stringValue, PADDING));
+  }
+
+  return hexCodes.join('');
+}
+/**
+ * Returns a hexadecimal 128 character string that is the
+ * SHA-512 hash of the passed string.
+ * @param {string} stringToHash
+ * @return {!Promise<string>}
+ */
+
+
+function hash(stringToHash) {
+  var crypto = self.crypto || self.msCrypto;
+  var subtle = crypto.subtle;
+  return subtle.digest('SHA-512', (0, _bytes.utf8EncodeSync)(stringToHash)).then(function (digest) {
+    return toHex(digest);
+  });
+}
+
+},{"./bytes":69,"./random":81}],83:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18782,17 +20155,13 @@ function resetAllStyles(element) {
   setImportantStyles(element, defaultStyles);
 }
 
-},{"./object.js":74,"./string":77}],79:[function(require,module,exports){
+},{"./object.js":79,"./string":82}],84:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isArray = isArray;
-exports.toArray = toArray;
 exports.isObject = isObject;
-exports.isFiniteNumber = isFiniteNumber;
-exports.isFormData = isFormData;
 exports.isEnumValue = isEnumValue;
 exports.isFunction = isFunction;
 exports.isBoolean = isBoolean;
@@ -18813,79 +20182,14 @@ exports.isBoolean = isBoolean;
  * limitations under the License.
  */
 
-/* @const */
-var toString_ = Object.prototype.toString;
-/**
- * Returns the ECMA [[Class]] of a value
- * @param {*} value
- * @return {string}
- */
-
-function toString(value) {
-  return toString_.call(value);
-}
-/**
- * Determines if value is actually an Array.
- * @param {*} value
- * @return {boolean}
- */
-
-
-function isArray(value) {
-  return Array.isArray(value);
-}
-/**
- * Converts an array-like object to an array.
- * @param {?IArrayLike<T>|string} arrayLike
- * @return {!Array<T>}
- * @template T
- */
-
-
-function toArray(arrayLike) {
-  if (!arrayLike) {
-    return [];
-  }
-
-  var array = new Array(arrayLike.length);
-
-  for (var i = 0; i < arrayLike.length; i++) {
-    array[i] = arrayLike[i];
-  }
-
-  return array;
-}
 /**
  * Determines if value is actually an Object.
  * @param {*} value
  * @return {boolean}
  */
-
-
 function isObject(value) {
-  return toString(value) === '[object Object]';
-}
-/**
- * Determines if value is of number type and finite.
- * NaN and Infinity are not considered a finite number.
- * String numbers are not considered numbers.
- * @param {*} value
- * @return {boolean}
- */
-
-
-function isFiniteNumber(value) {
-  return typeof value === 'number' && isFinite(value);
-}
-/**
- * Determines if value is of FormData type.
- * @param {*} value
- * @return {boolean}
- */
-
-
-function isFormData(value) {
-  return toString(value) === '[object FormData]';
+  var str = Object.prototype.toString.call(value);
+  return str === '[object Object]';
 }
 /**
  * Checks whether `s` is a valid value of `enumObj`.
@@ -18909,23 +20213,25 @@ function isEnumValue(enumObj, s) {
 /**
  * True if the value is a function.
  * @param {*} value
+ * @return {boolean}
  */
 
 
 function isFunction(value) {
-  return value !== null && typeof value === 'function';
+  return typeof value === 'function';
 }
 /**
  * True if the value is either true or false.
  * @param {?*} value
+ * @return {boolean}
  */
 
 
 function isBoolean(value) {
-  return value === true || value === false;
+  return typeof value === 'boolean';
 }
 
-},{}],80:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18935,9 +20241,9 @@ exports.serializeQueryString = serializeQueryString;
 exports.parseUrl = parseUrl;
 exports.parseQueryString = parseQueryString;
 exports.addQueryParam = addQueryParam;
+exports.serializeProtoMessageForUrl = serializeProtoMessageForUrl;
 exports.getHostUrl = getHostUrl;
-
-var _types = require("./types");
+exports.getCanonicalUrl = getCanonicalUrl;
 
 /**
  * Copyright 2018 The Subscribe with Google Authors. All Rights Reserved.
@@ -18998,7 +20304,7 @@ function serializeQueryString(params) {
 
     if (v == null) {
       continue;
-    } else if ((0, _types.isArray)(v)) {
+    } else if (Array.isArray(v)) {
       for (var i = 0; i < v.length; i++) {
         var sv =
         /** @type {string} */
@@ -19151,6 +20457,17 @@ function addQueryParam(url, param, value) {
   return url + fragment;
 }
 /**
+ * @param {!../proto/api_messages.Message} message
+ * @return {string}
+ */
+
+
+function serializeProtoMessageForUrl(message) {
+  return JSON.stringify(
+  /** @type {JsonObject} */
+  message.toArray(false));
+}
+/**
  * Returns the Url including the path and search, without fregment.
  * @param {string} url
  * @return {string}
@@ -19161,8 +20478,18 @@ function getHostUrl(url) {
   var locationHref = parseUrl(url);
   return locationHref.origin + locationHref.pathname + locationHref.search;
 }
+/**
+ * @param {!../model/doc.Doc} doc
+ * @return {string}
+ */
 
-},{"./types":79}],81:[function(require,module,exports){
+
+function getCanonicalUrl(doc) {
+  var node = doc.getRootNode().querySelector("link[rel='canonical']");
+  return node && node.href || '';
+}
+
+},{}],86:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19215,9 +20542,7 @@ var allowedFetchTypes_ = {
  * A class that polyfills Fetch API.
  */
 
-var Xhr =
-/*#__PURE__*/
-function () {
+var Xhr = /*#__PURE__*/function () {
   /**
    * @param {!Window} win
    */
@@ -19450,9 +20775,7 @@ function assertSuccess(response) {
  */
 
 
-var FetchResponse =
-/*#__PURE__*/
-function () {
+var FetchResponse = /*#__PURE__*/function () {
   /**
    * @param {!XMLHttpRequest} xhr
    */
@@ -19569,9 +20892,7 @@ function () {
 
 exports.FetchResponse = FetchResponse;
 
-var FetchResponseHeaders =
-/*#__PURE__*/
-function () {
+var FetchResponseHeaders = /*#__PURE__*/function () {
   /**
    * @param {!XMLHttpRequest} xhr
    */
@@ -19609,7 +20930,7 @@ function () {
 
 exports.FetchResponseHeaders = FetchResponseHeaders;
 
-},{"./bytes":66,"./json":71,"./log":73,"./url":80}],82:[function(require,module,exports){
+},{"./bytes":69,"./json":76,"./log":78,"./url":85}],87:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19800,7 +21121,7 @@ Constants.GPAY_BUTTON_CARD_INFO_BUTTON_STYLE = "\n  .".concat(Constants.GPAY_BUT
 
 Constants.TRUSTED_DOMAIN = '.google.com';
 
-},{}],83:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19869,7 +21190,7 @@ function injectIframe(iframeClassName) {
   };
 }
 
-},{"./constants.js":82}],84:[function(require,module,exports){
+},{"./constants.js":87}],89:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19887,9 +21208,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var MAX_Z_INDEX = 2147483647;
 
-var Graypane =
-/*#__PURE__*/
-function () {
+var Graypane = /*#__PURE__*/function () {
   /**
    * @param {!Document} doc
    */
@@ -20025,7 +21344,7 @@ function transition(el, props, durationMillis, curve) {
   });
 }
 
-},{"./constants.js":82}],85:[function(require,module,exports){
+},{"./constants.js":87}],90:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20136,9 +21455,7 @@ var _iframeLoaded = false;
 
 var buffer = [];
 
-var PayFrameHelper =
-/*#__PURE__*/
-function () {
+var PayFrameHelper = /*#__PURE__*/function () {
   function PayFrameHelper() {
     _classCallCheck(this, PayFrameHelper);
   }
@@ -20418,13 +21735,11 @@ function () {
   }]);
 
   return PayFrameHelper;
-}(); // Start loading pay frame early
-
+}();
 
 exports.PayFrameHelper = PayFrameHelper;
-PayFrameHelper.load();
 
-},{"./constants.js":82,"./post_message_service.js":90}],86:[function(require,module,exports){
+},{"./constants.js":87,"./post_message_service.js":95}],91:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20470,9 +21785,7 @@ var TRUSTED_DOMAINS = ['actions.google.com', 'amp-actions.sandbox.google.com', '
  * @final
  */
 
-var PaymentsAsyncClient =
-/*#__PURE__*/
-function () {
+var PaymentsAsyncClient = /*#__PURE__*/function () {
   /**
    * @param {!PaymentOptions} paymentOptions
    * @param {function(!Promise<!PaymentData>)} onPaymentResponse
@@ -20517,8 +21830,11 @@ function () {
     this.delegate_ = paymentRequestSupported && !useIframe ? new _payments_request_delegate.PaymentsRequestDelegate(this.environment_) : this.webActivityDelegate_;
     this.upiHandler_ = new _upi_handler.UpiHandler();
     this.webActivityDelegate_.onResult(this.onResult_.bind(this));
-    this.delegate_.onResult(this.onResult_.bind(this)); // If web delegate is used anyway then this is overridden in the web
+    this.delegate_.onResult(this.onResult_.bind(this)); // Load PayFrameHelper upon client construction.
+
+    _pay_frame_helper.PayFrameHelper.load(); // If web delegate is used anyway then this is overridden in the web
     // activity delegate when load payment data is called.
+
 
     if ((0, _validator.chromeSupportsPaymentHandler)()) {
       _pay_frame_helper.PayFrameHelper.setBuyFlowActivityMode(_pay_frame_helper.BuyFlowActivityMode.PAYMENT_HANDLER);
@@ -20924,7 +22240,7 @@ function isNativeDisabledInRequest(request) {
   return (request['i'] && request['i']['disableNative']) === true;
 }
 
-},{"./constants.js":82,"./pay_frame_helper.js":85,"./payments_client_delegate_interface.js":87,"./payments_request_delegate.js":88,"./payments_web_activity_delegate.js":89,"./upi_handler.js":91,"./utils.js":92,"./validator.js":93,"web-activities/activity-ports":4}],87:[function(require,module,exports){
+},{"./constants.js":87,"./pay_frame_helper.js":90,"./payments_client_delegate_interface.js":92,"./payments_request_delegate.js":93,"./payments_web_activity_delegate.js":94,"./upi_handler.js":96,"./utils.js":97,"./validator.js":98,"web-activities/activity-ports":4}],92:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20959,9 +22275,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * An interface which captures what we need to start up buyflow across surfaces.
  * @interface
  */
-var PaymentsClientDelegateInterface =
-/*#__PURE__*/
-function () {
+var PaymentsClientDelegateInterface = /*#__PURE__*/function () {
   function PaymentsClientDelegateInterface() {
     _classCallCheck(this, PaymentsClientDelegateInterface);
   }
@@ -21014,7 +22328,7 @@ function () {
 
 exports.PaymentsClientDelegateInterface = PaymentsClientDelegateInterface;
 
-},{}],88:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21037,9 +22351,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * request.
  * @implements {PaymentsClientDelegateInterface}
  */
-var PaymentsRequestDelegate =
-/*#__PURE__*/
-function () {
+var PaymentsRequestDelegate = /*#__PURE__*/function () {
   /**
    * @param {string} environment
    */
@@ -21202,7 +22514,7 @@ function () {
 
 exports.PaymentsRequestDelegate = PaymentsRequestDelegate;
 
-},{"./constants.js":82,"./payments_client_delegate_interface.js":87}],89:[function(require,module,exports){
+},{"./constants.js":87,"./payments_client_delegate_interface.js":92}],94:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21262,9 +22574,7 @@ var ResizePayload;
  * @implements {PaymentsClientDelegateInterface}
  */
 
-var PaymentsWebActivityDelegate =
-/*#__PURE__*/
-function () {
+var PaymentsWebActivityDelegate = /*#__PURE__*/function () {
   /**
    * @param {string} environment
    * @param {string} googleTransactionId
@@ -21947,7 +23257,7 @@ function () {
 
 exports.PaymentsWebActivityDelegate = PaymentsWebActivityDelegate;
 
-},{"./constants.js":82,"./element_injector.js":83,"./graypane.js":84,"./pay_frame_helper.js":85,"./payments_client_delegate_interface.js":87,"./validator.js":93,"web-activities/activity-ports":4}],90:[function(require,module,exports){
+},{"./constants.js":87,"./element_injector.js":88,"./graypane.js":89,"./pay_frame_helper.js":90,"./payments_client_delegate_interface.js":92,"./validator.js":98,"web-activities/activity-ports":4}],95:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21982,9 +23292,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Service wrapping window.parent.postMessage. This enables
  * window.postMessage to be swapped out in unit tests.
  */
-var PostMessageService =
-/*#__PURE__*/
-function () {
+var PostMessageService = /*#__PURE__*/function () {
   function PostMessageService(window) {
     _classCallCheck(this, PostMessageService);
 
@@ -22012,7 +23320,7 @@ function () {
 
 exports.PostMessageService = PostMessageService;
 
-},{}],91:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22032,9 +23340,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var UpiHandler =
-/*#__PURE__*/
-function () {
+var UpiHandler = /*#__PURE__*/function () {
   function UpiHandler() {
     _classCallCheck(this, UpiHandler);
   }
@@ -22316,7 +23622,7 @@ function () {
 
 exports.UpiHandler = UpiHandler;
 
-},{"./constants.js":82,"./pay_frame_helper.js":85,"./validator.js":93}],92:[function(require,module,exports){
+},{"./constants.js":87,"./pay_frame_helper.js":90,"./validator.js":98}],97:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22355,7 +23661,7 @@ function createGoogleTransactionId(environment) {
   return _RandomUuid["default"].uuidFast() + '.' + environment;
 }
 
-},{"../third_party/random_uuid/Random.uuid.js":94}],93:[function(require,module,exports){
+},{"../third_party/random_uuid/Random.uuid.js":99}],98:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22507,7 +23813,7 @@ function validateSecureContext() {
 
 function validatePaymentOptions(paymentOptions) {
   if (paymentOptions.environment && !Object.values(_constants.Constants.Environment).includes(paymentOptions.environment)) {
-    throw new Error('Parameter environment in PaymentOptions can optionally be set to ' + 'PRODUCTION, otherwise it defaults to TEST.');
+    throw new Error('Parameter environment in PaymentOptions can optionally be set to ' + 'PRODUCTION, otherwise it defaults to TEST. ' + paymentOptions.environment);
   }
 }
 /**
@@ -22715,7 +24021,7 @@ function getAllowedPaymentMethodForType_(isReadyToPayRequest, paymentMethodType)
   return null;
 }
 
-},{"./constants.js":82}],94:[function(require,module,exports){
+},{"./constants.js":87}],99:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22829,6 +24135,6 @@ Random_uuid.uuidCompact = function () {
   });
 };
 
-},{}]},{},[20])
+},{}]},{},[21])
 
 })();//# sourceMappingURL=subscriptions.max.js.map
