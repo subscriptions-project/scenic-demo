@@ -229,6 +229,9 @@ function startFlowAuto() {
       // Forget any subscriptions, for metering demo purposes.
       subscriptions.clear();
 
+      // Set up metering demo language.
+      document.documentElement.lang = getQueryParams().lang || 'en';
+
       // Set up metering demo controls.
       MeteringDemo.setupControls();
 
