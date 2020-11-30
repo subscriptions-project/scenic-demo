@@ -18,6 +18,10 @@ import {DemoPaywallController} from './demo-controller';
 import {MeteringDemo} from './metering';
 import {log} from './log';
 
+const OWNS_PUBLISHER_SUBSCRIPTION = false;
+const USED_PUBLISHER_METER = false;
+const IS_FREE_ARTICLE = false;
+
 log('started');
 
 /**
@@ -254,6 +258,26 @@ function startFlowAuto() {
         location.reload();
       });
 
+      // If the publisher is unlocking the page for their own reason,
+      // please let google know here.
+      if (OWNS_PUBLISHER_SUBSCRIPTION) {
+        subscriptions.setShowcaseEntitlement({
+          isUserRegister: true,
+          entitlement: 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION',
+        });
+      } else if (USED_PUBLISHER_METER) {
+        subscriptions.setShowcaseEntitlement({
+          isUserRegister: true,
+          entitlement: 'EVENT_SHOWCASE_UNLOCKED_BY_METER',
+        });
+      } else if (IS_FREE_ARTICLE) {
+        subscriptions.setShowcaseEntitlement({
+          isUserRegister: true,
+          entitlement: 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE',
+        });
+      }
+
+
       // Fetch entitlements.
       subscriptions.getEntitlements().then((entitlements) => {
         if (entitlements.enablesThis()) {
@@ -264,6 +288,8 @@ function startFlowAuto() {
           maybeUnlockWithMetering();
         }
       });
+
+      let isUserRegistered = false;
 
       function maybeUnlockWithMetering() {
         // Fetch the current user's metering state.
@@ -296,7 +322,7 @@ function startFlowAuto() {
           .then((meteringState) => {
             // Forget previous entitlements fetches.
             subscriptions.clear();
-
+            isUserRegistered = !!meteringState.registrationTimestamp;
             // Get SwG entitlements.
             return subscriptions.getEntitlements({
               metering: {
@@ -338,6 +364,18 @@ function startFlowAuto() {
                 MeteringDemo.openPaywall();
               });
             } else {
+              if (isUserRegistered) {
+                subscriptions.setShowcaseEntitlement({
+                  isUserRegister: true,
+                  entitlement: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL',
+                });
+              } else {
+                subscriptions.setShowcaseEntitlement({
+                  isUserRegister: false,
+                  entitlement: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL',
+                });
+              }
+              
               // Handle failures to unlock the article with metering entitlements.
               // Perhaps the user ran out of free reads. Or perhaps the user
               // dismissed the Regwall. Either way, the publisher determines
