@@ -82,21 +82,21 @@ function startFlow(flow, var_args) {
 }
 
 function startDemoController(options) {
-  whenReady(subscriptions => 
+  whenReady(subscriptions =>
     new DemoPaywallController(subscriptions, options).start());
 }
 
 function setupSwgButton(subscriptions) {
-      // Create button element.
-      const swgButton = document.createElement('button');
-      swgButton.className = 'swg-button';
-      swgButton.onclick = () => {
-        const controller = new DemoPaywallController(subscriptions);
-        controller.start();
-      };
-      const firstParagraph = document.querySelector('.text');
-      const container = firstParagraph.parentNode;
-      container.insertBefore(swgButton, firstParagraph);
+  // Create button element.
+  const swgButton = document.createElement('button');
+  swgButton.className = 'swg-button';
+  swgButton.onclick = () => {
+    const controller = new DemoPaywallController(subscriptions);
+    controller.start();
+  };
+  const firstParagraph = document.querySelector('.text');
+  const container = firstParagraph.parentNode;
+  container.insertBefore(swgButton, firstParagraph);
 }
 
 function setupSmartButton(subscriptions) {
@@ -168,7 +168,7 @@ function setupUpdateSubscription(subscriptions) {
           }
         });
       }
-  );  
+  );
 }
 
 /**
@@ -224,7 +224,6 @@ function startFlowAuto() {
   if (flow == 'metering') {
     whenReady(setupMeteringDemo);
     return;
-    
   }
 
   startFlow(flow);
