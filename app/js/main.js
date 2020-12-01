@@ -335,6 +335,7 @@ function startFlowAuto() {
           .then((meteringState) => {
             // Forget previous entitlements fetches.
             subscriptions.clear();
+            // save whether or not the user is registered
             isUserRegistered = !!meteringState.registrationTimestamp;
             // Get SwG entitlements.
             return subscriptions.getEntitlements({
@@ -377,12 +378,14 @@ function startFlowAuto() {
                 MeteringDemo.openPaywall();
               });
             } else {
+              // If the user is registered, we are not unlocking the page due to a paywall.
               if (isUserRegistered) {
                 subscriptions.setShowcaseEntitlement({
                   isUserRegister: true,
                   entitlement: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL',
                 });
               } else {
+                // if the user is not registered, we are not unlocking the page due to a regwall.
                 subscriptions.setShowcaseEntitlement({
                   isUserRegister: false,
                   entitlement: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL',
