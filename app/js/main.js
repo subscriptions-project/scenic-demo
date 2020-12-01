@@ -18,18 +18,19 @@ import {DemoPaywallController} from './demo-controller';
 import {MeteringDemo} from './metering';
 import {log} from './log';
 
-const IS_FREE_ARTICLE = false;
-
 log('started');
 
-function canUnlockByPublisherSubscription() {
+function hasPublisherSubscription() {
   getQueryParams().hasPublisherSubscription === 'true';
 }
 
-function canUnlockByPublisherMeter() {
+function consumedPublisherMeter() {
   getQueryParams().consumedPublisherMeter === 'true';
 }
 
+function isFreeArticle() {
+  getQueryParams().isFreeArticle === 'true';
+}
 
 /**
  * Add subsciptions when ready.
@@ -92,9 +93,278 @@ function startFlow(flow, var_args) {
   });
 }
 
+function selectFlow() {
+  // Check for valid Google Article Access (GAA) params.
+  if (isGaa()) {
+    console.log(
+        'Google Article Access (GAA) params triggered the "metering" flow.'
+    );
+    return 'metering';
+  }
+
+  
+  // Support initial example, which just had ?flowToStart
+  let firstParam = 
+    ((window.location.search || '').split('?')[1] || '')
+      .split('&')[0] 
+    || 'demo';
+  // If there was no = in the first parameter, take it as is.  Use demo as default.
+  if (firstParam.indexOf('=') === -1) {
+    return firstParam;
+  }
+
+  // If the first parameter contains =, see if there is a flow param, use demo as default
+  return getQueryParams().flow || 'demo';
+}
+
+function setupSwgButton(subscriptions) {
+  // Create button element.
+  const swgButton = document.createElement('button');
+  swgButton.className = 'swg-button';
+  swgButton.onclick = () => {
+    const controller = new DemoPaywallController(subscriptions);
+    controller.start();
+  };
+  const firstParagraph = document.querySelector('.text');
+  const container = firstParagraph.parentNode;
+  container.insertBefore(swgButton, firstParagraph);
+}
+
+function setupSmartButton(subscriptions) {
+  let smartButton = document.querySelector('button#smartButton');
+  if (!smartButton) {
+    // Create a DOM element for SmartButton demo.
+    smartButton = document.createElement('button');
+    smartButton.id = 'smartButton';
+    const firstParagraph = document.querySelector('.text');
+    const container = firstParagraph.parentNode;
+    container.insertBefore(smartButton, firstParagraph);
+  }
+  subscriptions.attachSmartButton(
+      smartButton,
+      {
+        theme: 'light',
+        lang: 'en',
+        messageTextColor: 'rgba(66, 133, 244, 0.95)',
+      },
+      () => {
+        subscriptions.showOffers({isClosable: true});
+      }
+  );
+}
+
+function setupUpdateSubscription(subscriptions) {
+  let smartButton = document.querySelector('button#smartButton');
+  if (!smartButton) {
+    // Create a button that, when clicked, will trigger Update flow
+    smartButton = document.createElement('button');
+    smartButton.id = 'smartButton';
+    const firstParagraph = document.querySelector('.text');
+    const container = firstParagraph.parentNode;
+    container.insertBefore(smartButton, firstParagraph);
+  }
+  subscriptions.attachButton(
+      smartButton,
+      {
+        theme: 'light',
+        lang: 'en',
+        messageTextColor: 'rgba(66, 133, 244, 0.95)',
+      },
+      () => {
+        subscriptions.getEntitlements().then(entitlements => {
+          if (entitlements.entitlements.length) {
+            const entitlement = entitlements.entitlements[0];
+            const sku = entitlement.getSku();
+            if (sku) {
+              subscriptions.showUpdateOffers({
+                isClosable: true,
+                oldSku: sku,
+                skus: [
+                  'basic_1',
+                  'premium_1',
+                  'quarterly_offer_1',
+                  'annual_1', //qual skus
+                  'basic',
+                  'basic_monthly',
+                  'premium',
+                  'premium_monthly', //prod skus
+                ],
+              });
+            } else {
+              log(
+                'updateSubscriptions failed:', 
+                "user doesn't have SwG entitlements");
+            }
+          } else {
+            log(
+              'updateSubscriptions failed:', 
+              "user doesn't have entitlements yet");
+          }
+        });
+      }
+  );
+}
+
+function setupMeteringDemo(subscriptions) {
+  // Forget any subscriptions, for metering demo purposes.
+  subscriptions.clear();
+
+  // Set up metering demo language.
+  document.documentElement.lang = getQueryParams().lang || 'en';
+
+  // Set up metering demo controls.
+  MeteringDemo.setupControls();
+
+  // Handle clicks on the Metering Toast's "Subscribe" button.
+  subscriptions.setOnNativeSubscribeRequest(() => {
+    // Show a publisher paywall for demo purposes.
+    startFlow("showOffers");
+  });
+
+  // Handle clicks on the "Already have an account?" link within the
+  // Metering Regwall dialog.
+  subscriptions.setOnLoginRequest(() => {
+    subscriptions.linkAccount();
+  });
+
+  // Handle users linking their account.
+  subscriptions.setOnLinkComplete(() => {
+    subscriptions.reset();
+
+    location.reload();
+  });
+
+  // Determine whether there is a publisher based entitlement
+  let entitlement = null;
+  let isUserRegistered = false; // Set this if known
+  if (hasPublisherSubscription()) {        
+    isUserRegistered = true;
+    entitlement = 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION';
+    return;   
+  } else if (consumedPublisherMeter()) {
+    isUserRegistered = true;
+    entitlement = 'EVENT_SHOWCASE_UNLOCKED_BY_METER';
+  } else if (isFreeArticle()) {
+    // set isUserRegistered if known
+    entitlement = 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE';
+  }
+
+  if (entitlement) {
+    // Inform showcase of the decision and unlock the article
+    subscriptions.setShowcaseEntitlement({isUserRegistered, entitlement});
+    MeteringDemo.openPaywall();
+    return;
+  }
+
+  // Fetch entitlements.
+  subscriptions.getEntitlements().then((entitlements) => {
+    if (entitlements.enablesThis()) {
+      // Unlock article right away, since the user has a subscription through play.
+      MeteringDemo.openPaywall();
+    } else {
+      // Attempt to unlock article with metering.
+      maybeUnlockWithMetering(subscriptions);
+    }
+  });
+}
+
+function maybeUnlockWithMetering(subscriptions) {
+  let isUserRegistered = false;
+  // Fetch the current user's metering state.
+  MeteringDemo.fetchMeteringState()
+    .then((meteringState) => {
+      if (meteringState.registrationTimestamp) {
+        // Skip metering regwall for registered users.
+        return meteringState;
+      }
+
+      // Show metering regwall for unregistered users.
+      return GaaMeteringRegwall.show({
+        // Specify a URL that renders a Google Sign-In button.
+        iframeUrl: MeteringDemo.GOOGLE_SIGN_IN_IFRAME_URL,
+      })
+        .then((googleSignInUser) =>
+          // Register a user based on data from Google Sign-In.
+          //
+          // We advise setting a 1st party, secure, HTTP-only cookie,
+          // so it lives past 7 days in Safari.
+          // https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
+          MeteringDemo.registerUser(googleSignInUser)
+        )
+        .then(() =>
+          // Fetch the current user's metering state again
+          // since they registered.
+          MeteringDemo.fetchMeteringState()
+        );
+    })
+    .then((meteringState) => {
+      // Forget previous entitlements fetches.
+      subscriptions.clear();
+      // save whether or not the user is registered
+      isUserRegistered = !!meteringState.registrationTimestamp;
+      // Get SwG entitlements.
+      return subscriptions.getEntitlements({
+        metering: {
+          state: {
+            // Hashed identifier for a specific user. Hash this value yourself
+            // to avoid sending PII.
+            id: meteringState.id,
+            // Standard attributes which affect your meters.
+            // Each attribute has a corresponding timestamp, which
+            // allows meters to do things like granting access
+            // for up to 30 days after a certain action.
+            //
+            // TODO: Describe standard attributes, once they're defined.
+            standardAttributes: {
+              registered_user: {
+                timestamp: meteringState.registrationTimestamp,
+              },
+            },
+          },
+        },
+      });
+    })
+    .catch(() => false)
+    .then((entitlements) => {
+      // Check if a Google metering entitlement unlocks the article.
+      if (entitlements && entitlements.enablesThisWithGoogleMetering()) {
+        // Consume the entitlement. This lets Google know a specific free
+        // read was "used up", which allows Google to calculate how many
+        // free reads are left for a given user.
+        //
+        // Consuming an entitlement will also trigger a dialog that lets the user
+        // know Google provided them with a free read and call setShowcaseEntitlement
+        // with the appropriate result.
+        entitlements.consume(() => {
+          // Unlock the article AFTER the user consumes a free read.
+          // Note: If you unlock the article outside of this callback,
+          // users might be able to scroll down and read the article
+          // without closing the dialog, and closing the dialog is
+          // what actually consumes a free read.
+          MeteringDemo.openPaywall();
+        });
+      } else {
+        // If the user is registered, we are not unlocking the page due to a paywall,
+        // otherwise it is a regwall.  Please inform showcase of the publisher's decision
+        // not to unlock the page. 
+        const entitlement = isUserRegistered 
+          ? 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL' 
+          : 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL';
+        subscriptions.setShowcaseEntitlement({isUserRegistered,entitlement});
+        
+        // Handle failures to unlock the article with metering entitlements.
+        // Perhaps the user ran out of free reads. Or perhaps the user
+        // dismissed the Regwall. Either way, the publisher determines
+        // what happens next. This demo shows offers.
+        startFlow("showOffers");
+      }
+    });
+}
+
 /**
  * Selects the flow based on the URL query parameter.
  * (ex: http://localhost:8000/examples/sample-pub/1?metering)
+ * OR http://localhost:8000/examples/sample-pub/1?flow=showOffers)
  * The query parameter is the name of the function defined in runtime.
  * Defaults to 'showOffers'.
  * Current valid values are: 'showOffers', 'linkAccount', 'getEntitlements',
@@ -102,310 +372,36 @@ function startFlow(flow, var_args) {
  * and 'updateSubscription'.
  */
 function startFlowAuto() {
-  let flow =
-    ((window.location.search || '').split('?')[1] || '').split('&')[0] ||
-    'demo';
+  const flow = selectFlow();
 
-  // Check for valid Google Article Access (GAA) params.
-  if (isGaa()) {
-    console.log(
-        'Google Article Access (GAA) params triggered the "metering" flow.'
-    );
-    flow = 'metering';
-  }
-
-  if (flow == 'none') {
-    return;
-  }
-  if (flow == 'demo') {
-    whenReady(function(subscriptions) {
-      const controller = new DemoPaywallController(subscriptions);
-      controller.start();
-    });
-    return;
-  }
-
-  if (flow == 'demoConsentRequired') {
-    whenReady(function(subscriptions) {
-      const controller = new DemoPaywallController(subscriptions, {
-        consentRequired: 'true',
-      });
-      controller.start();
-    });
-    return;
-  }
-  if (flow == 'demoUnknownSubscription') {
-    whenReady(function(subscriptions) {
-      const controller = new DemoPaywallController(subscriptions, {
-        unknownSubscription: true,
-      });
-      controller.start();
-    });
-    return;
-  }
-  if (flow === 'swgButton') {
-    whenReady(subscriptions => {
-      // Create button element.
-      const swgButton = document.createElement('button');
-      swgButton.className = 'swg-button';
-      swgButton.onclick = () => {
-        const controller = new DemoPaywallController(subscriptions);
-        controller.start();
-      };
-      const firstParagraph = document.querySelector('.text');
-      const container = firstParagraph.parentNode;
-      container.insertBefore(swgButton, firstParagraph);
-    });
-  }
-  if (flow === 'smartbutton') {
-    whenReady(subscriptions => {
-      let smartButton = document.querySelector('button#smartButton');
-      if (!smartButton) {
-        // Create a DOM element for SmartButton demo.
-        smartButton = document.createElement('button');
-        smartButton.id = 'smartButton';
-        const firstParagraph = document.querySelector('.text');
-        const container = firstParagraph.parentNode;
-        container.insertBefore(smartButton, firstParagraph);
-      }
-      subscriptions.attachSmartButton(
-          smartButton,
-          {
-            theme: 'light',
-            lang: 'en',
-            messageTextColor: 'rgba(66, 133, 244, 0.95)',
-          },
-          () => {
-            subscriptions.showOffers({isClosable: true});
-          }
-      );
-    });
-    return;
-  }
-  if (flow === 'updateSubscription') {
-    whenReady(subscriptions => {
-      let smartButton = document.querySelector('button#smartButton');
-      if (!smartButton) {
-        // Create a button that, when clicked, will trigger Update flow
-        smartButton = document.createElement('button');
-        smartButton.id = 'smartButton';
-        const firstParagraph = document.querySelector('.text');
-        const container = firstParagraph.parentNode;
-        container.insertBefore(smartButton, firstParagraph);
-      }
-      subscriptions.attachButton(
-          smartButton,
-          {
-            theme: 'light',
-            lang: 'en',
-            messageTextColor: 'rgba(66, 133, 244, 0.95)',
-          },
-          () => {
-            subscriptions.getEntitlements().then(entitlements => {
-              if (entitlements.entitlements.length) {
-                const entitlement = entitlements.entitlements[0];
-                const sku = entitlement.getSku();
-                if (sku) {
-                  subscriptions.showUpdateOffers({
-                    isClosable: true,
-                    oldSku: sku,
-                    skus: [
-                      'basic_1',
-                      'premium_1',
-                      'quarterly_offer_1',
-                      'annual_1', //qual skus
-                      'basic',
-                      'basic_monthly',
-                      'premium',
-                      'premium_monthly', //prod skus
-                    ],
-                  });
-                } else {
-                  log(flow + ' failed:', "user doesn't have SwG entitlements");
-                }
-              } else {
-                log(flow + ' failed:', "user doesn't have entitlements yet");
-              }
-            });
-          }
-      );
-    });
-    return;
-  }
-
-  if (flow == 'metering') {
-    /* eslint-disable */
-
-    whenReady((subscriptions) => {
-      // Forget any subscriptions, for metering demo purposes.
-      subscriptions.clear();
-
-      // Set up metering demo language.
-      document.documentElement.lang = getQueryParams().lang || 'en';
-
-      // Set up metering demo controls.
-      MeteringDemo.setupControls();
-
-      // Handle clicks on the Metering Toast's "Subscribe" button.
-      subscriptions.setOnNativeSubscribeRequest(() => {
-        // Show a publisher paywall for demo purposes.
-        startFlow("showOffers");
-      });
-
-      // Handle clicks on the "Already have an account?" link within the
-      // Metering Regwall dialog.
-      subscriptions.setOnLoginRequest(() => {
-        subscriptions.linkAccount();
-      });
-
-      // Handle users linking their account.
-      subscriptions.setOnLinkComplete(() => {
-        subscriptions.reset();
-
-        location.reload();
-      });
-
-      // If the publisher is unlocking the page for their own reason,
-      // please let google know here.
-      if (canUnlockByPublisherSubscription()) {        
-        subscriptions.setShowcaseEntitlement({
-          isUserRegister: true,
-          entitlement: 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION',
-        });
-        // Unlock article right away, since the user has a subscription.
-        MeteringDemo.openPaywall();     
-        return;   
-      } else if (canUnlockByPublisherMeter()) {
-        subscriptions.setShowcaseEntitlement({
-          isUserRegister: true,
-          entitlement: 'EVENT_SHOWCASE_UNLOCKED_BY_METER',
-        });
-        // Unlock article if a publisher meter was used
-        MeteringDemo.openPaywall();
-        return;
-      } else if (IS_FREE_ARTICLE) {
-        subscriptions.setShowcaseEntitlement({
-          isUserRegister: true,
-          entitlement: 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE',
-        });
-      }
-
-
-      // Fetch entitlements.
-      subscriptions.getEntitlements().then((entitlements) => {
-        if (entitlements.enablesThis()) {
-          // Unlock article right away, since the user has a subscription.
-          MeteringDemo.openPaywall();
-        } else {
-          // Attempt to unlock article with metering.
-          maybeUnlockWithMetering();
-        }
-      });
-
-      let isUserRegistered = false;
-
-      function maybeUnlockWithMetering() {
-        // Fetch the current user's metering state.
-        MeteringDemo.fetchMeteringState()
-          .then((meteringState) => {
-            if (meteringState.registrationTimestamp) {
-              // Skip metering regwall for registered users.
-              return meteringState;
-            }
-
-            // Show metering regwall for unregistered users.
-            return GaaMeteringRegwall.show({
-              // Specify a URL that renders a Google Sign-In button.
-              iframeUrl: MeteringDemo.GOOGLE_SIGN_IN_IFRAME_URL,
-            })
-              .then((googleSignInUser) =>
-                // Register a user based on data from Google Sign-In.
-                //
-                // We advise setting a 1st party, secure, HTTP-only cookie,
-                // so it lives past 7 days in Safari.
-                // https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
-                MeteringDemo.registerUser(googleSignInUser)
-              )
-              .then(() =>
-                // Fetch the current user's metering state again
-                // since they registered.
-                MeteringDemo.fetchMeteringState()
-              );
-          })
-          .then((meteringState) => {
-            // Forget previous entitlements fetches.
-            subscriptions.clear();
-            // save whether or not the user is registered
-            isUserRegistered = !!meteringState.registrationTimestamp;
-            // Get SwG entitlements.
-            return subscriptions.getEntitlements({
-              metering: {
-                state: {
-                  // Hashed identifier for a specific user. Hash this value yourself
-                  // to avoid sending PII.
-                  id: meteringState.id,
-                  // Standard attributes which affect your meters.
-                  // Each attribute has a corresponding timestamp, which
-                  // allows meters to do things like granting access
-                  // for up to 30 days after a certain action.
-                  //
-                  // TODO: Describe standard attributes, once they're defined.
-                  standardAttributes: {
-                    registered_user: {
-                      timestamp: meteringState.registrationTimestamp,
-                    },
-                  },
-                },
-              },
-            });
-          })
-          .catch(() => false)
-          .then((entitlements) => {
-            // Check if a Google metering entitlement unlocks the article.
-            if (entitlements && entitlements.enablesThisWithGoogleMetering()) {
-              // Consume the entitlement. This lets Google know a specific free
-              // read was "used up", which allows Google to calculate how many
-              // free reads are left for a given user.
-              //
-              // Consuming an entitlement will also trigger a dialog that lets the user
-              // know Google provided them with a free read.
-              entitlements.consume(() => {
-                // Unlock the article AFTER the user consumes a free read.
-                // Note: If you unlock the article outside of this callback,
-                // users might be able to scroll down and read the article
-                // without closing the dialog, and closing the dialog is
-                // what actually consumes a free read.
-                MeteringDemo.openPaywall();
-              });
-            } else {
-              // If the user is registered, we are not unlocking the page due to a paywall.
-              if (isUserRegistered) {
-                subscriptions.setShowcaseEntitlement({
-                  isUserRegister: true,
-                  entitlement: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL',
-                });
-              } else {
-                // if the user is not registered, we are not unlocking the page due to a regwall.
-                subscriptions.setShowcaseEntitlement({
-                  isUserRegister: false,
-                  entitlement: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL',
-                });
-              }
-              
-              // Handle failures to unlock the article with metering entitlements.
-              // Perhaps the user ran out of free reads. Or perhaps the user
-              // dismissed the Regwall. Either way, the publisher determines
-              // what happens next. This demo shows offers.
-              startFlow("showOffers");
-            }
-          });
-      }
-    });
-    return;
-    /* eslint-enable */
-  }
-
-  startFlow(flow);
+  switch(flow) {
+    case 'none': return;
+    case 'demo':
+      // This is the showOffers demo
+      whenReady(subscriptions => 
+        new DemoPaywallController(subscriptions).start());
+      break;
+    case 'demoConsentRequired':   
+      whenReady(subscriptions =>
+        new DemoPaywallController(
+          subscriptions, 
+          {consentRequired: true}
+        ).start());
+      break;
+    case 'demoUnknownSubscription':
+      whenReady(subscriptions => 
+        new DemoPaywallController(
+          subscriptions, 
+          {unknownSubscription: true}
+        ).start());
+      break;
+    case 'swgButton': whenReady(setupSwgButton); break;
+    case 'smartbutton': whenReady(setupSmartButton); break;
+    case 'updateSubscription': whenReady(setupUpdateSubscription); break;
+    case 'setupMeteringDemo': whenReady(setupSwgButton); break;
+    case 'metering': whenReady(setupMeteringDemo); break;
+    default: startFlow(flow);
+  }  
 }
 
 /**
