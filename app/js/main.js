@@ -18,11 +18,18 @@ import {DemoPaywallController} from './demo-controller';
 import {MeteringDemo} from './metering';
 import {log} from './log';
 
-const OWNS_PUBLISHER_SUBSCRIPTION = false;
-const USED_PUBLISHER_METER = false;
 const IS_FREE_ARTICLE = false;
 
 log('started');
+
+function canUnlockByPublisherSubscription() {
+  getQueryParams().hasPublisherSubscription === 'true';
+}
+
+function canUnlockByPublisherMeter() {
+  getQueryParams().consumedPublisherMeter === 'true';
+}
+
 
 /**
  * Add subsciptions when ready.
@@ -260,16 +267,22 @@ function startFlowAuto() {
 
       // If the publisher is unlocking the page for their own reason,
       // please let google know here.
-      if (OWNS_PUBLISHER_SUBSCRIPTION) {
+      if (canUnlockByPublisherSubscription()) {        
         subscriptions.setShowcaseEntitlement({
           isUserRegister: true,
           entitlement: 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION',
         });
-      } else if (USED_PUBLISHER_METER) {
+        // Unlock article right away, since the user has a subscription.
+        MeteringDemo.openPaywall();     
+        return;   
+      } else if (canUnlockByPublisherMeter()) {
         subscriptions.setShowcaseEntitlement({
           isUserRegister: true,
           entitlement: 'EVENT_SHOWCASE_UNLOCKED_BY_METER',
         });
+        // Unlock article if a publisher meter was used
+        MeteringDemo.openPaywall();
+        return;
       } else if (IS_FREE_ARTICLE) {
         subscriptions.setShowcaseEntitlement({
           isUserRegister: true,
