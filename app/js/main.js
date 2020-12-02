@@ -327,7 +327,7 @@ function startFlowAuto() {
   }
 
   if (flow == 'demoConsentRequired') {
-    startDemoController({consentRequired: 'true'});
+    startDemoController({consentRequired: true});
     return;
   }
   if (flow == 'demoUnknownSubscription') {

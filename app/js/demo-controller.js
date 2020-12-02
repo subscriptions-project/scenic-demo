@@ -54,8 +54,7 @@ export class DemoPaywallController {
       opt_options && opt_options.unknownSubscription || false;
 
     /** @private @const {boolean} */
-    this.consentRequired_ = (opt_options &&
-      opt_options['consentRequired'] == 'true') ? true : false;
+    this.consentRequired_ = (opt_options && !!opt_options['consentRequired']);
   }
 
   start() {
