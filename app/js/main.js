@@ -25,7 +25,7 @@ log('started');
  * @param {function()} callback
  */
 function whenReady(callback) {
-  (self.SWG = self.SWG || []).push(function(subscriptions) {
+  (self.SWG = self.SWG || []).push(function (subscriptions) {
     // Available for testing only. A very bad idea to have a global like this.
     self['TEST_SWG'] = subscriptions;
     callback(subscriptions);
@@ -33,17 +33,17 @@ function whenReady(callback) {
 }
 
 // Callbacks.
-whenReady(function(subscriptions) {
+whenReady(function (subscriptions) {
   function eventCallback(eventName) {
-    return function(value) {
+    return function (value) {
       const promise = Promise.resolve(value);
       promise.then(
-          function(response) {
-            log(eventName, response);
-          },
-          function(reason) {
-            log(eventName + 'failed', reason);
-          }
+        function (response) {
+          log(eventName, response);
+        },
+        function (reason) {
+          log(eventName + 'failed', reason);
+        }
       );
     };
   }
@@ -65,25 +65,26 @@ whenReady(function(subscriptions) {
  */
 function startFlow(flow, var_args) {
   var_args = Array.prototype.slice.call(arguments, 1);
-  whenReady(function(subscriptions) {
+  whenReady(function (subscriptions) {
     const flowFunc = subscriptions[flow];
     const flows = Object.keys(subscriptions);
     if (!(typeof flowFunc == 'function')) {
       throw new Error(
-          'Flow "' + flow + '" not found: Available flows: "' + flows + '"'
+        'Flow "' + flow + '" not found: Available flows: "' + flows + '"'
       );
     }
     log('starting flow', flow, '(', var_args, ')', ' {' + flows + '}');
     const result = flowFunc.apply(subscriptions, var_args);
-    Promise.resolve(result).then(function() {
+    Promise.resolve(result).then(function () {
       log('flow complete', flow);
     });
   });
 }
 
 function startDemoController(options) {
-  whenReady(subscriptions =>
-    new DemoPaywallController(subscriptions, options).start());
+  whenReady((subscriptions) =>
+    new DemoPaywallController(subscriptions, options).start()
+  );
 }
 
 function setupSwgButton(subscriptions) {
@@ -110,15 +111,15 @@ function setupSmartButton(subscriptions) {
     container.insertBefore(smartButton, firstParagraph);
   }
   subscriptions.attachSmartButton(
-      smartButton,
-      {
-        theme: 'light',
-        lang: 'en',
-        messageTextColor: 'rgba(66, 133, 244, 0.95)',
-      },
-      () => {
-        subscriptions.showOffers({isClosable: true});
-      }
+    smartButton,
+    {
+      theme: 'light',
+      lang: 'en',
+      messageTextColor: 'rgba(66, 133, 244, 0.95)',
+    },
+    () => {
+      subscriptions.showOffers({isClosable: true});
+    }
   );
 }
 
@@ -134,40 +135,40 @@ function setupUpdateSubscription(subscriptions) {
     container.insertBefore(smartButton, firstParagraph);
   }
   subscriptions.attachButton(
-      smartButton,
-      {
-        theme: 'light',
-        lang: 'en',
-        messageTextColor: 'rgba(66, 133, 244, 0.95)',
-      },
-      () => {
-        subscriptions.getEntitlements().then(entitlements => {
-          if (entitlements.entitlements.length) {
-            const entitlement = entitlements.entitlements[0];
-            const sku = entitlement.getSku();
-            if (sku) {
-              subscriptions.showUpdateOffers({
-                isClosable: true,
-                oldSku: sku,
-                skus: [
-                  'basic_1',
-                  'premium_1',
-                  'quarterly_offer_1',
-                  'annual_1', //qual skus
-                  'basic',
-                  'basic_monthly',
-                  'premium',
-                  'premium_monthly', //prod skus
-                ],
-              });
-            } else {
-              log(flow + ' failed:', "user doesn't have SwG entitlements");
-            }
+    smartButton,
+    {
+      theme: 'light',
+      lang: 'en',
+      messageTextColor: 'rgba(66, 133, 244, 0.95)',
+    },
+    () => {
+      subscriptions.getEntitlements().then((entitlements) => {
+        if (entitlements.entitlements.length) {
+          const entitlement = entitlements.entitlements[0];
+          const sku = entitlement.getSku();
+          if (sku) {
+            subscriptions.showUpdateOffers({
+              isClosable: true,
+              oldSku: sku,
+              skus: [
+                'basic_1',
+                'premium_1',
+                'quarterly_offer_1',
+                'annual_1', //qual skus
+                'basic',
+                'basic_monthly',
+                'premium',
+                'premium_monthly', //prod skus
+              ],
+            });
           } else {
-            log(flow + ' failed:', "user doesn't have entitlements yet");
+            log(flow + ' failed:', "user doesn't have SwG entitlements");
           }
-        });
-      }
+        } else {
+          log(flow + ' failed:', "user doesn't have entitlements yet");
+        }
+      });
+    }
   );
 }
 
@@ -313,7 +314,7 @@ function startFlowAuto() {
   // Check for valid Google Article Access (GAA) params.
   if (isGaa()) {
     console.log(
-        'Google Article Access (GAA) params triggered the "metering" flow.'
+      'Google Article Access (GAA) params triggered the "metering" flow.'
     );
     flow = 'metering';
   }
@@ -379,7 +380,7 @@ function isGaa() {
   }
   if (parseInt(params.gaa_ts, 16) < Date.now() / 1000) {
     console.error(
-        'SwG Entitlements: The `gaa_ts` URL param should ' +
+      'SwG Entitlements: The `gaa_ts` URL param should ' +
         'contain a hex string timestamp which points to the future.'
     );
     return false;
@@ -396,7 +397,7 @@ function isGaa() {
     // Real publications should bail if this referrer check fails.
     // This script is only logging a warning for metering demo purposes.
     console.warn(
-        `SwG Entitlements: This page's referrer ("${referrer.origin}") can't ` +
+      `SwG Entitlements: This page's referrer ("${referrer.origin}") can't ` +
         'grant Google Article Access. Real publications should bail if this ' +
         'referrer check fails.'
     );
@@ -422,12 +423,12 @@ function getAnchorFromUrl(url) {
 function getQueryParams() {
   const queryParams = {};
   location.search
-      .substring(1)
-      .split('&')
-      .forEach(pair => {
-        const parts = pair.split('=');
-        queryParams[parts[0]] = parts[1];
-      });
+    .substring(1)
+    .split('&')
+    .forEach((pair) => {
+      const parts = pair.split('=');
+      queryParams[parts[0]] = parts[1];
+    });
   return queryParams;
 }
 

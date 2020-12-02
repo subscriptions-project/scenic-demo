@@ -27,7 +27,6 @@ class Account {
  * Demo paywall controller to demonstrate some key features.
  */
 export class DemoPaywallController {
-
   /**
    * @param {!Subscriptions} subscriptions
    * @param {!{
@@ -39,11 +38,13 @@ export class DemoPaywallController {
     this.subscriptions = subscriptions;
 
     this.subscriptions.setOnEntitlementsResponse(
-        this.onEntitlements_.bind(this));
+      this.onEntitlements_.bind(this)
+    );
     this.subscriptions.setOnLoginRequest(this.loginRequest_.bind(this));
     this.subscriptions.setOnLinkComplete(this.linkComplete_.bind(this));
     this.subscriptions.setOnSubscribeResponse(
-        this.subscribeResponse_.bind(this));
+      this.subscribeResponse_.bind(this)
+    );
     this.subscriptions.configure({'experiments': ['hejira']});
 
     /** @const {?Entitlements} */
@@ -51,10 +52,10 @@ export class DemoPaywallController {
 
     /** @private {boolean} */
     this.unknownSubscription_ =
-      opt_options && opt_options.unknownSubscription || false;
+      (opt_options && opt_options.unknownSubscription) || false;
 
     /** @private @const {boolean} */
-    this.consentRequired_ = (opt_options && !!opt_options['consentRequired']);
+    this.consentRequired_ = opt_options && !!opt_options['consentRequired'];
   }
 
   start() {
@@ -87,89 +88,95 @@ export class DemoPaywallController {
 
   /** @private */
   onEntitlements_(entitlementsPromise) {
-    entitlementsPromise.then(entitlements => {
-      log('got entitlements: ', entitlements, entitlements.enablesThis());
-      // Send event upon discovery of the user's subscription state
-      if (entitlements) {
-        const products = this.getProductList_(entitlements.json());
-        this.subscriptions.getPropensityModule().then(module => {
-          if (products.length > 0) {
-            module.sendSubscriptionState('subscriber', {'product': products});
-          } else {
-            module.sendSubscriptionState('non_subscriber');
-          }
-          // Get initial propensity scores
-          module.getPropensity().then(score => {
-            if (score.header && score.header.ok) {
-              const scores = score.body.scores;
-              scores.forEach(scoreDetail => {
-                const value = scoreDetail.score && scoreDetail.score.value;
-                log('Propensity to subscribe for ', scoreDetail.product);
-                if (value) {
-                  log('bucketed: ', scoreDetail.score.bucketed);
-                  log('score: ', value);
-                } else {
-                  log('Not available: ', scoreDetail.error);
-                }
-              });
+    entitlementsPromise.then(
+      (entitlements) => {
+        log('got entitlements: ', entitlements, entitlements.enablesThis());
+        // Send event upon discovery of the user's subscription state
+        if (entitlements) {
+          const products = this.getProductList_(entitlements.json());
+          this.subscriptions.getPropensityModule().then((module) => {
+            if (products.length > 0) {
+              module.sendSubscriptionState('subscriber', {'product': products});
             } else {
-              let reason;
-              if (score.header) {
-                reason = score.body && score.body.error;
-              }
-              log('Propensity score unavailable: ', reason);
+              module.sendSubscriptionState('non_subscriber');
             }
+            // Get initial propensity scores
+            module.getPropensity().then((score) => {
+              if (score.header && score.header.ok) {
+                const scores = score.body.scores;
+                scores.forEach((scoreDetail) => {
+                  const value = scoreDetail.score && scoreDetail.score.value;
+                  log('Propensity to subscribe for ', scoreDetail.product);
+                  if (value) {
+                    log('bucketed: ', scoreDetail.score.bucketed);
+                    log('score: ', value);
+                  } else {
+                    log('Not available: ', scoreDetail.error);
+                  }
+                });
+              } else {
+                let reason;
+                if (score.header) {
+                  reason = score.body && score.body.error;
+                }
+                log('Propensity score unavailable: ', reason);
+              }
+            });
           });
-        });
-      } else {
-        this.subscriptions.getPropensityModule().then(module => {
-          module.sendSubscriptionState('unknown');
-        });
-      }
-      if (entitlements && entitlements.enablesThis()) {
-        if (!this.completeDeferredAccountCreation_(entitlements)) {
-          return; // Do nothing.
         } else {
-          const account = new Account('John Doe', 'johndoe@email.com');
-          const accountPromise = new Promise(resolve => {
-            setTimeout(() => {
-              resolve(account);
-            }, 5000);
+          this.subscriptions.getPropensityModule().then((module) => {
+            module.sendSubscriptionState('unknown');
           });
-          this.subscriptions.waitForSubscriptionLookup(accountPromise)
-              .then(account => {
+        }
+        if (entitlements && entitlements.enablesThis()) {
+          if (!this.completeDeferredAccountCreation_(entitlements)) {
+            return; // Do nothing.
+          } else {
+            const account = new Account('John Doe', 'johndoe@email.com');
+            const accountPromise = new Promise((resolve) => {
+              setTimeout(() => {
+                resolve(account);
+              }, 5000);
+            });
+            this.subscriptions.waitForSubscriptionLookup(accountPromise).then(
+              (account) => {
                 if (account) {
-                  this.showLoginPromptOrNotification_(this.subscriptions,
-                      this.consentRequired_).then(result => {
+                  this.showLoginPromptOrNotification_(
+                    this.subscriptions,
+                    this.consentRequired_
+                  ).then((result) => {
                     if (result) {
                       this.openPaywall_();
                       entitlements.ack();
                     }
                   });
                 }
-              }, reason => {
+              },
+              (reason) => {
                 log('subscription look up failed: ', reason);
-              });
+              }
+            );
+          }
+        } else {
+          // In a simplest case, just launch offers flow.
+          this.subscriptions.showOffers();
+          this.subscriptions.getPropensityModule().then((module) => {
+            // If a list of offers was passed in to showOffers() or some
+            // other interface that displays offers, that list can be
+            // sent here instead of an empty array.
+            module.sendEvent({
+              name: 'offers_shown',
+              active: false,
+              data: {'offers': []},
+            });
+          });
         }
-      } else {
-        // In a simplest case, just launch offers flow.
-        this.subscriptions.showOffers();
-        this.subscriptions.getPropensityModule().then(module => {
-          // If a list of offers was passed in to showOffers() or some
-          // other interface that displays offers, that list can be
-          // sent here instead of an empty array.
-          module.sendEvent(
-              {
-                name: 'offers_shown',
-                active: false,
-                data: {'offers': []},
-              });
-        });
+      },
+      (reason) => {
+        log('entitlements failed: ', reason);
+        throw reason;
       }
-    }, reason => {
-      log('entitlements failed: ', reason);
-      throw reason;
-    });
+    );
   }
 
   /**
@@ -212,40 +219,42 @@ export class DemoPaywallController {
    * @private
    */
   subscribeResponse_(promise) {
-    promise.then(response => {
-      // TODO: Start account creation flow.
-      log('got subscription response', response);
-      const toast = document.getElementById('creating_account_toast');
-      const userEl = document.getElementById('creating_account_toast_user');
-      userEl.textContent = response.userData.email;
-      toast.style.display = 'block';
-      // TODO: wait for account creation to be complete.
-      setTimeout(() => {
-        response.complete().then(() => {
-          log('subscription has been confirmed');
-          // Payment confirmation received, send payment_complete event
-          this.subscriptions.getPropensityModule().then(module => {
-            const jsonResponse = response && response.json();
-            const entitlementsJson =
-              jsonResponse && jsonResponse['entitlements'];
-            const products = this.getProductList_(entitlementsJson);
-            module.sendEvent(
-                {
-                  name: 'payment_complete',
-                  active: true,
-                  data: {'product': products},
-                });
+    promise.then(
+      (response) => {
+        // TODO: Start account creation flow.
+        log('got subscription response', response);
+        const toast = document.getElementById('creating_account_toast');
+        const userEl = document.getElementById('creating_account_toast_user');
+        userEl.textContent = response.userData.email;
+        toast.style.display = 'block';
+        // TODO: wait for account creation to be complete.
+        setTimeout(() => {
+          response.complete().then(() => {
+            log('subscription has been confirmed');
+            // Payment confirmation received, send payment_complete event
+            this.subscriptions.getPropensityModule().then((module) => {
+              const jsonResponse = response && response.json();
+              const entitlementsJson =
+                jsonResponse && jsonResponse['entitlements'];
+              const products = this.getProductList_(entitlementsJson);
+              module.sendEvent({
+                name: 'payment_complete',
+                active: true,
+                data: {'product': products},
+              });
+            });
+            // Open the content.
+            this.subscriptions.reset();
+            this.start();
           });
-          // Open the content.
-          this.subscriptions.reset();
-          this.start();
-        });
-        toast.style.display = 'none';
-      }, 3000);
-    }, reason => {
-      log('subscription response failed: ', reason);
-      throw reason;
-    });
+          toast.style.display = 'none';
+        }, 3000);
+      },
+      (reason) => {
+        log('subscription response failed: ', reason);
+        throw reason;
+      }
+    );
   }
 
   /**
@@ -283,26 +292,28 @@ export class DemoPaywallController {
       return;
     }
     log('start deferred account creation');
-    return this.subscriptions.completeDeferredAccountCreation({
-      entitlements,
-    }).then(response => {
-      // TODO: Start deferred account creation flow.
-      log('got deferred account response', response);
-      this.unknownSubscription_ = false;
-      const toast = document.getElementById('creating_account_toast');
-      const userEl = document.getElementById('creating_account_toast_user');
-      userEl.textContent = 'deferred/' + response.userData.email;
-      toast.style.display = 'block';
-      // TODO: wait for account creation to be complete.
-      setTimeout(() => {
-        response.complete().then(() => {
-          log('subscription has been confirmed');
-          // Open the content.
-          this.subscriptions.reset();
-          this.start();
-        });
-        toast.style.display = 'none';
-      }, 3000);
-    });
+    return this.subscriptions
+      .completeDeferredAccountCreation({
+        entitlements,
+      })
+      .then((response) => {
+        // TODO: Start deferred account creation flow.
+        log('got deferred account response', response);
+        this.unknownSubscription_ = false;
+        const toast = document.getElementById('creating_account_toast');
+        const userEl = document.getElementById('creating_account_toast_user');
+        userEl.textContent = 'deferred/' + response.userData.email;
+        toast.style.display = 'block';
+        // TODO: wait for account creation to be complete.
+        setTimeout(() => {
+          response.complete().then(() => {
+            log('subscription has been confirmed');
+            // Open the content.
+            this.subscriptions.reset();
+            this.start();
+          });
+          toast.style.display = 'none';
+        }, 3000);
+      });
   }
 }
