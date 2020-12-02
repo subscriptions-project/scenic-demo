@@ -171,64 +171,6 @@ function setupUpdateSubscription(subscriptions) {
   );
 }
 
-/**
- * Selects the flow based on the URL query parameter.
- * (ex: http://localhost:8000/examples/sample-pub/1?metering)
- * The query parameter is the name of the function defined in runtime.
- * Defaults to 'showOffers'.
- * Current valid values are: 'showOffers', 'linkAccount', 'getEntitlements',
- * 'demoConsentRequired', 'demoUnknownSubscription', 'smartbutton',
- * and 'updateSubscription'.
- */
-function startFlowAuto() {
-  let flow =
-    ((window.location.search || '').split('?')[1] || '').split('&')[0] ||
-    'demo';
-
-  // Check for valid Google Article Access (GAA) params.
-  if (isGaa()) {
-    console.log(
-        'Google Article Access (GAA) params triggered the "metering" flow.'
-    );
-    flow = 'metering';
-  }
-
-  if (flow == 'none') {
-    return;
-  }
-  if (flow == 'demo') {
-    startDemoController();
-    return;
-  }
-
-  if (flow == 'demoConsentRequired') {
-    startDemoController({consentRequired: 'true'});
-    return;
-  }
-  if (flow == 'demoUnknownSubscription') {
-    startDemoController({unknownSubscription: true});
-    return;
-  }
-  if (flow === 'swgButton') {
-    whenReady(setupSwgButton);
-  }
-  if (flow === 'smartbutton') {
-    whenReady(setupSmartButton);
-    return;
-  }
-  if (flow === 'updateSubscription') {
-    whenReady(setupUpdateSubscription);
-    return;
-  }
-
-  if (flow == 'metering') {
-    whenReady(setupMeteringDemo);
-    return;
-  }
-
-  startFlow(flow);
-}
-
 /* eslint-disable */
 function setupMeteringDemo(subscriptions) {
   // Forget any subscriptions, for metering demo purposes.
@@ -353,6 +295,64 @@ function setupMeteringDemo(subscriptions) {
   }  
 }
 /* eslint-enable */
+
+/**
+ * Selects the flow based on the URL query parameter.
+ * (ex: http://localhost:8000/examples/sample-pub/1?metering)
+ * The query parameter is the name of the function defined in runtime.
+ * Defaults to 'showOffers'.
+ * Current valid values are: 'showOffers', 'linkAccount', 'getEntitlements',
+ * 'demoConsentRequired', 'demoUnknownSubscription', 'smartbutton',
+ * and 'updateSubscription'.
+ */
+function startFlowAuto() {
+  let flow =
+    ((window.location.search || '').split('?')[1] || '').split('&')[0] ||
+    'demo';
+
+  // Check for valid Google Article Access (GAA) params.
+  if (isGaa()) {
+    console.log(
+        'Google Article Access (GAA) params triggered the "metering" flow.'
+    );
+    flow = 'metering';
+  }
+
+  if (flow == 'none') {
+    return;
+  }
+  if (flow == 'demo') {
+    startDemoController();
+    return;
+  }
+
+  if (flow == 'demoConsentRequired') {
+    startDemoController({consentRequired: 'true'});
+    return;
+  }
+  if (flow == 'demoUnknownSubscription') {
+    startDemoController({unknownSubscription: true});
+    return;
+  }
+  if (flow === 'swgButton') {
+    whenReady(setupSwgButton);
+  }
+  if (flow === 'smartbutton') {
+    whenReady(setupSmartButton);
+    return;
+  }
+  if (flow === 'updateSubscription') {
+    whenReady(setupUpdateSubscription);
+    return;
+  }
+
+  if (flow == 'metering') {
+    whenReady(setupMeteringDemo);
+    return;
+  }
+
+  startFlow(flow);
+}
 
 /**
  * Returns true if the URL contains valid Google Article Access (GAA) params.
