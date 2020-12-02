@@ -18,7 +18,23 @@ import {DemoPaywallController} from './demo-controller';
 import {MeteringDemo} from './metering';
 import {log} from './log';
 
+/* eslint-disable */
+const REGWALL = GaaMeteringRegwall;
+/* eslint-enable */
+
 log('started');
+
+function hasPublisherSubscription() {
+  getQueryParams().hasPublisherSubscription === 'true';
+}
+
+function consumedPublisherMeter() {
+  getQueryParams().consumedPublisherMeter === 'true';
+}
+
+function isFreeArticle() {
+  getQueryParams().isFreeArticle === 'true';
+}
 
 /**
  * Add subsciptions when ready.
@@ -171,7 +187,6 @@ function setupUpdateSubscription(subscriptions) {
   );
 }
 
-/* eslint-disable */
 function setupMeteringDemo(subscriptions) {
   // Forget any subscriptions, for metering demo purposes.
   subscriptions.clear();
@@ -185,7 +200,7 @@ function setupMeteringDemo(subscriptions) {
   // Handle clicks on the Metering Toast's "Subscribe" button.
   subscriptions.setOnNativeSubscribeRequest(() => {
     // Show a publisher paywall for demo purposes.
-    startFlow("showOffers");
+    startFlow('showOffers');
   });
 
   // Handle clicks on the "Already have an account?" link within the
@@ -201,8 +216,41 @@ function setupMeteringDemo(subscriptions) {
     location.reload();
   });
 
+  // Determine whether there is a publisher based entitlement
+  let entitlement = null;
+  let isUserRegistered = false; // Set this if known
+  let unlockContent = true;
+  if (hasPublisherSubscription()) {
+    isUserRegistered = true;
+    entitlement = 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION';
+    return;
+  } else if (consumedPublisherMeter()) {
+    isUserRegistered = true;
+    entitlement = 'EVENT_SHOWCASE_UNLOCKED_BY_METER';
+  } else if (isFreeArticle()) {
+    // set isUserRegistered if known
+    entitlement = 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE';
+  } else {
+    unlockContent = false;
+    entitlement = isUserRegistered
+      ? 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL'
+      : 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL';
+    subscriptions.setShowcaseEntitlement({isUserRegistered,entitlement});
+  }
+
+  // Inform showcase of the  publisher's entitlement decision.  If google
+  // decides to unlock the article, an additional event indicating why
+  // will automatically be generated.
+  subscriptions.setShowcaseEntitlement({isUserRegistered, entitlement});
+
+  // If we unlocked the content, display it and exit.
+  if (unlockContent) {
+    MeteringDemo.openPaywall();
+    return;
+  }
+
   // Fetch entitlements.
-  subscriptions.getEntitlements().then((entitlements) => {
+  subscriptions.getEntitlements().then(entitlements => {
     if (entitlements.enablesThis()) {
       // Unlock article right away, since the user has a subscription.
       MeteringDemo.openPaywall();
@@ -214,87 +262,84 @@ function setupMeteringDemo(subscriptions) {
 
   function maybeUnlockWithMetering() {
     // Fetch the current user's metering state.
-    MeteringDemo.fetchMeteringState()
-      .then((meteringState) => {
-        if (meteringState.registrationTimestamp) {
-          // Skip metering regwall for registered users.
-          return meteringState;
-        }
+    MeteringDemo.fetchMeteringState().then(meteringState => {
+      if (meteringState.registrationTimestamp) {
+        // Skip metering regwall for registered users.
+        return meteringState;
+      }
 
-        // Show metering regwall for unregistered users.
-        return GaaMeteringRegwall.show({
-          // Specify a URL that renders a Google Sign-In button.
-          iframeUrl: MeteringDemo.GOOGLE_SIGN_IN_IFRAME_URL,
-        })
-          .then((googleSignInUser) =>
-            // Register a user based on data from Google Sign-In.
+      // Show metering regwall for unregistered users.
+      return REGWALL.show({
+        // Specify a URL that renders a Google Sign-In button.
+        iframeUrl: MeteringDemo.GOOGLE_SIGN_IN_IFRAME_URL,
+      }).then(googleSignInUser =>
+        // Register a user based on data from Google Sign-In.
+        //
+        // We advise setting a 1st party, secure, HTTP-only cookie,
+        // so it lives past 7 days in Safari.
+        // https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
+        MeteringDemo.registerUser(googleSignInUser)
+      ).then(() =>
+        // Fetch the current user's metering state again
+        // since they registered.
+        MeteringDemo.fetchMeteringState()
+      );
+    }).then(meteringState => {
+      // Forget previous entitlements fetches.
+      subscriptions.clear();
+      /* eslint-disable */
+      const state = {
+        metering: {
+          state: {
+            // Hashed identifier for a specific user. Hash this value yourself
+            // to avoid sending PII.
+            id: meteringState.id,
+            // Standard attributes which affect your meters.
+            // Each attribute has a corresponding timestamp, which
+            // allows meters to do things like granting access
+            // for up to 30 days after a certain action.
             //
-            // We advise setting a 1st party, secure, HTTP-only cookie,
-            // so it lives past 7 days in Safari.
-            // https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
-            MeteringDemo.registerUser(googleSignInUser)
-          )
-          .then(() =>
-            // Fetch the current user's metering state again
-            // since they registered.
-            MeteringDemo.fetchMeteringState()
-          );
-      })
-      .then((meteringState) => {
-        // Forget previous entitlements fetches.
-        subscriptions.clear();
-
-        // Get SwG entitlements.
-        return subscriptions.getEntitlements({
-          metering: {
-            state: {
-              // Hashed identifier for a specific user. Hash this value yourself
-              // to avoid sending PII.
-              id: meteringState.id,
-              // Standard attributes which affect your meters.
-              // Each attribute has a corresponding timestamp, which
-              // allows meters to do things like granting access
-              // for up to 30 days after a certain action.
-              //
-              // TODO: Describe standard attributes, once they're defined.
-              standardAttributes: {
-                registered_user: {
-                  timestamp: meteringState.registrationTimestamp,
-                },
+            // TODO: Describe standard attributes, once they're defined.
+            standardAttributes: {
+              registered_user: {
+                timestamp: meteringState.registrationTimestamp,
               },
             },
           },
+        },
+      };
+      /* eslint-enable */
+
+      // Get SwG entitlements.
+      return subscriptions.getEntitlements(state);
+    }).catch(() => false)
+        .then(entitlements => {
+          // Check if a Google metering entitlement unlocks the article.
+          if (entitlements && entitlements.enablesThisWithGoogleMetering()) {
+            // Consume the entitlement. This lets Google know a specific free
+            // read was "used up", which allows Google to calculate how many
+            // free reads are left for a given user.
+            //
+            // Consuming an entitlement will also trigger a dialog that lets the user
+            // know Google provided them with a free read.
+            entitlements.consume(() => {
+              // Unlock the article AFTER the user consumes a free read.
+              // Note: If you unlock the article outside of this callback,
+              // users might be able to scroll down and read the article
+              // without closing the dialog, and closing the dialog is
+              // what actually consumes a free read.
+              MeteringDemo.openPaywall();
+            });
+          } else {
+            // Handle failures to unlock the article with metering entitlements.
+            // Perhaps the user ran out of free reads. Or perhaps the user
+            // dismissed the Regwall. Either way, the publisher determines
+            // what happens next. This demo shows offers.
+            startFlow('showOffers');
+          }
         });
-      })
-      .catch(() => false)
-      .then((entitlements) => {
-        // Check if a Google metering entitlement unlocks the article.
-        if (entitlements && entitlements.enablesThisWithGoogleMetering()) {
-          // Consume the entitlement. This lets Google know a specific free
-          // read was "used up", which allows Google to calculate how many
-          // free reads are left for a given user.
-          //
-          // Consuming an entitlement will also trigger a dialog that lets the user
-          // know Google provided them with a free read.
-          entitlements.consume(() => {
-            // Unlock the article AFTER the user consumes a free read.
-            // Note: If you unlock the article outside of this callback,
-            // users might be able to scroll down and read the article
-            // without closing the dialog, and closing the dialog is
-            // what actually consumes a free read.
-            MeteringDemo.openPaywall();
-          });
-        } else {
-          // Handle failures to unlock the article with metering entitlements.
-          // Perhaps the user ran out of free reads. Or perhaps the user
-          // dismissed the Regwall. Either way, the publisher determines
-          // what happens next. This demo shows offers.
-          startFlow("showOffers");
-        }
-      });
-  }  
+  }
 }
-/* eslint-enable */
 
 /**
  * Selects the flow based on the URL query parameter.
