@@ -15,10 +15,10 @@
  */
 'use strict';
 
-module.exports = function(context) {
+module.exports = function (context) {
   return {
-    ForOfStatement: function(node) {
+    ForOfStatement: function (node) {
       context.report(node, 'No for-of statement allowed.');
-    }
+    },
   };
 };

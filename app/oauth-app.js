@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-
 /**
  * @fileoverview
  * See https://developers.google.com/actions/identity/oauth2-code-flow
  * and https://developers.google.com/actions/identity/oauth2-implicit-flow
  */
 
-const app = module.exports = require('express').Router();
+const app = (module.exports = require('express').Router());
 const jsonwebtoken = require('jsonwebtoken');
 const {encrypt, decrypt, fromBase64, toBase64} = require('./crypto');
 
@@ -29,11 +28,11 @@ const {encrypt, decrypt, fromBase64, toBase64} = require('./crypto');
 const CLIENT_ID = 'scenic-2017.appspot.com';
 
 /** @const {string} */
-const GSI_CLIENT_ID = '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4' +
-    '.apps.googleusercontent.com';
+const GSI_CLIENT_ID =
+  '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4' +
+  '.apps.googleusercontent.com';
 
 const FIVE_MIN_IN_MILLIS = 1000 * 60 * 5;
-
 
 /**
  * OAuth authorization endpoint.
@@ -53,50 +52,56 @@ app.get(['/oauth/auth', '/examples/sample-pub/oauth/auth'], (req, res) => {
   });
 });
 
-
 /**
  * OAuth authorization endpoint.
  * The authorization endpoint must accept user traffic.
  * TODO(dvoytenko): remove "/examples/" path
  */
-app.post(['/oauth/auth-submit', '/examples/sample-pub/oauth/auth-submit'], (req, res) => {
-  const params = verifyOauthParams(req);
-  const email = req.body['email'];
-  const password = req.body['password'];
-  if (!email || !password) {
-    throw new Error('Missing email and/or password');
-  }
-  if (params.responseType == 'code') {
-    // Authorization code (server-side) flow.
-    // See https://developers.google.com/actions/identity/oauth2-code-flow
-    const authorizationCode =
-        generateAuthorizationCode(params, email, password);
-    const authorizationCodeStr =
-        toBase64(encrypt(authorizationCode));
-    const redirectUrl =
+app.post(
+  ['/oauth/auth-submit', '/examples/sample-pub/oauth/auth-submit'],
+  (req, res) => {
+    const params = verifyOauthParams(req);
+    const email = req.body['email'];
+    const password = req.body['password'];
+    if (!email || !password) {
+      throw new Error('Missing email and/or password');
+    }
+    if (params.responseType == 'code') {
+      // Authorization code (server-side) flow.
+      // See https://developers.google.com/actions/identity/oauth2-code-flow
+      const authorizationCode = generateAuthorizationCode(
+        params,
+        email,
+        password
+      );
+      const authorizationCodeStr = toBase64(encrypt(authorizationCode));
+      const redirectUrl =
         params.redirectUri +
         `?code=${encodeURIComponent(authorizationCodeStr)}` +
         `&state=${encodeURIComponent(params.state || '')}`;
-    res.redirect(302, redirectUrl);
-  } else if (params.responseType == 'token') {
-    // Implicit flow.
-    // See https://developers.google.com/actions/identity/oauth2-implicit-flow
-    // Notice that access token never expires. Not clear how it can be revoked
-    // either.
-    const refreshToken = generateRefreshToken(params.scope, {email, password});
-    const accessToken = generateAccessToken(refreshToken);
-    const accessTokenStr = toBase64(encrypt(accessToken));
-    const redirectUrl =
+      res.redirect(302, redirectUrl);
+    } else if (params.responseType == 'token') {
+      // Implicit flow.
+      // See https://developers.google.com/actions/identity/oauth2-implicit-flow
+      // Notice that access token never expires. Not clear how it can be revoked
+      // either.
+      const refreshToken = generateRefreshToken(params.scope, {
+        email,
+        password,
+      });
+      const accessToken = generateAccessToken(refreshToken);
+      const accessTokenStr = toBase64(encrypt(accessToken));
+      const redirectUrl =
         params.redirectUri +
         '#token_type=bearer' +
         `&access_token=${encodeURIComponent(accessTokenStr)}` +
         `&state=${encodeURIComponent(params.state || '')}`;
-    res.redirect(302, redirectUrl);
-  } else {
-    throw new Error('Invalid response_type: ' + params.responseType);
+      res.redirect(302, redirectUrl);
+    } else {
+      throw new Error('Invalid response_type: ' + params.responseType);
+    }
   }
-});
-
+);
 
 /**
  * OAuth token endpoint.
@@ -126,21 +131,23 @@ app.post(['/oauth/token', '/examples/sample-pub/oauth/token'], (req, res) => {
       if (!authorizationCodeStr) {
         throw new Error('Missing authorization code');
       }
-      const authorizationCode =
-          decrypt(fromBase64(authorizationCodeStr));
+      const authorizationCode = decrypt(fromBase64(authorizationCodeStr));
       if (authorizationCode.what != 'authorizationCode') {
-        throw new Error('Invalid authorization code: ' +
-            authorizationCode.what);
+        throw new Error(
+          'Invalid authorization code: ' + authorizationCode.what
+        );
       }
       // TODO: check if grant has expired via `authorizationCode.exp`.
       const refreshToken = generateRefreshToken(
-          authorizationCode.scope, authorizationCode.data);
+        authorizationCode.scope,
+        authorizationCode.data
+      );
       const accessToken = generateAccessToken(refreshToken);
       response = JSON.stringify({
         'token_type': 'bearer',
         'refresh_token': toBase64(encrypt(refreshToken)),
         'access_token': toBase64(encrypt(accessToken)),
-        'expires_in': 300,  // 5 min in seconds.
+        'expires_in': 300, // 5 min in seconds.
       });
     } else if (grantType == 'refresh_token') {
       const refreshTokenStr = getParam(req, 'refresh_token');
@@ -155,7 +162,7 @@ app.post(['/oauth/token', '/examples/sample-pub/oauth/token'], (req, res) => {
       response = JSON.stringify({
         'token_type': 'bearer',
         'access_token': toBase64(encrypt(accessToken)),
-        'expires_in': 300,  // 5 min in seconds.
+        'expires_in': 300, // 5 min in seconds.
       });
     } else if (grantType == 'urn:ietf:params:oauth:grant-type:jwt-bearer') {
       // See https://developers.google.com/actions/identity/oauth2-assertion-flow
@@ -187,27 +194,28 @@ app.post(['/oauth/token', '/examples/sample-pub/oauth/token'], (req, res) => {
         'token_type': 'bearer',
         'refresh_token': toBase64(encrypt(refreshToken)),
         'access_token': toBase64(encrypt(accessToken)),
-        'expires_in': 300,  // 5 min in seconds.
+        'expires_in': 300, // 5 min in seconds.
       });
     } else {
       const info = [];
       for (const k in req.body) {
         info.push(`${k}={${req.body[k]}}`);
       }
-      throw new Error('Unknown grant_type: ' + grantType +
-          ': ' + info.join('; '));
+      throw new Error(
+        'Unknown grant_type: ' + grantType + ': ' + info.join('; ')
+      );
     }
   } catch (e) {
-    res.status(400).send(JSON.stringify(
-        {
-          'error': 'invalid_grant: ' + grantType,
-          'details': e,
-        }));
+    res.status(400).send(
+      JSON.stringify({
+        'error': 'invalid_grant: ' + grantType,
+        'details': e,
+      })
+    );
     return;
   }
   res.send(response);
 });
-
 
 /**
  * Authorization sync endpoint.
@@ -216,58 +224,70 @@ app.post(['/oauth/token', '/examples/sample-pub/oauth/token'], (req, res) => {
  * - access_token={access_token}
  * TODO(dvoytenko): remove "/examples/" path
  */
-app.all(['/oauth/entitlements', '/examples/sample-pub/oauth/entitlements'], (req, res) => {
-  const publicationId = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';;
-  const accessToken = getParam(req, 'access_token');
-  const decryptedAccessToken = decrypt(fromBase64(accessToken));
-  const email = decryptedAccessToken.data['email'];
-  const started =
+app.all(
+  ['/oauth/entitlements', '/examples/sample-pub/oauth/entitlements'],
+  (req, res) => {
+    const publicationId = process.env.SERVE_PUBID || 'scenic-2017.appspot.com';
+    const accessToken = getParam(req, 'access_token');
+    const decryptedAccessToken = decrypt(fromBase64(accessToken));
+    const email = decryptedAccessToken.data['email'];
+    const started =
       decryptedAccessToken.mainStarted ||
       decryptedAccessToken.thisStarted ||
       Date.now();
-  let response;
-  if (email == 'no-entitlements@example.org' ||
+    let response;
+    if (
+      email == 'no-entitlements@example.org' ||
       (email == 'expires@example.org' &&
-       started + FIVE_MIN_IN_MILLIS < Date.now())) {
-    response = '{}';
-  } else {
-    response = JSON.stringify({
-      'products': [publicationId + ':premium', publicationId + ':news'],
-      'subscriptionToken': 'subtok-' + publicationId + '-' + email + '-' +
+        started + FIVE_MIN_IN_MILLIS < Date.now())
+    ) {
+      response = '{}';
+    } else {
+      response = JSON.stringify({
+        'products': [publicationId + ':premium', publicationId + ':news'],
+        'subscriptionToken':
+          'subtok-' +
+          publicationId +
+          '-' +
+          email +
+          '-' +
           new Date().toISOString(),
-      'detail': 'For ' + email,
-    });
+        'detail': 'For ' + email,
+      });
+    }
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.send(response);
   }
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.send(response);
-});
-
+);
 
 /**
  * Handle authorized request.
  * TODO(dvoytenko): remove "/examples/" path
  */
-app.all(['/oauth/authorized', '/examples/sample-pub/oauth/authorized'], (req, res) => {
-  // Authorization: Bearer ACCESS_TOKEN
-  const authorizationHeader = req.headers.authorization;
-  if (!authorizationHeader) {
-    throw new Error('Missing authorization header');
+app.all(
+  ['/oauth/authorized', '/examples/sample-pub/oauth/authorized'],
+  (req, res) => {
+    // Authorization: Bearer ACCESS_TOKEN
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) {
+      throw new Error('Missing authorization header');
+    }
+    if (authorizationHeader.toUpperCase().indexOf('BEARER') != 0) {
+      throw new Error('Invalid authorization header: ' + authorizationHeader);
+    }
+    const accessTokenStr = authorizationHeader
+      .substring('BEARER'.length + 1)
+      .trim();
+    const accessToken = decrypt(fromBase64(accessTokenStr));
+    if (accessToken.what != 'accessToken') {
+      throw new Error('Invalid access token: ' + accessToken.what);
+    }
+    res.send('access is granted');
   }
-  if (authorizationHeader.toUpperCase().indexOf('BEARER') != 0) {
-    throw new Error('Invalid authorization header: ' + authorizationHeader);
-  }
-  const accessTokenStr =
-      authorizationHeader.substring('BEARER'.length + 1).trim();
-  const accessToken = decrypt(fromBase64(accessTokenStr));
-  if (accessToken.what != 'accessToken') {
-    throw new Error('Invalid access token: ' + accessToken.what);
-  }
-  res.send('access is granted');
-});
-
+);
 
 /**
  * @param {!HttpRequest} req
@@ -300,16 +320,14 @@ function verifyOauthParams(req) {
   return params;
 }
 
-
 /**
  * @param {!HttpRequest} req
  * @param {string} name
  * @return {?string}
  */
 function getParam(req, name) {
-  return req.query[name] || req.body && req.body[name] || null;
+  return req.query[name] || (req.body && req.body[name]) || null;
 }
-
 
 /**
  * @param {!OauthParams} params
@@ -321,7 +339,7 @@ function generateAuthorizationCode(params, email, password) {
   return {
     what: 'authorizationCode',
     clientId: CLIENT_ID,
-    exp: Date.now() + 600000,  // Expiration in 10 min.
+    exp: Date.now() + 600000, // Expiration in 10 min.
     redirectUri: params.redirectUri,
     state: params.state,
     scope: params.scope,
@@ -332,7 +350,6 @@ function generateAuthorizationCode(params, email, password) {
     },
   };
 }
-
 
 /**
  * @param {string} scope
@@ -348,7 +365,6 @@ function generateRefreshToken(scope, data) {
     data,
   };
 }
-
 
 /**
  * @param {!RefreshToken} refreshToken

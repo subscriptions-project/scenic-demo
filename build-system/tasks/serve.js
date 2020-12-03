@@ -16,11 +16,11 @@
 'use strict';
 
 const argv = require('minimist')(process.argv.slice(2));
-const gulp = require('gulp-help')(require('gulp'));
-const path = require('path');
 const colors = require('ansi-colors');
+const gulp = require('gulp-help')(require('gulp'));
 const log = require('fancy-log');
 const nodemon = require('nodemon');
+const path = require('path');
 
 const host = argv.host || 'localhost';
 const port = argv.port || process.env.PORT || 8000;
@@ -51,17 +51,15 @@ function serve() {
       'SERVE_PUBID': publicationId,
       'SERVE_AMP_LOCAL': ampLocal,
     },
-  })
-  .once('quit', function() {
+  }).once('quit', function () {
     log(colors.green('Shutting down server'));
   });
   if (!quiet) {
-    log(colors.yellow('Run `gulp build` then go to ' + getHost() + '/'
-    ));
+    log(colors.yellow('Run `gulp build` then go to ' + getHost() + '/'));
   }
 }
 
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
   process.exit();
 });
 

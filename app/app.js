@@ -15,23 +15,19 @@
  */
 
 const jsonwebtoken = require('jsonwebtoken');
+const {decrypt, encrypt, fromBase64, toBase64} = require('./crypto');
 const {getConfig} = require('./config');
-const {
-  decrypt,
-  encrypt,
-  fromBase64,
-  toBase64,
-} = require('./crypto');
 
-const app = module.exports = require('express').Router();
+const app = (module.exports = require('express').Router());
 app.use(require('cookie-parser')());
 app.use('/', require('./oauth-app'));
 
 const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
 
-const BASE_URL = process.env.NODE_ENV == 'production' ?
-  'https://scenic-2017.appspot.com' :
-  '//localhost:8000';
+const BASE_URL =
+  process.env.NODE_ENV == 'production'
+    ? 'https://scenic-2017.appspot.com'
+    : '//localhost:8000';
 
 const SWG_JS_URLS = {
   local: '/swgjs/swg.max.js',
@@ -63,11 +59,10 @@ if (console.log) {
   console.log('Scenic started. Publication: ' + getConfig().publicationId);
 }
 
-
 /**
  * List all Articles.
  */
-app.get(['/','/config/:configId'], (req, res) => {
+app.get(['/', '/config/:configId'], (req, res) => {
   let originalUrl = req.originalUrl;
   let originalQuery = '';
   const queryIndex = originalUrl.indexOf('?');
@@ -87,7 +82,7 @@ app.get(['/','/config/:configId'], (req, res) => {
 });
 
 app.get(['/config/:configId/landing.html', '/landing.html'], (req, res) => {
-  const script = req.cookies && req.cookies['script'] || 'prod';
+  const script = (req.cookies && req.cookies['script']) || 'prod';
   res.render('../app/views/landing.html', {
     config: getConfig(req.params.configId),
     swgJsUrl: SWG_JS_URLS[script],
@@ -100,8 +95,8 @@ app.get(['/config/:configId/landing.html', '/landing.html'], (req, res) => {
 app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
-  const prevId = (id - 1) >= 0 ? String(id - 1) : false;
-  const nextId = (id + 1) < ARTICLES.length ? String(id + 1) : false;
+  const prevId = id - 1 >= 0 ? String(id - 1) : false;
+  const nextId = id + 1 < ARTICLES.length ? String(id + 1) : false;
   const setup = getSetup(req);
   res.render('../app/views/article', {
     swgJsUrl: SWG_JS_URLS[setup.script],
@@ -115,16 +110,15 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   });
 });
 
-
 /**
  * An AMP Article.
  * TODO(dvoytenko): remove "/examples/" path
  */
-app.get(['/config/:configId/((\\d+))\.amp', '/((\\d+))\.amp'], (req, res) => {
+app.get(['/config/:configId/((\\d+)).amp', '/((\\d+)).amp'], (req, res) => {
   const id = parseInt(req.params[0], 10);
   const article = ARTICLES[id - 1];
-  const prevId = (id - 1) >= 0 ? String(id - 1) + '.amp' : false;
-  const nextId = (id + 1) < ARTICLES.length ? String(id + 1) + '.amp' : false;
+  const prevId = id - 1 >= 0 ? String(id - 1) + '.amp' : false;
+  const nextId = id + 1 < ARTICLES.length ? String(id + 1) + '.amp' : false;
   const setup = getSetup(req);
   const ac = req.query['ac'] == '1';
   // TODO(dvoytenko): eventually only look for rtv value, regardless of ac.
@@ -149,7 +143,6 @@ app.get(['/config/:configId/((\\d+))\.amp', '/((\\d+))\.amp'], (req, res) => {
   });
 });
 
-
 /**
  * RSS Feed.
  */
@@ -157,7 +150,7 @@ app.get('/feed.xml', (req, res) => {
   res.set('Content-Type', 'text/xml');
   res.render('../app/views/feed-xml', {
     updateTimeIso: new Date().toISOString(),
-    articles: ARTICLES.map(article => {
+    articles: ARTICLES.map((article) => {
       return Object.assign({}, article, {
         dateIso: new Date(article.date).toISOString(),
         updateTimeIso: new Date().toISOString(),
@@ -178,7 +171,6 @@ app.get('/subscribe', (req, res) => {
   });
 });
 
-
 /**
  * Signin page. Format:
  * /signin?return=RETURN_URL
@@ -190,7 +182,6 @@ app.get('/signin', (req, res) => {
     'returnUrl': returnUrl,
   });
 });
-
 
 /**
  * Logs-in user on the publication's domain and redirects to the referrer.
@@ -213,7 +204,6 @@ app.post('/signin', (req, res) => {
   res.redirect(302, returnUrl);
 });
 
-
 /**
  * Signout page. Format:
  * /signin?return=RETURN_URL
@@ -223,7 +213,6 @@ app.get('/signout', (req, res) => {
   res.redirect(302, '/');
 });
 
-
 /**
  * AMP entitlements request.
  */
@@ -232,12 +221,16 @@ app.get('/amp-entitlements', (req, res) => {
   // TODO(dvoytenko): test if the origin is actually allowed.
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.setHeader('Access-Control-Expose-Headers',
-      'AMP-Access-Control-Allow-Source-Origin');
+  res.setHeader(
+    'Access-Control-Expose-Headers',
+    'AMP-Access-Control-Allow-Source-Origin'
+  );
   res.setHeader('Content-Type', 'application/json');
   if (req.query.__amp_source_origin) {
-    res.setHeader('AMP-Access-Control-Allow-Source-Origin',
-        req.query.__amp_source_origin);
+    res.setHeader(
+      'AMP-Access-Control-Allow-Source-Origin',
+      req.query.__amp_source_origin
+    );
   }
   const email = getUserInfoFromCookies(req);
   if (email) {
@@ -263,24 +256,26 @@ app.get('/amp-entitlements', (req, res) => {
   }
 });
 
-
 /**
  * AMP pingback request.
  */
 app.post('/amp-pingback', (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.setHeader('Access-Control-Expose-Headers',
-      'AMP-Access-Control-Allow-Source-Origin');
+  res.setHeader(
+    'Access-Control-Expose-Headers',
+    'AMP-Access-Control-Allow-Source-Origin'
+  );
   res.setHeader('Content-Type', 'application/json');
   if (req.query.__amp_source_origin) {
-    res.setHeader('AMP-Access-Control-Allow-Source-Origin',
-        req.query.__amp_source_origin);
+    res.setHeader(
+      'AMP-Access-Control-Allow-Source-Origin',
+      req.query.__amp_source_origin
+    );
   }
   decMeterInCookies(req, res);
   res.json({});
 });
-
 
 /**
  * GSI iframe for metering demo.
@@ -292,7 +287,6 @@ app.get('/gsi-iframe', (req, res) => {
   });
 });
 
-
 /**
  * Setup page.
  */
@@ -303,7 +297,6 @@ app.get('/setup', (req, res) => {
   args['script_' + state.script] = true;
   res.render('../app/views/setup', args);
 });
-
 
 /**
  * Update setup page.
@@ -320,7 +313,6 @@ app.post('/update-setup', (req, res) => {
   res.redirect(302, '/setup');
 });
 
-
 /**
  * @param {!HttpRequest} req
  * @return {{
@@ -329,10 +321,9 @@ app.post('/update-setup', (req, res) => {
  */
 function getSetup(req) {
   return {
-    script: req.cookies && req.cookies['script'] || 'prod',
+    script: (req.cookies && req.cookies['script']) || 'prod',
   };
 }
-
 
 /**
  * @param {!HttpRequest} req
@@ -340,9 +331,8 @@ function getSetup(req) {
  * @return {?string}
  */
 function getParam(req, name) {
-  return req.query[name] || req.body && req.body[name] || null;
+  return req.query[name] || (req.body && req.body[name]) || null;
 }
-
 
 /**
  * Returns subscriber.
@@ -367,8 +357,9 @@ function getUserInfoFromCookies(req) {
 function setUserInfoInCookies(res, email) {
   res.clearCookie(AUTH_COOKIE);
   if (email) {
-    res.cookie(AUTH_COOKIE, toBase64(encrypt(email)),
-        {maxAge: /* 60 minutes */1000 * 60 * 60});
+    res.cookie(AUTH_COOKIE, toBase64(encrypt(email)), {
+      maxAge: /* 60 minutes */ 1000 * 60 * 60,
+    });
   }
 }
 
@@ -381,11 +372,13 @@ function cleanupReturnUrl(returnUrl) {
     returnUrl = '/';
   }
   // Make sure we do not introduce a universal unbound redirector.
-  if (!returnUrl.startsWith('/') &&
-      !returnUrl.startsWith('https://cdn.ampproject.org') &&
-      !returnUrl.startsWith('https://scenic-2017.appspot.com') &&
-      !returnUrl.startsWith('http://localhost:') &&
-      !returnUrl.startsWith('https://localhost:')) {
+  if (
+    !returnUrl.startsWith('/') &&
+    !returnUrl.startsWith('https://cdn.ampproject.org') &&
+    !returnUrl.startsWith('https://scenic-2017.appspot.com') &&
+    !returnUrl.startsWith('http://localhost:') &&
+    !returnUrl.startsWith('https://localhost:')
+  ) {
     returnUrl = '/';
   }
   return returnUrl;
@@ -410,8 +403,9 @@ function getMeterFromCookies(req) {
 function decMeterInCookies(req, res) {
   const oldMeter = getMeterFromCookies(req);
   const newMeter = Math.max(oldMeter - 1, 0);
-  res.cookie(METER_COOKIE, String(newMeter),
-      {maxAge: /* 60 minutes */ 1000 * 60 * 60});
+  res.cookie(METER_COOKIE, String(newMeter), {
+    maxAge: /* 60 minutes */ 1000 * 60 * 60,
+  });
 }
 
 /**
@@ -420,15 +414,13 @@ function decMeterInCookies(req, res) {
  * @return {string}
  */
 function ampJsUrl(name, rtv) {
-  const cdnBase = rtv ?
-    'https://cdn.ampproject.org/rtv/' + rtv :
-    'https://cdn.ampproject.org';
+  const cdnBase = rtv
+    ? 'https://cdn.ampproject.org/rtv/' + rtv
+    : 'https://cdn.ampproject.org';
   if (name == 'amp') {
-    return AMP_LOCAL ?
-      'http://localhost:8001/dist/amp.js' :
-      cdnBase + '/v0.js';
+    return AMP_LOCAL ? 'http://localhost:8001/dist/amp.js' : cdnBase + '/v0.js';
   }
-  return AMP_LOCAL ?
-    'http://localhost:8001/dist/v0/' + name + '-0.1.max.js' :
-    cdnBase + '/v0/' + name + '-0.1.js';
+  return AMP_LOCAL
+    ? 'http://localhost:8001/dist/v0/' + name + '-0.1.max.js'
+    : cdnBase + '/v0/' + name + '-0.1.js';
 }
