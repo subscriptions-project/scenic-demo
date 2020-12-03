@@ -19,38 +19,30 @@ const $$ = require('gulp-load-plugins')();
 const babel = require('babelify');
 const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
+const colors = require('ansi-colors');
 const del = require('del');
 const fs = require('fs-extra');
 const gulp = $$.help(require('gulp'));
 const lazypipe = require('lazypipe');
+const log = require('fancy-log');
 const source = require('vinyl-source-stream');
 const watchify = require('watchify');
-const colors = require('ansi-colors');
-const log = require('fancy-log');
-
 
 /**
  * Clean up the build artifacts.
  * @return {!Promise}
  */
 function clean() {
-  return del([
-    'dist',
-    'build',
-  ]);
+  return del(['dist', 'build']);
 }
-
 
 /**
  * Enables watching for file changes and re-compiles.
  * @return {!Promise}
  */
 function watch() {
-  return Promise.all([
-    compile({watch: true}),
-  ]);
+  return Promise.all([compile({watch: true})]);
 }
-
 
 /**
  * Main development build.
@@ -59,11 +51,8 @@ function watch() {
  */
 function build(opt_prod) {
   process.env.NODE_ENV = opt_prod ? 'production' : 'development';
-  return Promise.all([
-    compile(),
-  ]);
+  return Promise.all([compile()]);
 }
-
 
 /**
  * Dist build for prod.
@@ -72,7 +61,6 @@ function build(opt_prod) {
 function dist() {
   return clean().then(() => build(true));
 }
-
 
 /**
  * @param {!Object=} opt_opts
@@ -86,8 +74,9 @@ function compile(opt_opts) {
   const destFilename = srcFilename + '.max.js';
   mkdirSync('build');
 
-  let bundler = browserify(srcDir + srcFilename + '.js', {debug: true})
-      .transform(babel, {presets: ["@babel/preset-env"]});
+  let bundler = browserify(srcDir + srcFilename + '.js', {
+    debug: true,
+  }).transform(babel, {presets: ['@babel/preset-env']});
   if (options.watch) {
     bundler = watchify(bundler);
   }
@@ -95,24 +84,24 @@ function compile(opt_opts) {
   const wrapper = options.wrapper || '<%= contents %>';
 
   let lazybuild = lazypipe()
-      .pipe(source, srcFilename + '.js')
-      .pipe(buffer);
+    .pipe(source, srcFilename + '.js')
+    .pipe(buffer);
 
   // Complete build with wrapper and sourcemaps.
   lazybuild = lazybuild
-      .pipe($$.wrap, wrapper)
-      .pipe($$.sourcemaps.init.bind($$.sourcemaps), {loadMaps: true});
+    .pipe($$.wrap, wrapper)
+    .pipe($$.sourcemaps.init.bind($$.sourcemaps), {loadMaps: true});
 
   const lazywrite = lazypipe()
-      .pipe($$.sourcemaps.write.bind($$.sourcemaps), './')
-      .pipe(gulp.dest.bind(gulp), destDir);
+    .pipe($$.sourcemaps.write.bind($$.sourcemaps), './')
+    .pipe(gulp.dest.bind(gulp), destDir);
 
   async function rebundle() {
     const startTime = Date.now();
     await toPromise(
       bundler
         .bundle()
-        .on('error', err => {
+        .on('error', (err) => {
           console.error(colors.red(err));
         })
         .pipe(lazybuild())
@@ -124,7 +113,7 @@ function compile(opt_opts) {
   }
 
   if (options.watch) {
-    bundler.on('update', function() {
+    bundler.on('update', function () {
       rebundle();
     });
   }
@@ -142,7 +131,6 @@ function compile(opt_opts) {
   }
 }
 
-
 /**
  * @param {string} path
  */
@@ -156,16 +144,14 @@ function mkdirSync(path) {
   }
 }
 
-
 /**
  * @return {!Promise}
  */
 function toPromise(readable) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     readable.on('error', reject).on('end', resolve);
   });
 }
-
 
 /**
  * Stops the timer for the given build step and prints the execution time,
@@ -186,10 +172,7 @@ function endBuildStep(stepName, targetName, startTime) {
     timeString += secs + '.' + ms + ' s)';
   }
   if (!process.env.TRAVIS) {
-    log(
-        stepName,
-        colors.cyan(targetName),
-        colors.green(timeString));
+    log(stepName, colors.cyan(targetName), colors.green(timeString));
   }
 }
 

@@ -19,7 +19,7 @@ exports.ARTICLES = [
     title: '16 Top Spots for Hiking',
     hero: '/hero/21.jpeg',
     category: 'Top Spots',
-    kicker: 'Don\'t forget your walking stick',
+    kicker: "Don't forget your walking stick",
     author: 'Demetria T. Edwards',
     date: 'Sep 24, 2016 10:04 AM',
   },
@@ -42,7 +42,8 @@ exports.ARTICLES = [
   {
     title: 'Bucket List: New Zealand',
     category: 'Bucket List Adventures',
-    kicker: 'This majestic land is offers everything from volcanic terrain to lush pastures',
+    kicker:
+      'This majestic land is offers everything from volcanic terrain to lush pastures',
     author: 'Nolan C. Sundquist',
     date: 'Sep 18, 2016 7:02 AM',
     hero: '/hero/12.jpeg',
@@ -74,7 +75,8 @@ exports.ARTICLES = [
   {
     title: 'Bucket List: UK Countryside',
     category: 'Bucket List Adventures',
-    kicker: 'Get outside the cities to relax in the idyllic heartland of the country',
+    kicker:
+      'Get outside the cities to relax in the idyllic heartland of the country',
     author: 'Shannon W. Marshall',
     date: 'Sep 14, 2016 9:25 AM',
     hero: '/hero/15.jpeg',
@@ -90,7 +92,8 @@ exports.ARTICLES = [
   {
     title: 'Bucket List: Banff',
     category: 'Bucket List Adventures',
-    kicker: 'Don\'t miss all that this scenic spot in Alberta\'s Rockies can offer',
+    kicker:
+      "Don't miss all that this scenic spot in Alberta's Rockies can offer",
     author: 'Shannon W. Marshall',
     date: 'Sep 13, 2016 1:56 PM',
     hero: '/hero/14.jpeg',
@@ -130,7 +133,7 @@ exports.ARTICLES = [
   {
     title: 'Melbourne in 48 Hours',
     category: '48 Hours',
-    kicker: 'Australia\'s Second City',
+    kicker: "Australia's Second City",
     author: 'Todd M. Smallwood',
     date: 'Sep 6, 2016 4:37 PM',
     hero: '/hero/2.jpeg',
@@ -144,7 +147,7 @@ exports.ARTICLES = [
     hero: '/hero/28.jpeg',
   },
   {
-    title: '8 Top Spots to Experience America\'s Heartland',
+    title: "8 Top Spots to Experience America's Heartland",
     category: 'Top Spots',
     kicker: 'Sooie!',
     author: 'Russell D. Hogan',
@@ -202,7 +205,8 @@ exports.ARTICLES = [
   {
     title: 'Bucket List: Yosemite',
     category: 'Bucket List Adventures',
-    kicker: 'From Mariposa Grove to Glacier Point, beautiful waterfalls and rock formations await you',
+    kicker:
+      'From Mariposa Grove to Glacier Point, beautiful waterfalls and rock formations await you',
     author: 'Carol R. Wright',
     date: 'Aug 28, 2016 11:12 AM',
     hero: '/hero/13.jpeg',
@@ -242,7 +246,7 @@ exports.ARTICLES = [
   {
     title: 'Kyoto in 48 Hours',
     category: '48 Hours',
-    kicker: 'Japan\'s Former Thousand-Year Capital',
+    kicker: "Japan's Former Thousand-Year Capital",
     author: 'Todd M. Smallwood',
     date: 'Aug 22, 2016 11:26 PM',
     hero: '/hero/8.jpeg',

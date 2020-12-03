@@ -15,7 +15,7 @@
  */
 'use strict';
 
-module.exports = function(context) {
+module.exports = function (context) {
   /**
    * @param {!Array<!Node>|undefined} commentLines
    * @return {boolean}
@@ -24,7 +24,7 @@ module.exports = function(context) {
     if (!commentLines) {
       return false;
     }
-    return commentLines.some(function(comment) {
+    return commentLines.some(function (comment) {
       return comment.type == 'Block' && /@private/.test(comment.value);
     });
   }
@@ -50,27 +50,36 @@ module.exports = function(context) {
    * @return {boolean}
    */
   function isThisMemberExpression(node) {
-    return node.type == 'MemberExpression' &&
-        node.object.type == 'ThisExpression';
+    return (
+      node.type == 'MemberExpression' && node.object.type == 'ThisExpression'
+    );
   }
   return {
-    MethodDefinition: function(node) {
-      if (hasPrivateAnnotation(node.leadingComments) &&
-            !hasExplicitNoInline(node.key.name) &&
-            !hasTrailingUnderscore(node.key.name)) {
-        context.report(node,
-            'Method marked as private but has no trailing underscore.');
+    MethodDefinition: function (node) {
+      if (
+        hasPrivateAnnotation(node.leadingComments) &&
+        !hasExplicitNoInline(node.key.name) &&
+        !hasTrailingUnderscore(node.key.name)
+      ) {
+        context.report(
+          node,
+          'Method marked as private but has no trailing underscore.'
+        );
       }
     },
-    AssignmentExpression: function(node) {
-      if (node.parent.type == 'ExpressionStatement' &&
-            hasPrivateAnnotation(node.parent.leadingComments) &&
-            isThisMemberExpression(node.left) &&
-            !hasExplicitNoInline(node.left.property.name) &&
-            !hasTrailingUnderscore(node.left.property.name)) {
-        context.report(node,
-            'Property marked as private but has no trailing underscore.');
+    AssignmentExpression: function (node) {
+      if (
+        node.parent.type == 'ExpressionStatement' &&
+        hasPrivateAnnotation(node.parent.leadingComments) &&
+        isThisMemberExpression(node.left) &&
+        !hasExplicitNoInline(node.left.property.name) &&
+        !hasTrailingUnderscore(node.left.property.name)
+      ) {
+        context.report(
+          node,
+          'Property marked as private but has no trailing underscore.'
+        );
       }
-    }
-  }
+    },
+  };
 };
