@@ -224,7 +224,7 @@ function setupMeteringDemo(subscriptions) {
       entitlement = EntitlementType.METERED;
       break;
     default:
-      // See if someone set publisherEntitlement to one of the enum
+      // See if someone set publisherEntitlement to one of the enums
       entitlement = getQueryParams().publisherEntitlement || null;
   }
 
