@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Sign-in with Google - The Scenic</title>
+    <title>Setup - The Scenic</title>
     <link rel="canonical" href="index.html" >
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
@@ -67,6 +67,11 @@
               <label>
                 <input type="radio" name="script" value="qual"
                     <%#script_qual%> checked<%/script_qual%>> Qual
+              </label>
+              <label>
+                <input type="radio" name="script" value="custom"
+                    <%#script_custom%> checked<%/script_custom%>> Prod with custom server
+                    &nbsp;<input type="url" name="script-custom-server-url" value="<% script_custom_url %>" placeholder="https://yourserver.com" />
               </label>
             </div>
             <div class="buttons">
