@@ -20,21 +20,21 @@ const app = express();
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine', 'html');
 app.engine('html', require('hogan-express'));
 app.locals.delimiters = '<% %>';
-
 
 /**
  * HTTPS redirect.
  */
 app.use((req, res, next) => {
   let host = req.headers.host || req.host;
-  const secure = (req.secure ||
-      req.connection.encrypted ||
-      req.get('X-Forwarded-Proto') === 'https');
+  const secure =
+    req.secure ||
+    req.connection.encrypted ||
+    req.get('X-Forwarded-Proto') === 'https';
   if (secure || host.indexOf('localhost') != -1) {
     // Skip localhost or if already secure.
     next();
@@ -47,7 +47,6 @@ app.use((req, res, next) => {
   res.end();
 });
 
-
 /**
  * Print environment.
  */
@@ -57,17 +56,14 @@ app.get('/env', (req, res) => {
   });
 });
 
-
 /**
  * Static files.
  */
-app.use(express.static('public'))
-
+app.use(express.static('public'));
 
 /**
  * App server.
  */
 app.use('/', require('../../app/app'));
-
 
 module.exports = app;

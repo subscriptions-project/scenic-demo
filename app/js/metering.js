@@ -16,14 +16,14 @@ export const MeteringDemo = {
   setupControls: () => {
     // Wire up buttons.
     document
-        .querySelector('#metering-controls .reset-metering-demo')
-        .addEventListener('click', MeteringDemo.resetMeteringDemo);
+      .querySelector('#metering-controls .reset-metering-demo')
+      .addEventListener('click', MeteringDemo.resetMeteringDemo);
 
     // Show reset button.
     document.body.classList.add('metering');
 
     // Update nav button to carry over full URL query.
-    document.querySelectorAll('header .nav-button').forEach(navButton => {
+    document.querySelectorAll('header .nav-button').forEach((navButton) => {
       navButton.href = navButton.href.replace(/\?.*/, location.search);
     });
   },
@@ -69,7 +69,7 @@ export const MeteringDemo = {
    * so it lives past 7 days in Safari.
    * https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
    */
-  registerUser: gaaUser => {
+  registerUser: (gaaUser) => {
     // Record the registration timestamp in seconds (not milliseconds).
     localStorage.meteringRegistrationTimestamp = Math.floor(Date.now() / 1000);
 

@@ -16,16 +16,16 @@
 'use strict';
 
 const argv = require('minimist')(process.argv.slice(2));
+const colors = require('ansi-colors');
 const config = require('../config');
 const eslint = require('gulp-eslint');
 const gulp = require('gulp-help')(require('gulp'));
 const gulpIf = require('gulp-if');
 const lazypipe = require('lazypipe');
-const colors = require('ansi-colors');
 const log = require('fancy-log');
 const watch = require('gulp-watch');
 
-const isWatching = (argv.watch || argv.w) || false;
+const isWatching = argv.watch || argv.w || false;
 
 const options = {
   fix: false,
@@ -60,23 +60,29 @@ function lint() {
     options.fix = true;
   }
 
-  return stream.pipe(eslint(options))
-      .pipe(eslint.formatEach('stylish', function(msg) {
+  return stream
+    .pipe(eslint(options))
+    .pipe(
+      eslint.formatEach('stylish', function (msg) {
         errorsFound = true;
         log(colors.red(msg));
-      }))
-      .pipe(gulpIf(isFixed, gulp.dest('.')))
-      .pipe(eslint.failAfterError())
-      .on('end', function() {
-        if (errorsFound && !options.fix) {
-          log(colors.blue('Run `gulp lint --fix` to automatically ' +
-            'fix some of these lint warnings/errors. This is a destructive ' +
-            'operation (operates on the file system) so please make sure ' +
-            'you commit before running.'));
-        }
-      });
+      })
+    )
+    .pipe(gulpIf(isFixed, gulp.dest('.')))
+    .pipe(eslint.failAfterError())
+    .on('end', function () {
+      if (errorsFound && !options.fix) {
+        log(
+          colors.blue(
+            'Run `gulp lint --fix` to automatically ' +
+              'fix some of these lint warnings/errors. This is a destructive ' +
+              'operation (operates on the file system) so please make sure ' +
+              'you commit before running.'
+          )
+        );
+      }
+    });
 }
-
 
 module.exports = {
   lint,
