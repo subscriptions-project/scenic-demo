@@ -176,10 +176,10 @@ const EntitlementType = {
   FREE: 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE',
   SUBSCRIBED: 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION',
   METERED: 'EVENT_SHOWCASE_UNLOCKED_BY_METER',
-  NONE_REGISTERED_USER: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL',
+  IMPRESSION_PAYWALL: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL',
   // The publisher should send this event to setShowcaseEntitlement
   // if they use their own regwall.
-  NONE_UNREGISTERED_USER: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL',
+  IMPRESSION_REGWALL: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL',
 };
 
 function setupMeteringDemo(subscriptions) {
@@ -228,6 +228,9 @@ function setupMeteringDemo(subscriptions) {
   }
 
   if (entitlement != null) {
+    // Showcase should be informed if the publisher unlocks
+    // the page due to using their own meter, managing their
+    // own subscription or because the page is free.
     subscriptions.setShowcaseEntitlement({
       isUserRegistered: true, // Set this to false if known
       entitlement,
@@ -257,6 +260,13 @@ function setupMeteringDemo(subscriptions) {
         }
 
         // Show metering regwall for unregistered users.
+        /* If the publisher does not use the GaaMeteringRegwall,
+         * they must inform showcase of the regwall event:
+            subscriptions.setShowcaseEntitlement({
+              isUserRegistered: true,
+              entitlement: EntitlementType.IMPRESSION_REGWALL,
+            });         
+         */
         /* eslint-disable-next-line no-undef */
         return GaaMeteringRegwall.show({
           // Specify a URL that renders a Google Sign-In button.
@@ -322,9 +332,10 @@ function setupMeteringDemo(subscriptions) {
             MeteringDemo.openPaywall();
           });
         } else {
+          // The publisher must inform showcase of the 'paywall' event
           subscriptions.setShowcaseEntitlement({
             isUserRegistered: true,
-            entitlement: EntitlementType.NONE_REGISTERED_USER,
+            entitlement: EntitlementType.IMPRESSION_PAYWALL,
           });
           // Handle failures to unlock the article with metering entitlements.
           // Perhaps the user ran out of free reads. Or perhaps the user
