@@ -289,6 +289,7 @@ function setupMeteringDemo(subscriptions) {
       .then((meteringState) => {
         // Forget previous entitlements fetches.
         subscriptions.clear();
+
         // Get SwG entitlements.
         return subscriptions.getEntitlements({
           metering: {
