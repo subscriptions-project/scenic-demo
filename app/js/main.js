@@ -303,7 +303,7 @@ function setupMeteringDemo(subscriptions) {
               //
               // TODO: Describe standard attributes, once they're defined.
               standardAttributes: {
-              registered_user: {  // eslint-disable-line
+                registered_user: {  // eslint-disable-line
                   timestamp: meteringState.registrationTimestamp,
                 },
               },
