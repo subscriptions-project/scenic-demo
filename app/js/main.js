@@ -268,9 +268,7 @@ function setupMeteringDemo(subscriptions) {
         }
 
         // Show metering regwall for unregistered users.
-        /* eslint-disable */
-        return GaaMeteringRegwall.show({
-          /* eslint-enable */
+        return GaaMeteringRegwall.show({  // eslint-disable-line
           // Specify a URL that renders a Google Sign-In button.
           iframeUrl: MeteringDemo.GOOGLE_SIGN_IN_IFRAME_URL,
         })
@@ -291,31 +289,27 @@ function setupMeteringDemo(subscriptions) {
       .then((meteringState) => {
         // Forget previous entitlements fetches.
         subscriptions.clear();
-        /* eslint-disable */
-      const state = {
-        metering: {
-          state: {
-            // Hashed identifier for a specific user. Hash this value yourself
-            // to avoid sending PII.
-            id: meteringState.id,
-            // Standard attributes which affect your meters.
-            // Each attribute has a corresponding timestamp, which
-            // allows meters to do things like granting access
-            // for up to 30 days after a certain action.
-            //
-            // TODO: Describe standard attributes, once they're defined.
-            standardAttributes: {
-              registered_user: {
-                timestamp: meteringState.registrationTimestamp,
+        // Get SwG entitlements.
+        return subscriptions.getEntitlements({
+          metering: {
+            state: {
+              // Hashed identifier for a specific user. Hash this value yourself
+              // to avoid sending PII.
+              id: meteringState.id,
+              // Standard attributes which affect your meters.
+              // Each attribute has a corresponding timestamp, which
+              // allows meters to do things like granting access
+              // for up to 30 days after a certain action.
+              //
+              // TODO: Describe standard attributes, once they're defined.
+              standardAttributes: {
+              registered_user: {  // eslint-disable-line
+                  timestamp: meteringState.registrationTimestamp,
+                },
               },
             },
           },
-        },
-      };
-      /* eslint-enable */
-
-        // Get SwG entitlements.
-        return subscriptions.getEntitlements(state);
+        });
       })
       .catch(() => false)
       .then((entitlements) => {
