@@ -172,6 +172,16 @@ function setupUpdateSubscription(subscriptions) {
   );
 }
 
+const EntitlementType = {
+  FREE: 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE',
+  SUBSCRIBED: 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION',
+  METERED: 'EVENT_SHOWCASE_UNLOCKED_BY_METER',
+  NONE_REGISTERED_USER: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL',
+  // The publisher should send this event to setShowcaseEntitlement
+  // if they use their own regwall.
+  NONE_UNREGISTERED_USER: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL',
+};
+
 function setupMeteringDemo(subscriptions) {
   // Forget any subscriptions, for metering demo purposes.
   subscriptions.clear();
@@ -203,46 +213,25 @@ function setupMeteringDemo(subscriptions) {
 
   // Determine whether there is a publisher based entitlement
   let entitlement = null;
-  let isUserRegistered = false; // Set this if known
-  let unlockContent = true;
-  // The publisher should modify this check so it accurately returns
-  // true if the publisher knows about the user's subscription
-  if (getQueryParams().hasPublisherSubscription === 'true') {
-    isUserRegistered = true;
-    entitlement = 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION';
-    return;
-    // The publisher should modify this check so it accurately returns
-    // true if a publisher meter was used to unlock this article.
-  } else if (getQueryParams().consumedPublisherMeter === 'true') {
-    isUserRegistered = true;
-    entitlement = 'EVENT_SHOWCASE_UNLOCKED_BY_METER';
-    // The publisher should modify this check so it accurately returns
-    // true if the article is free (for either all or just registered users)
-  } else if (getQueryParams().isFreeArticle === 'true') {
-    // set isUserRegistered if known
-    entitlement = 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE';
-  } else {
-    // If the publisher is not unlocking the article, they should
-    // let google know if the user is registered.  Google will
-    // generate a showcase entitlement if one of our meters is
-    // consumed or the user owns a subscription through Google.
-    // Google will also automatically generate the regwall event,
-    // so the publisher can choose to report this for registered
-    // users only if they prefer.
-    unlockContent = false;
-    entitlement = isUserRegistered
-      ? 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL'
-      : 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL';
-    subscriptions.setShowcaseEntitlement({isUserRegistered, entitlement});
+  switch (getQueryParams().publisherEntitlement) {
+    case 'free':
+      entitlement = EntitlementType.FREE;
+      break;
+    case 'subscribed':
+      entitlement = EntitlementType.SUBSCRIBED;
+      break;
+    case 'metered':
+      entitlement = EntitlementType.METERED;
+      break;
+    default:
+      entitlement = null;
   }
 
-  // Inform showcase of the  publisher's entitlement decision.  If google
-  // decides to unlock the article, an additional event indicating why
-  // will automatically be generated.
-  subscriptions.setShowcaseEntitlement({isUserRegistered, entitlement});
-
-  // If we unlocked the content, display it and exit.
-  if (unlockContent) {
+  if (entitlement != null) {
+    subscriptions.setShowcaseEntitlement({
+      isUserRegistered: true, // Set this to false if known
+      entitlement,
+    });
     MeteringDemo.openPaywall();
     return;
   }
@@ -331,6 +320,10 @@ function setupMeteringDemo(subscriptions) {
             MeteringDemo.openPaywall();
           });
         } else {
+          subscriptions.setShowcaseEntitlement({
+            isUserRegistered: true,
+            entitlement: EntitlementType.NONE_REGISTERED_USER,
+          });
           // Handle failures to unlock the article with metering entitlements.
           // Perhaps the user ran out of free reads. Or perhaps the user
           // dismissed the Regwall. Either way, the publisher determines
