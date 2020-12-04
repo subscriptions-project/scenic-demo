@@ -257,7 +257,8 @@ function setupMeteringDemo(subscriptions) {
         }
 
         // Show metering regwall for unregistered users.
-        return GaaMeteringRegwall.show({  // eslint-disable-line
+        /* eslint-disable-next-line no-undef */
+        return GaaMeteringRegwall.show({
           // Specify a URL that renders a Google Sign-In button.
           iframeUrl: MeteringDemo.GOOGLE_SIGN_IN_IFRAME_URL,
         })
@@ -293,7 +294,8 @@ function setupMeteringDemo(subscriptions) {
               //
               // TODO: Describe standard attributes, once they're defined.
               standardAttributes: {
-                registered_user: {  // eslint-disable-line
+                /* eslint-disable-next-line google-camelcase/google-camelcase */
+                registered_user: {
                   timestamp: meteringState.registrationTimestamp,
                 },
               },
