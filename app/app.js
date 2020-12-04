@@ -100,7 +100,7 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   const setup = getSetup(req);
   res.render('../app/views/article', {
     swgJsUrl: getSwgJsUrl(req),
-    swgGaaJsUrl: SWG_GAA_JS_URLS[setup.script],
+    swgGaaJsUrl: getSwgGaaJsUrl(req),
     setup,
     config: getConfig(req.params.configId),
     id,
@@ -358,6 +358,18 @@ function getSwgJsUrl(req) {
   } else {
     return SWG_JS_URLS[setup.script];
   }
+}
+
+/**
+ * Returns URL for swg-gaa for a given request.
+ * @param {!HttpRequest} req
+ */
+function getSwgGaaJsUrl(req) {
+  const setup = getSetup(req);
+  if (setup.script === 'custom') {
+    setup.script = 'prod';
+  }
+  return SWG_GAA_JS_URLS[setup.script];
 }
 
 /**
