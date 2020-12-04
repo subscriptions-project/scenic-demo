@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const fetch = require('node-fetch');
 const jsonwebtoken = require('jsonwebtoken');
 const {decrypt, encrypt, fromBase64, toBase64} = require('./crypto');
 const {getConfig} = require('./config');
@@ -82,10 +83,9 @@ app.get(['/', '/config/:configId'], (req, res) => {
 });
 
 app.get(['/config/:configId/landing.html', '/landing.html'], (req, res) => {
-  const script = (req.cookies && req.cookies['script']) || 'prod';
   res.render('../app/views/landing.html', {
     config: getConfig(req.params.configId),
-    swgJsUrl: SWG_JS_URLS[script],
+    swgJsUrl: getSwgJsUrl(req),
   });
 });
 
@@ -99,8 +99,8 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   const nextId = id + 1 < ARTICLES.length ? String(id + 1) : false;
   const setup = getSetup(req);
   res.render('../app/views/article', {
-    swgJsUrl: SWG_JS_URLS[setup.script],
-    swgGaaJsUrl: SWG_GAA_JS_URLS[setup.script],
+    swgJsUrl: getSwgJsUrl(req),
+    swgGaaJsUrl: getSwgGaaJsUrl(req),
     setup,
     config: getConfig(req.params.configId),
     id,
@@ -295,6 +295,7 @@ app.get('/setup', (req, res) => {
   const args = {};
   args['script'] = state.script;
   args['script_' + state.script] = true;
+  args['script_custom_url'] = state.scriptCustomServerUrl;
   res.render('../app/views/setup', args);
 });
 
@@ -305,24 +306,72 @@ app.post('/update-setup', (req, res) => {
   // Update data.
   const state = {
     script: req.body['script'] || 'local',
+    scriptCustomServerUrl: req.body['script-custom-server-url'] || '',
   };
+
   res.clearCookie('script');
   res.cookie('script', state.script);
 
+  res.clearCookie('script-custom-server-url');
+  res.cookie('script-custom-server-url', state.scriptCustomServerUrl);
+
   // Redirect back.
   res.redirect(302, '/setup');
+});
+
+/** Returns swg-js with a custom server URL. */
+app.get('/production-swg-js-with-custom-server-url', async (req, res) => {
+  const setup = getSetup(req);
+  const swgJs = await fetch(
+    'https://news.google.com/swg/js/v1/swg.js'
+  ).then((res) => res.text());
+  const customizedSwgJs = swgJs
+    .replace(/"https:\/\/news.google.com"/g, `"${setup.scriptCustomServerUrl}"`)
+    .replace(
+      /"https:\/\/news.google.com\/_/g,
+      `"${setup.scriptCustomServerUrl}/_`
+    );
+  res.send(customizedSwgJs);
 });
 
 /**
  * @param {!HttpRequest} req
  * @return {{
  *   script: string,
+ *   scriptCustomServerUrl: string|undefined,
  * }}
  */
 function getSetup(req) {
   return {
     script: (req.cookies && req.cookies['script']) || 'prod',
+    scriptCustomServerUrl:
+      (req.cookies && req.cookies['script-custom-server-url']) || '',
   };
+}
+
+/**
+ * Returns URL for swg-js for a given request.
+ * @param {!HttpRequest} req
+ */
+function getSwgJsUrl(req) {
+  const setup = getSetup(req);
+  if (setup.script === 'custom') {
+    return '/production-swg-js-with-custom-server-url';
+  } else {
+    return SWG_JS_URLS[setup.script];
+  }
+}
+
+/**
+ * Returns URL for swg-gaa for a given request.
+ * @param {!HttpRequest} req
+ */
+function getSwgGaaJsUrl(req) {
+  const setup = getSetup(req);
+  if (setup.script === 'custom') {
+    setup.script = 'prod';
+  }
+  return SWG_GAA_JS_URLS[setup.script];
 }
 
 /**
