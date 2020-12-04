@@ -281,9 +281,8 @@ app.post('/amp-pingback', (req, res) => {
  * GSI iframe for metering demo.
  */
 app.get('/gsi-iframe', (req, res) => {
-  const setup = getSetup(req);
   res.render('../app/views/gsi-signin-iframe', {
-    swgGaaJsUrl: SWG_GAA_JS_URLS[setup.script],
+    swgGaaJsUrl: getSwgGaaJsUrl(req),
   });
 });
 
