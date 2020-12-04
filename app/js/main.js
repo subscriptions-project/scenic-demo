@@ -172,7 +172,6 @@ function setupUpdateSubscription(subscriptions) {
   );
 }
 
-/* eslint-disable */
 function setupMeteringDemo(subscriptions) {
   // Forget any subscriptions, for metering demo purposes.
   subscriptions.clear();
@@ -186,7 +185,7 @@ function setupMeteringDemo(subscriptions) {
   // Handle clicks on the Metering Toast's "Subscribe" button.
   subscriptions.setOnNativeSubscribeRequest(() => {
     // Show a publisher paywall for demo purposes.
-    startFlow("showOffers");
+    startFlow('showOffers');
   });
 
   // Handle clicks on the "Already have an account?" link within the
@@ -223,6 +222,7 @@ function setupMeteringDemo(subscriptions) {
         }
 
         // Show metering regwall for unregistered users.
+        /* eslint-disable-next-line no-undef */
         return GaaMeteringRegwall.show({
           // Specify a URL that renders a Google Sign-In button.
           iframeUrl: MeteringDemo.GOOGLE_SIGN_IN_IFRAME_URL,
@@ -259,6 +259,7 @@ function setupMeteringDemo(subscriptions) {
               //
               // TODO: Describe standard attributes, once they're defined.
               standardAttributes: {
+                /* eslint-disable-next-line google-camelcase/google-camelcase */
                 registered_user: {
                   timestamp: meteringState.registrationTimestamp,
                 },
@@ -290,12 +291,11 @@ function setupMeteringDemo(subscriptions) {
           // Perhaps the user ran out of free reads. Or perhaps the user
           // dismissed the Regwall. Either way, the publisher determines
           // what happens next. This demo shows offers.
-          startFlow("showOffers");
+          startFlow('showOffers');
         }
       });
-  }  
+  }
 }
-/* eslint-enable */
 
 /**
  * Selects the flow based on the URL query parameter.
