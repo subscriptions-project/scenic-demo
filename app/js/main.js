@@ -265,13 +265,12 @@ function setupMeteringDemo(subscriptions) {
         }
 
         // Show metering regwall for unregistered users.
-        /* If the publisher does not use the GaaMeteringRegwall,
-         * they must inform showcase of the regwall event:
-            subscriptions.setShowcaseEntitlement({
-              isUserRegistered: true,
-              entitlement: EntitlementType.IMPRESSION_REGWALL,
-            });         
-         */
+        // If the publisher does not use the GaaMeteringRegwall,
+        // they must inform showcase of the regwall event:
+        //  subscriptions.setShowcaseEntitlement({
+        //    isUserRegistered: true,
+        //    entitlement: EntitlementType.IMPRESSION_REGWALL,
+        //  });
         /* eslint-disable-next-line no-undef */
         return GaaMeteringRegwall.show({
           // Specify a URL that renders a Google Sign-In button.
