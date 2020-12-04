@@ -224,10 +224,15 @@ function setupMeteringDemo(subscriptions) {
       entitlement = EntitlementType.METERED;
       break;
     default:
-      entitlement = null;
+      // See if someone set publisherEntitlement to one of the enum
+      entitlement = getQueryParams().publisherEntitlement || null;
   }
 
-  if (entitlement != null) {
+  if (
+    entitlement == EntitlementType.FREE ||
+    entitlement == EntitlementType.SUBSCRIBED ||
+    entitlement == EntitlementType.METERED
+  ) {
     // Showcase should be informed if the publisher unlocks
     // the page due to using their own meter, managing their
     // own subscription or because the page is free.
