@@ -212,36 +212,34 @@ function setupMeteringDemo(subscriptions) {
   });
 
   // Determine whether there is a publisher based entitlement
-  let entitlement = null;
+  // Showcase should be informed if the publisher unlocks
+  // the page due to using their own meter, managing their
+  // own subscription or because the page is free.
+  // This query params check is for easy testing, repace this
+  // with your own code.
   switch (getQueryParams().publisherEntitlement) {
-    case 'free':
-      entitlement = EntitlementType.FREE;
-      break;
-    case 'subscribed':
-      entitlement = EntitlementType.SUBSCRIBED;
-      break;
-    case 'metered':
-      entitlement = EntitlementType.METERED;
-      break;
+    case ('free', EntitlementType.FREE):
+      subscriptions.setShowcaseEntitlement({
+        isUserRegistered: true, // Set this to false if known
+        entitlement: EntitlementType.FREE,
+      });
+      MeteringDemo.openPaywall();
+      return;
+    case ('subscribed', EntitlementType.SUBSCRIBED):
+      subscriptions.setShowcaseEntitlement({
+        isUserRegistered: true, // Set this to false if known
+        entitlement: EntitlementType.SUBSCRIBED,
+      });
+      MeteringDemo.openPaywall();
+      return;
+    case ('metered', EntitlementType.METERED):
+      subscriptions.setShowcaseEntitlement({
+        isUserRegistered: true, // Set this to false if known
+        entitlement: EntitlementType.METERED,
+      });
+      MeteringDemo.openPaywall();
+      return;
     default:
-      // See if someone set publisherEntitlement to one of the enums
-      entitlement = getQueryParams().publisherEntitlement || null;
-  }
-
-  if (
-    entitlement == EntitlementType.FREE ||
-    entitlement == EntitlementType.SUBSCRIBED ||
-    entitlement == EntitlementType.METERED
-  ) {
-    // Showcase should be informed if the publisher unlocks
-    // the page due to using their own meter, managing their
-    // own subscription or because the page is free.
-    subscriptions.setShowcaseEntitlement({
-      isUserRegistered: true, // Set this to false if known
-      entitlement,
-    });
-    MeteringDemo.openPaywall();
-    return;
   }
 
   // Fetch entitlements.
