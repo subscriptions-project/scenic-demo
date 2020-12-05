@@ -267,7 +267,7 @@ function setupMeteringDemo(subscriptions) {
         // they must inform showcase of the regwall event:
         //  subscriptions.setShowcaseEntitlement({
         //    isUserRegistered: true,
-        //    entitlement: EntitlementType.IMPRESSION_REGWALL,
+        //    entitlement: ShowcaseEntitlementEvent.IMPRESSION_REGWALL,
         //  });
         /* eslint-disable-next-line no-undef */
         return GaaMeteringRegwall.show({
