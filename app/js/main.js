@@ -172,7 +172,7 @@ function setupUpdateSubscription(subscriptions) {
   );
 }
 
-const EntitlementType = {
+const ShowcaseEntitlementEvent = {
   FREE: 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE',
   SUBSCRIBED: 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION',
   METERED: 'EVENT_SHOWCASE_UNLOCKED_BY_METER',
@@ -211,31 +211,31 @@ function setupMeteringDemo(subscriptions) {
     location.reload();
   });
 
-  // Determine whether there is a publisher based entitlement
+  // Determine whether there is a publisher based entitlement.
   // Showcase should be informed if the publisher unlocks
   // the page due to using their own meter, managing their
   // own subscription or because the page is free.
-  // This query params check is for easy testing, repace this
+  // This query params check is for easy testing, replace this
   // with your own code.
   switch (getQueryParams().publisherEntitlement) {
-    case ('free', EntitlementType.FREE):
+    case ('free', ShowcaseEntitlementEvent.FREE):
       subscriptions.setShowcaseEntitlement({
         isUserRegistered: true, // Set this to false if known
-        entitlement: EntitlementType.FREE,
+        entitlement: ShowcaseEntitlementEvent.FREE,
       });
       MeteringDemo.openPaywall();
       return;
-    case ('subscribed', EntitlementType.SUBSCRIBED):
+    case ('subscribed', ShowcaseEntitlementEvent.SUBSCRIBED):
       subscriptions.setShowcaseEntitlement({
-        isUserRegistered: true, // Set this to false if known
-        entitlement: EntitlementType.SUBSCRIBED,
+        isUserRegistered: true,
+        entitlement: ShowcaseEntitlementEvent.SUBSCRIBED,
       });
       MeteringDemo.openPaywall();
       return;
-    case ('metered', EntitlementType.METERED):
+    case ('metered', ShowcaseEntitlementEvent.METERED):
       subscriptions.setShowcaseEntitlement({
         isUserRegistered: true, // Set this to false if known
-        entitlement: EntitlementType.METERED,
+        entitlement: ShowcaseEntitlementEvent.METERED,
       });
       MeteringDemo.openPaywall();
       return;
@@ -337,7 +337,7 @@ function setupMeteringDemo(subscriptions) {
           // The publisher must inform showcase of the 'paywall' event
           subscriptions.setShowcaseEntitlement({
             isUserRegistered: true,
-            entitlement: EntitlementType.IMPRESSION_PAYWALL,
+            entitlement: ShowcaseEntitlementEvent.IMPRESSION_PAYWALL,
           });
           // Handle failures to unlock the article with metering entitlements.
           // Perhaps the user ran out of free reads. Or perhaps the user
