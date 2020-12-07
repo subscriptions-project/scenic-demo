@@ -220,7 +220,7 @@ function setupMeteringDemo(subscriptions) {
   switch (getQueryParams().publisherEntitlement) {
     case ('free', ShowcaseEntitlementEvent.FREE):
       subscriptions.setShowcaseEntitlement({
-        isUserRegistered: true, // Set this to false if known
+        isUserRegistered: false, // Set this to true if known
         entitlement: ShowcaseEntitlementEvent.FREE,
       });
       MeteringDemo.openPaywall();
@@ -233,8 +233,10 @@ function setupMeteringDemo(subscriptions) {
       MeteringDemo.openPaywall();
       return;
     case ('metered', ShowcaseEntitlementEvent.METERED):
+      // Set isUserRegistered to false if you allow unregistered
+      // users to consume publisher meters
       subscriptions.setShowcaseEntitlement({
-        isUserRegistered: true, // Set this to false if known
+        isUserRegistered: true,
         entitlement: ShowcaseEntitlementEvent.METERED,
       });
       MeteringDemo.openPaywall();
@@ -339,6 +341,7 @@ function setupMeteringDemo(subscriptions) {
             isUserRegistered: true,
             entitlement: ShowcaseEntitlementEvent.IMPRESSION_PAYWALL,
           });
+
           // Handle failures to unlock the article with metering entitlements.
           // Perhaps the user ran out of free reads. Or perhaps the user
           // dismissed the Regwall. Either way, the publisher determines
