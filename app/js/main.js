@@ -225,7 +225,9 @@ function setupMeteringDemo(subscriptions) {
   switch (getQueryParams().publisherEntitlement) {
     case ('free', ShowcaseEntitlementEvent.FREE):
       subscriptions.setShowcaseEntitlement({
-        isUserRegistered: null, // Set this if known
+        // Set isUserRegistered to a boolean if you know whether the
+        // user is registered
+        isUserRegistered: null,
         entitlement: ShowcaseEntitlementEvent.FREE,
       });
       MeteringDemo.openPaywall();
