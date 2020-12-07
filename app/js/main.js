@@ -172,6 +172,21 @@ function setupUpdateSubscription(subscriptions) {
   );
 }
 
+/**
+ * This enum contains values used to send publisher
+ * based entitlements to swg-js when using the
+ * showcase metering system.
+ */
+const ShowcaseEntitlementEvent = {
+  FREE: 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE',
+  SUBSCRIBED: 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION',
+  METERED: 'EVENT_SHOWCASE_UNLOCKED_BY_METER',
+  IMPRESSION_PAYWALL: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_PAYWALL',
+  // The publisher should send this event to setShowcaseEntitlement
+  // if they use their own regwall.
+  IMPRESSION_REGWALL: 'EVENT_SHOWCASE_NO_ENTITLEMENTS_REGWALL',
+};
+
 function setupMeteringDemo(subscriptions) {
   // Forget any subscriptions, for metering demo purposes.
   subscriptions.clear();
@@ -201,6 +216,42 @@ function setupMeteringDemo(subscriptions) {
     location.reload();
   });
 
+  // Determine whether there is a publisher based entitlement that
+  // unlocks the article. Showcase should be informed if the publisher
+  // unlocks the page due to using their own meter, managing their
+  // own subscription or because the page is free.
+  // This query params check is for easy testing, replace this
+  // with your own code.
+  switch (getQueryParams().publisherEntitlement) {
+    case ('free', ShowcaseEntitlementEvent.FREE):
+      subscriptions.setShowcaseEntitlement({
+        // Set isUserRegistered to a boolean if you know whether the
+        // user is registered
+        isUserRegistered: null,
+        entitlement: ShowcaseEntitlementEvent.FREE,
+      });
+      MeteringDemo.openPaywall();
+      return;
+    case ('subscribed', ShowcaseEntitlementEvent.SUBSCRIBED):
+      subscriptions.setShowcaseEntitlement({
+        isUserRegistered: true,
+        entitlement: ShowcaseEntitlementEvent.SUBSCRIBED,
+      });
+      MeteringDemo.openPaywall();
+      return;
+    case ('metered', ShowcaseEntitlementEvent.METERED):
+      // Set isUserRegistered to false if you allow unregistered
+      // users to consume publisher meters and this user isn't
+      // registered.
+      subscriptions.setShowcaseEntitlement({
+        isUserRegistered: true,
+        entitlement: ShowcaseEntitlementEvent.METERED,
+      });
+      MeteringDemo.openPaywall();
+      return;
+    default:
+  }
+
   // Fetch entitlements.
   subscriptions.getEntitlements().then((entitlements) => {
     if (entitlements.enablesThis()) {
@@ -222,6 +273,12 @@ function setupMeteringDemo(subscriptions) {
         }
 
         // Show metering regwall for unregistered users.
+        // If the publisher does not use the GaaMeteringRegwall,
+        // they must inform showcase of the regwall event:
+        //  subscriptions.setShowcaseEntitlement({
+        //    isUserRegistered: true,
+        //    entitlement: ShowcaseEntitlementEvent.IMPRESSION_REGWALL,
+        //  });
         /* eslint-disable-next-line no-undef */
         return GaaMeteringRegwall.show({
           // Specify a URL that renders a Google Sign-In button.
@@ -287,6 +344,12 @@ function setupMeteringDemo(subscriptions) {
             MeteringDemo.openPaywall();
           });
         } else {
+          // The publisher must inform showcase of the 'paywall' event
+          subscriptions.setShowcaseEntitlement({
+            isUserRegistered: true,
+            entitlement: ShowcaseEntitlementEvent.IMPRESSION_PAYWALL,
+          });
+
           // Handle failures to unlock the article with metering entitlements.
           // Perhaps the user ran out of free reads. Or perhaps the user
           // dismissed the Regwall. Either way, the publisher determines
