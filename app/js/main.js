@@ -172,6 +172,11 @@ function setupUpdateSubscription(subscriptions) {
   );
 }
 
+/**
+ * This enum contains values used to send publisher
+ * based entitlements to swg-js when using the
+ * showcase metering system.
+ */
 const ShowcaseEntitlementEvent = {
   FREE: 'EVENT_SHOWCASE_UNLOCKED_FREE_PAGE',
   SUBSCRIBED: 'EVENT_SHOWCASE_UNLOCKED_BY_SUBSCRIPTION',
