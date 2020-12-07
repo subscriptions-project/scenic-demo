@@ -211,9 +211,9 @@ function setupMeteringDemo(subscriptions) {
     location.reload();
   });
 
-  // Determine whether there is a publisher based entitlement.
-  // Showcase should be informed if the publisher unlocks
-  // the page due to using their own meter, managing their
+  // Determine whether there is a publisher based entitlement that.
+  // unlocks the article. Showcase should be informed if the publisher
+  // unlocks the page due to using their own meter, managing their
   // own subscription or because the page is free.
   // This query params check is for easy testing, replace this
   // with your own code.
