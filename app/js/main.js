@@ -188,6 +188,13 @@ const ShowcaseEntitlementEvent = {
 };
 
 function setupMeteringDemo(subscriptions) {
+  // Redirect to a URL with fresh GAA params if necessary.
+  // The Regwall won't render without fresh GAA params.
+  if (location.search === '?metering') {
+    location.search = 'gaa_at=g&gaa_ts=99999999&gaa_n=n0nc3&gaa_sig=51g';
+    return;
+  }
+
   // Forget any subscriptions, for metering demo purposes.
   subscriptions.clear();
 
