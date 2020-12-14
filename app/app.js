@@ -53,6 +53,8 @@ const AUTH_COOKIE = 'SCENIC_AUTH';
 const METER_COOKIE = 'SCENIC_METER';
 const MAX_METER = 3;
 
+const DECRYPTED_DOCUMENT_KEY = 'd4ZoJQJLWrV6DiF9oI40fw==';
+
 const ARTICLES = require('./content').ARTICLES;
 
 // Info.
@@ -235,8 +237,8 @@ app.get('/amp-entitlements', (req, res) => {
   const email = getUserInfoFromCookies(req);
   if (email) {
     res.json({
-      'products': [pubId + ':news'],
-      'subscriptionToken': 'subtok-' + pubId + '-' + toBase64(encrypt(email)),
+      'granted': true,
+      'decryptedDocumentKey': DECRYPTED_DOCUMENT_KEY,
     });
   } else if (req.query.meter == '1') {
     const meter = getMeterFromCookies(req);
