@@ -57,6 +57,12 @@ const DECRYPTED_DOCUMENT_KEY = 'd4ZoJQJLWrV6DiF9oI40fw==';
 
 const ARTICLES = require('./content').ARTICLES;
 
+/**
+ * Maps AMP reader IDs to emails from Google Sign-In.
+ * @type {{ [ampReaderId: string]: string }}
+ */
+const ampReaderIdToEmailMap = {};
+
 // Info.
 if (console.log) {
   console.log('Scenic started. Publication: ' + getConfig().publicationId);
@@ -202,7 +208,21 @@ app.post('/signin', (req, res) => {
     const jwt = jsonwebtoken.decode(idToken);
     email = jwt['email'];
   }
-  setUserInfoInCookies(res, email);
+
+  const ampReaderId = req.body.rid;
+  if (ampReaderId) {
+    // Remember this AMP reader ID has entitlements to content.
+    // This supports articles on the AMP cache. Entitlements requests from AMP
+    // will include the AMP reader ID as a URL param (`rid`).
+    console.log(`Registering ${email} based on their AMP reader ID.`);
+    ampReaderIdToEmailMap[ampReaderId] = email;
+  } else {
+    // Save a 1p cookie that entitles the user to content.
+    // This doesn't support articles on the AMP cache, since
+    // it would then be a 3rd party cookie, which browsers won't send.
+    setUserInfoInCookies(res, email);
+  }
+
   res.redirect(302, returnUrl);
 });
 
@@ -219,7 +239,7 @@ app.get('/signout', (req, res) => {
  * AMP entitlements request.
  */
 app.get('/amp-entitlements', (req, res) => {
-  const pubId = req.query.pubid;
+  // Add headers.
   // TODO(dvoytenko): test if the origin is actually allowed.
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
@@ -234,17 +254,45 @@ app.get('/amp-entitlements', (req, res) => {
       req.query.__amp_source_origin
     );
   }
-  const email = getUserInfoFromCookies(req);
-  if (email) {
+
+  // Support AMP reader IDs.
+  // This works on the AMP cache.
+  const ampReaderId = req.query.rid;
+  const emailFromAmpReaderId = ampReaderIdToEmailMap[ampReaderId];
+  if (emailFromAmpReaderId) {
+    console.log(
+      `Granting access to ${emailFromAmpReaderId} based on their AMP reader ID.`
+    );
     res.json({
       'granted': true,
       'decryptedDocumentKey': DECRYPTED_DOCUMENT_KEY,
+      'reason': 'AMP reader ID gives entitlements',
     });
-  } else if (req.query.meter == '1') {
+    return;
+  }
+
+  // Support entitlements from 1p cookies.
+  // This doesn't work on the AMP cache.
+  const cookieHasEntitlements = getUserInfoFromCookies(req);
+  if (cookieHasEntitlements) {
+    res.json({
+      'granted': true,
+      'decryptedDocumentKey': DECRYPTED_DOCUMENT_KEY,
+      'reason': '1p cookie gives entitlements',
+    });
+    return;
+  }
+
+  // Support publisher metering.
+  // This doesn't work on the AMP cache.
+  // TODO: Support AMP cache using AMP reader IDs.
+  const meteringIsEnabled = req.query.meter === '1';
+  if (meteringIsEnabled) {
+    const publicationId = req.query.pubid;
     const meter = getMeterFromCookies(req);
     if (meter > 0) {
       res.json({
-        'products': [pubId + ':news'],
+        'products': [publicationId + ':news'],
         'metering': {
           'left': meter,
           'total': MAX_METER,
@@ -253,9 +301,11 @@ app.get('/amp-entitlements', (req, res) => {
     } else {
       res.json({});
     }
-  } else {
-    res.json({});
+    return;
   }
+
+  // Default to an empty response.
+  res.json({});
 });
 
 /**
