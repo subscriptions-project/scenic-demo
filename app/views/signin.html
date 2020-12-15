@@ -1,21 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>The Scenic</title>
-    <link rel="canonical" href="index.html" >
-    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/styles.css" type="text/css">
-    <link rel="icon" type="image/png" href="/icons/icon-2x.png">
-    <link rel="apple-touch-icon" href="/icons/icon-2x.png">
-    <meta name="msapplication-TileImage" content="/icons/icon-2x.png">
-    <meta name="msapplication-TileColor" content="#37dc8c">
+    <link rel="canonical" href="index.html" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1,initial-scale=1"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Playfair+Display"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/styles.css" type="text/css" />
+    <link rel="icon" type="image/png" href="/icons/icon-2x.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-2x.png" />
+    <meta name="msapplication-TileImage" content="/icons/icon-2x.png" />
+    <meta name="msapplication-TileColor" content="#37dc8c" />
 
     <!-- GSI dependencies -->
-    <meta name="google-signin-client_id" content="520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com">
+    <meta
+      name="google-signin-client_id"
+      content="520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com"
+    />
 
     <style>
       .container {
@@ -39,7 +57,8 @@
       .input-container span {
         flex: 1;
       }
-      .input-container input, .input-container .input {
+      .input-container input,
+      .input-container .input {
         flex: 2;
       }
       section {
@@ -54,7 +73,7 @@
         width: 190px;
         height: 42px;
         border-radius: 5px;
-        border: thin solid rgba(0, 0, 0, 0.300px);
+        border: thin solid rgba(0, 0, 0, 0.3px);
         box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
         white-space: nowrap;
       }
@@ -63,7 +82,8 @@
         font-weight: normal;
       }
       .g_signin_custom span.icon {
-        background: url('https://google-developers.appspot.com/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
+        background: url('https://google-developers.appspot.com/identity/sign-in/g-normal.png')
+          transparent 5px 50% no-repeat;
         display: inline-block;
         vertical-align: middle;
         width: 42px;
@@ -79,14 +99,15 @@
         /* Use the Roboto font that is loaded in the <head> */
         font-family: 'Roboto', sans-serif;
       }
-  </style>
+    </style>
 
     <script>
       function gapiLoad() {
-        gapi.load('auth2', function() {
+        gapi.load('auth2', function () {
           auth2 = gapi.auth2.init({
-            client_id: '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com',
-            scope: 'profile email'
+            client_id:
+              '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com',
+            scope: 'profile email',
           });
         });
       }
@@ -103,7 +124,7 @@
           'height': 50,
           'longtitle': true,
           'theme': 'light',
-          'onsuccess': onSignIn
+          'onsuccess': onSignIn,
         });
       }
 
@@ -115,7 +136,11 @@
       }
     </script>
 
-    <script src="https://apis.google.com/js/platform.js?onload=gapiLoad" async defer></script>
+    <script
+      src="https://apis.google.com/js/platform.js?onload=gapiLoad"
+      async
+      defer
+    ></script>
   </head>
   <body>
     <div class="main-body">
@@ -128,29 +153,28 @@
       <main role="main">
         <div class="container">
           <%#type_signin%>
-            <h2>Sign-in to Scenic</h2>
-          <%/type_signin%>
-          <%#type_subscribe%>
-            <h2>Subscribe to Scenic</h2>
-            <div>First, create your account:</div>
+          <h2>Sign-in to Scenic</h2>
+          <%/type_signin%> <%#type_subscribe%>
+          <h2>Subscribe to Scenic</h2>
+          <div>First, create your account:</div>
           <%/type_subscribe%>
 
           <section>
             Use your username/password:
             <form id="loginForm" action="./signin" method="post">
-              <input type="hidden" name="returnUrl" value="<% returnUrl %>">
-              <input type="hidden" id="id_token" name="id_token" value="">
+              <input type="hidden" name="returnUrl" value="<% returnUrl %>" />
+              <input type="hidden" id="id_token" name="id_token" value="" />
               <div class="input-container">
                 <span>Email:</span>
-                <input name="email" type="email" required>
+                <input name="email" type="email" required />
               </div>
               <div class="input-container">
                 <span>Password:</span>
-                <input name="password" type="password" required>
+                <input name="password" type="password" required />
               </div>
               <div class="input-container">
                 <span></span>
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" />
               </div>
             </form>
           </section>
@@ -159,7 +183,12 @@
             Or sign in with:
             <div class="input-container">
               <span></span>
-              <div id="g_signin" class="g_signin_custom" onclick="signInWithGoogle()" aria-role="button">
+              <div
+                id="g_signin"
+                class="g_signin_custom"
+                onclick="signInWithGoogle()"
+                aria-role="button"
+              >
                 <span class="icon"></span>
                 <span class="buttonText">Google</span>
               </div>
