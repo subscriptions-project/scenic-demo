@@ -132,6 +132,14 @@
         var form = document.getElementById('loginForm');
         var idTokenInput = document.getElementById('id_token');
         idTokenInput.value = googleUser.getAuthResponse().id_token;
+
+        // Save the AMP reader ID, if it's present.
+        var ampReaderId = location.search.match(/rid=([^&]+)/);
+        if (ampReaderId) {
+          var ridInput = document.getElementById('rid');
+          ridInput.value = ampReaderId[1];
+        }
+
         form.submit();
       }
     </script>
@@ -164,6 +172,7 @@
             <form id="loginForm" action="./signin" method="post">
               <input type="hidden" name="returnUrl" value="<% returnUrl %>" />
               <input type="hidden" id="id_token" name="id_token" value="" />
+              <input type="hidden" id="rid" name="rid" value="" />
               <div class="input-container">
                 <span>Email:</span>
                 <input name="email" type="email" required />

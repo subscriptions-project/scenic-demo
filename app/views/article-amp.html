@@ -118,10 +118,10 @@
       {
         "services": [
           {
-            "authorizationUrl": "<% serviceBase %>/amp-entitlements?pubid=<% config.publicationId %>&meter=1",
+            "authorizationUrl": "<% serviceBase %>/amp-entitlements?pubid=<% config.publicationId %>&meter=1&rid=READER_ID",
             "pingbackUrl": "<% serviceBase %>/amp-pingback?pubid=<% config.publicationId %>",
             "actions": {
-              "login": "<% serviceBase %>/signin",
+              "login": "<% serviceBase %>/signin?rid=READER_ID",
               "subscribe": "<% serviceBase %>/subscribe"
             }
           },
