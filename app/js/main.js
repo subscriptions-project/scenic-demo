@@ -207,7 +207,7 @@ function setupMeteringDemo(subscriptions) {
   // Handle clicks on the Metering Toast's "Subscribe" button.
   subscriptions.setOnNativeSubscribeRequest(() => {
     // Show a publisher paywall for demo purposes.
-    startFlow('showOffers');
+    startFlow('showOffers', {isClosable: true});
   });
 
   // Handle clicks on the "Already have an account?" link within the
