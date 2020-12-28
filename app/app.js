@@ -87,6 +87,7 @@ app.get(['/', '/config/:configId'], (req, res) => {
     title: 'Select an article to get started',
     config: getConfig(req.params.configId),
     articles: ARTICLES,
+    gsv: process.env.GOOGLE_SITE_VERIFICATION || null
   });
 });
 
