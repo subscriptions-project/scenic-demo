@@ -30,7 +30,6 @@ app.locals.delimiters = '<% %>';
  * HTTPS redirect.
  */
 app.use((req, res, next) => {
-
   let host = req.headers.host || req.host;
   const secure =
     req.secure ||
