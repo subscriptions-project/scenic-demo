@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "node build-system/server/server-gae.js",
-    "start-local": "gulp",
+    "start-local": "env $(cat .env) gulp",
     "start-remote": "env $(cat .env) node build-system/server/server-gae.js",
     "deploy": "git checkout master && git pull && gulp build && gcloud app deploy",
     "test": "gulp test",
