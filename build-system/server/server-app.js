@@ -35,7 +35,7 @@ app.use((req, res, next) => {
     req.secure ||
     req.connection.encrypted ||
     req.get('X-Forwarded-Proto') === 'https';
-  if (secure || host.indexOf('localhost') != -1 || host.indexOf(process.env.SERVE_PUBID) != -1) {
+  if (secure || host.indexOf('localhost') != -1 || host.indexOf(process.env.PROXY_URL) != -1) {
     // Skip localhost or if already secure.
     next();
     return;
