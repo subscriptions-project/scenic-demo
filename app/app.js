@@ -107,6 +107,11 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   const prevId = id - 1 >= 0 ? String(id - 1) : false;
   const nextId = id + 1 < ARTICLES.length ? String(id + 1) : false;
   const setup = getSetup(req);
+
+  console.log(process.env.GSI_CLIENT_ID)
+
+  const googleSignInClientId = process.env.GSI_CLIENT_ID ||
+     '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com';
   res.render('../app/views/article', {
     swgJsUrl: getSwgJsUrl(req),
     swgGaaJsUrl: getSwgGaaJsUrl(req),
@@ -116,6 +121,7 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
     article,
     prev: prevId,
     next: nextId,
+    googleSignInClientId
   });
 });
 
