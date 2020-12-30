@@ -24,6 +24,35 @@ Then start the server with gulp.
 ```bash
 gulp
 ```
+You can also use gulp with a local .env file for environmental variables.
+
+```
+npm run start-local
+```
+
+See [package.json](package.json)'s `scripts` section for more details.
+
+### Local .env file configurations
+
+Using a local .env file, you can set environmental vairables to emulate
+different running conditions.
+
+*   **PORT** Specify the default port that the server runs at.
+*   **GOOGLE_SITE_VERIFICATION** Set a value for
+    [HTML Meta tag site verification](https://support.google.com/webmasters/answer/9008080?hl=en)
+*   **PROXY_URL** Circumvent https requirement for non-localhost testing
+    environs.
+*   **HOST** Can be set to `0.0.0.0` for
+    [non-localhost routing using gulp](https://github.com/schickling/gulp-webserver#why-cant-i-reach-the-server-from-the-network).
+
+A sample `.env` file:
+
+```
+PORT=8080
+GOOGLE_SITE_VERIFICATION=abc123
+PROXY_URL=test-url.local
+HOST=0.0.0.0
+```
 
 ## How to update swg.js for local mode
 
