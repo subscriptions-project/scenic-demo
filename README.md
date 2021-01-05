@@ -29,12 +29,10 @@ You can also use gulp with a local .env file for environmental variables.
 npm run start-local
 ```
 
-See [package.json](package.json)'s `scripts` section for more details.
-
 ### Local .env file configurations
 
-Using a local .env file, you can set environmental vairables to emulate
-different running conditions.
+Using a local .env file, you can set environmental variables to change
+the running conditions.
 
 - **PORT** Specify the default port that the server runs at.
 - **GOOGLE_SITE_VERIFICATION** Set a value for
