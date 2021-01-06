@@ -89,6 +89,8 @@ function compile(opt_opts) {
 
   // Complete build with wrapper and sourcemaps.
   lazybuild = lazybuild
+    .pipe($$.replace, 'GSI_CLIENT_ID_PLACEHOLDER', process.env.GSI_CLIENT_ID ||
+     '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com')
     .pipe($$.wrap, wrapper)
     .pipe($$.sourcemaps.init.bind($$.sourcemaps), {loadMaps: true});
 
