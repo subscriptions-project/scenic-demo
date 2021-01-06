@@ -26,7 +26,7 @@ gulp
 You can also use gulp with a local .env file for environmental variables.
 
 ```
-npm run start-local
+yarn start-local
 ```
 
 ### Local .env file configurations
