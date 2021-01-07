@@ -28,9 +28,8 @@ const {encrypt, decrypt, fromBase64, toBase64} = require('./crypto');
 const CLIENT_ID = 'scenic-2017.appspot.com';
 
 /** @const {string} */
-const GSI_CLIENT_ID =
-  '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4' +
-  '.apps.googleusercontent.com';
+const GSI_CLIENT_ID = process.env.GSI_CLIENT_ID ||
+   '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com';
 
 const FIVE_MIN_IN_MILLIS = 1000 * 60 * 5;
 

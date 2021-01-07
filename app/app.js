@@ -57,6 +57,9 @@ const DECRYPTED_DOCUMENT_KEY = 'd4ZoJQJLWrV6DiF9oI40fw==';
 
 const ARTICLES = require('./content').ARTICLES;
 
+const googleSignInClientId = process.env.GSI_CLIENT_ID ||
+   '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com';
+
 /**
  * Maps AMP reader IDs to emails from Google Sign-In.
  * @type {{ [ampReaderId: string]: string }}
@@ -87,6 +90,7 @@ app.get(['/', '/config/:configId'], (req, res) => {
     title: 'Select an article to get started',
     config: getConfig(req.params.configId),
     articles: ARTICLES,
+    gsv: process.env.GOOGLE_SITE_VERIFICATION || null
   });
 });
 
@@ -115,6 +119,7 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
     article,
     prev: prevId,
     next: nextId,
+    googleSignInClientId
   });
 });
 
@@ -176,6 +181,7 @@ app.get('/subscribe', (req, res) => {
   res.render('../app/views/signin', {
     'type_subscribe': true,
     'returnUrl': returnUrl,
+    googleSignInClientId
   });
 });
 
@@ -188,6 +194,7 @@ app.get('/signin', (req, res) => {
   res.render('../app/views/signin', {
     'type_signin': true,
     'returnUrl': returnUrl,
+    googleSignInClientId
   });
 });
 
@@ -335,6 +342,7 @@ app.post('/amp-pingback', (req, res) => {
 app.get('/gsi-iframe', (req, res) => {
   res.render('../app/views/gsi-signin-iframe', {
     swgGaaJsUrl: getSwgGaaJsUrl(req),
+    googleSignInClientId
   });
 });
 

@@ -30,12 +30,12 @@ app.locals.delimiters = '<% %>';
  * HTTPS redirect.
  */
 app.use((req, res, next) => {
-  let host = req.headers.host || req.host;
+  let host = req.headers.host || req.hostname || req.host;
   const secure =
     req.secure ||
     req.connection.encrypted ||
     req.get('X-Forwarded-Proto') === 'https';
-  if (secure || host.indexOf('localhost') != -1) {
+  if (secure || host.indexOf('localhost') != -1 || host === process.env.PROXY_URL) {
     // Skip localhost or if already secure.
     next();
     return;

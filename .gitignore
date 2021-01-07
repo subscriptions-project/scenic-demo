@@ -11,3 +11,4 @@ npm-debug.log
 typings
 typings.json
 package-lock.json
+.env

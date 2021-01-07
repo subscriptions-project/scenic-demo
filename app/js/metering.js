@@ -6,8 +6,7 @@
  */
 export const MeteringDemo = {
   /** Google Sign-In Client ID for the metering demo. */
-  GOOGLE_SIGN_IN_CLIENT_ID:
-    '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com',
+  GOOGLE_SIGN_IN_CLIENT_ID: 'GSI_CLIENT_ID_PLACEHOLDER',
 
   /** URL of iframe containing a Google Sign-In button. */
   GOOGLE_SIGN_IN_IFRAME_URL: 'https://scenic-2017.appspot.com/gsi-iframe',
