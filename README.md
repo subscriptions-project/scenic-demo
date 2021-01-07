@@ -19,12 +19,6 @@ yarn
 
 Then start the server with gulp.
 
-```bash
-gulp
-```
-
-You can also use gulp with a local .env file for environmental variables.
-
 ```
 yarn start-local
 ```
