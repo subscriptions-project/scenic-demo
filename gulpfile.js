@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const dotenv = require('dotenv').config();
 const $$ = require('gulp-load-plugins')();
 const gulp = $$.help(require('gulp'));
 const {lint} = require('./build-system/tasks/lint');
