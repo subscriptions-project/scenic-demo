@@ -106,7 +106,7 @@
         gapi.load('auth2', function () {
           auth2 = gapi.auth2.init({
             client_id:
-              '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com',
+              '<% googleSignInClientId %>',
             scope: 'profile email',
           });
         });
