@@ -29,6 +29,7 @@ app.locals.delimiters = '<% %>';
 /**
  * HTTPS redirect.
  */
+app.set('trust proxy', 'loopback');
 app.use((req, res, next) => {
   let host = req.headers.host || req.hostname || req.host;
   const secure =
