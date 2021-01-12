@@ -52,9 +52,9 @@ export const MeteringDemo = {
    * demonstration purposes.
    * */
   createPpid: () => {
-    return (PUBLISHER_ID !== '') ?
-        PUBLISHER_ID :
-        'ppid' + Math.round(Math.random() * 999999);
+    return MeteringDemo.PUBLISHER_ID !== ''
+      ? MeteringDemo.PUBLISHER_ID
+      : 'ppid' + Math.round(Math.random() * 999999);
   },
 
   /** Returns a Publisher Provided ID (PPID) suitable for demo purposes. */
