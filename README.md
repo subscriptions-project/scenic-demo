@@ -7,6 +7,15 @@ Subscribe with Google (SwG).
 
 https://scenic-2017.appspot.com
 
+## Glitch
+
+To test your publisher center and back-end configurations, you can deploy this
+application to [Glitch](https://glitch.com) with one click. Once deployed, make
+sure to edit the [environmental variables](#local-env-file-configurations)
+per the instructions below.
+
+[![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/everyplace/scenic-demo?GSI_CLIENT_ID&PUBLISHER_ID&GOOGLE_SITE_VERIFICATION)
+
 ## How to run the demo locally
 
 First, install Nodejs, yarn, and gulp.
@@ -20,32 +29,31 @@ yarn
 Then start the server with gulp.
 
 ```
-yarn start-local
+gulp
 ```
 
 ### Local .env file configurations
 
-Using a local .env file, you can set environmental variables to change
-the running conditions.
+Using a local .env file, you can set environmental variables to change the
+running conditions.
 
 - **PORT** Specify the default port that the server runs at.
 - **GOOGLE_SITE_VERIFICATION** Set a value for
   [HTML Meta tag site verification](https://support.google.com/webmasters/answer/9008080?hl=en)
-- **PROXY_URL** Circumvent https requirement for non-localhost testing
-  environs.
 - **HOST** Can be set to `0.0.0.0` for
   [non-localhost routing using gulp](https://github.com/schickling/gulp-webserver#why-cant-i-reach-the-server-from-the-network).
 - **GSI_CLIENT_ID** Can be set to specify a custom
   [Google Sign-in Client Id](https://developers.google.com/identity/sign-in/web/sign-in).
+- **PUBLISHER_ID** Can be set to override the default, randomly generated id.
 
 A sample `.env` file:
 
 ```
 PORT=8080
 GOOGLE_SITE_VERIFICATION=abc123
-PROXY_URL=test-url.local
 HOST=0.0.0.0
 GSI_CLIENT_ID=520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com
+PUBLISHER_ID=publisher-scenic-demo
 ```
 
 ## How to update swg.js for local mode

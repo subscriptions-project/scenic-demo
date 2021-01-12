@@ -8,6 +8,8 @@ export const MeteringDemo = {
   /** Google Sign-In Client ID for the metering demo. */
   GOOGLE_SIGN_IN_CLIENT_ID: 'GSI_CLIENT_ID_PLACEHOLDER',
 
+  PUBLISHER_ID: 'PUBLISHER_ID_PLACEHOLDER',
+
   /** URL of iframe containing a Google Sign-In button. */
   GOOGLE_SIGN_IN_IFRAME_URL: 'https://scenic-2017.appspot.com/gsi-iframe',
 
@@ -42,8 +44,18 @@ export const MeteringDemo = {
     self.GaaMeteringRegwall.signOut().then(() => void location.reload());
   },
 
-  /** Returns a new Publisher Provided ID (PPID) suitable for demo purposes. */
-  createPpid: () => 'ppid' + Math.round(Math.random() * 999999),
+  /**
+   * Returns a new Publisher Provided ID (PPID).
+   *
+   * If the environmental variable PUBLISHER_ID is set, this function
+   * returns it. Otherwise, a generated ID is returned, suitable for
+   * demonstration purposes.
+   * */
+  createPpid: () => {
+    return MeteringDemo.PUBLISHER_ID !== ''
+      ? MeteringDemo.PUBLISHER_ID
+      : 'ppid' + Math.round(Math.random() * 999999);
+  },
 
   /** Returns a Publisher Provided ID (PPID) suitable for demo purposes. */
   getPpid: () => {
