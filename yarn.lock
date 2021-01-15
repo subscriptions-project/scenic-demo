@@ -3288,8 +3288,9 @@ eslint-plugin-sort-requires@2.1.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-sort-requires/-/eslint-plugin-sort-requires-2.1.0.tgz#3efad948dc83798219e809f54067c40e55444861"
   integrity sha1-PvrZSNyDeYIZ6An1QGfEDlVESGE=
 
-"eslint-plugin-swg-internal@file:build-system/eslint-rules":
+"eslint-plugin-swg-internal@github:subscriptions-project/eslint-plugin-swg#main":
   version "0.1.0"
+  resolved "https://codeload.github.com/subscriptions-project/eslint-plugin-swg/tar.gz/4489ad0575b9b67c276a196c88bcadb602b5e7fb"
 
 eslint-scope@^5.0.0:
   version "5.0.0"
