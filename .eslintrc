@@ -2,7 +2,7 @@
   "root": true,
   "parser": "babel-eslint",
   "plugins": [
-    "swg",
+    "swg-internal",
     "google-camelcase",
     "prettier",
     "sort-imports-es6-autofix",
