@@ -170,9 +170,14 @@ app.get(
     const setup = getSetup(req);
     const config = getConfig(req.params.configId);
 
-    // Request Showcase entitlement.
+    // Mock a publisher provided user ID, for demo purposes.
     const publisherProvidedId =
       'ppidfromscenic' + Math.floor(Math.random() * 9999999999);
+
+    // Mock a registration timestamp, for demo purposes.
+    const registrationTimestamp = Math.floor(Date.now() / 1000);
+
+    // Request Showcase entitlement.
     const jsonParams = {
       'metering': {
         'clientTypes': [
@@ -188,7 +193,7 @@ app.get(
           'attributes': [
             {
               'name': 'standard_registered_user',
-              'timestamp': 1608162166, // Pass registration timestamp in seconds
+              'timestamp': registrationTimestamp, // Pass registration timestamp in seconds
             },
           ],
         },
