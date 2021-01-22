@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1,initial-scale=1"
+    />
+    <link rel="canonical" href="." />
+    <title>Showcase article with server-side paywall</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Playfair+Display"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/styles.css" type="text/css" />
+    <link rel="icon" type="image/png" href="/icons/icon-2x.png" />
+    <meta name="theme-color" content="#37dc8c" />
+    <link rel="apple-touch-icon" href="/icons/icon-2x.png" />
+    <meta name="msapplication-TileImage" content="/icons/icon-2x.png" />
+    <meta name="msapplication-TileColor" content="#37dc8c" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "headline": "Article title",
+        "image": "https://scenic-2017.appspot.com/icons/icon-2x.png",
+        "datePublished": "2025-02-05T08:00:00+08:00",
+        "dateModified": "2025-02-05T09:20:00+08:00",
+        "author": {
+          "@type": "Person",
+          "name": "John Doe"
+        },
+        "publisher": {
+          "name": "<% config.name %>",
+          "@type": "Organization",
+          "@id": "scenic-2017.appspot.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://scenic-2017.appspot.com/icons/icon-2x.png"
+          }
+        },
+        "description": "A most wonderful article",
+        "isAccessibleForFree": "False",
+        "isPartOf": {
+          "@type": ["CreativeWork", "Product"],
+          "name": "Scenic News",
+          "productID": "<% config.publicationId %>:news"
+        }
+      }
+    </script>
+    <script src="<% swgGaaJsUrl %>"></script>
+    <script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+  </head>
+  <body>
+    <div class="main-body">
+      <header>
+        <a class="brand-header" href="/">
+          <div class="brand-logo"></div>
+          <div class="brand-name"><% config.name %></div>
+        </a>
+      </header>
+
+      <main role="main">
+        <div class="container">
+          <h1 class="heading">Showcase article with server-side paywall</h1>
+          <div class="hr"></div>
+
+          <!-- Free paragraph -->
+          <p class="text">
+            This is the intro paragraph. You can read this paragraph even
+            without entitlements to the article.
+          </p>
+
+          <!-- Paid paragraph. Only users with a Showcase entitlement see this. -->
+          <%# showcaseEntitlementJwt %>
+          <p class="text">
+            🎉 This is the paywalled paragraph. If you're reading this, you have
+            a Showcase entitlement. Congrats!
+          </p>
+          <div class="hr"></div>
+          <%/ showcaseEntitlementJwt %>
+
+          <!-- Paywall. Only users WITHOUT a Showcase entitlement see this. -->
+          <%^ showcaseEntitlementJwt %>
+          <p class="text">
+            <strong>🔒 Register to read more.</strong>
+          </p>
+          <%/ showcaseEntitlementJwt %>
+        </div>
+      </main>
+    </div>
+    <div class="comments">
+      <a href="/setup"> Setup </a>
+    </div>
+
+    <!-- Consume the Showcase entitlement, if it exists. -->
+    <%# showcaseEntitlementJwt %>
+    <script>
+      (self.SWG = self.SWG || []).push(function (subscriptions) {
+        // Create a new variable based on the "signedEntitlements"
+        // field in your response.
+        var showcaseEntitlementJwt = '<% showcaseEntitlementJwt %>';
+
+        // Consume the entitlement.
+        // This triggers the "You're getting more with Google" UX flow.
+        subscriptions.consumeShowcaseEntitlementJwt(showcaseEntitlementJwt);
+      });
+    </script>
+    <%/ showcaseEntitlementJwt %>
+  </body>
+</html>

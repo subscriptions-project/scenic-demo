@@ -57,8 +57,9 @@ const DECRYPTED_DOCUMENT_KEY = 'd4ZoJQJLWrV6DiF9oI40fw==';
 
 const ARTICLES = require('./content').ARTICLES;
 
-const googleSignInClientId = process.env.GSI_CLIENT_ID ||
-   '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com';
+const googleSignInClientId =
+  process.env.GSI_CLIENT_ID ||
+  '520465458218-e9vp957krfk2r0i4ejeh6aklqm7c25p4.apps.googleusercontent.com';
 
 /**
  * Maps AMP reader IDs to emails from Google Sign-In.
@@ -90,7 +91,7 @@ app.get(['/', '/config/:configId'], (req, res) => {
     title: 'Select an article to get started',
     config: getConfig(req.params.configId),
     articles: ARTICLES,
-    gsv: process.env.GOOGLE_SITE_VERIFICATION || null
+    gsv: process.env.GOOGLE_SITE_VERIFICATION || null,
   });
 });
 
@@ -119,7 +120,7 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
     article,
     prev: prevId,
     next: nextId,
-    googleSignInClientId
+    googleSignInClientId,
   });
 });
 
@@ -157,6 +158,65 @@ app.get(['/config/:configId/((\\d+)).amp', '/((\\d+)).amp'], (req, res) => {
 });
 
 /**
+ * A Showcase article with a server-side paywall.
+ */
+app.get(
+  [
+    '/config/:configId/showcase-article-with-server-side-paywall',
+    '/showcase-article-with-server-side-paywall',
+  ],
+  async (req, res) => {
+    const article = ARTICLES[0];
+    const setup = getSetup(req);
+    const config = getConfig(req.params.configId);
+
+    // Request Showcase entitlement.
+    const publisherProvidedId =
+      'ppidfromscenic' + Math.floor(Math.random() * 9999999999);
+    const jsonParams = {
+      'metering': {
+        'clientTypes': [
+          1, // Just pass 1 here
+        ],
+        'owner': 'scenic-2017.appspot.com', // Pass your publicationID here
+        'resource': {
+          'hashedCanonicalUrl':
+            '37d9f8ef6e6a2f3e153959b7c126d73cbc9d1d0549ab2a0b389516122cb960d562cbd4cc7d4c8b1b2e488f073c557645088ea2d60f959f847e8b7e7cee931eaf', // Pass your article's hashed canonical URL here
+        },
+        'state': {
+          'id': publisherProvidedId, // Pass your reader's hashed ID
+          'attributes': [
+            {
+              'name': 'standard_registered_user',
+              'timestamp': 1608162166, // Pass registration timestamp in seconds
+            },
+          ],
+        },
+      },
+    };
+    const encodedParams = Buffer.from(JSON.stringify(jsonParams)).toString(
+      'base64'
+    );
+    const showcaseEntitlementRequest = `https://news.google.com/swg/_/api/v1/publication/${config.publicationId}/entitlements?encodedParams=${encodedParams}`;
+    const showcaseEntitlementResponse = await fetch(
+      showcaseEntitlementRequest
+    ).then((res) => res.json());
+    const showcaseEntitlementJwt =
+      showcaseEntitlementResponse.signedEntitlements;
+
+    res.render('../app/views/showcase-article-with-server-side-paywall', {
+      swgJsUrl: getSwgJsUrl(req),
+      swgGaaJsUrl: getSwgGaaJsUrl(req),
+      setup,
+      serviceBase: BASE_URL,
+      config,
+      article,
+      showcaseEntitlementJwt,
+    });
+  }
+);
+
+/**
  * RSS Feed.
  */
 app.get('/feed.xml', (req, res) => {
@@ -181,7 +241,7 @@ app.get('/subscribe', (req, res) => {
   res.render('../app/views/signin', {
     'type_subscribe': true,
     'returnUrl': returnUrl,
-    googleSignInClientId
+    googleSignInClientId,
   });
 });
 
@@ -194,7 +254,7 @@ app.get('/signin', (req, res) => {
   res.render('../app/views/signin', {
     'type_signin': true,
     'returnUrl': returnUrl,
-    googleSignInClientId
+    googleSignInClientId,
   });
 });
 
@@ -342,7 +402,7 @@ app.post('/amp-pingback', (req, res) => {
 app.get('/gsi-iframe', (req, res) => {
   res.render('../app/views/gsi-signin-iframe', {
     swgGaaJsUrl: getSwgGaaJsUrl(req),
-    googleSignInClientId
+    googleSignInClientId,
   });
 });
 
