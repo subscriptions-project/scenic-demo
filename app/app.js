@@ -177,7 +177,7 @@ app.get(
     // Mock a registration timestamp, for demo purposes.
     const registrationTimestamp = Math.floor(Date.now() / 1000);
 
-    // Request Showcase entitlement.
+    // Define Showcase entitlement request params.
     const jsonParams = {
       'metering': {
         'clientTypes': [
@@ -199,16 +199,29 @@ app.get(
         },
       },
     };
-    const encodedParams = Buffer.from(JSON.stringify(jsonParams)).toString(
-      'base64'
-    );
+
+    // Encode params as Base64 for URLs.
+    // https://en.wikipedia.org/wiki/Base64#URL_applications
+    const encodedParams = Buffer.from(JSON.stringify(jsonParams))
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/[=]+$/g, '');
+
+    // Request a Showcase entitlement.
     const showcaseEntitlementRequest = `https://news.google.com/swg/_/api/v1/publication/${config.publicationId}/entitlements?encodedParams=${encodedParams}`;
     const showcaseEntitlementResponse = await fetch(
       showcaseEntitlementRequest
     ).then((res) => res.json());
+
+    // Extract the Showcase entitlement JWT.
     const showcaseEntitlementJwt =
       showcaseEntitlementResponse.signedEntitlements;
 
+    // Render the page.
+    // If the Showcase entitlement JWT exists, then the article will:
+    // - Render unlocked
+    // - Include additional JS to consume the Showcase entitlement
     res.render('../app/views/showcase-article-with-server-side-paywall', {
       swgJsUrl: getSwgJsUrl(req),
       swgGaaJsUrl: getSwgGaaJsUrl(req),
