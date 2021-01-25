@@ -177,8 +177,8 @@ app.get(
     // Mock a registration timestamp, for demo purposes.
     const registrationTimestamp = Math.floor(Date.now() / 1000);
 
-    // Define params for requesting a Showcase entitlement.
-    const jsonParams = {
+    // Prepare a request for a Showcase entitlement.
+    const showcaseEntitlementRequestParams = {
       'metering': {
         'clientTypes': [
           1, // Just pass 1 here
@@ -202,7 +202,9 @@ app.get(
 
     // Encode params as Base64 for URLs.
     // https://en.wikipedia.org/wiki/Base64#URL_applications
-    const encodedParams = Buffer.from(JSON.stringify(jsonParams))
+    const encodedParams = Buffer.from(
+      JSON.stringify(showcaseEntitlementRequestParams)
+    )
       .toString('base64')
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
