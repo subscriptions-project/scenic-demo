@@ -177,7 +177,7 @@ app.get(
     // Mock a registration timestamp, for demo purposes.
     const registrationTimestamp = Math.floor(Date.now() / 1000);
 
-    // Define Showcase entitlement request params.
+    // Define params for requesting a Showcase entitlement.
     const jsonParams = {
       'metering': {
         'clientTypes': [
