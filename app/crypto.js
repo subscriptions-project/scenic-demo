@@ -39,6 +39,7 @@ exports.decrypt = function (s) {
 };
 
 /**
+ * Returns a Base64 string.
  * @param {string} s
  * @return {string}
  */
@@ -47,6 +48,20 @@ exports.toBase64 = function (s) {
 };
 
 /**
+ * Returns a URL-safe Base64 string.
+ * @param {string} s
+ * @return {string}
+ */
+exports.toBase64Url = function (s) {
+  return exports
+    .toBase64(s)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/[=]+$/g, '');
+};
+
+/**
+ * Returns a string decoded from a Base64 string.
  * @param {string} s
  * @return {string}
  */

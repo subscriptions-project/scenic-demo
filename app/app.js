@@ -16,7 +16,13 @@
 
 const fetch = require('node-fetch');
 const jsonwebtoken = require('jsonwebtoken');
-const {decrypt, encrypt, fromBase64, toBase64} = require('./crypto');
+const {
+  decrypt,
+  encrypt,
+  fromBase64,
+  toBase64,
+  toBase64Url,
+} = require('./crypto');
 const {getConfig} = require('./config');
 
 const app = (module.exports = require('express').Router());
@@ -202,13 +208,9 @@ app.get(
 
     // Encode params as Base64 for URLs.
     // https://en.wikipedia.org/wiki/Base64#URL_applications
-    const encodedParams = Buffer.from(
+    const encodedParams = toBase64Url(
       JSON.stringify(showcaseEntitlementRequestParams)
-    )
-      .toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/[=]+$/g, '');
+    );
 
     // Request a Showcase entitlement.
     const showcaseEntitlementRequest = `https://news.google.com/swg/_/api/v1/publication/${config.publicationId}/entitlements?encodedParams=${encodedParams}`;
