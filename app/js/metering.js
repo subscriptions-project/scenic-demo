@@ -11,6 +11,19 @@ export const MeteringDemo = {
   /** URL of iframe containing a Google Sign-In button. */
   GOOGLE_SIGN_IN_IFRAME_URL: 'https://scenic-2017.appspot.com/gsi-iframe',
 
+  /** Optionally updates the HTML tag's `lang` attribute. */
+  setupLanguage: () => {
+    // Check for optional URL variable.
+    const languageCodeMatch = location.search.match(
+      /html_lang=([A-Za-z0-9-]+)/
+    );
+    if (languageCodeMatch) {
+      // Update HTML tag's `lang` attribute.
+      const languageCode = languageCodeMatch[1];
+      document.documentElement.lang = languageCode;
+    }
+  },
+
   /** Sets up controls for the metering demo. */
   setupControls: () => {
     // Wire up buttons.
