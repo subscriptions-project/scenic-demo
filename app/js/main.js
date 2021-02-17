@@ -274,14 +274,14 @@ function setupMeteringDemo(subscriptions) {
     // Fetch the current user's metering state.
     MeteringDemo.fetchMeteringState()
       .then((meteringState) => {
-        if (meteringState.registrationTimestamp) {
-          // Skip metering regwall for registered users.
-          return meteringState;
-        }
-
         // Disable scrolling.
         // This isn't necessary, but some publishers might prefer doing this.
         document.body.style.overflow = 'hidden';
+
+        // Skip metering regwall for registered users.
+        if (meteringState.registrationTimestamp) {
+          return meteringState;
+        }
 
         // Show metering regwall for unregistered users.
         // If the publisher does not use the GaaMeteringRegwall,
