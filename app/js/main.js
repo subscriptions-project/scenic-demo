@@ -279,6 +279,10 @@ function setupMeteringDemo(subscriptions) {
           return meteringState;
         }
 
+        // Disable scrolling.
+        // This isn't necessary, but some publishers might prefer doing this.
+        document.body.style.overflow = 'hidden';
+
         // Show metering regwall for unregistered users.
         // If the publisher does not use the GaaMeteringRegwall,
         // they must inform showcase of the regwall event:

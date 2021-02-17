@@ -79,6 +79,9 @@ export const MeteringDemo = {
   /** Opens the paywall for demo purposes. */
   openPaywall: () => {
     document.documentElement.classList.add('open-paywall');
+
+    // Enable scrolling.
+    document.body.style.overflow = 'auto';
   },
 
   /** Returns the user's metering state, including when the user registered. */
