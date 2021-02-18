@@ -24,8 +24,8 @@
     "dist": "gulp dist"
   },
   "dependencies": {
-    "@babel/core": "7.12.13",
-    "@babel/preset-env": "7.12.13",
+    "@babel/core": "7.12.16",
+    "@babel/preset-env": "7.12.16",
     "ansi-colors": "4.1.1",
     "babel-eslint": "10.1.0",
     "babelify": "10.0.0",
@@ -34,7 +34,7 @@
     "cookie-parser": "1.4.5",
     "del": "6.0.0",
     "escope": "3.6.0",
-    "eslint": "7.19.0",
+    "eslint": "7.20.0",
     "eslint-ast-utils": "1.1.0",
     "eslint-plugin-google-camelcase": "0.0.2",
     "eslint-plugin-prettier": "3.3.1",
