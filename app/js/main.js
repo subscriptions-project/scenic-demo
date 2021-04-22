@@ -339,7 +339,15 @@ function setupMeteringDemo(subscriptions) {
           },
         });
       })
-      .catch(() => false)
+      .catch(() => {
+        // If something goes wrong during the Regwall flow...
+
+        // Re-enable scrolling.
+        document.body.style.overflow = 'auto';
+
+        // Indicate lack of entitlements.
+        return false;
+      })
       .then((entitlements) => {
         // Check if a Google metering entitlement unlocks the article.
         if (entitlements && entitlements.enablesThisWithGoogleMetering()) {
