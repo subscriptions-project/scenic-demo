@@ -45,7 +45,9 @@ export class DemoPaywallController {
     this.subscriptions.setOnSubscribeResponse(
       this.subscribeResponse_.bind(this)
     );
-    this.subscriptions.configure({'experiments': ['hejira']});
+    this.subscriptions.configure({
+      'experiments': ['hejira', 'pay-client-redirect'],
+    });
 
     /** @const {?Entitlements} */
     this.entitlements = null;
