@@ -469,8 +469,8 @@ app.get('/production-swg-js-with-custom-server-url', async (req, res) => {
   const customizedSwgJs = swgJs
     .replace(/"https:\/\/news.google.com"/g, `"${setup.scriptCustomServerUrl}"`)
     .replace(
-      /"https:\/\/news.google.com\/_/g,
-      `"${setup.scriptCustomServerUrl}/_`
+      /"https:\/\/news.google.com\/swg\/_/g,
+      `"${setup.scriptCustomServerUrl}/swg/_`
     );
   res.send(customizedSwgJs);
 });
