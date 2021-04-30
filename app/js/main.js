@@ -382,6 +382,10 @@ function setupMeteringDemo(subscriptions) {
   }
 }
 
+function setupAudienceActionsDemo(subscriptions) {
+  subscriptions.showBestAudienceAction();
+}
+
 /**
  * Selects the flow based on the URL query parameter.
  * (ex: http://localhost:8000/examples/sample-pub/1?metering)
@@ -434,6 +438,11 @@ function startFlowAuto() {
 
   if (flow == 'metering') {
     whenReady(setupMeteringDemo);
+    return;
+  }
+
+  if (flow == 'demoAudienceActions') {
+    whenReady(setupAudienceActionsDemo);
     return;
   }
 
