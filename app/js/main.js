@@ -383,9 +383,6 @@ function setupMeteringDemo(subscriptions) {
 }
 
 function setupAudienceActionsDemo(subscriptions) {
-  // Forget any subscriptions, for demo purposes of audience action.
-  subscriptions.clear();
-
   subscriptions.showBestAudienceAction();
 }
 
