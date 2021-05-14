@@ -461,7 +461,9 @@ function isGaa() {
     return false;
   }
   if (params.gaa_at === 'na') {
-    console.error('SwG Entitlements: The `gaa_n` URL param is set to `na`, the user should not get Extended Access.');
+    console.error(
+      'SwG Entitlements: The `gaa_n` URL param is set to `na`, the user should not get Extended Access.'
+    );
     return false;
   }
   if (!params.gaa_n) {
