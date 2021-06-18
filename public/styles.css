@@ -320,29 +320,31 @@ body:not(.metering) #metering-controls {
   right: 80px;
   top: 7px;
   text-align: right;
-  width: 200px;
   z-index: 9999999999;
 }
 
 #metering-controls button {
-  background-color: rgb(50, 207, 131);
+  background-color: rgb(61, 199, 123);
+  background-image: linear-gradient(
+    180deg,
+    hsla(0, 0%, 100%, 0.3) 0,
+    hsla(0, 0%, 100%, 0)
+  );
+  border-radius: 999px;
   border: none;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.08);
-  border-bottom: 4px solid rgb(3, 151, 80);
-  border-radius: 8px;
-  border-top: 4px solid rgb(114, 255, 187);
+  box-shadow: inset 0 -4px 0 rgb(0 0 0 / 30%), 0 4px 6px rgb(0 0 0 / 22%);
   color: white;
   cursor: pointer;
+  font-family: 'Roboto', sans-serif;
   font-weight: bold;
-  padding: 6px 12px;
+  margin: 0 0 0 6px;
+  padding: 8px 18px 10px;
+  transition: background-color 0.2s ease-in-out;
 }
 
 #metering-controls button:active,
 #metering-controls button:hover {
-  background-color: rgb(39, 199, 122);
-  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.06);
-  border-bottom: 4px solid rgb(2, 133, 69);
-  border-top: 4px solid rgb(74, 250, 165);
+  background-color: rgb(76, 220, 140);
 }
 
 #metering-controls .ppid {
