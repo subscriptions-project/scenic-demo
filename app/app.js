@@ -29,7 +29,7 @@ const app = (module.exports = require('express').Router());
 app.use(require('cookie-parser')());
 app.use('/', require('./oauth-app'));
 
-const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
+const AMP_LOCAL = true;
 
 const BASE_URL =
   process.env.NODE_ENV == 'production'
@@ -160,6 +160,26 @@ app.get(['/config/:configId/((\\d+)).amp', '/((\\d+)).amp'], (req, res) => {
     article,
     prev: prevId,
     next: nextId,
+  });
+});
+
+/**
+ * An AMP Story.
+ */
+app.get(['/story'], (req, res) => {
+  const rtv = null;
+  const amp = {
+    'amp_js': ampJsUrl('amp', rtv),
+    'subscriptions_js': ampJsUrl('amp-subscriptions', rtv),
+    'subscriptions_google_js': ampJsUrl('amp-subscriptions-google', rtv),
+    'mustache_js': ampJsUrl('amp-mustache', rtv),
+    'story_js': ampJsUrl('amp-story', rtv),
+    'story_subscription_js': ampJsUrl('amp-story-subscription', rtv),
+  };
+  res.render('../app/views/amp-story', {
+    amp,
+    serviceBase: BASE_URL,
+    config: getConfig(req.params.configId),
   });
 });
 
@@ -612,9 +632,9 @@ function ampJsUrl(name, rtv) {
     ? 'https://cdn.ampproject.org/rtv/' + rtv
     : 'https://cdn.ampproject.org';
   if (name == 'amp') {
-    return AMP_LOCAL ? 'http://localhost:8001/dist/amp.js' : cdnBase + '/v0.js';
+    return AMP_LOCAL ? 'https://localhost:8001/dist/amp.js' : cdnBase + '/v0.js';
   }
   return AMP_LOCAL
-    ? 'http://localhost:8001/dist/v0/' + name + '-0.1.max.js'
+    ? 'https://localhost:8001/dist/v0/' + name + '-0.1.max.js'
     : cdnBase + '/v0/' + name + '-0.1.js';
 }
