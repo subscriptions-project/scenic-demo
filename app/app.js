@@ -29,10 +29,7 @@ const app = (module.exports = require('express').Router());
 app.use(require('cookie-parser')());
 app.use('/', require('./oauth-app'));
 
-const AMP_LOCAL = true;
-// const AMP_LOCAL = process.env.NODE_ENV != 'production';
-// const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
-console.log("AMP_LOCAL: " + AMP_LOCAL);
+const AMP_LOCAL = process.env.SERVE_AMP_LOCAL == 'true';
 
 const BASE_URL =
   process.env.NODE_ENV == 'production'
@@ -664,6 +661,6 @@ function ampJsUrl(name, rtv) {
     return AMP_LOCAL ? 'https://localhost:8001/dist/amp.js' : cdnBase + '/v0.js';
   }
   return AMP_LOCAL
-    ? 'https://localhost:8001/dist/v0/' + name + '-0.1.max.js'
+    ? 'https://localhost:8001/dist/v0/' + name + '-0.1.js'
     : cdnBase + '/v0/' + name + '-0.1.js';
 }
