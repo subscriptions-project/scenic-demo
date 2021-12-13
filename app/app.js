@@ -184,6 +184,27 @@ app.get(['/story'], (req, res) => {
 });
 
 /**
+ * An AMP Story Player.
+ */
+ app.get(['/storyplayer'], (req, res) => {
+  const rtv = null;
+  const amp = {
+    'amp_js': ampJsUrl('amp', rtv),
+    'player_js': ampJsUrl('amp-story-player', rtv),
+    'subscriptions_js': ampJsUrl('amp-subscriptions', rtv),
+    'subscriptions_google_js': ampJsUrl('amp-subscriptions-google', rtv),
+    'mustache_js': ampJsUrl('amp-mustache', rtv),
+    'story_js': ampJsUrl('amp-story', rtv),
+    'story_subscription_js': ampJsUrl('amp-story-subscription', rtv),
+  };
+  res.render('../app/views/amp-story-player', {
+    amp,
+    serviceBase: BASE_URL,
+    config: getConfig(req.params.configId),
+  });
+});
+
+/**
  * A Showcase article with a server-side paywall.
  */
 app.get(
@@ -292,6 +313,7 @@ app.get('/subscribe', (req, res) => {
  * /signin?return=RETURN_URL
  */
 app.get('/signin', (req, res) => {
+  console.log('signin request return param: ' + req.query['return']);
   const returnUrl = cleanupReturnUrl(req.query['return'] || null);
   res.render('../app/views/signin', {
     'type_signin': true,
@@ -384,12 +406,15 @@ app.get('/amp-entitlements', (req, res) => {
   // This doesn't work on the AMP cache.
   const cookieHasEntitlements = getUserInfoFromCookies(req);
   if (cookieHasEntitlements) {
+    console.log('found 1P cookie is set so granting the access!');
     res.json({
       'granted': true,
       'decryptedDocumentKey': DECRYPTED_DOCUMENT_KEY,
       'reason': '1p cookie gives entitlements',
     });
     return;
+  } else {
+    console.log('no 1P cookie found!');
   }
 
   // Support publisher metering.
@@ -591,7 +616,8 @@ function cleanupReturnUrl(returnUrl) {
     !returnUrl.startsWith('https://cdn.ampproject.org') &&
     !returnUrl.startsWith('https://scenic-2017.appspot.com') &&
     !returnUrl.startsWith('http://localhost:') &&
-    !returnUrl.startsWith('https://localhost:')
+    !returnUrl.startsWith('https://localhost:') &&
+    !returnUrl.startsWith('https://amp-paywall-demo.web.app')
   ) {
     returnUrl = '/';
   }
