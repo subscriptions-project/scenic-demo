@@ -282,7 +282,7 @@ function setupMeteringDemo(subscriptions) {
         document.body.style.overflow = 'hidden';
 
         // Skip metering regwall for registered users.
-        if (meteringState.registrationTimestamp) {
+        if ('registrationTimestamp' in meteringState && typeof meteringState.registrationTimestamp !== 'undefined') {
           return meteringState;
         }
 
