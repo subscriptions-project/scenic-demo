@@ -17,7 +17,7 @@
   "scripts": {
     "start": "env $(cat .env) node build-system/server/server-gae.js",
     "start-local": "env $(cat .env) gulp",
-    "deploy": "git checkout master && git pull && gulp build && gcloud app deploy",
+    "deploy": "git checkout main && git pull && gulp build && gcloud app deploy",
     "test": "gulp test",
     "lint": "gulp lint",
     "build": "gulp build",
@@ -29,7 +29,7 @@
     "ansi-colors": "4.1.1",
     "babel-eslint": "10.1.0",
     "babelify": "10.0.0",
-    "body-parser": "1.19.0",
+    "body-parser": "1.19.1",
     "browserify": "17.0.0",
     "cookie-parser": "1.4.6",
     "del": "6.0.0",
