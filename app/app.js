@@ -354,6 +354,7 @@ app.post('/signin', (req, res) => {
     setUserInfoInCookies(res, email);
   }
 
+  console.log('redirect to return url: ' + returnUrl);
   res.redirect(302, returnUrl);
 });
 
@@ -598,7 +599,12 @@ function setUserInfoInCookies(res, email) {
   if (email) {
     res.cookie(AUTH_COOKIE, toBase64(encrypt(email)), {
       maxAge: /* 60 minutes */ 1000 * 60 * 60,
+      secure: true,
+      sameSite: 'none',
     });
+    console.log(
+      'after setting cookie: ' + JSON.stringify(res.cookie(AUTH_COOKIE))
+    );
   }
 }
 
