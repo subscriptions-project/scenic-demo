@@ -602,9 +602,6 @@ function setUserInfoInCookies(res, email) {
       secure: true,
       sameSite: 'none',
     });
-    console.log(
-      'after setting cookie: ' + JSON.stringify(res.cookie(AUTH_COOKIE))
-    );
   }
 }
 
