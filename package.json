@@ -24,7 +24,7 @@
     "dist": "gulp dist"
   },
   "dependencies": {
-    "@babel/core": "7.18.10",
+    "@babel/core": "7.18.13",
     "@babel/preset-env": "7.18.10",
     "ansi-colors": "4.1.3",
     "babel-eslint": "10.1.0",
