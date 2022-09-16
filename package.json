@@ -66,7 +66,7 @@
     "lazypipe": "1.0.2",
     "minimist": "1.2.6",
     "node-fetch": "2.6.7",
-    "nodemon": "2.0.19",
+    "nodemon": "2.0.20",
     "plugin-error": "1.0.1",
     "prettier": "2.7.1",
     "promise-pjs": "1.1.5",
