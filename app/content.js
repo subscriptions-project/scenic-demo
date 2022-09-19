@@ -263,4 +263,11 @@ exports.ARTICLES = [
 
 exports.ARTICLES.forEach((a, index) => {
   a.id = index + 1;
+  if (a.id == 2) {
+    a.productId = "vancouver"
+  } else if (a.id == 3) {
+    a.productId = "backpacking"
+  } else {
+    a.productId = "news"
+  }
 });
