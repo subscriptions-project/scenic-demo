@@ -5,8 +5,7 @@
   "description": "Scenic Demo for SwG",
   "main": "index.js",
   "engines": {
-    "node": ">=14",
-    "yarn": ">=1"
+    "node": ">=14"
   },
   "author": "Subscribe with Google Authors",
   "license": "Apache-2.0",
