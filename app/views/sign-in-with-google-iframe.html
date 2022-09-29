@@ -1,0 +1,25 @@
+
+
+<body>
+    <!--
+      For more information on Google Identity Service (GIS), see:
+      https://developers.google.com/identity/gsi/web
+    -->
+    <script src="https://accounts.google.com/gsi/client"></script>
+    <script src="https://accounts.google.com/gsi/intermediatesupport"></script>
+  
+    <!--
+      NOTE: Replace `src` with https://news.google.com/swg/js/v1/swg-gaa.js in production.
+      -->
+    <script src="<% swgGaaJsUrl %>"></script>
+  
+    <script>
+      GaaSignInWithGoogleButton.show({
+        allowedOrigins: [
+        "http://localhost:8000", // Local server, for development
+        "http://localhost:8080", // Local server, for development
+        "https://scenic-2017.appspot.com", // Production server, for demos
+      ],
+      });
+    </script>
+  </body>
