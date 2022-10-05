@@ -131,7 +131,10 @@ export class DemoPaywallController {
           });
         }
         if (entitlements && entitlements.enablesThis()) {
-          if (!this.completeDeferredAccountCreation_(entitlements)) {
+          if (entitlements.getEntitlementForThis('google:youtube')) {
+            log('YouTube originated entitlement found, open paywall');
+            this.openPaywall_();
+          } else if (!this.completeDeferredAccountCreation_(entitlements)) {
             return; // Do nothing.
           } else {
             const account = new Account('John Doe', 'johndoe@email.com');
