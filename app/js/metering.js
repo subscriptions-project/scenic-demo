@@ -11,6 +11,9 @@ export const MeteringDemo = {
   /** URL of iframe containing a Google Sign-In button. */
   GOOGLE_SIGN_IN_IFRAME_URL: 'https://scenic-2017.appspot.com/gsi-iframe',
 
+  /** URL of iframe containing a GSI Sign in with Google button. */
+  SIGN_IN_WITH_GOOGLE_IFRAME_URL: 'https://scenic-2017.appspot.com/gis-iframe',
+
   /** Optionally updates the HTML tag's `lang` attribute. */
   setupLanguage: () => {
     // Check for optional URL variable.

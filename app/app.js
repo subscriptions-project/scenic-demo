@@ -475,6 +475,16 @@ app.get('/gsi-iframe', (req, res) => {
 });
 
 /**
+ * GSI iframe for metering demo.
+ */
+ app.get('/gis-iframe', (req, res) => {
+  res.render('../app/views/sign-in-with-google-iframe', {
+    swgGaaJsUrl: getSwgGaaJsUrl(req),
+    googleSignInClientId,
+  });
+});
+
+/**
  * Setup page.
  */
 app.get('/setup', (req, res) => {
