@@ -534,3 +534,33 @@ function getQueryParams() {
 
 // Initiates the flow, if valid.
 startFlowAuto();
+
+/**
+ * Function for adding "sticky" experiments to a users browser session
+ * so they can keep experiment settings across multiple page visits for
+ * a given tab.
+ */
+function handleHashChange() {
+  const hashUrlSearchParams = new URLSearchParams(location.hash.substring(1));
+  const sessionSwgExperiments = sessionStorage.getItem('swgExperiments');
+
+  if (hashUrlSearchParams.has('swg.experiments')) {
+    if (hashUrlSearchParams.get('swg.experiments') === sessionSwgExperiments) {
+      return;
+    }
+
+    sessionStorage.setItem(
+      'swgExperiments',
+      hashUrlSearchParams.get('swg.experiments')
+    );
+  } else {
+    if (sessionSwgExperiments) {
+      hashUrlSearchParams.append('swg.experiments', sessionSwgExperiments);
+      window.location.hash = hashUrlSearchParams.toString();
+    }
+  }
+}
+
+window.addEventListener('hashchange', handleHashChange, false);
+// need to invoke for initial load
+handleHashChange();

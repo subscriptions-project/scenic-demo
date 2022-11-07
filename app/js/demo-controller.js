@@ -132,6 +132,7 @@ export class DemoPaywallController {
         }
         if (entitlements && entitlements.enablesThis()) {
           if (!this.completeDeferredAccountCreation_(entitlements)) {
+            this.openPaywall_();
             return; // Do nothing.
           } else {
             const account = new Account('John Doe', 'johndoe@email.com');
