@@ -186,7 +186,7 @@ app.get(['/story'], (req, res) => {
 /**
  * An AMP Story Player.
  */
- app.get(['/storyplayer'], (req, res) => {
+app.get(['/storyplayer'], (req, res) => {
   const rtv = null;
   const amp = {
     'amp_js': ampJsUrl('amp', rtv),
@@ -475,9 +475,9 @@ app.get('/gsi-iframe', (req, res) => {
 });
 
 /**
- * GSI iframe for metering demo.
+ * GIS iframe for metering demo.
  */
- app.get('/gis-iframe', (req, res) => {
+app.get('/gis-iframe', (req, res) => {
   res.render('../app/views/sign-in-with-google-iframe', {
     swgGaaJsUrl: getSwgGaaJsUrl(req),
     googleSignInClientId,
@@ -519,9 +519,9 @@ app.post('/update-setup', (req, res) => {
 /** Returns swg-js with a custom server URL. */
 app.get('/production-swg-js-with-custom-server-url', async (req, res) => {
   const setup = getSetup(req);
-  const swgJs = await fetch(
-    'https://news.google.com/swg/js/v1/swg.js'
-  ).then((res) => res.text());
+  const swgJs = await fetch('https://news.google.com/swg/js/v1/swg.js').then(
+    (res) => res.text()
+  );
   const customizedSwgJs = swgJs
     .replace(/"https:\/\/news.google.com"/g, `"${setup.scriptCustomServerUrl}"`)
     .replace(
@@ -671,7 +671,9 @@ function ampJsUrl(name, rtv) {
     ? 'https://cdn.ampproject.org/rtv/' + rtv
     : 'https://cdn.ampproject.org';
   if (name == 'amp') {
-    return AMP_LOCAL ? 'https://localhost:8001/dist/amp.js' : cdnBase + '/v0.js';
+    return AMP_LOCAL
+      ? 'https://localhost:8001/dist/amp.js'
+      : cdnBase + '/v0.js';
   }
   return AMP_LOCAL
     ? 'https://localhost:8001/dist/v0/' + name + '-0.1.js'

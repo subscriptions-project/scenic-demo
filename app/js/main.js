@@ -295,8 +295,8 @@ function setupMeteringDemo(subscriptions) {
         //  });
         /* eslint-disable-next-line no-undef */
         return GaaMeteringRegwall.show({
-          // Specify a URL that renders a Google Sign-In button.
-          iframeUrl: MeteringDemo.GOOGLE_SIGN_IN_IFRAME_URL,
+          // Specify a URL that renders the GIS iframe.
+          iframeUrl: MeteringDemo.SIGN_IN_WITH_GOOGLE_IFRAME_URL,
         })
           .then((googleSignInUser) =>
             // Register a user based on data from Google Sign-In.
