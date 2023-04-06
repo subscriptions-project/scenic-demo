@@ -42,7 +42,6 @@ const SWG_JS_URLS = {
   local_min: '/swgjs/swg.js',
   prod: 'https://news.google.com/swg/js/v1/swg.js',
   autopush: 'https://news.google.com/swg/js/v1/swg-autopush.js',
-  tt: 'https://news.google.com/swg/js/v1/swg-tt.js',
   qual: 'https://news.google.com/swg/js/v1/swg-qual.js',
 };
 
@@ -52,7 +51,6 @@ const SWG_GAA_JS_URLS = {
   local_min: '/swgjs/swg-gaa.js',
   prod: 'https://news.google.com/swg/js/v1/swg-gaa.js',
   autopush: 'https://news.google.com/swg/js/v1/swg-gaa-autopush.js',
-  tt: 'https://news.google.com/swg/js/v1/swg-gaa-tt.js',
 };
 
 const AUTH_COOKIE = 'SCENIC_AUTH';
