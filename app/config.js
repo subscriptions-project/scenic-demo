@@ -43,6 +43,16 @@ const DEFAULT_CONFIG = {
 /** @const {Object<Config>} */
 const CONFIG = {
   'us': DEFAULT_CONFIG,
+  'rrme-subscriptions-qual': {
+    name: 'RRME - Subscriptions - Qual',
+    countryCode: 'us',
+    publicationId: 'CAowwuyEAQ',
+  },
+  'rrme-contributions-qual': {
+    name: 'RRME - Contributions - Qual',
+    countryCode: 'us',
+    publicationId: 'CAow-Jp5',
+  },
   'ar': {
     name: 'The Scenic - Argentina',
     countryCode: 'ar',
