@@ -20,6 +20,8 @@ import {log} from './log';
 
 log('started');
 
+let onEntitlements = () => {};
+
 /**
  * Add subsciptions when ready.
  * @param {function()} callback
@@ -47,7 +49,10 @@ whenReady(function (subscriptions) {
       );
     };
   }
-  subscriptions.setOnEntitlementsResponse(eventCallback('entitlements'));
+  subscriptions.setOnEntitlementsResponse(() => {
+    eventCallback('entitlements');
+    onEntitlements(subscriptions);
+  });
   subscriptions.setOnLinkComplete(eventCallback('link-complete'));
   subscriptions.setOnLoginRequest(eventCallback('login-request'));
   subscriptions.setOnSubscribeResponse(eventCallback('subscribe'));
@@ -58,8 +63,6 @@ whenReady(function (subscriptions) {
 /**
  * Selects the flow based on the URL query parameter.
  * The query parameter is the name of the function defined in runtime.
- * Defaults to 'showOffers'.
- * Current valid values are: 'showOffers', 'linkAccount', 'getEntitlements'.
  * @param {string} flow
  * @param {...} var_args
  */
@@ -391,9 +394,6 @@ function setupAudienceActionsDemo(subscriptions) {
  * (ex: http://localhost:8000/examples/sample-pub/1?metering)
  * The query parameter is the name of the function defined in runtime.
  * Defaults to 'showOffers'.
- * Current valid values are: 'showOffers', 'linkAccount', 'getEntitlements',
- * 'demoConsentRequired', 'demoUnknownSubscription', 'smartbutton',
- * and 'updateSubscription'.
  */
 function startFlowAuto() {
   let flow =
@@ -443,6 +443,16 @@ function startFlowAuto() {
 
   if (flow == 'demoAudienceActions') {
     whenReady(setupAudienceActionsDemo);
+    return;
+  }
+
+  if (flow === 'showContributionOptions') {
+    onEntitlements = (subscriptions) => {
+      subscriptions.showContributionOptions();
+    };
+    whenReady((subscriptions) => {
+      subscriptions.start();
+    });
     return;
   }
 
