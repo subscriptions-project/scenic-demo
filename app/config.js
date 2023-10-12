@@ -43,10 +43,20 @@ const DEFAULT_CONFIG = {
 /** @const {Object<Config>} */
 const CONFIG = {
   'us': DEFAULT_CONFIG,
+  'rrme-subscriptions-prod': {
+    name: 'RRME - Subscriptions - Prod',
+    countryCode: 'us',
+    publicationId: 'CAow5rTUCw',
+  },
   'rrme-subscriptions-qual': {
     name: 'RRME - Subscriptions - Qual',
     countryCode: 'us',
     publicationId: 'CAowwuyEAQ',
+  },
+  'rrme-contributions-prod': {
+    name: 'RRME - Contributions - Prod',
+    countryCode: 'us',
+    publicationId: 'CAowtrTUCw',
   },
   'rrme-contributions-qual': {
     name: 'RRME - Contributions - Qual',
