@@ -77,6 +77,30 @@ if (console.log) {
 }
 
 /**
+ * Allow visitors to choose an environment by passing an `env` query param.
+ */
+app.use((req, res, next) => {
+  const env = req.query.env;
+
+  if (['prod', 'qual'].includes(env)) {
+    // Update `script` cookie.
+    res.clearCookie('script');
+    res.cookie('script', env);
+
+    // Remove `env` param from URL.
+    const params = new URLSearchParams(req.query);
+    params.delete('env');
+    const url = `${req.path}?${params.toString()}`
+      // Remove trailing `=` character.
+      .replace(/\=$/, '');
+    res.redirect(url);
+    return;
+  }
+
+  next();
+});
+
+/**
  * List all Articles.
  */
 app.get(['/', '/config/:configId'], (req, res) => {
