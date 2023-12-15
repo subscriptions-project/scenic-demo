@@ -82,22 +82,28 @@ if (console.log) {
 app.use((req, res, next) => {
   const env = req.query.env;
 
-  if (['prod', 'qual'].includes(env)) {
-    // Update `script` cookie.
-    res.clearCookie('script');
-    res.cookie('script', env);
-
-    // Remove `env` param from URL.
-    const params = new URLSearchParams(req.query);
-    params.delete('env');
-    const url = `${req.path}?${params.toString()}`
-      // Remove trailing `=` character.
-      .replace(/\=$/, '');
-    res.redirect(url);
+  // Skip, if `env` query param is missing or invalid.
+  if (!['prod', 'qual'].includes(env)) {
+    next();
     return;
   }
 
-  next();
+  // Update `script` cookie.
+  res.clearCookie('script');
+  res.cookie('script', env);
+
+  // Remove `env` param from URL.
+  const params = new URLSearchParams(req.query);
+  params.delete('env');
+  const protocol = req.protocol;
+  const host = req.get('host');
+  const path = req.path;
+  const query = params
+    .toString()
+    // Remove trailing `=` character.
+    .replace(/\=$/, '');
+  const url = `${protocol}://${host}${path}?${query}`;
+  res.redirect(url);
 });
 
 /**
