@@ -1,39 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width,minimum-scale=1,initial-scale=1"
-    />
-    <link rel="canonical" href="<% id %>" />
-    <link rel="amphtml" href="<% id %>.amp" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <link rel="canonical" href="<% id %>">
+    <link rel="amphtml" href="<% id %>.amp">
     <title><% article.title %> - <% config.name %></title>
 
     <script async src="/dist/main.max.js"></script>
 
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Playfair+Display"
-      type="text/css"
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="/styles.css" type="text/css">
+    <link rel="icon" type="image/png" href="/icons/icon-2x.png">
+    <meta name="theme-color" content="#37dc8c">
+    <link rel="apple-touch-icon" href="/icons/icon-2x.png">
+    <meta name="msapplication-TileImage" content="/icons/icon-2x.png">
+    <meta name="msapplication-TileColor" content="#37dc8c">
+    <meta
+      name="google-signin-client_id"
+      content="<% googleSignInClientId %>"
     />
-    <link
-      href="https://fonts.googleapis.com/css?family=Muli"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
-      type="text/css"
-    />
-    <link rel="stylesheet" href="/styles.css" type="text/css" />
-    <link rel="icon" type="image/png" href="/icons/icon-2x.png" />
-    <meta name="theme-color" content="#37dc8c" />
-    <link rel="apple-touch-icon" href="/icons/icon-2x.png" />
-    <meta name="msapplication-TileImage" content="/icons/icon-2x.png" />
-    <meta name="msapplication-TileColor" content="#37dc8c" />
-    <meta name="google-signin-client_id" content="<% googleSignInClientId %>" />
 
     <style>
       .paywalled-section {
@@ -60,38 +48,39 @@
     </style>
 
     <script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "NewsArticle",
-        "headline": "<% article.title %>",
-        "image": "https://scenic-2017.appspot.com/icons/icon-2x.png",
-        "datePublished": "2025-02-05T08:00:00+08:00",
-        "dateModified": "2025-02-05T09:20:00+08:00",
-        "author": {
-          "@type": "Person",
-          "name": "John Doe"
-        },
-        "publisher": {
-          "name": "<% config.name %>",
-          "@type": "Organization",
-          "@id": "scenic-2017.appspot.com",
-          "logo": {
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "headline": "<% article.title %>",
+      "image": "https://scenic-2017.appspot.com/icons/icon-2x.png",
+      "datePublished": "2025-02-05T08:00:00+08:00",
+      "dateModified": "2025-02-05T09:20:00+08:00",
+      "author": {
+        "@type": "Person",
+        "name": "John Doe"
+      },
+      "publisher": {
+         "name": "<% config.name %>",
+         "@type": "Organization",
+         "@id": "scenic-2017.appspot.com",
+         "logo": {
             "@type": "ImageObject",
             "url": "https://scenic-2017.appspot.com/icons/icon-2x.png"
-          }
-        },
-        "description": "A most wonderful article",
-        "isAccessibleForFree": "False",
-        "isPartOf": {
-          "@type": ["CreativeWork", "Product"],
-          "name": "Scenic News",
-          "productID": "<% config.publicationId %>:<% article.productId %>"
-        }
+         }
+      },
+      "description": "A most wonderful article",
+      "isAccessibleForFree": "False",
+      "isPartOf": {
+        "@type": ["CreativeWork", "Product"],
+        "name" : "Scenic News",
+        "productID": "<% config.publicationId %>:<% article.productId %>"
       }
+    }
     </script>
     <script src="<% swgGaaJsUrl %>"></script>
     <script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+
   </head>
   <body>
     <div class="main-body">
@@ -102,85 +91,64 @@
         </a>
         <div class="nav-header">
           <%#prev%>
-          <a class="nav-button prev" href="<% prev %>?<% testParams %>"></a>
-          <%/prev%> <%#next%>
-          <a class="nav-button next" href="<% next %>?<% testParams %>"></a>
+            <a class="nav-button prev" href="<% prev %>?<% testParams %>"></a>
+          <%/prev%>
+          <%#next%>
+            <a class="nav-button next" href="<% next %>?<% testParams %>"></a>
           <%/next%>
         </div>
       </header>
 
       <main role="main">
         <div class="hero-img-container">
-          <img src="<% article.hero %>" />
+          <img src="<% article.hero %>">
         </div>
 
         <div class="container">
-          <h2 class="category" onclick="sessionStorage.clear();">
-            <% article.category %>
-          </h2>
+          <h2 class="category" onclick="sessionStorage.clear();"><% article.category %></h2>
           <h1 class="heading"><% article.title %></h1>
           <p class="kicker"><% article.kicker %></p>
           <p class="byline">By <% article.author %> on <% article.date %></p>
           <div class="hr"></div>
 
           <p class="text">
-            Jelly jujubes marshmallow donut. Wafer cheesecake lollipop fruitcake
-            danish powder. Pudding croissant biscuit icing. Gummi bears
-            fruitcake cake wafer cake cookie caramels marshmallow bonbon.
+            Jelly jujubes marshmallow donut. Wafer cheesecake lollipop fruitcake danish powder. Pudding croissant biscuit icing. Gummi bears fruitcake cake wafer cake cookie caramels marshmallow bonbon.
           </p>
 
           <p class="text">
-            Gingerbread biscuit gummies cupcake. Powder sugar plum chocolate
-            cake chocolate cake cake. Marzipan brownie halvah. Marzipan soufflé
-            bear claw gummi bears muffin.
+            Gingerbread biscuit gummies cupcake. Powder sugar plum chocolate cake chocolate cake cake. Marzipan brownie halvah. Marzipan soufflé bear claw gummi bears muffin.
           </p>
           <section class="paywalled-section">
             <p class="text">
-              Muffin jelly-o wafer ice cream brownie dessert chocolate bar.
-              Candy canes cotton candy apple pie cake. Chupa chups bonbon dragée
-              bear claw dessert. Oat cake croissant sweet roll apple pie pie.
+              Muffin jelly-o wafer ice cream brownie dessert chocolate bar. Candy canes cotton candy apple pie cake. Chupa chups bonbon dragée bear claw dessert. Oat cake croissant sweet roll apple pie pie.
             </p>
             <p class="text">
-              Cookie fruitcake toffee lemon drops. Gummies caramels topping
-              wafer tootsie roll cake. Halvah pastry gingerbread liquorice.
-              Dragée topping toffee chupa chups.
+              Cookie fruitcake toffee lemon drops. Gummies caramels topping wafer tootsie roll cake. Halvah pastry gingerbread liquorice. Dragée topping toffee chupa chups.
             </p>
             <p class="text">
-              Halvah bear claw cake fruitcake chocolate topping. Cookie topping
-              chocolate cake chocolate topping biscuit caramels lollipop danish.
-              Jelly-o pastry topping candy. Cotton candy oat cake pastry lemon
-              drops chocolate.
+              Halvah bear claw cake fruitcake chocolate topping. Cookie topping chocolate cake chocolate topping biscuit caramels lollipop danish. Jelly-o pastry topping candy. Cotton candy oat cake pastry lemon drops chocolate.
             </p>
             <p class="text">
-              Pastry cupcake icing. Gummies lollipop sweet carrot cake tootsie
-              roll. Brownie apple pie sweet roll soufflé.
+              Pastry cupcake icing. Gummies lollipop sweet carrot cake tootsie roll. Brownie apple pie sweet roll soufflé.
             </p>
             <div class="hero-img-container">
-              <img src="hero/2.jpeg" />
+              <img src="hero/2.jpeg">
             </div>
 
             <p class="text">
-              Tart donut sweet pudding dragée sweet chocolate bar. Croissant
-              tootsie roll cookie lollipop jelly topping apple pie. Danish bear
-              claw sesame snaps toffee. Biscuit brownie brownie.
+              Tart donut sweet pudding dragée sweet chocolate bar. Croissant tootsie roll cookie lollipop jelly topping apple pie. Danish bear claw sesame snaps toffee. Biscuit brownie brownie.
             </p>
 
             <p class="text">
-              Lemon drops macaroon liquorice tart. Gummi bears dragée donut.
-              Cheesecake chocolate bar candy canes candy tart cotton candy
-              chocolate cake croissant cake. Oat cake cheesecake ice cream
-              cotton candy marzipan pastry.
+              Lemon drops macaroon liquorice tart. Gummi bears dragée donut. Cheesecake chocolate bar candy canes candy tart cotton candy chocolate cake croissant cake. Oat cake cheesecake ice cream cotton candy marzipan pastry.
             </p>
 
             <p class="text">
-              Dragée toffee cupcake pudding oat cake. Cupcake croissant cake
-              jelly powder apple pie lemon drops cupcake bear claw. Tiramisu
-              jelly sweet roll gummies pie muffin gummi bears oat cake.
+              Dragée toffee cupcake pudding oat cake. Cupcake croissant cake jelly powder apple pie lemon drops cupcake bear claw. Tiramisu jelly sweet roll gummies pie muffin gummi bears oat cake.
             </p>
 
             <p class="text">
-              Chupa chups danish fruitcake jelly pastry jelly beans marzipan.
-              Jelly wafer candy sweet. Croissant gummies apple pie.
+              Chupa chups danish fruitcake jelly pastry jelly beans marzipan. Jelly wafer candy sweet. Croissant gummies apple pie.
             </p>
 
             <div class="hr"></div>
@@ -191,13 +159,7 @@
               <li>
                 <a href="2?<% testParams %>">
                   <div>
-                    <img
-                      width="100"
-                      height="80"
-                      src="hero/2.jpeg"
-                      style="width: 100px; height: 80px"
-                      src="hero/2.jpeg"
-                    />
+                    <img width="100" height="80" src="hero/2.jpeg" style="width: 100px; height: 80px;" src="hero/2.jpeg">
                     <p>Melbourne in 48 Hours</p>
                   </div>
                 </a>
@@ -205,13 +167,7 @@
               <li>
                 <a href="3?<% testParams %>">
                   <div>
-                    <img
-                      width="100"
-                      height="80"
-                      src="hero/3.jpeg"
-                      style="width: 100px; height: 80px"
-                      src="hero/3.jpeg"
-                    />
+                    <img width="100" height="80" src="hero/3.jpeg" style="width: 100px; height: 80px;" src="hero/3.jpeg">
                     <p>Paris in 48 Hours</p>
                   </div>
                 </a>
@@ -219,13 +175,7 @@
               <li>
                 <a href="4?<% testParams %>">
                   <div>
-                    <img
-                      width="100"
-                      height="80"
-                      src="hero/4.jpeg"
-                      style="width: 100px; height: 80px"
-                      src="hero/4.jpeg"
-                    />
+                    <img width="100" height="80" src="hero/4.jpeg" style="width: 100px; height: 80px;" src="hero/4.jpeg">
                     <p>Montreal in 48 Hours</p>
                   </div>
                 </a>
@@ -234,20 +184,19 @@
           </section>
           <section class="paywalled-disclaimer">
             <p class="text">
-              <strong
-                >Please go through subscribe flow to see more content.</strong
-              >
+              <strong>Please go through subscribe flow to see more content.</strong>
             </p>
           </section>
         </div>
       </main>
     </div>
     <div class="comments">
-      <a href="/setup"> <% setup.script %> </a>
+      <a href="/setup">
+        <% setup.script %>
+      </a>
     </div>
-    <div id="creating_account_toast" style="display: none">
-      Scenic is creating account for
-      <span id="creating_account_toast_user"></span>...
+    <div id="creating_account_toast" style="display: none;">
+      Scenic is creating account for <span id="creating_account_toast_user"></span>...
     </div>
     <div id="metering-controls">
       <button class="reset-metering-demo">Reset metering demo</button>
