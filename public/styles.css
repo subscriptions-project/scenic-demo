@@ -370,6 +370,7 @@ body:not(.metering) #metering-controls {
   font-size: 16px;
   left: 8px;
   letter-spacing: 0.5px;
+  text-transform: capitalize;
   padding: 4px 8px;
   position: fixed;
   z-index: 999;
