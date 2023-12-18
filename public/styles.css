@@ -362,6 +362,25 @@ body:not(.metering) #metering-controls {
   top: 50px;
 }
 
+.comments {
+  background: rgb(0 0 0 / 85%);
+  border-radius: 8px;
+  bottom: 8px;
+  font-family: sans-serif;
+  font-size: 16px;
+  left: 8px;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  padding: 4px 8px;
+  position: fixed;
+  z-index: 999;
+}
+
+.comments a {
+  color: white;
+  text-decoration: none;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
