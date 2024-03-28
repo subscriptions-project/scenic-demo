@@ -33,7 +33,7 @@
     "cookie-parser": "1.4.6",
     "del": "6.1.1",
     "escope": "3.6.0",
-    "eslint": "7.32.0",
+    "eslint": "8.57.0",
     "eslint-ast-utils": "1.1.0",
     "eslint-plugin-google-camelcase": "0.0.2",
     "eslint-plugin-prettier": "3.4.1",
