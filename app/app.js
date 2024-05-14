@@ -51,6 +51,7 @@ const SWG_GAA_JS_URLS = {
   local_min: '/swgjs/swg-gaa.js',
   prod: 'https://news.google.com/swg/js/v1/swg-gaa.js',
   autopush: 'https://news.google.com/swg/js/v1/swg-gaa-autopush.js',
+  qual: 'https://news.google.com/swg/js/v1/swg-gaa-qual.js',
 };
 
 const AUTH_COOKIE = 'SCENIC_AUTH';
