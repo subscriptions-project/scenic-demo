@@ -36,7 +36,7 @@
     "eslint": "7.32.0",
     "eslint-ast-utils": "1.1.0",
     "eslint-plugin-google-camelcase": "0.0.2",
-    "eslint-plugin-prettier": "3.4.1",
+    "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-sort-imports-es6-autofix": "0.6.0",
     "eslint-plugin-sort-requires": "2.1.0",
     "eslint-plugin-swg-internal": "github:subscriptions-project/eslint-plugin-swg#main",
