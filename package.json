@@ -31,7 +31,7 @@
     "body-parser": "1.20.4",
     "browserify": "17.0.1",
     "cookie-parser": "1.4.7",
-    "del": "6.1.1",
+    "del": "8.0.1",
     "escope": "3.6.0",
     "eslint": "7.32.0",
     "eslint-ast-utils": "1.1.0",
