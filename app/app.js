@@ -54,6 +54,15 @@ const SWG_GAA_JS_URLS = {
   qual: 'https://news.google.com/swg/js/v1/swg-gaa-qual.js',
 };
 
+const SWG_PUBLISHER_JS_URLS = {
+  local: '/swgjs/publisher.max.js',
+  /* eslint-disable-next-line google-camelcase/google-camelcase */
+  local_min: '/swgjs/publisher.js',
+  prod: 'https://news.google.com/swg/js/v1/publisher.js',
+  autopush: 'https://news.google.com/swg/js/v1/publisher-autopush.js',
+  qual: 'https://news.google.com/swg/js/v1/publisher-qual.js',
+};
+
 const AUTH_COOKIE = 'SCENIC_AUTH';
 const METER_COOKIE = 'SCENIC_METER';
 const MAX_METER = 3;
@@ -149,6 +158,8 @@ app.get(['/config/:configId/((\\d+))', '/((\\d+))'], (req, res) => {
   res.render('../app/views/article', {
     swgJsUrl: getSwgJsUrl(req),
     swgGaaJsUrl: getSwgGaaJsUrl(req),
+    swgPublisherJsUrl: getSwgPublisherJsUrl(req),
+    showPreferredSource: 'preferredSource' in req.query,
     setup,
     config: getConfig(req.params.configId),
     id,
@@ -602,6 +613,18 @@ function getSwgGaaJsUrl(req) {
     setup.script = 'prod';
   }
   return SWG_GAA_JS_URLS[setup.script];
+}
+
+/**
+ * Returns URL for publisher.js for a given request.
+ * @param {!HttpRequest} req
+ */
+function getSwgPublisherJsUrl(req) {
+  const setup = getSetup(req);
+  if (setup.script === 'custom') {
+    setup.script = 'prod';
+  }
+  return SWG_PUBLISHER_JS_URLS[setup.script];
 }
 
 /**
