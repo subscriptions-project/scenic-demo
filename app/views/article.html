@@ -79,6 +79,9 @@
     </script>
     <script src="<% swgGaaJsUrl %>"></script>
     <script async subscriptions-control="manual" src="<% swgJsUrl %>"></script>
+    <%#showPreferredSource%>
+      <script async src="<% swgPublisherJsUrl %>"></script>
+    <%/showPreferredSource%>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
   </head>
@@ -105,6 +108,11 @@
         </div>
 
         <div class="container">
+          <%#showPreferredSource%>
+            <div class="preferred-source-demo" style="margin: 20px 0;">
+              <div google-add-preferred-source-btn></div>
+            </div>
+          <%/showPreferredSource%>
           <h2 class="category" onclick="sessionStorage.clear();"><% article.category %></h2>
           <h1 class="heading"><% article.title %></h1>
           <p class="kicker"><% article.kicker %></p>
